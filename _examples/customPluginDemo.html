@@ -1,0 +1,57 @@
+<head>
+    <script type="text/javascript">
+        var editorDoc;
+        function InitEditable () {
+            var editor = document.getElementById ("editor");
+//
+//            if (editor.contentDocument)
+//                editorDoc = editor.contentDocument;
+//            else
+//                editorDoc = editor.contentWindow.document;
+//
+//            var editorBody = editorDoc.body;
+            editorDoc = document
+//            // turn off spellcheck
+//            if ('spellcheck' in editorBody) {    // Firefox
+//                editorBody.spellcheck = false;
+//            }
+            editor.contentEditable = true;
+//            editor.designMode = "on";
+//            if ('contentEditable' in editorBody) {
+//                // allow contentEditable
+//                editor.contentEditable = true;
+//            }
+//            else {  // Firefox earlier than version 3
+//                if ('designMode' in editorDoc) {
+//                    // turn on designMode
+//                    editorDoc.designMode = "on";
+//                }
+//            }
+        }
+
+        function ToggleBold () {
+            editorDoc.execCommand ('bold', false, null);
+        }
+        function ToggleItalic () {
+            editorDoc.execCommand ('italic', false, null);
+        }
+        function SetRed () {
+            editorDoc.execCommand ('foreColor', false, "#ff0000");
+        }
+        function Delete () {
+            editorDoc.execCommand ('delete', false, null);
+        }
+    </script>
+</head>
+<body onload="InitEditable ();">
+First, write and select some text in the editor.
+<br />
+<div id="editor" style="width:300px;height:300px;"></div>
+<br /><br />
+You can use the following buttons to change the appearance of the selected text:
+<br /><br />
+<button onclick="ToggleBold ();">Bold</button>
+<button onclick="ToggleItalic ();">Italic</button>
+<button onclick="SetRed ();">Set to red</button>
+<button onclick="Delete ();">Delete</button>
+</body>
