@@ -312,7 +312,19 @@
             me.fireEvent('ready');
             options.onready && options.onready.call(me);
 
-
+            if (!browser.ie) {
+                domUtils.on(me.editableCont, ['blur', 'focus'], function (e) {
+                    //chrome下会出现alt+tab切换时，导致选区位置不对
+                    if (e.type == 'blur') {
+                        me._bakRange = me.selection.getRange();
+                    } else {
+                        try {
+                            me._bakRange && me._bakRange.select();
+                        } catch (e) {
+                        }
+                    }
+                });
+            }
             !options.isShow && me.setHide();
             options.readonly && me.setDisabled();
         },

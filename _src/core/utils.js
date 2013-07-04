@@ -376,56 +376,7 @@ var utils = UE.utils = {
         }
         return  value;
     },
-    /**
-     * 只针对border,padding,margin做了处理，因为性能问题
-     * @public
-     * @function
-     * @param {String}    val style字符串
-     */
-    optCss:function (val) {
-        var padding, margin, border;
-        val = val.replace(/(padding|margin|border)\-([^:]+):([^;]+);?/gi, function (str, key, name, val) {
-            if (val.split(' ').length == 1) {
-                switch (key) {
-                    case 'padding':
-                        !padding && (padding = {});
-                        padding[name] = val;
-                        return '';
-                    case 'margin':
-                        !margin && (margin = {});
-                        margin[name] = val;
-                        return '';
-                    case 'border':
-                        return val == 'initial' ? '' : str;
-                }
-            }
-            return str;
-        });
 
-        function opt(obj, name) {
-            if (!obj) {
-                return '';
-            }
-            var t = obj.top , b = obj.bottom, l = obj.left, r = obj.right, val = '';
-            if (!t || !l || !b || !r) {
-                for (var p in obj) {
-                    val += ';' + name + '-' + p + ':' + obj[p] + ';';
-                }
-            } else {
-                val += ';' + name + ':' +
-                    (t == b && b == l && l == r ? t :
-                        t == b && l == r ? (t + ' ' + l) :
-                            l == r ? (t + ' ' + l + ' ' + b) : (t + ' ' + r + ' ' + b + ' ' + l)) + ';'
-            }
-            return val;
-        }
-
-        val += opt(padding, 'padding') + opt(margin, 'margin');
-        return val.replace(/^[ \n\r\t;]*|[ \n\r\t]*$/, '').replace(/;([ \n\r\t]+)|\1;/g, ';')
-            .replace(/(&((l|g)t|quot|#39))?;{2,}/g, function (a, b) {
-                return b ? b + ";;" : ';'
-            });
-    },
     /**
      * 深度克隆对象，从source到target
      * @name clone

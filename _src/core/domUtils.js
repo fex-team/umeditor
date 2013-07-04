@@ -290,29 +290,7 @@ var domUtils = dom.domUtils = {
         return i == 0 ? null : parentsA[i - 1];
 
     },
-    /**
-     * 清除node节点左右兄弟为空的inline节点
-     * @name clearEmptySibling
-     * @grammar UE.dom.domUtils.clearEmptySibling(node)
-     * @grammar UE.dom.domUtils.clearEmptySibling(node,ignoreNext)  //ignoreNext指定是否忽略右边空节点
-     * @grammar UE.dom.domUtils.clearEmptySibling(node,ignoreNext,ignorePre)  //ignorePre指定是否忽略左边空节点
-     * @example
-     * <b></b><i></i>xxxx<b>bb</b> --> xxxx<b>bb</b>
-     */
-    clearEmptySibling:function (node, ignoreNext, ignorePre) {
-        function clear(next, dir) {
-            var tmpNode;
-            while (next && !domUtils.isBookmarkNode(next) && (domUtils.isEmptyInlineElement(next)
-                //这里不能把空格算进来会吧空格干掉，出现文字间的空格丢掉了
-                || !new RegExp('[^\t\n\r' + domUtils.fillChar + ']').test(next.nodeValue) )) {
-                tmpNode = next[dir];
-                domUtils.remove(next);
-                next = tmpNode;
-            }
-        }
-        !ignoreNext && clear(node.nextSibling, 'nextSibling');
-        !ignorePre && clear(node.previousSibling, 'previousSibling');
-    },
+
     /**
      * 将一个文本节点node拆分成两个文本节点，offset指定拆分位置
      * @name split
@@ -428,101 +406,8 @@ var domUtils = dom.domUtils = {
         }
     },
 
-    /**
-     * 比较节点nodeA与节点nodeB是否具有相同的标签名、属性名以及属性值
-     * @name  isSameElement
-     * @grammar UE.dom.domUtils.isSameElement(nodeA,nodeB) => true|false
-     * @example
-     * <span  style="font-size:12px">ssss</span> and <span style="font-size:12px">bbbbb</span>   => true
-     * <span  style="font-size:13px">ssss</span> and <span style="font-size:12px">bbbbb</span>   => false
-     */
-    isSameElement:function (nodeA, nodeB) {
-        if (nodeA.tagName != nodeB.tagName) {
-            return false;
-        }
-        var thisAttrs = nodeA.attributes,
-            otherAttrs = nodeB.attributes;
-        if (!ie && thisAttrs.length != otherAttrs.length) {
-            return false;
-        }
-        var attrA, attrB, al = 0, bl = 0;
-        for (var i = 0; attrA = thisAttrs[i++];) {
-            if (attrA.nodeName == 'style') {
-                if (attrA.specified) {
-                    al++;
-                }
-                if (domUtils.isSameStyle(nodeA, nodeB)) {
-                    continue;
-                } else {
-                    return false;
-                }
-            }
-            if (ie) {
-                if (attrA.specified) {
-                    al++;
-                    attrB = otherAttrs.getNamedItem(attrA.nodeName);
-                } else {
-                    continue;
-                }
-            } else {
-                attrB = nodeB.attributes[attrA.nodeName];
-            }
-            if (!attrB.specified || attrA.nodeValue != attrB.nodeValue) {
-                return false;
-            }
-        }
-        // 有可能attrB的属性包含了attrA的属性之外还有自己的属性
-        if (ie) {
-            for (i = 0; attrB = otherAttrs[i++];) {
-                if (attrB.specified) {
-                    bl++;
-                }
-            }
-            if (al != bl) {
-                return false;
-            }
-        }
-        return true;
-    },
 
-    /**
-     * 判断节点nodeA与节点nodeB的元素属性是否一致
-     * @name isSameStyle
-     * @grammar UE.dom.domUtils.isSameStyle(nodeA,nodeB) => true|false
-     */
-    isSameStyle:function (nodeA, nodeB) {
-        var styleA = nodeA.style.cssText.replace(/( ?; ?)/g, ';').replace(/( ?: ?)/g, ':'),
-            styleB = nodeB.style.cssText.replace(/( ?; ?)/g, ';').replace(/( ?: ?)/g, ':');
-        if (browser.opera) {
-            styleA = nodeA.style;
-            styleB = nodeB.style;
-            if (styleA.length != styleB.length)
-                return false;
-            for (var p in styleA) {
-                if (/^(\d+|csstext)$/i.test(p)) {
-                    continue;
-                }
-                if (styleA[p] != styleB[p]) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        if (!styleA || !styleB) {
-            return styleA == styleB;
-        }
-        styleA = styleA.split(';');
-        styleB = styleB.split(';');
-        if (styleA.length != styleB.length) {
-            return false;
-        }
-        for (var i = 0, ci; ci = styleA[i++];) {
-            if (utils.indexOf(styleB, ci) == -1) {
-                return false;
-            }
-        }
-        return true;
-    },
+
     /**
      * 检查节点node是否为块元素
      * @name isBlockElm
@@ -538,49 +423,6 @@ var domUtils = dom.domUtils = {
      */
     isBody:function (node) {
         return  node && node.nodeType == 1 && node.tagName.toLowerCase() == 'body';
-    },
-    /**
-     * 以node节点为中心，将该节点的指定祖先节点parent拆分成2块
-     * @name  breakParent
-     * @grammar UE.dom.domUtils.breakParent(node,parent) => node
-     * @desc
-     * <code type="html"><b>ooo</b>是node节点
-     * <p>xxxx<b>ooo</b>xxx</p> ==> <p>xxx</p><b>ooo</b><p>xxx</p>
-     * <p>xxxxx<span>xxxx<b>ooo</b>xxxxxx</span></p>   =>   <p>xxxxx<span>xxxx</span></p><b>ooo</b><p><span>xxxxxx</span></p></code>
-     */
-    breakParent:function (node, parent) {
-        var tmpNode,
-            parentClone = node,
-            clone = node,
-            leftNodes,
-            rightNodes;
-        do {
-            parentClone = parentClone.parentNode;
-            if (leftNodes) {
-                tmpNode = parentClone.cloneNode(false);
-                tmpNode.appendChild(leftNodes);
-                leftNodes = tmpNode;
-                tmpNode = parentClone.cloneNode(false);
-                tmpNode.appendChild(rightNodes);
-                rightNodes = tmpNode;
-            } else {
-                leftNodes = parentClone.cloneNode(false);
-                rightNodes = leftNodes.cloneNode(false);
-            }
-            while (tmpNode = clone.previousSibling) {
-                leftNodes.insertBefore(tmpNode, leftNodes.firstChild);
-            }
-            while (tmpNode = clone.nextSibling) {
-                rightNodes.appendChild(tmpNode);
-            }
-            clone = parentClone;
-        } while (parent !== parentClone);
-        tmpNode = parent.parentNode;
-        tmpNode.insertBefore(leftNodes, parent);
-        tmpNode.insertBefore(rightNodes, parent);
-        tmpNode.insertBefore(node, rightNodes);
-        domUtils.remove(parent);
-        return node;
     },
     /**
      * 检查节点node是否是空inline节点
@@ -613,68 +455,9 @@ var domUtils = dom.domUtils = {
 
     },
 
-    /**
-     * 删除node节点下的左右空白文本子节点
-     * @name trimWhiteTextNode
-     * @grammar UE.dom.domUtils.trimWhiteTextNode(node)
-     */
-    trimWhiteTextNode:function (node) {
-        function remove(dir) {
-            var child;
-            while ((child = node[dir]) && child.nodeType == 3 && domUtils.isWhitespace(child)) {
-                node.removeChild(child);
-            }
-        }
-        remove('firstChild');
-        remove('lastChild');
-    },
 
-    /**
-     * 合并node节点下相同的子节点
-     * @name mergeChild
-     * @desc
-     * UE.dom.domUtils.mergeChild(node,tagName) //tagName要合并的子节点的标签
-     * @example
-     * <p><span style="font-size:12px;">xx<span style="font-size:12px;">aa</span>xx</span></p>
-     * ==> UE.dom.domUtils.mergeChild(node,'span')
-     * <p><span style="font-size:12px;">xxaaxx</span></p>
-     */
-    mergeChild:function (node, tagName, attrs) {
-        var list = domUtils.getElementsByTagName(node, node.tagName.toLowerCase());
-        for (var i = 0, ci; ci = list[i++];) {
-            if (!ci.parentNode || domUtils.isBookmarkNode(ci)) {
-                continue;
-            }
-            //span单独处理
-            if (ci.tagName.toLowerCase() == 'span') {
-                if (node === ci.parentNode) {
-                    domUtils.trimWhiteTextNode(node);
-                    if (node.childNodes.length == 1) {
-                        node.style.cssText = ci.style.cssText + ";" + node.style.cssText;
-                        domUtils.remove(ci, true);
-                        continue;
-                    }
-                }
-                ci.style.cssText = node.style.cssText + ';' + ci.style.cssText;
-                if (attrs) {
-                    var style = attrs.style;
-                    if (style) {
-                        style = style.split(';');
-                        for (var j = 0, s; s = style[j++];) {
-                            ci.style[utils.cssStyleToDomStyle(s.split(':')[0])] = s.split(':')[1];
-                        }
-                    }
-                }
-                if (domUtils.isSameStyle(ci, node)) {
-                    domUtils.remove(ci, true);
-                }
-                continue;
-            }
-            if (domUtils.isSameElement(node, ci)) {
-                domUtils.remove(ci, true);
-            }
-        }
-    },
+
+
 
     /**
      * 原生方法getElementsByTagName的封装
@@ -698,67 +481,7 @@ var domUtils = dom.domUtils = {
 
         return arr;
     },
-    /**
-     * 将节点node合并到父节点上
-     * @name mergeToParent
-     * @grammar UE.dom.domUtils.mergeToParent(node)
-     * @example
-     * <span style="color:#fff"><span style="font-size:12px">xxx</span></span> ==> <span style="color:#fff;font-size:12px">xxx</span>
-     */
-    mergeToParent:function (node) {
-        var parent = node.parentNode;
-        while (parent && dtd.$removeEmpty[parent.tagName]) {
-            if (parent.tagName == node.tagName || parent.tagName == 'A') {//针对a标签单独处理
-                domUtils.trimWhiteTextNode(parent);
-                //span需要特殊处理  不处理这样的情况 <span stlye="color:#fff">xxx<span style="color:#ccc">xxx</span>xxx</span>
-                if (parent.tagName == 'SPAN' && !domUtils.isSameStyle(parent, node)
-                    || (parent.tagName == 'A' && node.tagName == 'SPAN')) {
-                    if (parent.childNodes.length > 1 || parent !== node.parentNode) {
-                        node.style.cssText = parent.style.cssText + ";" + node.style.cssText;
-                        parent = parent.parentNode;
-                        continue;
-                    } else {
-                        parent.style.cssText += ";" + node.style.cssText;
-                        //trace:952 a标签要保持下划线
-                        if (parent.tagName == 'A') {
-                            parent.style.textDecoration = 'underline';
-                        }
-                    }
-                }
-                if (parent.tagName != 'A') {
-                    parent === node.parentNode && domUtils.remove(node, true);
-                    break;
-                }
-            }
-            parent = parent.parentNode;
-        }
-    },
-    /**
-     * 合并节点node的左右兄弟节点
-     * @name mergeSibling
-     * @grammar UE.dom.domUtils.mergeSibling(node)
-     * @grammar UE.dom.domUtils.mergeSibling(node,ignorePre)    //ignorePre指定是否忽略左兄弟
-     * @grammar UE.dom.domUtils.mergeSibling(node,ignorePre,ignoreNext)  //ignoreNext指定是否忽略右兄弟
-     * @example
-     * <b>xxxx</b><b>ooo</b><b>xxxx</b> ==> <b>xxxxoooxxxx</b>
-     */
-    mergeSibling:function (node, ignorePre, ignoreNext) {
-        function merge(rtl, start, node) {
-            var next;
-            if ((next = node[rtl]) && !domUtils.isBookmarkNode(next) && next.nodeType == 1 && domUtils.isSameElement(node, next)) {
-                while (next.firstChild) {
-                    if (start == 'firstChild') {
-                        node.insertBefore(next.lastChild, node.firstChild);
-                    } else {
-                        node.appendChild(next.firstChild);
-                    }
-                }
-                domUtils.remove(next);
-            }
-        }
-        !ignorePre && merge('previousSibling', 'firstChild', node);
-        !ignoreNext && merge('nextSibling', 'lastChild', node);
-    },
+
 
     /**
      * 设置节点node及其子节点不会被选中
@@ -1058,58 +781,7 @@ var domUtils = dom.domUtils = {
             return  !domUtils.isBr(node) && !domUtils.isBookmarkNode(node) && !domUtils.isWhitespace(node)
         }) == 0
     },
-    /**
-     * 清空节点所有的className
-     * @function
-     * @param {Array}    nodes    节点数组
-     */
-    clearSelectedArr:function (nodes) {
-        var node;
-        while (node = nodes.pop()) {
-            domUtils.removeAttributes(node, ['class']);
-        }
-    },
-    /**
-     * 将显示区域滚动到显示节点的位置
-     * @function
-     * @param    {Node}   node    节点
-     * @param    {window}   win      window对象
-     * @param    {Number}    offsetTop    距离上方的偏移量
-     */
-    scrollToView:function (node, win, offsetTop) {
-        var getViewPaneSize = function () {
-                var doc = win.document,
-                    mode = doc.compatMode == 'CSS1Compat';
-                return {
-                    width:( mode ? doc.documentElement.clientWidth : doc.body.clientWidth ) || 0,
-                    height:( mode ? doc.documentElement.clientHeight : doc.body.clientHeight ) || 0
-                };
-            },
-            getScrollPosition = function (win) {
-                if ('pageXOffset' in win) {
-                    return {
-                        x:win.pageXOffset || 0,
-                        y:win.pageYOffset || 0
-                    };
-                }
-                else {
-                    var doc = win.document;
-                    return {
-                        x:doc.documentElement.scrollLeft || doc.body.scrollLeft || 0,
-                        y:doc.documentElement.scrollTop || doc.body.scrollTop || 0
-                    };
-                }
-            };
-        var winHeight = getViewPaneSize().height, offset = winHeight * -1 + offsetTop;
-        offset += (node.offsetHeight || 0);
-        var elementPosition = domUtils.getXY(node);
-        offset += elementPosition.y;
-        var currentScroll = getScrollPosition(win).y;
-        // offset += 50;
-        if (offset > currentScroll || offset < currentScroll - winHeight) {
-            win.scrollTo(0, offset + (offset < 0 ? -20 : 20));
-        }
-    },
+
     /**
      * 判断节点是否为br
      * @function
@@ -1121,59 +793,7 @@ var domUtils = dom.domUtils = {
     isFillChar:function (node,isInStart) {
         return node.nodeType == 3 && !node.nodeValue.replace(new RegExp((isInStart ? '^' : '' ) + domUtils.fillChar), '').length
     },
-    isStartInblock:function (range) {
-        var tmpRange = range.cloneRange(),
-            flag = 0,
-            start = tmpRange.startContainer,
-            tmp;
-        if(start.nodeType == 1 && start.childNodes[tmpRange.startOffset]){
-            start = start.childNodes[tmpRange.startOffset];
-            var pre = start.previousSibling;
-            while(pre && domUtils.isFillChar(pre)){
-                start = pre;
-                pre = pre.previousSibling;
-            }
-        }
-        if(this.isFillChar(start,true) && tmpRange.startOffset == 1){
-            tmpRange.setStartBefore(start);
-            start = tmpRange.startContainer;
-        }
 
-        while (start && domUtils.isFillChar(start)) {
-            tmp = start;
-            start = start.previousSibling
-        }
-        if (tmp) {
-            tmpRange.setStartBefore(tmp);
-            start = tmpRange.startContainer;
-        }
-        if (start.nodeType == 1 && domUtils.isEmptyNode(start) && tmpRange.startOffset == 1) {
-            tmpRange.setStart(start, 0).collapse(true);
-        }
-        while (!tmpRange.startOffset) {
-            start = tmpRange.startContainer;
-            if (domUtils.isBlockElm(start) || domUtils.isBody(start)) {
-                flag = 1;
-                break;
-            }
-            var pre = tmpRange.startContainer.previousSibling,
-                tmpNode;
-            if (!pre) {
-                tmpRange.setStartBefore(tmpRange.startContainer);
-            } else {
-                while (pre && domUtils.isFillChar(pre)) {
-                    tmpNode = pre;
-                    pre = pre.previousSibling;
-                }
-                if (tmpNode) {
-                    tmpRange.setStartBefore(tmpNode);
-                } else {
-                    tmpRange.setStartBefore(tmpRange.startContainer);
-                }
-            }
-        }
-        return flag && !domUtils.isBody(tmpRange.startContainer) ? 1 : 0;
-    },
     isEmptyBlock:function (node,reg) {
         if(node.nodeType != 1)
             return 0;
@@ -1189,95 +809,11 @@ var domUtils = dom.domUtils = {
         return 1;
     },
 
-    setViewportOffset:function (element, offset) {
-        var left = parseInt(element.style.left) | 0;
-        var top = parseInt(element.style.top) | 0;
-        var rect = element.getBoundingClientRect();
-        var offsetLeft = offset.left - rect.left;
-        var offsetTop = offset.top - rect.top;
-        if (offsetLeft) {
-            element.style.left = left + offsetLeft + 'px';
-        }
-        if (offsetTop) {
-            element.style.top = top + offsetTop + 'px';
-        }
-    },
+
     fillNode:function (doc, node) {
         var tmpNode = browser.ie ? doc.createTextNode(domUtils.fillChar) : doc.createElement('br');
         node.innerHTML = '';
         node.appendChild(tmpNode);
-    },
-    moveChild:function (src, tag, dir) {
-        while (src.firstChild) {
-            if (dir && tag.firstChild) {
-                tag.insertBefore(src.lastChild, tag.firstChild);
-            } else {
-                tag.appendChild(src.firstChild);
-            }
-        }
-    },
-    //判断是否有额外属性
-    hasNoAttributes:function (node) {
-        return browser.ie ? /^<\w+\s*?>/.test(node.outerHTML) : node.attributes.length == 0;
-    },
-    //判断是否是编辑器自定义的参数
-    isCustomeNode:function (node) {
-        return node.nodeType == 1 && node.getAttribute('_ue_custom_node_');
-    },
-    isTagNode:function (node, tagName) {
-        return node.nodeType == 1 && new RegExp('^' + node.tagName + '$','i').test(tagName)
-    },
-    /**
-     * 对于nodelist用filter进行过滤
-     * @name filterNodeList
-     * @since 1.2.4+
-     * @grammar UE.dom.domUtils.filterNodeList(nodelist,filter,onlyFirst)  => 节点
-     * @example
-     * UE.dom.domUtils.filterNodeList(document.getElementsByTagName('*'),'div p') //返回第一个是div或者p的节点
-     * UE.dom.domUtils.filterNodeList(document.getElementsByTagName('*'),function(n){return n.getAttribute('src')})
-     * //返回第一个带src属性的节点
-     * UE.dom.domUtils.filterNodeList(document.getElementsByTagName('*'),'i',true) //返回数组，里边都是i节点
-     */
-    filterNodeList : function(nodelist,filter,forAll){
-        var results = [];
-        if(!utils .isFunction(filter)){
-            var str = filter;
-            filter = function(n){
-                return utils.indexOf(utils.isArray(str) ? str:str.split(' '), n.tagName.toLowerCase()) != -1
-            };
-        }
-        utils.each(nodelist,function(n){
-            filter(n) && results.push(n)
-        });
-        return results.length  == 0 ? null : results.length == 1 || !forAll ? results[0] : results
-    },
-
-    isInNodeEndBoundary : function (rng,node){
-        var start = rng.startContainer;
-        if(start.nodeType == 3 && rng.startOffset != start.nodeValue.length){
-            return 0;
-        }
-        if(start.nodeType == 1 && rng.startOffset != start.childNodes.length){
-            return 0;
-        }
-        while(start !== node){
-            if(start.nextSibling){
-                return 0
-            };
-            start = start.parentNode;
-        }
-        return 1;
-    },
-    isBoundaryNode : function (node,dir){
-        var tmp;
-        while(!domUtils.isBody(node)){
-            tmp = node;
-            node = node.parentNode;
-            if(tmp !== node[dir]){
-                return false;
-            }
-        }
-        return true;
     }
 };
 var fillCharReg = new RegExp(domUtils.fillChar, 'g');

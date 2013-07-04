@@ -25,6 +25,8 @@ UE.commands['inserthtml'] = {
             me.filterInputRule(root);
             html = root.toHtml()
         }
+        var rng = me.selection.getRange();
+        rng.select();
         if(browser.ie){
             var nRng = me.selection.getIERange();
             nRng.pasteHTML(html);

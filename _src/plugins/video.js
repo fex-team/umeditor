@@ -55,13 +55,7 @@ UE.plugins['video'] = function (){
                  html.push(creatInsertStr( vi.url, vi.width || 420,  vi.height || 280, id + i,null,false));
             }
             me.execCommand("inserthtml",html.join(""),true);
-            var rng = this.selection.getRange();
-            for(var i= 0,len=videoObjs.length;i<len;i++){
-                var img = this.document.getElementById('tmpVedio'+i);
-                domUtils.removeAttributes(img,'id');
-                rng.selectNode(img).select();
-                me.execCommand('imagefloat',videoObjs[i].align)
-            }
+
         },
         queryCommandState : function(){
             var img = me.selection.getRange().getClosedNode(),

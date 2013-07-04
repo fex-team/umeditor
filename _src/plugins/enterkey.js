@@ -113,61 +113,6 @@ UE.plugins['enterkey'] = function() {
 
                 }
 
-            } else {
-                evt.preventDefault ? evt.preventDefault() : ( evt.returnValue = false);
-
-                if (!range.collapsed) {
-                    range.deleteContents();
-                    start = range.startContainer;
-                    if (start.nodeType == 1 && (start = start.childNodes[range.startOffset])) {
-                        while (start.nodeType == 1) {
-                            if (dtd.$empty[start.tagName]) {
-                                range.setStartBefore(start).setCursor();
-                                if (me.undoManger) {
-                                    me.undoManger.save();
-                                }
-                                return false;
-                            }
-                            if (!start.firstChild) {
-                                var br = range.document.createElement('br');
-                                start.appendChild(br);
-                                range.setStart(start, 0).setCursor();
-                                if (me.undoManger) {
-                                    me.undoManger.save();
-                                }
-                                return false;
-                            }
-                            start = start.firstChild;
-                        }
-                        if (start === range.startContainer.childNodes[range.startOffset]) {
-                            br = range.document.createElement('br');
-                            range.insertNode(br).setCursor();
-
-                        } else {
-                            range.setStart(start, 0).setCursor();
-                        }
-
-
-                    } else {
-                        br = range.document.createElement('br');
-                        range.insertNode(br).setStartAfter(br).setCursor();
-                    }
-
-
-                } else {
-                    br = range.document.createElement('br');
-                    range.insertNode(br);
-                    var parent = br.parentNode;
-                    if (parent.lastChild === br) {
-                        br.parentNode.insertBefore(br.cloneNode(true), br);
-                        range.setStartBefore(br);
-                    } else {
-                        range.setStartAfter(br);
-                    }
-                    range.setCursor();
-
-                }
-
             }
 
         }
