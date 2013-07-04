@@ -16,11 +16,10 @@ UE.plugins['paragraph'] = function() {
     me.setOpt('paragraph',{'p':'', 'h1':'', 'h2':'', 'h3':'', 'h4':'', 'h5':'', 'h6':''});
     me.commands['paragraph'] = {
         execCommand : function( cmdName, style ) {
-            this.document.execCommand('formatBlock',false,'<h1>');
+            return this.document.execCommand('formatBlock',false,'<' + style + '>');
         },
         queryCommandValue : function() {
-            var node = domUtils.filterNodeList(this.selection.getStartElementPath(),'p h1 h2 h3 h4 h5 h6');
-            return node ? node.tagName.toLowerCase() : '';
+            return this.document.queryCommandValue('formatBlock');
         }
     };
 };
