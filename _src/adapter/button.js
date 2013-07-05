@@ -1,4 +1,4 @@
-UE.registerUI('bold italic redo undo source underline strikethrough superscript subscript ' +
+UE.registerUI('bold italic redo undo source underline strikethrough superscript subscript insertorderedlist' +
     'pagebreak deletetable insertrow deleterow removeformat cleardoc selectall formatmatch pasteplain ' +
     'insertparagraphbeforetable insertrow deleterow insertcol deletecol mergecells mergeright mergedown splittocells ' +
     'splittorows splittocols unlink date time horizontal blockquote indent touppercase tolowercase snapscreen print preview justifyleft justifycenter justifyright justifyjustify',
