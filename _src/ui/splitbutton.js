@@ -1,87 +1,60 @@
-///import core
-///import uicore
-///import ui/stateful.js
-(function (){
-    var utils = baidu.editor.utils,
-        uiUtils = baidu.editor.ui.uiUtils,
-        domUtils = baidu.editor.dom.domUtils,
-        UIBase = baidu.editor.ui.UIBase,
-        Stateful = baidu.editor.ui.Stateful,
-        SplitButton = baidu.editor.ui.SplitButton = function (options){
-            this.initOptions(options);
-            this.initSplitButton();
-        };
-    SplitButton.prototype = {
-        popup: null,
-        uiName: 'splitbutton',
-        title: '',
-        initSplitButton: function (){
-            this.initUIBase();
-            this.Stateful_init();
-            var me = this;
-            if (this.popup != null) {
-                var popup = this.popup;
-                this.popup = null;
-                this.setPopup(popup);
+//splitbutton 类
+///import button
+UE.ui.define('splitbutton',{
+    tpl :'<div class="edui-splitbutton" <%if(title){%>data-original-title="<%=title%>"<%}%>><button class="btn"><%if(icon){%><i class="icon-<%=icon%> edui-icon"></i><%}%><%if(text){%><%=text%><%}%></button>'+
+            '<button class="btn dropdown-toggle" >'+
+                '<span class="caret"><\/span>'+
+            '</button>'+
+        '</div>',
+    defaultOpt:{
+        text:'',
+        title:'',
+        click:function(){}
+    },
+    init : function(options){
+        var me = this;
+        me.root( $($.parseTmpl(me.tpl,options)));
+        me.root().find('button:first').click(function(evt){
+            if(!me.disabled()){
+                $.proxy(options.click,me)();
             }
-        },
-        _UIBase_postRender: UIBase.prototype.postRender,
-        postRender: function (){
-            this.Stateful_postRender();
-            this._UIBase_postRender();
-        },
-        setPopup: function (popup){
-            if (this.popup === popup) return;
-            if (this.popup != null) {
-                this.popup.dispose();
-            }
-            popup.addListener('show', utils.bind(this._onPopupShow, this));
-            popup.addListener('hide', utils.bind(this._onPopupHide, this));
-            popup.addListener('postrender', utils.bind(function (){
-                popup.getDom('body').appendChild(
-                    uiUtils.createElementByHtml('<div id="' +
-                        this.popup.id + '_bordereraser" class="edui-bordereraser edui-background" style="width:' +
-                        (uiUtils.getClientRect(this.getDom()).width - 2) + 'px"></div>')
-                    );
-                popup.getDom().className += ' ' + this.className;
-            }, this));
-            this.popup = popup;
-        },
-        _onPopupShow: function (){
-            this.addState('opened');
-        },
-        _onPopupHide: function (){
-            this.removeState('opened');
-        },
-        getHtmlTpl: function (){
-            return '<div id="##" class="edui-box %%">' +
-                '<div '+ (this.title ? 'title="' + this.title + '"' : '') +' id="##_state" stateful><div class="%%-body">' +
-                '<div id="##_button_body" class="edui-box edui-button-body" onclick="$$._onButtonClick(event, this);">' +
-                '<div class="edui-box edui-icon"></div>' +
-                '</div>' +
-                '<div class="edui-box edui-splitborder"></div>' +
-                '<div class="edui-box edui-arrow" onclick="$$._onArrowClick();"></div>' +
-                '</div></div></div>';
-        },
-        showPopup: function (){
-            // 当popup往上弹出的时候，做特殊处理
-            var rect = uiUtils.getClientRect(this.getDom());
-            rect.top -= this.popup.SHADOW_RADIUS;
-            rect.height += this.popup.SHADOW_RADIUS;
-            this.popup.showAnchorRect(rect);
-        },
-        _onArrowClick: function (event, el){
-            if (!this.isDisabled()) {
-                this.showPopup();
-            }
-        },
-        _onButtonClick: function (){
-            if (!this.isDisabled()) {
-                this.fireEvent('buttonclick');
-            }
+        });
+        return me;
+    },
+    wrapclick:function(fn,evt){
+        if(!this.disabled()){
+            $.proxy(fn,this,evt)()
         }
-    };
-    utils.inherits(SplitButton, UIBase);
-    utils.extend(SplitButton.prototype, Stateful, true);
-
-})();
+        return this;
+    },
+    disabled : function(state){
+        if(state === undefined){
+            return this.root().hasClass('disabled')
+        }
+        this.root().toggleClass('disabled',state).find('.btn').toggleClass('disabled',state);
+        return this;
+    },
+    active:function(state){
+        if(state === undefined){
+            return this.root().hasClass('active')
+        }
+        this.root().toggleClass('active',state).find('.btn:first').toggleClass('active',state);
+        return this;
+    },
+    mergeWith:function($obj){
+        var me = this;
+        me.data('$mergeObj',$obj);
+        $obj.edui().data('$mergeObj',me.root());
+        if(!$.contains(document.body,$obj[0])){
+            $obj.appendTo(me.root());
+        }
+        me.root().on('click','.dropdown-toggle',function(){
+            me.wrapclick(function(){
+                $obj.edui().show();
+            })
+        });
+        me.register('click',me.root().find('.dropdown-toggle'),function(evt){
+            $obj.hide()
+        });
+    }
+});
