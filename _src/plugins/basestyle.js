@@ -9,38 +9,45 @@
  * @param    {String}    cmdName    bold加粗。italic斜体。subscript上标。superscript下标。
 */
 UE.plugins['basestyle'] = function(){
-
-    var basestyles = ['bold','underline','superscript','subscript','italic','strikeThrough'],
+    var basestyles = ['bold','underline','superscript','subscript','italic','strikethrough'],
         me = this;
     //添加快捷键
     me.addshortcutkey({
         "Bold" : "ctrl+66",//^B
         "Italic" : "ctrl+73", //^I
-        "Underline" : "ctrl+85"//^U
+        "Underline" : "ctrl+shift+85",//^U
+        "strikeThrough" : 'ctrl+shift+83' //^s
     });
+    //过滤最后的产出数据
     me.addOutputRule(function(root){
-        utils.each(root.getNodesByTagName('b i'),function(node){
+        $.each(root.getNodesByTagName('b i u strike s'),function(i,node){
             switch (node.tagName){
                 case 'b':
                     node.tagName = 'strong';
                     break;
                 case 'i':
                     node.tagName = 'em';
+                    break;
+                case 'u':
+                    node.tagName = 'span';
+                    node.setStyle('text-decoration','underline');
+                    break;
+                case 's':
+                case 'strike':
+                    node.tagName = 'span';
+                    node.setStyle('text-decoration','line-through')
             }
         });
     });
-
-    for(var i= 0,ci;ci=basestyles[i++];){
-        (function( cmd ) {
-            me.commands[cmd] = {
-                execCommand : function( cmdName ) {
-                    this.document.execCommand(cmdName)
-                },
-                queryCommandState : function(cmdName) {
-                    return this.document.queryCommandState(cmdName)
-                }
-            };
-        })( ci );
-    }
+    $.each(basestyles,function(i,cmd){
+        me.commands[cmd] = {
+            execCommand : function( cmdName ) {
+                return this.document.execCommand(cmdName)
+            },
+            queryCommandState : function(cmdName) {
+                return this.document.queryCommandState(cmdName)
+            }
+        };
+    })
 };
 

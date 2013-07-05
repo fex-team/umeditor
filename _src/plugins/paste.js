@@ -143,7 +143,7 @@ UE.plugins['paste'] = function () {
                 return;
             }
 
-            me.execCommand('insertHtml', html, true);
+            me.execCommand('insertHtml', html.html, true);
             me.fireEvent("afterpaste", html);
         }
     }

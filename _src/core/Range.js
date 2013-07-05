@@ -54,103 +54,6 @@
         return range;
     }
 
-    function execContentsAction(range, action) {
-        //调整边界
-        //range.includeBookmark();
-        var start = range.startContainer,
-            end = range.endContainer,
-            startOffset = range.startOffset,
-            endOffset = range.endOffset,
-            doc = range.document,
-            frag = doc.createDocumentFragment(),
-            tmpStart, tmpEnd;
-        if (start.nodeType == 1) {
-            start = start.childNodes[startOffset] || (tmpStart = start.appendChild(doc.createTextNode('')));
-        }
-        if (end.nodeType == 1) {
-            end = end.childNodes[endOffset] || (tmpEnd = end.appendChild(doc.createTextNode('')));
-        }
-        if (start === end && start.nodeType == 3) {
-            frag.appendChild(doc.createTextNode(start.substringData(startOffset, endOffset - startOffset)));
-            //is not clone
-            if (action) {
-                start.deleteData(startOffset, endOffset - startOffset);
-                range.collapse(true);
-            }
-            return frag;
-        }
-        var current, currentLevel, clone = frag,
-            startParents = domUtils.findParents(start, true), endParents = domUtils.findParents(end, true);
-        for (var i = 0; startParents[i] == endParents[i];) {
-            i++;
-        }
-        for (var j = i, si; si = startParents[j]; j++) {
-            current = si.nextSibling;
-            if (si == start) {
-                if (!tmpStart) {
-                    if (range.startContainer.nodeType == 3) {
-                        clone.appendChild(doc.createTextNode(start.nodeValue.slice(startOffset)));
-                        //is not clone
-                        if (action) {
-                            start.deleteData(startOffset, start.nodeValue.length - startOffset);
-                        }
-                    } else {
-                        clone.appendChild(!action ? start.cloneNode(true) : start);
-                    }
-                }
-            } else {
-                currentLevel = si.cloneNode(false);
-                clone.appendChild(currentLevel);
-            }
-            while (current) {
-                if (current === end || current === endParents[j]) {
-                    break;
-                }
-                si = current.nextSibling;
-                clone.appendChild(!action ? current.cloneNode(true) : current);
-                current = si;
-            }
-            clone = currentLevel;
-        }
-        clone = frag;
-        if (!startParents[i]) {
-            clone.appendChild(startParents[i - 1].cloneNode(false));
-            clone = clone.firstChild;
-        }
-        for (var j = i, ei; ei = endParents[j]; j++) {
-            current = ei.previousSibling;
-            if (ei == end) {
-                if (!tmpEnd && range.endContainer.nodeType == 3) {
-                    clone.appendChild(doc.createTextNode(end.substringData(0, endOffset)));
-                    //is not clone
-                    if (action) {
-                        end.deleteData(0, endOffset);
-                    }
-                }
-            } else {
-                currentLevel = ei.cloneNode(false);
-                clone.appendChild(currentLevel);
-            }
-            //如果两端同级，右边第一次已经被开始做了
-            if (j != i || !startParents[i]) {
-                while (current) {
-                    if (current === start) {
-                        break;
-                    }
-                    ei = current.previousSibling;
-                    clone.insertBefore(!action ? current.cloneNode(true) : current, clone.firstChild);
-                    current = ei;
-                }
-            }
-            clone = currentLevel;
-        }
-        if (action) {
-            range.setStartBefore(!endParents[i] ? endParents[i - 1] : !startParents[i] ? startParents[i - 1] : endParents[i]).collapse(true);
-        }
-        tmpStart && domUtils.remove(tmpStart);
-        tmpEnd && domUtils.remove(tmpEnd);
-        return frag;
-    }
 
     /**
      * @name Range
@@ -216,66 +119,7 @@
     }
 
     Range.prototype = {
-        /**
-         * @name cloneContents
-         * @grammar range.cloneContents()  => DocumentFragment
-         * @desc 克隆选中的内容到一个fragment里，如果选区是空的将返回null
-         */
-        cloneContents:function () {
-            return this.collapsed ? null : execContentsAction(this, 0);
-        },
-        /**
-         * @name deleteContents
-         * @grammar range.deleteContents()  => Range
-         * @desc 删除当前选区范围中的所有内容并返回range实例，这时的range已经变成了闭合状态
-         * @example
-         * DOM Element :
-         * <b>x<i>x[x<i>xx]x</b>
-         * //执行方法后
-         * <b>x<i>x<i>|x</b>
-         * 注意range改变了
-         * range.startContainer => b
-         * range.startOffset  => 2
-         * range.endContainer => b
-         * range.endOffset => 2
-         * range.collapsed => true
-         */
-        deleteContents:function () {
-            var txt;
-            if (!this.collapsed) {
-                execContentsAction(this, 1);
-            }
-            if (browser.webkit) {
-                txt = this.startContainer;
-                if (txt.nodeType == 3 && !txt.nodeValue.length) {
-                    this.setStartBefore(txt).collapse(true);
-                    domUtils.remove(txt);
-                }
-            }
-            return this;
-        },
-        /**
-         * @name extractContents
-         * @grammar range.extractContents()  => DocumentFragment
-         * @desc 将当前的内容放到一个fragment里并返回这个fragment，这时的range已经变成了闭合状态
-         * @example
-         * DOM Element :
-         * <b>x<i>x[x<i>xx]x</b>
-         * //执行方法后
-         * 返回的fragment里的 dom结构是
-         * <i>x<i>xx
-         * dom树上的结构是
-         * <b>x<i>x<i>|x</b>
-         * 注意range改变了
-         * range.startContainer => b
-         * range.startOffset  => 2
-         * range.endContainer => b
-         * range.endOffset => 2
-         * range.collapsed => true
-         */
-        extractContents:function () {
-            return this.collapsed ? null : execContentsAction(this, 2);
-        },
+
         /**
          * @name  setStart
          * @grammar range.setStart(node,offset)  => Range
@@ -468,42 +312,7 @@
             }
             return me;
         },
-        /**
-         * 获取当前range所在位置的公共祖先节点，当前range位置可以位于文本节点内，也可以包含整个元素节点，也可以位于两个节点之间
-         * @name  getCommonAncestor
-         * @grammar range.getCommonAncestor([includeSelf, ignoreTextNode])  => Element
-         * @example
-         * <b>xx[xx<i>xx]x</i>xxx</b> ==>getCommonAncestor() ==> b
-         * <b>[<img/>]</b>
-         * range.startContainer ==> b
-         * range.startOffset ==> 0
-         * range.endContainer ==> b
-         * range.endOffset ==> 1
-         * range.getCommonAncestor() ==> b
-         * range.getCommonAncestor(true) ==> img
-         * <b>xxx|xx</b>
-         * range.startContainer ==> textNode
-         * range.startOffset ==> 3
-         * range.endContainer ==> textNode
-         * range.endOffset ==> 3
-         * range.getCommonAncestor() ==> textNode
-         * range.getCommonAncestor(null,true) ==> b
-         */
-        getCommonAncestor:function (includeSelf, ignoreTextNode) {
-            var me = this,
-                start = me.startContainer,
-                end = me.endContainer;
-            if (start === end) {
-                if (includeSelf && selectOneNode(this)) {
-                    start = start.childNodes[me.startOffset];
-                    if(start.nodeType == 1)
-                        return start;
-                }
-                //只有在上来就相等的情况下才会出现是文本的情况
-                return ignoreTextNode && start.nodeType == 3 ? start.parentNode : start;
-            }
-            return domUtils.getCommonAncestor(start, end);
-        },
+
         /**
          * 调整边界容器，如果是textNode,就调整到elementNode上
          * @name trimBoundary
@@ -889,15 +698,7 @@
             domUtils.remove(span);
             return me;
         },
-        inFillChar : function(){
-            var start = this.startContainer;
-            if(this.collapsed && start.nodeType == 3
-                && start.nodeValue.replace(new RegExp('^' + domUtils.fillChar),'').length + 1 == start.nodeValue.length
-                ){
-                return true;
-            }
-            return false;
-        },
+
         createAddress : function(ignoreEnd,ignoreTxt){
             var addr = {},me = this;
 
@@ -988,29 +789,6 @@
             getNode(addr.startAddress,true);
             !ignoreEnd && addr.endAddress &&  getNode(addr.endAddress);
             return me;
-        },
-        equals : function(rng){
-            for(var p in this){
-                if(this.hasOwnProperty(p)){
-                    if(this[p] !== rng[p])
-                        return false
-                }
-            }
-            return true;
-
-        },
-        traversal:function(doFn,filterFn){
-            if (this.collapsed)
-                return this;
-            var bookmark = this.createBookmark(),
-                end = bookmark.end,
-                current = domUtils.getNextDomNode(bookmark.start, false, filterFn);
-            while (current && current !== end && (domUtils.getPosition(current, end) & domUtils.POSITION_PRECEDING)) {
-                var tmpNode = domUtils.getNextDomNode(current,false,filterFn);
-                doFn(current);
-                current = tmpNode;
-            }
-            return this.moveToBookmark(bookmark);
         }
     };
 })();

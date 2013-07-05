@@ -27,7 +27,7 @@ UE.plugins['link'] = function(){
                 rng = me.selection.getRange();
             rng.select();
             me.document.execCommand('createlink',false,'_ueditor_link');
-            utils.each(domUtils.getElementsByTagName(me.editableCont,'a',function(n){
+            utils.each(domUtils.getElementsByTagName(me.body,'a',function(n){
                 return n.getAttribute('href') == '_ueditor_link'
             }),function(l){
                 domUtils.setAttributes(l,opt)

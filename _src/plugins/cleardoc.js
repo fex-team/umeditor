@@ -11,7 +11,7 @@
  */
 
 UE.commands['cleardoc'] = {
-    execCommand : function( cmdName) {
+    execCommand : function() {
         var me = this,
             range = me.selection.getRange();
         me.body.innerHTML = "<p>"+(ie ? "" : "<br/>")+"</p>";

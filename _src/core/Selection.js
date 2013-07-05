@@ -116,22 +116,6 @@
     var Selection = dom.Selection = function ( doc ) {
         var me = this, iframe;
         me.document = doc;
-//        if ( ie ) {
-//            iframe = domUtils.getWindow( doc ).frameElement;
-//            domUtils.on( iframe, 'beforedeactivate', function () {
-//                me._bakIERange = me.getIERange();
-//            } );
-//            domUtils.on( iframe, 'activate', function () {
-//                try {
-//                    if ( !_getIERange( me ) && me._bakIERange ) {
-//                        me._bakIERange.select();
-//                    }
-//                } catch ( ex ) {
-//                }
-//                me._bakIERange = null;
-//            } );
-//        }
-//        iframe = doc = null;
     };
 
     Selection.prototype = {
@@ -331,9 +315,6 @@
                 return browser.ie ? nativeRange.text : nativeRange.toString();
             }
             return '';
-        },
-        clearRange : function(){
-            this.getNative()[browser.ie ? 'empty' : 'removeAllRanges']();
         }
     };
 })();
