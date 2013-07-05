@@ -4,16 +4,18 @@ var baidu = window.baidu || {};
 
 window.baidu = baidu;
 
-window.UE = baidu.editor =  {};
+window.UE = baidu.editor =  {
+    plugins : {},
 
-UE.plugins = {};
+    commands : {},
 
-UE.commands = {};
+    instants : {},
 
-UE.instants = {};
+    I18N : {},
 
-UE.I18N = {};
+    version : "mini1.0.0.0"
+};
 
-UE.version = "1.2.6.1";
+
 
 var dom = UE.dom = {};

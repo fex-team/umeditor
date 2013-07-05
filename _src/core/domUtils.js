@@ -5,21 +5,7 @@
  * @import editor.js, core/utils.js,core/browser.js,core/dom/dtd.js
  * @desc UEditor封装的底层dom操作库
  */
-function getDomNode(node, start, ltr, startFromChild, fn, guard) {
-    var tmpNode = startFromChild && node[start],
-        parent;
-    !tmpNode && (tmpNode = node[ltr]);
-    while (!tmpNode && (parent = (parent || node).parentNode)) {
-        if (parent.tagName == 'BODY' || guard && !guard(parent)) {
-            return null;
-        }
-        tmpNode = parent[ltr];
-    }
-    if (tmpNode && fn && !fn(tmpNode)) {
-        return  getDomNode(tmpNode, start, ltr, false, fn);
-    }
-    return tmpNode;
-}
+
 var attrFix = ie && browser.version < 9 ? {
         tabindex:"tabIndex",
         readonly:"readOnly",
@@ -223,6 +209,7 @@ var domUtils = dom.domUtils = {
      * @grammar UE.dom.domUtils.remove(node,keepChildren)  =>  node
      */
     remove:function (node, keepChildren) {
+
         var parent = node.parentNode,
             child;
         if (parent) {
@@ -236,15 +223,7 @@ var domUtils = dom.domUtils = {
         return node;
     },
 
-    /**
-     * 取得node节点在dom树上的下一个节点,即多叉树遍历
-     * @name  getNextDomNode
-     * @grammar UE.dom.domUtils.getNextDomNode(node)  => Element
-     * @example
-     */
-    getNextDomNode:function (node, startFromChild, filterFn, guard) {
-        return getDomNode(node, 'firstChild', 'nextSibling', startFromChild, filterFn, guard);
-    },
+
     /**
      * 检测节点node是否属于bookmark节点
      * @name isBookmarkNode
@@ -262,34 +241,7 @@ var domUtils = dom.domUtils = {
         var doc = node.ownerDocument || node;
         return doc.defaultView || doc.parentWindow;
     },
-    /**
-     * 得到nodeA与nodeB公共的祖先节点
-     * @name  getCommonAncestor
-     * @grammar UE.dom.domUtils.getCommonAncestor(nodeA,nodeB)  => Element
-     */
-    getCommonAncestor:function (nodeA, nodeB) {
-        if (nodeA === nodeB)
-            return nodeA;
-        var parentsA = [nodeA] , parentsB = [nodeB], parent = nodeA, i = -1;
-        while (parent = parent.parentNode) {
-            if (parent === nodeB) {
-                return parent;
-            }
-            parentsA.push(parent);
-        }
-        parent = nodeB;
-        while (parent = parent.parentNode) {
-            if (parent === nodeA)
-                return parent;
-            parentsB.push(parent);
-        }
-        parentsA.reverse();
-        parentsB.reverse();
-        while (i++, parentsA[i] === parentsB[i]) {
-        }
-        return i == 0 ? null : parentsA[i - 1];
 
-    },
 
     /**
      * 将一个文本节点node拆分成两个文本节点，offset指定拆分位置
@@ -424,36 +376,7 @@ var domUtils = dom.domUtils = {
     isBody:function (node) {
         return  node && node.nodeType == 1 && node.tagName.toLowerCase() == 'body';
     },
-    /**
-     * 检查节点node是否是空inline节点
-     * @name  isEmptyInlineElement
-     * @grammar   UE.dom.domUtils.isEmptyInlineElement(node)  => 1|0
-     * @example
-     * <b><i></i></b> => 1
-     * <b><i></i><u></u></b> => 1
-     * <b></b> => 1
-     * <b>xx<i></i></b> => 0
-     */
-    isEmptyInlineElement:function (node) {
-        if (node.nodeType != 1 || !dtd.$removeEmpty[ node.tagName ]) {
-            return 0;
-        }
-        node = node.firstChild;
-        while (node) {
-            //如果是创建的bookmark就跳过
-            if (domUtils.isBookmarkNode(node)) {
-                return 0;
-            }
-            if (node.nodeType == 1 && !domUtils.isEmptyInlineElement(node) ||
-                node.nodeType == 3 && !domUtils.isWhitespace(node)
-                ) {
-                return 0;
-            }
-            node = node.nextSibling;
-        }
-        return 1;
 
-    },
 
 
 
@@ -809,7 +732,10 @@ var domUtils = dom.domUtils = {
         return 1;
     },
 
-
+    //判断是否是编辑器自定义的参数
+    isCustomeNode:function (node) {
+        return node.nodeType == 1 && node.getAttribute('_ue_custom_node_');
+    },
     fillNode:function (doc, node) {
         var tmpNode = browser.ie ? doc.createTextNode(domUtils.fillChar) : doc.createElement('br');
         node.innerHTML = '';

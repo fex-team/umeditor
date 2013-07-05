@@ -13,8 +13,7 @@ UE.plugins['horizontal'] = function(){
     var me = this;
     me.commands['horizontal'] = {
         execCommand : function(  ) {
-
-            this.document.execCommand('insertHorizontalRule')
+            this.document.execCommand('insertHorizontalRule');
         }
     };
 

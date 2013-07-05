@@ -218,8 +218,7 @@
                     getStyleValue("padding-top")- getStyleValue("padding-bottom") +'px';
 
                 container.style.zIndex = options.zIndex;
-
-                container.innerHTML = '<div style="width:100%;height:100%;margin:0;padding:5px;" ></div>';
+                container.innerHTML = '<div style="width:100%;height:100%;" class="edui-editableCont"></div>';
                 this._setup(container.firstChild);
                 container.style.overflow = 'hidden';
                 //解决如果是给定的百分比，会导致高度算不对的问题
