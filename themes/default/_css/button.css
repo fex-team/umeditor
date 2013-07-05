@@ -1,42 +1,45 @@
-/*普通按钮样式及状态*/
-.edui-default .edui-toolbar .edui-button .edui-icon,
-.edui-default .edui-toolbar .edui-menubutton .edui-icon,
-.edui-default .edui-toolbar .edui-splitbutton .edui-icon {
-    height: 20px !important;
-    width: 20px !important;
+.edui-btn-toolbar .edui-btn-group{
+    margin: 5px;
+    position: relative;
+    display: inline-block !important;_zoom:1;_display:inline;
+}
+.edui-btn-group .btn{
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: none;
+    margin: 0;
+    padding:1px;
+    overflow: hidden;
+    display: inline-block !important;_zoom:1;_display:inline;
+}
+.edui-btn-group .btn .edui-icon{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding:0;
+    outline: 0;
+    background-repeat: no-repeat;
     background-image: url(../images/icons.png);
     background-image: url(../images/icons.gif) \9;
+    display: inline-block !important;_zoom:1;_display:inline;
 }
-
-.edui-default .edui-toolbar .edui-button .edui-button-wrap {
-    padding: 1px;
-    position: relative;
-}
-
-.edui-default .edui-toolbar .edui-button .edui-state-hover .edui-button-wrap {
+.edui-btn-group .btn:hover{
     background-color: #fff5d4;
     padding: 0;
     border: 1px solid #dcac6c;
 }
-
-.edui-default .edui-toolbar .edui-button .edui-state-checked .edui-button-wrap {
-    background-color: #ffe69f;
+.edui-btn-group .btn.hover{
+    background-color: #fff5d4;
     padding: 0;
     border: 1px solid #dcac6c;
-    border-radius: 2px;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
 }
-
-.edui-default .edui-toolbar .edui-button .edui-state-active .edui-button-wrap {
-    background-color: #ffffff;
+.edui-btn-group .btn.active{
+    background-color: #fff5d4;
     padding: 0;
-    border: 1px solid gray;
+    border: 1px solid #dcac6c;
 }
-.edui-default .edui-toolbar .edui-state-disabled .edui-label {
-    color: #ccc;
-}
-.edui-default .edui-toolbar .edui-state-disabled .edui-icon {
+.edui-btn-group .btn.disable{
     opacity: 0.3;
     filter: alpha(opacity = 30);
 }

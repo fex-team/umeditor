@@ -1,46 +1,80 @@
-///import core
-///import uicore
-///import ui/stateful.js
-(function (){
-    var utils = baidu.editor.utils,
-        UIBase = baidu.editor.ui.UIBase,
-        Stateful = baidu.editor.ui.Stateful,
-        Button = baidu.editor.ui.Button = function (options){
-            this.initOptions(options);
-            this.initButton();
-        };
-    Button.prototype = {
-        uiName: 'button',
-        label: '',
+//button 类
+UE.ui.define('button', {
+    tpl: '<<%if(!texttype){%>button class="btn" <%}else{%>a class="edui-text-btn"<%}%><% if(title) {%> data-original-title="<%=title%>" <%};%>> ' +
+        '<% if(icon) {%><i class="icon-<%=icon%> edui-icon"></i><% }; %><%if(text) {%><span class="edui-button-label<%if (mode==="fontFamily") {%> edui-button-font-label<%} else if( mode==="fontSize" ){%> edui-button-fontsize-label<%}%>"><%=text%></span><%}%>' +
+        '<%if(caret && text){%><span class="edui-button-spacing"></span><%}%>' +
+        '<% if(caret) {%><span class="caret"></span><% };%></<%if(!texttype){%>button<%}else{%>a<%}%>>',
+    defaultOpt: {
+        text: '',
         title: '',
-        showIcon: true,
-        showText: true,
-        initButton: function (){
-            this.initUIBase();
-            this.Stateful_init();
-        },
-        getHtmlTpl: function (){
-            return '<div id="##" class="edui-box %%">' +
-                '<div id="##_state" stateful>' +
-                 '<div class="%%-wrap"><div id="##_body" unselectable="on" ' + (this.title ? 'title="' + this.title + '"' : '') +
-                 ' class="%%-body" onmousedown="return false;" onclick="return $$._onClick();">' +
-                  (this.showIcon ? '<div class="edui-box edui-icon"></div>' : '') +
-                  (this.showText ? '<div class="edui-box edui-label">' + this.label + '</div>' : '') +
-                 '</div>' +
-                '</div>' +
-                '</div></div>';
-        },
-        postRender: function (){
-            this.Stateful_postRender();
-            this.setDisabled(this.disabled)
-        },
-        _onClick: function (){
-            if (!this.isDisabled()) {
-                this.fireEvent('click');
-            }
+        icon: '',
+        width: '',
+        mode: '',
+        caret: false,
+        texttype: false,
+        click: function () {
         }
-    };
-    utils.inherits(Button, UIBase);
-    utils.extend(Button.prototype, Stateful);
+    },
+    init: function (options) {
+        var me = this;
+        me.root($($.parseTmpl(me.tpl, options)))
+            .click(function (evt) {
+                me.wrapclick(options.click, evt)
+            });
 
-})();
+
+        //处理ie6以下不支持:hover伪类
+        if ($.IE6) {
+            me.root().hover(function () {
+                me.root().toggleClass('hover')
+            });
+        }
+
+
+        return me;
+    },
+    wrapclick: function (fn, evt) {
+        if (!this.disabled()) {
+            this.root().trigger('wrapclick');
+            $.proxy(fn, this, evt)()
+        }
+        return this;
+    },
+    label: function (text) {
+        if (text === undefined) {
+            return this.root().find('.edui-button-label').text();
+        } else {
+            this.root().find('.edui-button-label').text(text);
+            return this;
+        }
+    },
+    disabled: function (state) {
+        if (state === undefined) {
+            return this.root().hasClass('disabled')
+        }
+        this.root().toggleClass('disabled', state);
+        return this;
+    },
+    active: function (state) {
+        if (state === undefined) {
+            return this.root().hasClass('active')
+        }
+        this.root().toggleClass('active', state);
+        return this;
+    },
+    mergeWith: function ($obj) {
+        var me = this;
+        me.data('$mergeObj', $obj);
+        $obj.edui().data('$mergeObj', me.root());
+        if (!$.contains(document.body, $obj[0])) {
+            $obj.appendTo(me.root());
+        }
+        me.on('click',function () {
+            me.wrapclick(function () {
+                $obj.edui().show();
+            })
+        }).register('click', me.root(), function (evt) {
+                $obj.hide()
+            });
+    }
+});
