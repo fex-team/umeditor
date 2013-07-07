@@ -1,25 +1,25 @@
 .tooltip{
     position: absolute;
+    padding: 5px 0;
 }
 .tooltip .tooltip-arrow{
     position: absolute;
-    width: 0;
-    height: 0;
-    border-color: transparent;
-    border-style: solid;
-
     top: 0;
     left: 50%;
+    width: 0;
+    height: 0;
     margin-left: -5px;
+    border-color: transparent;
+    border-style: solid;
     border-bottom-color: #000000;
     border-width: 0 5px 5px;
 }
 .tooltip .tooltip-inner{
-    max-width: 200px;
-    padding: 8px;
+    padding: 6px;
     color: #ffffff;
     text-align: center;
     text-decoration: none;
-    font-size: 11px;
+    font-size: 10px;
     background-color: #000000;
+    white-space: nowrap;
 }

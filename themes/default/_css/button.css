@@ -1,17 +1,17 @@
 .edui-btn-toolbar .edui-btn-group{
-    margin: 5px;
-    position: relative;
     display: inline-block !important;_zoom:1;_display:inline;
+    position: relative;
+    margin: 5px;
 }
 .edui-btn-group .btn{
+    display: inline-block !important;_zoom:1;_display:inline;
+    position: relative;
     width: 20px;
     height: 20px;
     border: none;
     background: none;
     margin: 0;
     padding:1px;
-    overflow: hidden;
-    display: inline-block !important;_zoom:1;_display:inline;
 }
 .edui-btn-group .btn .edui-icon{
     width: 100%;
