@@ -1,30 +1,17 @@
-UE.registerUI('bold italic redo undo source underline strikethrough superscript subscript insertorderedlist' +
-    'pagebreak deletetable insertrow deleterow removeformat cleardoc selectall formatmatch pasteplain ' +
-    'insertparagraphbeforetable insertrow deleterow insertcol deletecol mergecells mergeright mergedown splittocells ' +
-    'splittorows splittocols unlink date time horizontal blockquote indent touppercase tolowercase snapscreen print preview justifyleft justifycenter justifyright justifyjustify',
+UE.registerUI('bold italic redo undo source underline strikethrough superscript subscript insertorderedlist insertunorderedlist ' +
+    'cleardoc selectall unlink print preview justifyleft justifycenter justifyright justifyfull',
     function(name) {
-
         var me = this;
         var $btn = $.eduibutton({
             icon : name,
             click : function(){
-                //排版定制
-                if(/^justify/.test(name)){
-                    var para = name.replace(/^justify/);
-                    name = 'justify'
-                }
-                me.execCommand(name,para)
+                me.execCommand(name)
             },
             title: this.getLang('labelMap')[name] || ''
         });
 
         this.addListener('selectionchange',function(){
-            //排版定制
-            if(/^justify/.test(name)){
-                var para = name.replace(/^justify/);
-                name = 'justify'
-            }
-            var state = this.queryCommandState(name,para);
+            var state = this.queryCommandState(name);
             $btn.edui().disabled(state == -1).active(state == 1)
         });
         return $btn;

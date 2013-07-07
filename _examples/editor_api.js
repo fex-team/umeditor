@@ -27,7 +27,7 @@
             'plugins/horizontal.js',
             'plugins/cleardoc.js',
             'plugins/undo.js',
-            'plugins/paste.js',     //粘贴时候的提示依赖了UI
+            'plugins/paste.js',
             'plugins/list.js',
             'plugins/source.js',
             'plugins/enterkey.js',
@@ -54,7 +54,6 @@
             'adapter/adapter.js',
             'adapter/ready.js',
             'adapter/button.js',
-//            'adapter/list.js',
             'adapter/tablepicker.js',
             'adapter/fullscreen.js',
             'adapter/font.js',
