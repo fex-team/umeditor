@@ -1,6 +1,6 @@
 //popup 类
 UE.ui.define('popup',{
-    tpl:'<div class="dropdown-menu edui-popup"><%=subtpl%></div>',
+    tpl:'<div class="dropdown-menu edui-popup" onmousedown="return false"><%=subtpl%></div>',
     mergeTpl:function(data){
         return $.parseTmpl(this.tpl,{subtpl:data});
     },
