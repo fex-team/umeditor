@@ -167,12 +167,15 @@
             },function(){
                 editor.langIsReady ? $.proxy(renderUI,T)() : editor.addListener("langReady", $.proxy(renderUI,T));
                 function renderUI(){
+
+
                     var $container = this.createUI('#' + id, editor);
                     editor.ready(function(){
                         $.each( _readyFn, function( index, fn ){
                             $.proxy( fn, editor )();
                         } );
                     });
+
 
                     editor.render(id);
                     $container.css({

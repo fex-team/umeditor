@@ -22,7 +22,7 @@ UE.plugins['paste'] = function () {
         pastebin.id = 'baidu_pastebin';
         // Safari 要求div必须有内容，才能粘贴内容进来
         browser.webkit && pastebin.appendChild(doc.createTextNode(domUtils.fillChar + domUtils.fillChar));
-        this.editableCont.appendChild(pastebin);
+        this.body.appendChild(pastebin);
         //trace:717 隐藏的span不能得到top
         //bk.start.innerHTML = '&nbsp;';
         bk.start.style.display = '';

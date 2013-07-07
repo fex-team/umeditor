@@ -11,17 +11,18 @@
 
 </head>
 <body>
-<div id="editor"></div>
+<script type="text/plain" id="editor" style="width:800px;height:300px;">
+    <p>sdfsfsdfsdf</p>
+</script>
 
 
 <script type="text/javascript">
     UE.getEditor('editor',{
-        initialFrameWidth:500,
-        initialFrameHeight:300,
         toolbar:[
             'source undo redo',
             'bold italic underline strikethrough superscript subscript',
-            'justifyleft justifycenter justifyright justifyfull forecolor backcolor insertorderedlist insertunorderedlist selectall cleardoc'
+            'justifyleft justifycenter justifyright justifyfull forecolor ',
+            'backcolor insertorderedlist insertunorderedlist selectall cleardoc'
         ]
     });
 </script>

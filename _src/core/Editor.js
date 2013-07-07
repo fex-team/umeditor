@@ -185,6 +185,34 @@
             }
             UE.delEditor(key);
         },
+        initialCont : function(holder){
+
+            if(holder){
+                holder.getAttribute('name') && ( this.options.textarea = holder.getAttribute('name'));
+                if (holder && /script|textarea/ig.test(holder.tagName)) {
+                    var newDiv = document.createElement('div');
+                    holder.parentNode.insertBefore(newDiv, holder);
+                    this.options.initialContent = UE.htmlparser(holder.value || holder.innerHTML|| this.options.initialContent).toHtml();
+                    holder.className && (newDiv.className = holder.className);
+                    holder.style.cssText && (newDiv.style.cssText = holder.style.cssText);
+
+                    if (/textarea/i.test(holder.tagName)) {
+                        this.textarea = holder;
+                        this.textarea.style.display = 'none';
+
+                    } else {
+                        holder.parentNode.removeChild(holder);
+                        holder.id && (newDiv.id = holder.id);
+                    }
+                    holder = newDiv;
+                    holder.innerHTML = '';
+                }
+                return holder;
+            }else{
+                return null;
+            }
+
+        },
         /**
          * 渲染编辑器的DOM到指定容器，必须且只能调用一次
          * @name render
@@ -201,6 +229,7 @@
                 container = document.getElementById(container);
             }
             if (container) {
+                container = this.initialCont(container);
                 if(options.initialFrameWidth){
                     options.minFrameWidth = options.initialFrameWidth
                 }else{
@@ -218,8 +247,8 @@
                     getStyleValue("padding-top")- getStyleValue("padding-bottom") +'px';
 
                 container.style.zIndex = options.zIndex;
-                container.innerHTML = '<div style="width:100%;height:100%;" class="edui-editableCont"></div>';
-                this._setup(container.firstChild);
+
+                this._setup(container);
                 container.style.overflow = 'hidden';
                 //解决如果是给定的百分比，会导致高度算不对的问题
                 setTimeout(function(){
@@ -250,7 +279,7 @@
 
             me.document = document;
             me.window = document.defaultView || document.parentWindow;
-            me.body = me.iframe = me.editableCont = cont;
+            me.body = me.iframe = cont;
             me.selection = new dom.Selection(document);
             //gecko初始化就能得到range,无法判断isFocus了
             var geckoSel;
@@ -312,7 +341,7 @@
             options.onready && options.onready.call(me);
 
             if (!browser.ie) {
-                domUtils.on(me.editableCont, ['blur', 'focus'], function (e) {
+                domUtils.on(me.body, ['blur', 'focus'], function (e) {
                     //chrome下会出现alt+tab切换时，导致选区位置不对
                     if (e.type == 'blur') {
                         me._bakRange = me.selection.getRange();
@@ -353,8 +382,8 @@
          * @grammar editor.setHeight(number);  //纯数值，不带单位
          */
         setHeight: function (height) {
-            if (height !== parseInt(this.editableCont.parentNode.style.height)) {
-                this.editableCont.parentNode.style.height = height + 'px';
+            if (height !== parseInt(this.body.parentNode.style.height)) {
+                this.body.parentNode.style.height = height + 'px';
             }
             this.options.minFrameHeight = this.options.initialFrameHeight = height;
 
@@ -575,9 +604,7 @@
          */
         _initEvents: function () {
             var me = this,
-                doc = me.document,
-                win = me.window,
-                cont = me.editableCont;
+                cont = me.body;
             me._proxyDomEvent = utils.bind(me._proxyDomEvent, me);
             domUtils.on(cont, ['click', 'contextmenu', 'mousedown', 'keydown', 'keyup', 'keypress', 'mouseup', 'mouseover', 'mouseout', 'selectstart'], me._proxyDomEvent);
             domUtils.on(cont, ['focus', 'blur'], me._proxyDomEvent);
