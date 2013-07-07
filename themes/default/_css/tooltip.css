@@ -1,6 +1,10 @@
 .tooltip{
     position: absolute;
     padding: 5px 0;
+    display: none;
+    z-index: 999;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
 }
 .tooltip .tooltip-arrow{
     position: absolute;

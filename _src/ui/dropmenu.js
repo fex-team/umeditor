@@ -4,7 +4,7 @@ UE.ui.define('dropmenu',{
             '<%for(var i=0,ci;ci=data[i++];){%>'+
                 '<%if(ci.divider){%><li class="divider"></li><%}else{%>' +
                 '<li <%if(ci.active||ci.disabled){%>class="<%= ci.active|| \'\' %> <%=ci.disabled||\'\' %>" <%}%> data-value="<%= ci.value%>">' +
-                    '<a href="#" tabindex="-1" ><em class="edui-dropmenu-checkbox"><i class="icon-ok"></i></em><%= ci.label%></a>' +
+                    '<a href="#" tabindex="-1"><em class="edui-dropmenu-checkbox"><i class="icon-ok"></i></em><%= ci.label%></a>' +
                 '</li><%}%>' +
             '<%}%>' +
         '</ul>',
