@@ -10,21 +10,17 @@
  * @author zhanyi
  */
 UE.plugins['justify']=function(){
-    var cmdNames = {
-        'left' : 'left',
-        'right':'right',
-        'center':'center',
-        'justify':'full'
-    };
-    UE.commands['justify'] = {
-        execCommand:function (cmdName, align) {
-            return this.document.execCommand('justify' + cmdNames[align]);
-        },
-        queryCommandValue: function (cmdName, align) {
-            return   this.document.queryCommandValue('justify' + cmdNames[align]) === 'true' ? align : '';
-        },
-        queryCommandState: function (cmdName, align) {
-            return this.document.queryCommandState('justify' + cmdNames[align]) ? 1 : 0
-        }
-    };
+    $.each('justifyleft justifyright justifycenter justifyfull'.split(' '),function(i,cmdName){
+        UE.commands[cmdName] = {
+            execCommand:function (cmdName) {
+                return this.document.execCommand(cmdName);
+            },
+            queryCommandValue: function (cmdName) {
+                return   this.document.queryCommandValue(cmdName) === 'true' ? cmdName.replace(/justify/) : '';
+            },
+            queryCommandState: function (cmdName) {
+                return this.document.queryCommandState(cmdName) ? 1 : 0
+            }
+        };
+    })
 };

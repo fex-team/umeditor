@@ -39,28 +39,12 @@ UE.plugins['list'] = function () {
 
     me.commands['insertorderedlist'] =
     me.commands['insertunorderedlist'] = {
-            execCommand:function (cmdName, style) {
-                return this.document.execCommand(cmdName,false,style)
+            execCommand:function (cmdName) {
+                return this.document.execCommand(cmdName)
             },
             queryCommandState:function (cmdName) {
                 return this.document.queryCommandState(cmdName)
             }
-//            ,queryCommandValue:function (cmdName) {
-//                var tag = cmdName == 'insertorderedlist' ? 'ol' : 'ul';
-//                var path = this.selection.getStartElementPath(),
-//                    node;
-//                for(var i= 0,ci;ci = path[i++];){
-//                    if(ci.nodeName == 'TABLE'){
-//                        node = null;
-//                        break;
-//                    }
-//                    if(tag == ci.nodeName.toLowerCase()){
-//                        node = ci;
-//                        break;
-//                    };
-//                }
-//                return node ? domUtils.getStyle(node, 'list-style-type') || domUtils.getComputedStyle(node, 'list-style-type') : null;
-//            }
         };
 };
 
