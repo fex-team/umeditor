@@ -23,12 +23,8 @@
     display: inline-block !important;_zoom:1;_display:inline;
 }
 .edui-btn-group .btn .edui-button-label{
-    width: 30px;
-    height: 20px;
-    overflow: hidden;
-    display: inline-block;
+    display: inline-block !important;_zoom:1;_display:inline;
     text-align: left;
-    display: inline	9;
     padding: 0;
     margin: 0;
 }
