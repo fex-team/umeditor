@@ -1,0 +1,29 @@
+.edui-btn-group .edui-combobox{
+    border: 1px solid #CCC;
+    padding:0;
+    margin: 2px;
+    line-height: 20px;
+}
+.edui-combobox .edui-button-label{
+    float: left;
+    width:30px;
+    height:20px;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+.edui-combobox  .edui-button-spacing{
+    float: left;
+    height:20px;
+    margin: 0;
+    padding:0 3px;
+}
+.edui-combobox .caret{
+    float: left;
+    height:20px;
+    width: 12px;
+    margin: 0;
+    padding: 0;
+    background: url(../images/icons.png) -741px 0;
+    _background: url(../images/icons.gif) -741px 0;
+}

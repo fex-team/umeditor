@@ -1,3 +1,4 @@
+/*普通按钮*/
 .edui-btn-toolbar .edui-btn-group{
     display: inline-block !important;_zoom:1;_display:inline;
     position: relative;
@@ -12,6 +13,7 @@
     padding:1px;
 }
 .edui-btn-group .btn .edui-icon{
+    display: inline-block !important;_zoom:1;_display:inline;
     width: 20px;
     height: 20px;
     margin: 0;
@@ -20,26 +22,9 @@
     background-repeat: no-repeat;
     background-image: url(../images/icons.png);
     background-image: url(../images/icons.gif) \9;
-    display: inline-block !important;_zoom:1;_display:inline;
 }
-.edui-btn-group .btn .edui-button-label{
-    display: inline-block !important;_zoom:1;_display:inline;
-    text-align: left;
-    padding: 0;
-    margin: 0;
-}
-.edui-btn-group .btn  .edui-button-spacing{
-    padding: 5px;
-}
-.edui-btn-group .btn .caret{
-    display: inline-block !important;
-    _zoom: 1;
-    _display: inline;
-    background: url(../images/icons.png) -741px 0;
-    _background: url(../images/icons.gif) -741px 0;
-    height: 20px;
-    width: 9px;
-}
+
+/*状态反射*/
 .edui-btn-group .btn:hover{
     background-color: #fff5d4;
     padding: 0;
