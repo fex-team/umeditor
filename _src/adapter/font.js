@@ -15,7 +15,7 @@ UE.registerUI('fontfamily', function( name ) {
             }).eduicombobox('on', 'comboboxselect', function( evt, res ){
                     me.execCommand( name, res.value );
                 }),
-            $btn = $fontCombobox.eduicombobox('box');
+            $btn = $fontCombobox.eduicombobox('box').addClass('edui-combox');
 
         //querycommand
         this.addListener('selectionchange',function(){
@@ -56,7 +56,7 @@ UE.registerUI('fontsize', function( name ) {
                 me.execCommand( name, res.value + 'px' );
 
             });
-
+        $btn.addClass('edui-combox');
         //querycommand
         this.addListener('selectionchange',function(){
 
