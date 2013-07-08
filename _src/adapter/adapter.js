@@ -9,7 +9,8 @@
         _editors = {},
         _readyFn = [],
         _activeEditor = null,
-        _activeWidget = null;
+        _activeWidget = null,
+        _dialogs = {};
 
     function parseData(data, editor) {
         $.each(data, function (i, v) {
@@ -105,6 +106,18 @@
             utils.each(name.split(/\s+/), function (uiname) {
                 _editorUI[uiname] = fn;
             })
+        },
+        registerDialog : function(name,pro){
+            _dialogs[name] = pro;
+        },
+        getDialogRoot : function(name,$dialog,editor){
+            var pro = _dialogs[name];
+            if(!pro){
+                return null;
+            }
+            var html = pro.initCont(pro.tpl);
+            $dialog.find('.modal-body').append(html);
+            pro.initEvent($dialog.find('.modal-body'),editor);
         },
         getUI:function(editor,name,mode){
             if(_editorUI[name]){
