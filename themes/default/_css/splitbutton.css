@@ -3,6 +3,7 @@
     position: relative;
     margin: 2px;
     border: 1px solid #ccc;
+    width:40px;
 }
 .edui-splitbutton .dropdown-toggle{
     width:9px;
