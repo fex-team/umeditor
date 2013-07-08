@@ -10,6 +10,7 @@
     padding:5px 10px;
     background-color: #ffffff;
     border: 1px solid #ccc;
+    font-size: 12px;
 }
 .edui-combobox-menu.divider {
     height: 1px;
