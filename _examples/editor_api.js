@@ -56,7 +56,7 @@
             'adapter/button.js',
             'adapter/tablepicker.js',
             'adapter/fullscreen.js',
-//            'adapter/font.js',
+            'adapter/font.js',
             'adapter/elementpath.js',
             'adapter/dialog.js',
             'adapter/emotion.js'
