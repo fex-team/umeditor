@@ -7,10 +7,11 @@
 .edui-btn-group .btn{
     display: inline-block ;*display:inline;zoom:1;
     position: relative;
-    border: none;
-    background: none;
+    width:auto;
     margin: 0;
     padding:1px;
+    border-width: 0;
+    background: none;
 }
 .edui-btn-group .btn .edui-icon{
     display: inline-block ;*display:inline;zoom:1;
