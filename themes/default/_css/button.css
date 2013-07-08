@@ -25,22 +25,14 @@
 }
 
 /*状态反射*/
-.edui-btn-group .btn:hover{
-    background-color: #fff5d4;
-    padding: 0;
-    border: 1px solid #dcac6c;
-}
-
-.edui-btn-group .btn.hover{
-    background-color: #fff5d4;
-    padding: 0;
-    border: 1px solid #dcac6c;
-}
+.edui-btn-group .btn:hover,
+.edui-btn-group .btn.hover,
 .edui-btn-group .btn.active{
     background-color: #fff5d4;
     padding: 0;
     border: 1px solid #dcac6c;
 }
+
 .edui-btn-group .btn.disable{
     opacity: 0.3;
     filter: alpha(opacity = 30);
