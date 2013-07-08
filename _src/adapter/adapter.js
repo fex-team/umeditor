@@ -12,94 +12,6 @@
         _activeWidget = null,
         _dialogs = {};
 
-    function parseData(data, editor) {
-        $.each(data, function (i, v) {
-            if (v.label) {
-                if(!v.icon){
-                    v.icon = v.exec || v.dialog || v.widget;
-                }
-                if(v.dialog){
-                    v.exec = function(){
-                        var dialog = $.proxy(_editorUI[v.dialog],editor, v.dialog,'menu')();
-                        return function(){
-                            if (!dialog.parent()[0]) {
-                                editor.$container.find('.edui-dialog-container').append(dialog);
-                            }
-                            dialog.edui().show();
-                            UE.setActiveEditor(editor);
-                        }
-                    }();
-                    v.query = $.proxy(function(cmdName){return this.queryCommandState(cmdName)},editor, v.dialog);
-                }else {
-                    if (v.data) {
-                        $.each(v.data,function(i,data){
-                           if(!data.exec && v.exec && $.type(v.exec) == 'string'){
-                                data.exec = $.proxy(function(name,val){this.execCommand(name,val)},editor, v.exec, data.value||'')
-                           }
-                            if(!data.query && (!v.query || !$.isFunction(v.query))){
-                                data.query = $.proxy(function(name,val){return this.queryCommandState(name,val)},editor, v.exec, data.value||'')
-                            }
-                        });
-
-                        v.value = $.proxy(function(editor,name){
-                            var root = this.root(),value = editor.queryCommandValue(name);
-                            root.find('li').each(function(index,li){
-                                var $li = $(li);
-                                if($li.data('value') === value.toLowerCase()){
-                                    $li.find('i').addClass('icon-ok')
-                                }else{
-                                    $li.find('i').removeClass('icon-ok')
-                                }
-                            })
-
-
-                        },null,editor, v.exec);
-                        parseData(v.data, editor,v);
-                    } else {
-                        var command;
-                        if(v.widget && _editorUI[v.widget]) {
-                            if(!v.query){
-                                v.query = v.widget;
-                            }
-                            v.widget = $.proxy(_editorUI[v.widget],editor, v.widget,'menu')();
-                            if($.type(v.query) == 'string'){
-                                command = v.query;
-                                v.query = $.proxy(function(name){return this.queryCommandState(name)},editor,command);
-                            }
-                        }else{
-                            if ($.type(v.exec) == 'string') {
-                                command = v.exec;
-                                //有插件  就执行插件
-                                if( UE.commands[ command ] || editor.commands[ command ] ) {
-                                    v.exec = $.proxy(function(name){this.execCommand(name)},editor,command);
-
-                                //否则， 检查一下是否有注册的UI
-                                } else if( _editorUI[ command ] ) {
-                                    v.exec = $.proxy(_editorUI[ command ], editor,command, 'menu');
-                                }
-                                if (!v.query) {
-                                    v.query = $.proxy(function(name){return this.queryCommandState(name)},editor,command);
-                                }
-                            } else {
-                                var fn = v.exec;
-                                v.exec = $.proxy(fn, null, editor, v);
-                                var queryfn = v.query;
-                                v.query = $.proxy(queryfn, null, editor, v);
-                            }
-                        }
-
-                    }
-                }
-
-
-            }
-            if(v.shortkey){
-                v.shortkey = v.shortkey.toUpperCase()
-            }
-
-        });
-        return data;
-    }
 
     utils.extend(UE, {
         registerUI: function (name, fn) {
@@ -108,16 +20,27 @@
             })
         },
         registerDialog : function(name,pro){
-            _dialogs[name] = pro;
+            _dialogs[name] = $.extend(pro,{
+                $root : null,
+                preventDefault:false,
+                root:function($el){
+                    return this.$root || (this.$root = $el);
+                },
+                preventDefault:function(){
+                    this.preventDefault = true;
+                }
+            });
         },
         getDialogRoot : function(name,$dialog,editor){
             var pro = _dialogs[name];
             if(!pro){
                 return null;
             }
-            var html = pro.initCont(pro.tpl);
-            $dialog.find('.modal-body').append(html);
-            pro.initEvent($dialog.find('.modal-body'),editor);
+            pro.root($dialog.find('.modal-body'));
+            pro.initContent(editor);
+            if(!pro.preventDefault){
+                pro.initEvent(editor);
+            }
         },
         getUI:function(editor,name,mode){
             if(_editorUI[name]){
@@ -212,7 +135,7 @@
                 $container = $('<div class="edui-container"><div class="edui-editor-body"></div><div class="edui-dialog-container"></div></div>').insertBefore($editorCont);
             editor.$container = $container;
             editor.container = $container[0];
-            $container.find('.edui-editor-body').append($editorCont).before(this.createToolbar(editor.options, editor,$container));
+            $container.find('.edui-editor-body').append($editorCont).before(this.createToolbar(editor.options, editor));
 
             if(editor.options.elementpath || editor.options.wordCount){
                 var $bottombar = $('<div class="edui-bottombar"></div>');
@@ -226,66 +149,20 @@
 
             return $container;
         },
-        createToolbar: function (options, editor,$container) {
+        createToolbar: function (options, editor) {
             var me = this;
             var $toolbar = $.eduitoolbar(), toolbar = $toolbar.edui();
             //创建下来菜单列表
 
-            if (options.menulist && options.menulist.length) {
-                $.each(options.menulist, function (i, v) {
-                    if(v.data){
-                        $.eduicontextmenu(parseData(v.data, editor))
-                            .edui()
-                            .attachTo(toolbar.appendToTextmenu(toolbar.createTextItem(v.label)));
-                    }else{
-
-                        if(v.dialog){
-                            var $dialog = UE.getUI(editor,v.dialog,'menu');
-                            v.exec = function(){
-                                if(!$dialog.parent()[0]){
-                                    $container.find('.edui-dialog-container').append($dialog)
-                                }
-                                $dialog.edui().show()
-                            }
-                        }
-                        v.caret = 0;
-                        toolbar.appendToTextmenu(toolbar.createTextItem(v))
-                    }
-
-
-                });
-                toolbar.appendToBtnmenu($.eduibutton({
-                    icon:'expand',
-                    texttype:true,
-                    click:function(){
-                        var $i = this.root().find('i');
-                        if($i.hasClass('icon-expand')){
-                            $i[0].className = 'icon-collapse';
-                            $toolbar.find('.edui-text-toolbar').slideUp(200);
-                        }else{
-                            $i[0].className = 'icon-expand';
-                            $toolbar.find('.edui-text-toolbar').slideDown(200)
-                        }
-                    },
-                    title:editor.getLang('collapsebtn')
-                }),{'float':'right'})
-            } else {
-                $toolbar.find('.edui-text-toolbar').remove()
-            }
-
             if (options.toolbar && options.toolbar.length) {
-
-                $.each(options.toolbar,function(i,groupstr){
-                    var btngroup = [];
-                    $.each(groupstr.split(/\s+/),function(index,name){
+                var btns = [];
+                $.each(options.toolbar,function(i,uiNames){
+                    $.each(uiNames.split(/\s+/),function(index,name){
                         var ui = me.getUI(editor,name);
-
-                        ui && btngroup.push(ui);
+                        ui && btns.push(ui);
                     });
-                    toolbar.appendToBtnmenu(btngroup);
+                    btns.length && toolbar.appendToBtnmenu(btns);
                 });
-
-
             } else {
                 $toolbar.find('.edui-btn-toolbar').remove()
             }
