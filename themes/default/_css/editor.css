@@ -1,3 +1,13 @@
+.edui-container{
+    border: 1px solid #d4d4d4;
+}
+.edui-container .edui-toolbar{
+    border-bottom: 1px solid #d4d4d4;
+    background-color: #fafafa;
+}
+.edui-toolbar .edui-btn-toolbar{
+    padding:2px;
+}
 .edui-editor-body{
     position: relative;
 }
