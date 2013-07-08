@@ -37,3 +37,8 @@
     color:#333;
     text-decoration: none;
 }
+.edui-combobox-menu .edui-combobox-item.hover{
+    background-color: #fff5d4;
+    padding: 0;
+    border: 1px solid #dcac6c;
+}

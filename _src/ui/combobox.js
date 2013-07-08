@@ -107,6 +107,18 @@
                     return false;
 
                 });
+                //处理ie6以下不支持:hover伪类
+                if ($.IE6) {
+                    var $last;
+                    this.root().delegate('li', 'mouseover', function(){
+                        var $this = $(this);
+                        if($last){
+                            $last.removeClass('hover')
+                        }
+                        $last = $this.addClass('hover');
+                    });
+                }
+
 
             },
             selectItem: function( index ){
