@@ -1,5 +1,5 @@
 .edui-splitbutton{
-    display: inline-block !important;_zoom:1;_display:inline;
+   display: inline-block;*display:inline;zoom:1;
     position: relative;
     margin: 2px;
     border: 1px solid #ccc;
@@ -10,7 +10,7 @@
     height:20px;
 }
 .edui-splitbutton .caret{
-    display: inline-block !important;_zoom:1;_display:inline;
+   display: inline-block;*display:inline;zoom:1;
     width: 9px;
     height: 100%;
     background: url(../images/icons.png) -741px 0;

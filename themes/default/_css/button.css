@@ -1,11 +1,11 @@
 /*普通按钮*/
 .edui-btn-toolbar .edui-btn-group{
-    display: inline-block !important;_zoom:1;_display:inline;
+    display: inline-block;*display:inline;zoom:1;
     position: relative;
     margin: 5px;
 }
 .edui-btn-group .btn{
-    display: inline-block !important;_zoom:1;_display:inline;
+    display: inline-block ;*display:inline;zoom:1;
     position: relative;
     border: none;
     background: none;
@@ -13,7 +13,7 @@
     padding:1px;
 }
 .edui-btn-group .btn .edui-icon{
-    display: inline-block !important;_zoom:1;_display:inline;
+    display: inline-block ;*display:inline;zoom:1;
     width: 20px;
     height: 20px;
     margin: 0;
