@@ -1,0 +1,39 @@
+.edui-combobox-menu{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    list-style: none;
+    text-decoration: none;
+    margin: 0;
+    padding:5px 10px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+}
+.edui-combobox-menu.divider {
+    height: 1px;
+    margin: 9px 1px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+    border-bottom: 1px solid #ffffff;
+}
+.edui-combobox-menu .edui-common-dis-none {
+    display: none;
+}
+.edui-combobox-menu .edui-combobox-item{
+    margin: 3px 0;
+    padding: 1px;
+    border:none;
+    white-space: nowrap;
+}
+.edui-combobox-menu .edui-combobox-item:hover{
+    background-color: #fff5d4;
+    padding: 0;
+    border: 1px solid #dcac6c;
+}
+.edui-combobox-menu .edui-combobox-item .edui-combobox-link{
+    line-height: 1.2;
+    color:#333;
+    text-decoration: none;
+}

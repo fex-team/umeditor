@@ -3,7 +3,7 @@ UE.ui.define ('modal' , {
     tpl: '<div class="modal hide edui-modal" tabindex="-1" >' +
         '<div class="modal-header">' +
         '<button type="button" class="close" data-hide="modal">×</button>' +
-        '<h3><%=title%></h3>' +
+        '<h3 class="edui-title"><%=title%></h3>' +
         '</div>' +
         '<div class="modal-body edui-modal-body">' +
         '<iframe height="100%" width="100%" frameborder="0" src="<%=url%>"></iframe>' +
