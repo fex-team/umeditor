@@ -1,17 +1,20 @@
 .edui-splitbutton{
+   display: inline-block;*display:inline;zoom:1;
     position: relative;
-    display: inline-block !important;_zoom:1;_display:inline;
+    margin: 2px;
+    border: 1px solid #ccc;
+    width:40px;
 }
 .edui-splitbutton .dropdown-toggle{
     width:9px;
     height:20px;
 }
 .edui-splitbutton .caret{
-    display: inline-block !important;_zoom:1;_display:inline;
+   display: inline-block;*display:inline;zoom:1;
+    width: 9px;
+    height: 100%;
     background: url(../images/icons.png) -741px 0;
     _background: url(../images/icons.gif) -741px 0;
-    height: 20px;
-    width: 9px;
 }
 .edui-splitbutton .edui-popup{
     position: absolute;
@@ -21,4 +24,19 @@
     display: none;
     background-color: #ffffff;
     border: 1px solid #ccc;
+}
+.edui-btn-group .edui-splitbutton:hover,
+.edui-btn-group .edui-splitbutton.hover
+{
+    background-color: #fff5d4;
+    padding: 0;
+    border: 1px solid #dcac6c;
+}
+
+.edui-btn-group .edui-splitbutton .btn:hover,
+.edui-btn-group .edui-splitbutton .btn.hover
+{
+    background-color: transparent;
+    padding:0;
+    border: 1px solid transparent;
 }
