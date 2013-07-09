@@ -1,7 +1,7 @@
 .edui-btn-toolbar .edui-combobox{
     border: 1px solid #CCC;
     padding:0;
-    margin: 2px;
+    margin:0 2px;
     line-height: 20px;
 }
 .edui-combobox .edui-button-label{
