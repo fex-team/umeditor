@@ -10,15 +10,22 @@ UE.ui.define('menu',{
                 top : $obj[fnname]().top + ( dir == 'right' ? 0 : $obj.outerHeight()) - (topOffset || 0),
                 left : $obj[fnname]().left + (dir == 'right' ?  $obj.outerWidth() : 0) -  (leftOffset || 0)
             }:{}))
+            this.trigger('aftershow');
         }
     },
     hide : function(all){
         var $parentmenu;
-        if($parentmenu = this.root().data('parentmenu')){
-            if($parentmenu.data('parentmenu')|| all)
-                $parentmenu.edui().hide();
+        if(this.trigger('beforehide') === false){
+            return;
+        } else {
+
+            if($parentmenu = this.root().data('parentmenu')){
+                if($parentmenu.data('parentmenu')|| all)
+                    $parentmenu.edui().hide();
+            }
+            this.root().css('display','none');
+            this.trigger('afterhide');
         }
-        this.root().css('display','none');
     },
     attachTo : function($obj){
         var me = this;

@@ -33,9 +33,6 @@
 
             },
             defaultOpt: {
-                //按钮初始文字
-                label: '',
-                title: '',
                 //记录栈初始列表
                 recordStack: [],
                 //可用项列表
@@ -52,14 +49,6 @@
 
                 var me = this;
 
-                var btnWidget = $.eduibutton({
-                    caret: true,
-                    title: options.title,
-                    mode: options.mode,
-                    text: options.label,
-                    click: $.proxy( me.open, me )
-                });
-
                 //参数适配转换一下
                 optionAdaptation( options );
 
@@ -69,28 +58,16 @@
 
                 me.root( $( $.parseTmpl( me.tpl(options), options ) ) );
 
-                me.attachTo( btnWidget );
-
                 this.data( 'options', options );
-                this.data( 'box', btnWidget );
 
                 this.initEvent();
 
-            },
-            box: function(){
-                return this.data( 'box' );
-            },
-            open: function(){
-                this.show();
-            },
-            close: function(){
-                this.hide();
             },
             initEvent: function(){
 
                 var me = this;
 
-                this.root().delegate('li', 'click', function(){
+                me.root().delegate('li', 'click', function(){
 
                     var $li = $(this),
                         index = $li.hasClass( itemClassName ) ? $li.attr('data-item-index') : $li.attr('data-stack-item-index');
@@ -102,20 +79,32 @@
                     } );
 
                     me.selectItem( index );
-                    me.close();
+                    me.hide();
 
                     return false;
 
                 });
+
+                me.root().on('aftershow', function(){
+                    var width = this.offsetWidth;
+                    if( width ) {
+                        if( !window.XMLHttpRequest ) {
+                            width += 25;
+                        }
+                        me.root().off('aftershow');
+                        this.style.width = width + 'px';
+                    }
+                });
+
+                me.root().on( 'mousedown', function(){
+                    return false;
+                } );
+
                 //处理ie6以下不支持:hover伪类
                 if ($.IE6) {
-                    var $last;
-                    this.root().delegate('li', 'mouseover', function(){
+                    this.root().delegate( '.'+stackItemClassName + ',.'+itemClassName,  'mouseenter mouseleave', function( evt ){
                         var $this = $(this);
-                        if($last){
-                            $last.removeClass('hover')
-                        }
-                        $last = $this.addClass('hover');
+                        $this[ evt.type === 'mouseleave' ? 'removeClass' : 'addClass' ]( 'edui-hover' );
                     });
                 }
 
@@ -148,9 +137,9 @@
 
                 if( currentItem.length ) {
 
-                    //更改按钮标签内容
-                    this.box().eduibutton('label', items[ index ] );
+                    this.trigger( 'changebefore', items[ index ] );
                     this.selectByItemNode( currentItem[0] );
+                    this.trigger( 'changeafter', items[ index ] );
 
                     return currentItem[0];
 
@@ -216,16 +205,13 @@
 
         function optionAdaptation( options ) {
 
-            switch( options.mode ) {
-                case 'fontFamily':
-                    //字体参数适配
-                    fontFamilyAdaptation( options );
-                    break;
-                case 'fontSize':
-                    fontSizeAdaption( options );
-                    break;
-                default:
-                    commonAdaptation( options );
+            if( !( 'itemStyles' in options ) ) {
+
+                options.itemStyles = [];
+
+                for( var i = 0, len = options.items.length; i < len; i++ ) {
+                    options.itemStyles.push('');
+                }
 
             }
 

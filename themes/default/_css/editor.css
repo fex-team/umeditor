@@ -4,6 +4,10 @@
 .edui-container .edui-toolbar{
     border-bottom: 1px solid #d4d4d4;
     background-color: #fafafa;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 9999;
 }
 .edui-toolbar .edui-btn-toolbar{
     padding:2px;
