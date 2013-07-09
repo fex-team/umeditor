@@ -33,8 +33,7 @@
     padding: 0;
     border: 1px solid #dcac6c;
 }
-
-.edui-btn-toolbar .edui-btn.disabled .edui-icon{
+.edui-btn-toolbar .edui-btn.disabled{
     opacity: 0.3;
     filter: alpha(opacity = 30);
 }

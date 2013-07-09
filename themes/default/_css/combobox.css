@@ -40,3 +40,7 @@
     background: url(../images/icons.png) -741px 0;
     _background: url(../images/icons.gif) -741px 0;
 }
+.edui-combobox.disabled{
+    opacity: 0.3;
+    filter: alpha(opacity = 30);
+}
