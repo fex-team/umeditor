@@ -67,7 +67,7 @@
 
                 var me = this;
 
-                this.root().delegate('li', 'click', function(){
+                me.root().delegate('li', 'click', function(){
 
                     var $li = $(this),
                         index = $li.hasClass( itemClassName ) ? $li.attr('data-item-index') : $li.attr('data-stack-item-index');
@@ -85,21 +85,28 @@
 
                 });
 
+                me.root().on('aftershow', function(){
+                    var width = this.offsetWidth;
+                    if( width ) {
+                        if( !window.XMLHttpRequest ) {
+                            width += 25;
+                        }
+                        me.root().off('aftershow');
+                        this.style.width = width + 'px';
+                    }
+                });
+
                 me.root().on( 'mousedown', function(){
                     return false;
                 } );
 
                 //处理ie6以下不支持:hover伪类
-//                if ($.IE6) {
-//                    var $last;
-//                    this.root().delegate('li', 'mouseover', function(){
-//                        var $this = $(this);
-//                        if($last){
-//                            $last.removeClass('hover')
-//                        }
-//                        $last = $this.addClass('hover');
-//                    });
-//                }
+                if ($.IE6) {
+                    this.root().delegate( '.'+stackItemClassName + ',.'+itemClassName,  'mouseenter mouseleave', function( evt ){
+                        var $this = $(this);
+                        $this[ evt.type === 'mouseleave' ? 'removeClass' : 'addClass' ]( 'edui-hover' );
+                    });
+                }
 
 
             },

@@ -9,8 +9,7 @@ UE.registerUI('fontfamily', function( name ) {
         options = {
             label: '字体',
             title: me.getLang("labelMap")[name],
-            items: me.options.fontfamily,
-            recordStack: []
+            items: me.options.fontfamily
         },
         fontFamily = options.items,
         $fontFamilyCombobox = null,
@@ -106,7 +105,7 @@ UE.registerUI('fontsize', function( name ) {
         options = {
             label: '16',
             title: me.getLang("labelMap")[name],
-            autorecord: false,
+            autoRecord: false,
             items: me.options.fontsize
         },
         $fontSizeCombobox = null;
