@@ -19,7 +19,7 @@
                 _editorUI[uiname] = fn;
             })
         },
-        registerDialog : function(name,pro){
+        registerWidget : function(name,pro){
             _dialogs[name] = $.extend(pro,{
                 $root : null,
                 preventDefault:false,
@@ -31,16 +31,25 @@
                 }
             });
         },
-        setDialogBody : function(name,$dialog,editor){
+        setWidgetBody : function(name,$widget,editor){
             var pro = _dialogs[name];
             if(!pro){
                 return null;
             }
-            pro.root($dialog.find('.modal-body'));
+
+            pro.root($widget.edui().getBodyCont());
+            if(pro.ok){
+                $widget.edui().on('ok', $.proxy(pro.ok,pro,editor,$widget))
+            }
+            pro.root().html('');
             pro.initContent(editor);
             if(!pro.preventDefault){
                 pro.initEvent(editor);
             }
+
+            pro.width &&  $widget.width(pro.width);
+            pro.height  &&  $widget.height(pro.height)
+
         },
         getUI:function(editor,name,mode){
             if(_editorUI[name]){

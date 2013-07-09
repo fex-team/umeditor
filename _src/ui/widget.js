@@ -134,9 +134,14 @@
                     } else {
                         $el && obj.root($el);
                         obj.init && obj.init(!options || $.isPlainObject(options) ? $.extend2(options || {}, obj.defaultOpt || {}, true) : options);
-                        obj.root().find('a').click(function (evt) {
-                            evt.preventDefault()
-                        });
+                        try{
+                            obj.root().find('a').click(function (evt) {
+                                evt.preventDefault()
+                            });
+                        }catch(e){
+                            debugger
+                        }
+
                         return obj.root().edui(obj);
                     }
 

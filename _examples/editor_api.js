@@ -49,7 +49,6 @@
             'ui/modal.js',
             'ui/tooltip.js',
             'ui/tab.js',
-            'ui/emotion.js',
             'ui/elementpath.js',
             'adapter/adapter.js',
             'adapter/ready.js',
@@ -59,7 +58,7 @@
             'adapter/font.js',
             'adapter/elementpath.js',
             'adapter/dialog.js',
-            'adapter/emotion.js'
+            'adapter/popup.js'
         ],
         baseURL = '../_src/';
     for (var i=0,pi;pi = paths[i++];) {
