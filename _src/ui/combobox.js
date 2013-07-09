@@ -84,6 +84,11 @@
                     return false;
 
                 });
+
+                me.root().on( 'mousedown', function(){
+                    return false;
+                } );
+
                 //处理ie6以下不支持:hover伪类
 //                if ($.IE6) {
 //                    var $last;

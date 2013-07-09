@@ -102,174 +102,165 @@ UE.registerUI('fontfamily', function( name ) {
 
 UE.registerUI('fontsize', function( name ) {
 
-        var me = this,
-            options = {
-                label: '16',
-                title: me.getLang("labelMap")[name],
-                autorecord: false,
-                items: me.options.fontsize
-            },
-            $fontSizeCombobox = null;
+    var me = this,
+        options = {
+            label: '16',
+            title: me.getLang("labelMap")[name],
+            autorecord: false,
+            items: me.options.fontsize
+        },
+        $fontSizeCombobox = null;
 
-        options = parseOption( options );
+    options = parseOption( options );
 
-        $fontSizeCombobox = $.eduibuttoncombobox( options );
+    $fontSizeCombobox = $.eduibuttoncombobox( options );
 
-        $btn = $fontSizeCombobox.edui().button();
-        $btn.on( 'comboboxselect', function(evt, res) {
+    $btn = $fontSizeCombobox.edui().button();
+    $btn.on( 'comboboxselect', function(evt, res) {
 
-            me.execCommand( name, res.value + 'px' );
+        me.execCommand( name, res.value + 'px' );
 
-        });
+    });
 
-        $btn.addClass('edui-combobox');
+    $btn.addClass('edui-combobox');
 
-//        //querycommand
-//        this.addListener('selectionchange',function(){
-//
-//            var state = this.queryCommandState( name );
-//            $btn.edui().disabled( state == -1 ).active( state == 1 );
-//
-//            //值反射
-//            var fontSize = this.queryCommandValue( name );
-//
-//            $fontCombobox.eduicombobox( 'selectItemByLabel', fontSize.replace('px', '') );
-//
-//        });
+    //querycommand
+    this.addListener('selectionchange',function(){
 
-        return $btn;
+        var state = this.queryCommandState( name );
+        $btn.edui().disabled( state == -1 ).active( state == 1 );
 
-        /**
-         * font-size参数解析
-         * @param options 原始参数
-         * @returns 解析后的参数
-         */
-        function parseOption( options ) {
+        //值反射
+        var fontSize = this.queryCommandValue( name );
 
-            var fontSize = options.items,
-                temp = null,
-                tempItems = [];
+        $fontSizeCombobox.eduicombobox( 'selectItemByLabel', fontSize.replace('px', '') );
 
-            options.itemStyles = [];
-            options.value = [];
+    });
 
-            for( var i = 0, len = fontSize.length; i < len; i++ ) {
+    return $btn;
 
-                temp = fontSize[ i ];
-                tempItems.push( temp );
-                options.itemStyles.push('font-size: ' + temp +'px');
+    /**
+     * font-size参数解析
+     * @param options 原始参数
+     * @returns 解析后的参数
+     */
+    function parseOption( options ) {
 
-            }
+        var fontSize = options.items,
+            temp = null,
+            tempItems = [];
 
-            options.value = options.items;
-            options.items = tempItems;
+        options.itemStyles = [];
+        options.value = [];
 
-            return options;
+        for( var i = 0, len = fontSize.length; i < len; i++ ) {
+
+            temp = fontSize[ i ];
+            tempItems.push( temp );
+            options.itemStyles.push('font-size: ' + temp +'px');
 
         }
 
+        options.value = options.items;
+        options.items = tempItems;
+
+        return options;
+
     }
 
-);
+});
 
-//
-//UE.registerUI('forecolor',
-//    function( name ) {
-//
-//        var me = this,
-//            colorPickerWidget = null,
-//            fontIcon = null,
-//            $btn = null;
-//
-//        //querycommand
-//        this.addListener('selectionchange',function(){
-//
-//            var state = this.queryCommandState( name );
-//            $btn.edui().disabled( state == -1 ).active( state == 1 );
-//
-//        });
-//
-//        $btn = $.eduisplitbutton({
-//            icon: 'font',
-//            caret: true,
-//            title: me.getLang("labelMap")[name],
-//            click: function() {
-//                me.execCommand( name, getCurrentColor() );
-//            }
-//        });
-//
-//        fontIcon = $btn.find(".icon-font");
-//
-//        colorPickerWidget = $.eduicolorpicker({
-//            lang_clearColor: me.getLang('clearColor') || '',
-//            lang_themeColor: me.getLang('themeColor') || '',
-//            lang_standardColor: me.getLang('standardColor') || ''
-//        }).eduitablepicker( "attachTo", $btn ).edui().on('pickcolor', function( evt, color ){
-//                window.setTimeout( function(){
-//                    fontIcon.css("color", color);
-//                    me.execCommand( name, color );
-//                }, 0 );
-//            });
-//        colorPickerWidget.on('show',function(){
-//            UE.setActiveWidget(colorPickerWidget.root())
-//        });
-//        $btn.edui().mergeWith( colorPickerWidget.root() );
-//
-//        return $btn;
-//
-//        function getCurrentColor() {
-//            return domUtils.getComputedStyle( fontIcon[0], 'color' );
-//        }
-//
-//    }
-//
-//);
-//
-//
-//UE.registerUI('backcolor',
-//    function( name ) {
-//
-//        var me = this,
-//            colorPickerWidget = null,
-//            fontIcon = null,
-//            $btn = null;
-//
-//        //querycommand
-//        this.addListener('selectionchange',function(){
-//            var state = this.queryCommandState( name );
-//            $btn.edui().disabled( state == -1 ).active( state == 1 );
-//
-//        });
-//
-//        $btn = $.eduisplitbutton({
-//            icon: 'font',
-//            title: me.getLang("labelMap")[name],
-//            caret: true,
-//            click: function() {
-//                me.execCommand( name, getCurrentColor() );
-//            }
-//        });
-//
-//        fontIcon = $btn.find(".icon-font");
-//
-//        colorPickerWidget = $.eduicolorpicker({
-//            lang_clearColor: me.getLang('clearColor') || '',
-//            lang_themeColor: me.getLang('themeColor') || '',
-//            lang_standardColor: me.getLang('standardColor') || ''
-//        }).eduitablepicker( "attachTo", $btn ).edui().on('pickcolor', function( evt, color ){
-//                me.execCommand( name, color );
-//        });
-//
-//        $btn.edui().mergeWith( colorPickerWidget.root() );
-//        colorPickerWidget.on('show',function(){
-//            UE.setActiveWidget(colorPickerWidget.root())
-//        });
-//        return $btn;
-//
-//        function getCurrentColor() {
-//            return domUtils.getComputedStyle( fontIcon[0], 'color' );
-//        }
-//
-//    }
-//
-//);
+
+UE.registerUI('forecolor', function( name ) {
+
+    var me = this,
+        colorPickerWidget = null,
+        fontIcon = null,
+        $btn = null;
+
+    //querycommand
+    this.addListener('selectionchange', function(){
+
+        var state = this.queryCommandState( name );
+        $btn.edui().disabled( state == -1 ).active( state == 1 );
+
+    });
+
+    $btn = $.eduisplitbutton({
+        icon: 'font',
+        caret: true,
+        title: me.getLang("labelMap")[name],
+        click: function() {
+            me.execCommand( name, getCurrentColor() );
+        }
+    });
+
+    fontIcon = $btn.find(".icon-font");
+
+    colorPickerWidget = $.eduicolorpicker({
+        lang_clearColor: me.getLang('clearColor') || '',
+        lang_themeColor: me.getLang('themeColor') || '',
+        lang_standardColor: me.getLang('standardColor') || ''
+    }).eduitablepicker( "attachTo", $btn ).edui().on('pickcolor', function( evt, color ){
+            window.setTimeout( function(){
+                fontIcon.css("color", color);
+                me.execCommand( name, color );
+            }, 0 );
+        });
+    colorPickerWidget.on('show',function(){
+        UE.setActiveWidget(colorPickerWidget.root())
+    });
+    $btn.edui().mergeWith( colorPickerWidget.root() );
+
+    return $btn;
+
+    function getCurrentColor() {
+        return domUtils.getComputedStyle( fontIcon[0], 'color' );
+    }
+
+});
+
+
+UE.registerUI('backcolor', function( name ) {
+
+        var me = this,
+            colorPickerWidget = null,
+            fontIcon = null,
+            $btn = null;
+
+        //querycommand
+        this.addListener('selectionchange', function(){
+            var state = this.queryCommandState( name );
+            $btn.edui().disabled( state == -1 ).active( state == 1 );
+        });
+
+        $btn = $.eduisplitbutton({
+            icon: 'font',
+            title: me.getLang("labelMap")[name],
+            caret: true,
+            click: function() {
+                me.execCommand( name, getCurrentColor() );
+            }
+        });
+
+        fontIcon = $btn.find(".icon-font");
+
+        colorPickerWidget = $.eduicolorpicker({
+            lang_clearColor: me.getLang('clearColor') || '',
+            lang_themeColor: me.getLang('themeColor') || '',
+            lang_standardColor: me.getLang('standardColor') || ''
+        }).eduitablepicker( "attachTo", $btn ).edui().on('pickcolor', function( evt, color ){
+                me.execCommand( name, color );
+        });
+
+        $btn.edui().mergeWith( colorPickerWidget.root() );
+        colorPickerWidget.on('show',function(){
+            UE.setActiveWidget(colorPickerWidget.root())
+        });
+        return $btn;
+
+        function getCurrentColor() {
+            return domUtils.getComputedStyle( fontIcon[0], 'color' );
+        }
+
+    });
