@@ -1,9 +1,11 @@
-.edui-splitbutton{
+.edui-btn-toolbar .edui-splitbutton{
    display: inline-block;*display:inline;zoom:1;
     position: relative;
     margin: 2px;
     border: 1px solid #ccc;
     width:40px;
+}
+.edui-splitbutton .btn{
 }
 .edui-splitbutton .dropdown-toggle{
     width:9px;
