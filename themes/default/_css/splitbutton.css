@@ -37,13 +37,13 @@
 
 
 /*状态反射*/
-.edui-btn-toolbar .edui-splitbutton .edui-btn:hover{
+.edui-btn-toolbar .edui-splitbutton.hover .edui-btn{
     padding:1px;
     border-width: 1px 0 1px 1px;
     border-color:#dcac6c;
     background-color: #fff5d4;
 }
-.edui-btn-toolbar .edui-splitbutton .edui-dropdown-toggle:hover{
+.edui-btn-toolbar .edui-splitbutton.hover .edui-dropdown-toggle{
     padding:1px;
     border:1px solid #dcac6c;
     background-color: #fff5d4;

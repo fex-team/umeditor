@@ -19,6 +19,13 @@ UE.ui.define('splitbutton',{
                 $.proxy(options.click,me)();
             }
         });
+
+        me.root().hover(function () {
+            if(!me.root().hasClass("disabled")){
+                me.root().toggleClass('hover')
+            }
+        });
+
         return me;
     },
     wrapclick:function(fn,evt){

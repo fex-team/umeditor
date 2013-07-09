@@ -5,8 +5,8 @@ UE.ui.define('modal', {
         '<div class="edui-close" data-hide="modal">×</div>' +
         '<h3 class="edui-title"><%=title%></h3>' +
         '</div>' +
-        '<div class="edui-modal-body"  style="<%if(width){% >width:<%=width%>px;<%}%>' +
-        '<%if(height){%> height:<%=height%>px; <%}%>" >' +
+        '<div class="edui-modal-body"  style="<%if(width){%>width:<%=width%>px;<%}%>' +
+        '<%if(height){%>height:<%=height%>px;<%}%>">' +
         ' </div>' +
         '<% if(cancellabel || oklabel) {%>' +
         '<div class="edui-modal-footer">' +
@@ -30,7 +30,6 @@ UE.ui.define('modal', {
         me.root($($.parseTmpl(me.tpl, options || {})));
 
         me.data("options", options);
-
         if(options.okFn){
             me.on('ok', $.proxy(options.okFn,me))
         }

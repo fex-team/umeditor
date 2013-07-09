@@ -17,19 +17,17 @@ UE.ui.define('button', {
     },
     init: function (options) {
         var me = this;
+
         me.root($($.parseTmpl(me.tpl, options)))
             .click(function (evt) {
                 me.wrapclick(options.click, evt)
             });
 
-
-        //处理ie6以下不支持:hover伪类
-        if ($.IE6) {
-            me.root().hover(function () {
+        me.root().hover(function () {
+            if(!me.root().hasClass("disabled")){
                 me.root().toggleClass('hover')
-            });
-        }
-
+            }
+        });
 
         return me;
     },
