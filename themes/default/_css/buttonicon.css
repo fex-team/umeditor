@@ -1,83 +1,80 @@
-.edui-btn-toolbar .btn .icon-resize-full {
-    background-position: -140px 0;
-}
-.edui-btn-toolbar .btn .icon-source {
+.edui-btn-toolbar .edui-btn .edui-icon-source {
     background-position:-260px -0px;
 }
-.edui-btn-toolbar .btn .icon-undo {
+.edui-btn-toolbar .edui-btn .edui-icon-undo {
     background-position: -160px 0;
 }
-.edui-btn-toolbar .btn .icon-redo {
+.edui-btn-toolbar .edui-btn .edui-icon-redo {
     background-position: -100px 0;
 }
-.edui-btn-toolbar  .btn .icon-bold{
+.edui-btn-toolbar  .edui-btn .edui-icon-bold{
     background-position: 0 0;
 }
-.edui-btn-toolbar  .btn .icon-italic {
+.edui-btn-toolbar  .edui-btn .edui-icon-italic {
     background-position: -60px 0;
 }
-.edui-btn-toolbar  .btn .icon-underline  {
+.edui-btn-toolbar  .edui-btn .edui-icon-underline  {
     background-position: -140px 0
 }
-.edui-btn-toolbar .btn .icon-strikethrough {
+.edui-btn-toolbar .edui-btn .edui-icon-strikethrough {
     background-position: -120px 0;
 }
 
-.edui-btn-toolbar .btn .icon-superscript {
+.edui-btn-toolbar .edui-btn .edui-icon-superscript {
     background-position: -620px 0;
 }
-.edui-btn-toolbar .btn .icon-subscript {
+.edui-btn-toolbar .edui-btn .edui-icon-subscript {
     background-position:  -600px 0;
 }
-.edui-btn-toolbar .btn .icon-font {
+.edui-btn-toolbar .edui-btn .edui-icon-font {
     background-position: -720px 0;
 }
 
-.edui-btn-toolbar .btn .icon-insertorderedlist {
+.edui-btn-toolbar .edui-btn .edui-icon-insertorderedlist {
     background-position: -80px 0;
 }
-.edui-btn-toolbar .btn .icon-insertunorderedlist {
+.edui-btn-toolbar .edui-btn .edui-icon-insertunorderedlist {
     background-position:   -725px -40px;
 }
-.edui-btn-toolbar .btn .icon-selectall {
+.edui-btn-toolbar .edui-btn .edui-icon-selectall {
     background-position: -400px -20px;
 }
-.edui-btn-toolbar .btn .icon-cleardoc {
+.edui-btn-toolbar .edui-btn .edui-icon-cleardoc {
     background-position: -520px 0;
 }
-.edui-btn-toolbar .btn .icon-paragraph {
+.edui-btn-toolbar .edui-btn .edui-icon-paragraph {
     background-position: -140px 0;
 }
 
-.edui-btn-toolbar .btn .icon-fontfamily {
+.edui-btn-toolbar .edui-btn .edui-icon-fontfamily {
     background-position: -140px 0;
 }
 
-.edui-btn-toolbar .btn .icon-fontsize {
+.edui-btn-toolbar .edui-btn .edui-icon-fontsize {
     background-position: -140px 0;
 }
 
-.edui-btn-toolbar .btn .icon-justifyleft {
+.edui-btn-toolbar .edui-btn .edui-icon-justifyleft {
     background-position: -460px 0;
 }
 
-.edui-btn-toolbar .btn .icon-justifycenter {
+.edui-btn-toolbar .edui-btn .edui-icon-justifycenter {
     background-position: -420px 0;
 }
 
-.edui-btn-toolbar .btn .icon-justifyright {
+.edui-btn-toolbar .edui-btn .edui-icon-justifyright {
     background-position:-480px 0;
 }
 
-.edui-btn-toolbar .btn .icon-justifyjustify {
+.edui-btn-toolbar .edui-btn .edui-icon-justifyjustify {
     background-position: -440px 0;
 }
 
-.edui-btn-toolbar .btn .icon-link {
+.edui-btn-toolbar .edui-btn .edui-icon-link {
     background-position: -500px 0;
 }
 
-.edui-btn-toolbar .btn .icon-unlink {
+.edui-btn-toolbar .edui-btn .edui-icon-unlink {
     background-position: -640px 0;
 }
 

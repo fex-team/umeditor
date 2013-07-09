@@ -1,4 +1,4 @@
-.modal {
+.edui-modal {
     position: fixed;
     top: 10%;
     left: 50%;
@@ -9,11 +9,11 @@
     border: 1px solid #999;
     outline: none;
 }
-.modal-header {
+.edui-modal-header {
     padding: 9px 15px;
     border-bottom: 1px solid #eee;
 }
-.modal-header .close {
+.edui-modal-header .edui-close {
     margin-top: 2px;
     float: right;
     font-size: 20px;
@@ -28,12 +28,12 @@
     background: url("../images/icons-all.gif") no-repeat 0 -89px;
     border: 0;
 }
-.modal-header .edui-title {
+.edui-modal-header .edui-title {
     margin: 0;
     line-height: 30px;
     font-size: 24.5px;
 }
-.modal-body {
+.edui-modal-body {
     position: relative;
     max-height: 400px;
     padding: 15px;
