@@ -1,4 +1,4 @@
-.edui-btn-toolbar .tooltip{
+.edui-btn-toolbar .edui-tooltip{
     position: absolute;
     padding: 5px 0;
     display: none;
@@ -6,7 +6,7 @@
     opacity: 0.8;
     filter: alpha(opacity=80);
 }
-.tooltip .tooltip-arrow{
+.edui-tooltip .edui-tooltip-arrow{
     position: absolute;
     top: 0;
     left: 50%;
@@ -18,7 +18,7 @@
     border-bottom-color: #000000;
     border-width: 0 5px 5px;
 }
-.tooltip .tooltip-inner{
+.edui-tooltip .edui-tooltip-inner{
     padding: 6px;
     color: #ffffff;
     text-align: center;

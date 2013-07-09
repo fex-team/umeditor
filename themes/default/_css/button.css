@@ -3,18 +3,19 @@
     position: relative;
     margin: 5px;
 }
-.edui-btn-toolbar .btn{
+.edui-btn-toolbar .edui-btn{
     position: relative;
-    display: -moz-inline-box !important;
     display: inline-block !important;
     vertical-align: top;
+    *display: inline !important;
+    *zoom:1;
     width:auto;
     margin: 0;
     padding:1px;
     border:none;
     background: none;
 }
-.edui-btn-toolbar .btn .edui-icon{
+.edui-btn-toolbar .edui-btn .edui-icon{
     width: 20px;
     height: 20px;
     margin: 0;
@@ -25,15 +26,15 @@
 }
 
 /*状态反射*/
-.edui-btn-toolbar .btn:hover,
-.edui-btn-toolbar .btn.hover,
-.edui-btn-toolbar .btn.active{
+.edui-btn-toolbar .edui-btn:hover,
+.edui-btn-toolbar .edui-btn.hover,
+.edui-btn-toolbar .edui-btn.active{
     background-color: #fff5d4;
     padding: 0;
     border: 1px solid #dcac6c;
 }
 
-.edui-btn-toolbar .btn.disabled{
+.edui-btn-toolbar .edui-btn.disabled{
     opacity: 0.3;
     filter: alpha(opacity = 30);
 }
