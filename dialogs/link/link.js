@@ -9,7 +9,6 @@ UE.registerWidget('link',{
 
         '</table>',
     initContent:function(editor){
-        debugger
         var lang = editor.getLang('link');
         if(lang){
             var html = $.parseTmpl(this.tpl,lang.static);
