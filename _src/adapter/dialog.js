@@ -25,16 +25,16 @@
                  if(data.buttons){
                      var tmpObj = data.buttons.ok;
                      if(tmpObj){
-                         opt.oklabel = tmpObj.oklabel || me.getLang('ok');
+                         opt.oklabel = tmpObj.label || me.getLang('ok');
                          if(tmpObj.exec){
-                             opt.okFn = $.proxy(tmpObj.exec,null,editor)
+                             opt.okFn = $.proxy(tmpObj.exec,null,me)
                          }
                      }
                      tmpObj = data.buttons.cancel;
                      if(tmpObj){
-                         opt.cancellabel = tmpObj.cancellabel || me.getLang('cancel');
+                         opt.cancellabel = tmpObj.label || me.getLang('cancel');
                          if(tmpObj.exec){
-                             opt.cancelFn = $.proxy(tmpObj.exec,null,editor)
+                             opt.cancelFn = $.proxy(tmpObj.exec,null,me)
                          }
                      }
                  }
@@ -53,7 +53,6 @@
                      }
                  }).on('beforeshow', function () {
                      currentRange = me.selection.getRange();
-                     UE.setActiveWidget(this.root());
                      UE.setWidgetBody(name,$dialog,me);
 
                  });
@@ -70,8 +69,7 @@
                          me.$container.find('.edui-dialog-container').append($dialog);
                      }
                      $dialog.edui().show();
-                     UE.setActiveEditor(me);
-                     me.$activeDialog = $dialog;
+
                  },
                  title: this.getLang('labelMap')[name] || ''
              });

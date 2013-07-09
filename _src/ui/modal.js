@@ -155,7 +155,7 @@ UE.ui.define('modal', {
         me.hide();
     },
     getBodyCont: function () {
-        return this.root().find('.modal-body')
+        return this.root().find('.edui-modal-body')
     }
 });
 

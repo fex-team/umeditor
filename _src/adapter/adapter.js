@@ -39,11 +39,7 @@
             if(!pro){
                 return null;
             }
-
             pro.root($widget.edui().getBodyCont());
-            if(pro.ok){
-                $widget.edui().on('ok', $.proxy(pro.ok,pro,editor,$widget))
-            }
             pro.root().html('');
             pro.initContent(editor);
             if(!pro.preventDefault){
