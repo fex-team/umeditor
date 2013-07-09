@@ -26,7 +26,6 @@
 }
 
 /*状态反射*/
-.edui-btn-toolbar .edui-btn:hover,
 .edui-btn-toolbar .edui-btn.hover,
 .edui-btn-toolbar .edui-btn.active{
     background-color: #fff5d4;
@@ -34,7 +33,7 @@
     border: 1px solid #dcac6c;
 }
 
-.edui-btn-toolbar .edui-btn.disabled{
+.edui-btn-toolbar .edui-btn.disabled .edui-icon{
     opacity: 0.3;
     filter: alpha(opacity = 30);
 }
