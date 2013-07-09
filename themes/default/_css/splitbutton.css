@@ -1,14 +1,16 @@
 .edui-btn-toolbar .edui-splitbutton{
-   display: inline-block;*display:inline;zoom:1;
     position: relative;
+    display: -moz-inline-box !important;
+    display: inline-block !important;
+    vertical-align: top;
     margin: 2px;
     border: 1px solid #ccc;
-    width:35px;
-    height: 25px;
 }
-
 .edui-splitbutton .caret{
-   display: inline-block;*display:inline;zoom:1;
+    position: relative;
+    display: -moz-inline-box !important;
+    display: inline-block !important;
+    vertical-align: top;
     width: 10px;
     height: 20px;
     background: url(../images/icons.png) -741px 0;

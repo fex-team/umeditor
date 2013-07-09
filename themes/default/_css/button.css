@@ -4,8 +4,10 @@
     margin: 5px;
 }
 .edui-btn-toolbar .btn{
-    display: inline-block ;*display:inline;zoom:1;
     position: relative;
+    display: -moz-inline-box !important;
+    display: inline-block !important;
+    vertical-align: top;
     width:auto;
     margin: 0;
     padding:1px;
