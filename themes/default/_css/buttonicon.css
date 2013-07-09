@@ -78,31 +78,31 @@
     background-position: -640px 0;
 }
 
-.edui-btn-toolbar .btn .icon-insertimage {
+.edui-btn-toolbar .edui-btn .edui-icon-insertimage {
     background-position: -380px 0;
 }
 
-.edui-btn-toolbar .btn .icon-emotion {
+.edui-btn-toolbar .edui-btn .edui-icon-emotion {
     background-position: -140px 0;
 }
-.edui-btn-toolbar .btn .icon-insertvideo {
+.edui-btn-toolbar .edui-btn .edui-icon-insertvideo {
     background-position: -320px -20px;
 }
 
-.edui-btn-toolbar .btn .icon-map {
+.edui-btn-toolbar .edui-btn .edui-icon-map {
     background-position:  -40px -40px;
 }
 
-.edui-btn-toolbar .btn .icon-gmap {
+.edui-btn-toolbar .edui-btn .icon-gmap {
     background-position:  -260px -40px;
 }
-.edui-btn-toolbar .btn .icon-horizontal {
+.edui-btn-toolbar .edui-btn .edui-icon-horizontal {
     background-position: -360px 0;
 }
 
-.edui-btn-toolbar .btn .icon-print {
+.edui-btn-toolbar .edui-btn .edui-icon-print {
     background-position: -440px -20px;
 }
-.edui-btn-toolbar .btn .icon-preview {
+.edui-btn-toolbar .edui-btn .edui-icon-preview {
     background-position: -420px -20px;
 }
