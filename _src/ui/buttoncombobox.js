@@ -18,7 +18,7 @@
                 label: '',
                 title: ''
             },
-            _init: function( options ) {
+            init: function( options ) {
 
                 var me = this;
 
@@ -29,8 +29,11 @@
                     text: options.label
                 });
 
+                me.supper.init.call( me, options );
+
                 me.attachTo( btnWidget );
 
+                //监听change， 改变button显示内容
                 me.on('changebefore', function( e, label ){
                     btnWidget.eduibutton('label', label );
                 });
