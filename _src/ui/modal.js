@@ -6,7 +6,6 @@ UE.ui.define ('modal' , {
         '<h3 class="edui-title"><%=title%></h3>' +
         '</div>' +
         '<div class="modal-body edui-modal-body">' +
-        '<iframe height="100%" width="100%" frameborder="0" src="<%=url%>"></iframe>' +
         ' </div>' +
         '<% if(cancellabel || oklabel) {%>' +
         '<div class="modal-footer">' +
@@ -30,9 +29,28 @@ UE.ui.define ('modal' , {
 
         me.data ("options" , options);
 
+        me.loadData(options.url);
+
         me.root ().delegate ('[data-hide="modal"]' , 'click' , $.proxy (me.hide , me));
         me.root ().delegate ('[data-ok="modal"]' , 'click' , $.proxy (me.ok , me));
-    } ,
+    },
+    loadData : function(url){
+        utils.loadFile(document, {
+            src: url,
+            tag: "script",
+            type: "text/javascript",
+            defer: "defer"
+        });
+        return this;
+    },
+    body:function($cont){
+        if($cont){
+            this.root().find('.modal-body').html('').append($cont);
+            return this
+        }else{
+            return $(this.root().find('.modal-body').html())
+        }
+    },
     toggle: function () {
         var me = this;
         return me[!me.data ("isShown") ? 'show' : 'hide'] ();

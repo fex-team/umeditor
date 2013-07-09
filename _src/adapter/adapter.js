@@ -31,7 +31,7 @@
                 }
             });
         },
-        getDialogRoot : function(name,$dialog,editor){
+        setDialogBody : function(name,$dialog,editor){
             var pro = _dialogs[name];
             if(!pro){
                 return null;
