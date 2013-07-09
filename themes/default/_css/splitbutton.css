@@ -1,22 +1,38 @@
 .edui-btn-toolbar .edui-splitbutton{
-   display: inline-block;*display:inline;zoom:1;
     position: relative;
-    margin: 2px;
-    border: 1px solid #ccc;
-    width:40px;
+    display: inline-block !important;
+    display: -moz-inline-box !important;
+    vertical-align: top;
+    margin:0 2px;
 }
 .edui-splitbutton .btn{
-}
-.edui-splitbutton .dropdown-toggle{
-    width:9px;
-    height:20px;
+    border-width: 1px 0 1px 1px;
+    border-style: solid;
+    border-color:#ccc;
 }
 .edui-splitbutton .caret{
-   display: inline-block;*display:inline;zoom:1;
-    width: 9px;
-    height: 100%;
+    position: relative;
+    display: -moz-inline-box !important;
+    display: inline-block !important;
+    vertical-align: top;
+    width: 8px;
+    height: 20px;
     background: url(../images/icons.png) -741px 0;
     _background: url(../images/icons.gif) -741px 0;
+}
+.edui-splitbutton .dropdown-toggle{
+    border:1px solid #ccc;
+}
+.edui-btn-toolbar .edui-splitbutton .btn:hover{
+    padding:1px;
+    border-width: 1px 0 1px 1px;
+    border-color:#dcac6c;
+    background-color: #fff5d4;
+}
+.edui-btn-toolbar .edui-splitbutton .dropdown-toggle:hover{
+    padding:1px;
+    border:1px solid #dcac6c;
+    background-color: #fff5d4;
 }
 .edui-splitbutton .edui-popup{
     position: absolute;
@@ -26,19 +42,4 @@
     display: none;
     background-color: #ffffff;
     border: 1px solid #ccc;
-}
-.edui-btn-toolbar .edui-splitbutton:hover,
-.edui-btn-toolbar .edui-splitbutton.hover
-{
-    background-color: #fff5d4;
-    padding: 0;
-    border: 1px solid #dcac6c;
-}
-
-.edui-btn-toolbar .edui-splitbutton .btn:hover,
-.edui-btn-toolbar .edui-splitbutton .btn.hover
-{
-    background-color: transparent;
-    padding:0;
-    border: 1px solid transparent;
 }
