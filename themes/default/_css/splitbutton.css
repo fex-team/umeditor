@@ -25,16 +25,16 @@
     background-color: #ffffff;
     border: 1px solid #ccc;
 }
-.edui-btn-group .edui-splitbutton:hover,
-.edui-btn-group .edui-splitbutton.hover
+.edui-btn-toolbar .edui-splitbutton:hover,
+.edui-btn-toolbar .edui-splitbutton.hover
 {
     background-color: #fff5d4;
     padding: 0;
     border: 1px solid #dcac6c;
 }
 
-.edui-btn-group .edui-splitbutton .btn:hover,
-.edui-btn-group .edui-splitbutton .btn.hover
+.edui-btn-toolbar .edui-splitbutton .btn:hover,
+.edui-btn-toolbar .edui-splitbutton .btn.hover
 {
     background-color: transparent;
     padding:0;

@@ -1,111 +1,111 @@
-.edui-btn-group .btn .icon-resize-full {
+.edui-btn-toolbar .btn .icon-resize-full {
     background-position: -140px 0;
 }
-.edui-btn-group .btn .icon-source {
+.edui-btn-toolbar .btn .icon-source {
     background-position:-260px -0px;
 }
-.edui-btn-group .btn .icon-undo {
+.edui-btn-toolbar .btn .icon-undo {
     background-position: -160px 0;
 }
-.edui-btn-group .btn .icon-redo {
+.edui-btn-toolbar .btn .icon-redo {
     background-position: -100px 0;
 }
-.edui-btn-group  .btn .icon-bold{
+.edui-btn-toolbar  .btn .icon-bold{
     background-position: 0 0;
 }
-.edui-btn-group  .btn .icon-italic {
+.edui-btn-toolbar  .btn .icon-italic {
     background-position: -60px 0;
 }
-.edui-btn-group  .btn .icon-underline  {
+.edui-btn-toolbar  .btn .icon-underline  {
     background-position: -140px 0
 }
-.edui-btn-group .btn .icon-strikethrough {
+.edui-btn-toolbar .btn .icon-strikethrough {
     background-position: -120px 0;
 }
 
-.edui-btn-group .btn .icon-superscript {
+.edui-btn-toolbar .btn .icon-superscript {
     background-position: -620px 0;
 }
-.edui-btn-group .btn .icon-subscript {
+.edui-btn-toolbar .btn .icon-subscript {
     background-position:  -600px 0;
 }
-.edui-btn-group .btn .icon-font {
+.edui-btn-toolbar .btn .icon-font {
     background-position: -720px 0;
 }
 
-.edui-btn-group .btn .icon-insertorderedlist {
+.edui-btn-toolbar .btn .icon-insertorderedlist {
     background-position: -80px 0;
 }
-.edui-btn-group .btn .icon-insertunorderedlist {
+.edui-btn-toolbar .btn .icon-insertunorderedlist {
     background-position:   -725px -40px;
 }
-.edui-btn-group .btn .icon-selectall {
+.edui-btn-toolbar .btn .icon-selectall {
     background-position: -400px -20px;
 }
-.edui-btn-group .btn .icon-cleardoc {
+.edui-btn-toolbar .btn .icon-cleardoc {
     background-position: -520px 0;
 }
-.edui-btn-group .btn .icon-paragraph {
+.edui-btn-toolbar .btn .icon-paragraph {
     background-position: -140px 0;
 }
 
-.edui-btn-group .btn .icon-fontfamily {
+.edui-btn-toolbar .btn .icon-fontfamily {
     background-position: -140px 0;
 }
 
-.edui-btn-group .btn .icon-fontsize {
+.edui-btn-toolbar .btn .icon-fontsize {
     background-position: -140px 0;
 }
 
-.edui-btn-group .btn .icon-justifyleft {
+.edui-btn-toolbar .btn .icon-justifyleft {
     background-position: -460px 0;
 }
 
-.edui-btn-group .btn .icon-justifycenter {
+.edui-btn-toolbar .btn .icon-justifycenter {
     background-position: -420px 0;
 }
 
-.edui-btn-group .btn .icon-justifyright {
+.edui-btn-toolbar .btn .icon-justifyright {
     background-position:-480px 0;
 }
 
-.edui-btn-group .btn .icon-justifyjustify {
+.edui-btn-toolbar .btn .icon-justifyjustify {
     background-position: -440px 0;
 }
 
-.edui-btn-group .btn .icon-link {
+.edui-btn-toolbar .btn .icon-link {
     background-position: -500px 0;
 }
 
-.edui-btn-group .btn .icon-unlink {
+.edui-btn-toolbar .btn .icon-unlink {
     background-position: -640px 0;
 }
 
-.edui-btn-group .btn .icon-insertimage {
+.edui-btn-toolbar .btn .icon-insertimage {
     background-position: -380px 0;
 }
 
-.edui-btn-group .btn .icon-emotion {
+.edui-btn-toolbar .btn .icon-emotion {
     background-position: -140px 0;
 }
-.edui-btn-group .btn .icon-insertvideo {
+.edui-btn-toolbar .btn .icon-insertvideo {
     background-position: -320px -20px;
 }
 
-.edui-btn-group .btn .icon-map {
+.edui-btn-toolbar .btn .icon-map {
     background-position:  -40px -40px;
 }
 
-.edui-btn-group .btn .icon-gmap {
+.edui-btn-toolbar .btn .icon-gmap {
     background-position:  -260px -40px;
 }
-.edui-btn-group .btn .icon-horizontal {
+.edui-btn-toolbar .btn .icon-horizontal {
     background-position: -360px 0;
 }
 
-.edui-btn-group .btn .icon-print {
+.edui-btn-toolbar .btn .icon-print {
     background-position: -440px -20px;
 }
-.edui-btn-group .btn .icon-preview {
+.edui-btn-toolbar .btn .icon-preview {
     background-position: -420px -20px;
 }

@@ -1,10 +1,10 @@
 /*普通按钮*/
-.edui-btn-toolbar .edui-btn-group{
+.edui-btn-toolbar .edui-btn-toolbar{
     display: inline-block;*display:inline;zoom:1;
     position: relative;
     margin: 5px;
 }
-.edui-btn-group .btn{
+.edui-btn-toolbar .btn{
     display: inline-block ;*display:inline;zoom:1;
     position: relative;
     width:auto;
@@ -13,7 +13,7 @@
     border-width: 0;
     background: none;
 }
-.edui-btn-group .btn .edui-icon{
+.edui-btn-toolbar .btn .edui-icon{
     display: inline-block ;*display:inline;zoom:1;
     width: 20px;
     height: 20px;
@@ -26,15 +26,15 @@
 }
 
 /*状态反射*/
-.edui-btn-group .btn:hover,
-.edui-btn-group .btn.hover,
-.edui-btn-group .btn.active{
+.edui-btn-toolbar .btn:hover,
+.edui-btn-toolbar .btn.hover,
+.edui-btn-toolbar .btn.active{
     background-color: #fff5d4;
     padding: 0;
     border: 1px solid #dcac6c;
 }
 
-.edui-btn-group .btn.disable{
+.edui-btn-toolbar .btn.disable{
     opacity: 0.3;
     filter: alpha(opacity = 30);
 }
