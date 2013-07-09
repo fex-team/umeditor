@@ -52,13 +52,13 @@
 
                 var me = this;
 
-                var btnWidget = $.eduibutton({
-                    caret: true,
-                    title: options.title,
-                    mode: options.mode,
-                    text: options.label,
-                    click: $.proxy( me.open, me )
-                });
+//                var btnWidget = $.eduibutton({
+//                    caret: true,
+//                    title: options.title,
+//                    mode: options.mode,
+//                    text: options.label,
+//                    click: $.proxy( me.open, me )
+//                });
 
                 //参数适配转换一下
                 optionAdaptation( options );
@@ -69,22 +69,12 @@
 
                 me.root( $( $.parseTmpl( me.tpl(options), options ) ) );
 
-                me.attachTo( btnWidget );
-
                 this.data( 'options', options );
-                this.data( 'box', btnWidget );
 
                 this.initEvent();
 
-            },
-            box: function(){
-                return this.data( 'box' );
-            },
-            open: function(){
-                this.show();
-            },
-            close: function(){
-                this.hide();
+                this._init && this._init( options );
+
             },
             initEvent: function(){
 
@@ -102,22 +92,22 @@
                     } );
 
                     me.selectItem( index );
-                    me.close();
+                    me.hide();
 
                     return false;
 
                 });
                 //处理ie6以下不支持:hover伪类
-                if ($.IE6) {
-                    var $last;
-                    this.root().delegate('li', 'mouseover', function(){
-                        var $this = $(this);
-                        if($last){
-                            $last.removeClass('hover')
-                        }
-                        $last = $this.addClass('hover');
-                    });
-                }
+//                if ($.IE6) {
+//                    var $last;
+//                    this.root().delegate('li', 'mouseover', function(){
+//                        var $this = $(this);
+//                        if($last){
+//                            $last.removeClass('hover')
+//                        }
+//                        $last = $this.addClass('hover');
+//                    });
+//                }
 
 
             },
@@ -148,9 +138,9 @@
 
                 if( currentItem.length ) {
 
-                    //更改按钮标签内容
-                    this.box().eduibutton('label', items[ index ] );
+                    this.trigger( 'changebefore', items[ index ] );
                     this.selectByItemNode( currentItem[0] );
+                    this.trigger( 'changeafter', items[ index ] );
 
                     return currentItem[0];
 
@@ -216,16 +206,13 @@
 
         function optionAdaptation( options ) {
 
-            switch( options.mode ) {
-                case 'fontFamily':
-                    //字体参数适配
-                    fontFamilyAdaptation( options );
-                    break;
-                case 'fontSize':
-                    fontSizeAdaption( options );
-                    break;
-                default:
-                    commonAdaptation( options );
+            if( !( 'itemStyles' in options ) ) {
+
+                options.itemStyles = [];
+
+                for( var i = 0, len = options.items.length; i < len; i++ ) {
+                    options.itemStyles.push('');
+                }
 
             }
 
