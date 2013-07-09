@@ -1,6 +1,6 @@
 /*tooltip 类*/
 UE.ui.define('tooltip', {
-    tpl: '<div class="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+    tpl: '<div class="edui-tooltip"><div class="edui-tooltip-arrow"></div><div class="edui-tooltip-inner"></div></div>',
     init: function (options) {
         var me = this;
         me.root($($.parseTmpl(me.tpl, options || {})));
@@ -9,7 +9,7 @@ UE.ui.define('tooltip', {
         var me = this,
             title = $(e.currentTarget).attr("data-original-title");
 
-        me.root().find('.tooltip-inner')['text'](title);
+        me.root().find('.edui-tooltip-inner')['text'](title);
     },
     position: function (e) {
         var me = this,

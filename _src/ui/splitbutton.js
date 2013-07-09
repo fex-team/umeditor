@@ -1,9 +1,9 @@
 //splitbutton 类
 ///import button
 UE.ui.define('splitbutton',{
-    tpl :'<div class="edui-splitbutton" <%if(title){%>data-original-title="<%=title%>"<%}%>><div class="btn"><%if(icon){%><div class="icon-<%=icon%> edui-icon"></div><%}%><%if(text){%><%=text%><%}%></div>'+
-            '<div class="btn dropdown-toggle" >'+
-                '<div class="caret"><\/div>'+
+    tpl :'<div class="edui-splitbutton" <%if(title){%>data-original-title="<%=title%>"<%}%>><div class="edui-btn"><%if(icon){%><div class="edui-icon-<%=icon%> edui-icon"></div><%}%><%if(text){%><%=text%><%}%></div>'+
+            '<div class="edui-btn edui-dropdown-toggle" >'+
+                '<div class="edui-caret"><\/div>'+
             '</div>'+
         '</div>',
     defaultOpt:{
@@ -19,6 +19,13 @@ UE.ui.define('splitbutton',{
                 $.proxy(options.click,me)();
             }
         });
+
+        me.root().hover(function () {
+            if(!me.root().hasClass("disabled")){
+                me.root().toggleClass('hover')
+            }
+        });
+
         return me;
     },
     wrapclick:function(fn,evt){
@@ -31,14 +38,14 @@ UE.ui.define('splitbutton',{
         if(state === undefined){
             return this.root().hasClass('disabled')
         }
-        this.root().toggleClass('disabled',state).find('.btn').toggleClass('disabled',state);
+        this.root().toggleClass('disabled',state).find('.edui-btn').toggleClass('disabled',state);
         return this;
     },
     active:function(state){
         if(state === undefined){
             return this.root().hasClass('active')
         }
-        this.root().toggleClass('active',state).find('.btn:first').toggleClass('active',state);
+        this.root().toggleClass('active',state).find('.edui-btn:first').toggleClass('active',state);
         return this;
     },
     mergeWith:function($obj){
@@ -48,12 +55,12 @@ UE.ui.define('splitbutton',{
         if(!$.contains(document.body,$obj[0])){
             $obj.appendTo(me.root());
         }
-        me.root().on('click','.dropdown-toggle',function(){
+        me.root().on('click','.edui-dropdown-toggle',function(){
             me.wrapclick(function(){
                 $obj.edui().show();
             })
         });
-        me.register('click',me.root().find('.dropdown-toggle'),function(evt){
+        me.register('click',me.root().find('.edui-dropdown-toggle'),function(evt){
             $obj.hide()
         });
     }

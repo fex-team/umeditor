@@ -27,7 +27,7 @@
     margin: 0;
     padding:0 3px;
 }
-.edui-combobox .caret{
+.edui-combobox .edui-caret{
     position: relative;
     display: inline-block !important;
     vertical-align: top;

@@ -1,9 +1,9 @@
 //button 类
 UE.ui.define('button', {
-    tpl: '<<%if(!texttype){%>div class="btn" <%}else{%>a class="edui-text-btn"<%}%><% if(title) {%> data-original-title="<%=title%>" <%};%>> ' +
-        '<% if(icon) {%><div class="icon-<%=icon%> edui-icon"></div><% }; %><%if(text) {%><span class="edui-button-label<%if (mode==="fontFamily") {%> edui-button-font-label<%} else if( mode==="fontSize" ){%> edui-button-fontsize-label<%}%>"><%=text%></span><%}%>' +
+    tpl: '<<%if(!texttype){%>div class="edui-btn" <%}else{%>a class="edui-text-btn"<%}%><% if(title) {%> data-original-title="<%=title%>" <%};%>> ' +
+        '<% if(icon) {%><div class="edui-icon-<%=icon%> edui-icon"></div><% }; %><%if(text) {%><span class="edui-button-label<%if (mode==="fontFamily") {%> edui-button-font-label<%} else if( mode==="fontSize" ){%> edui-button-fontsize-label<%}%>"><%=text%></span><%}%>' +
         '<%if(caret && text){%><span class="edui-button-spacing"></span><%}%>' +
-        '<% if(caret) {%><span class="caret"></span><% };%></<%if(!texttype){%>div<%}else{%>a<%}%>>',
+        '<% if(caret) {%><span class="edui-caret"></span><% };%></<%if(!texttype){%>div<%}else{%>a<%}%>>',
     defaultOpt: {
         text: '',
         title: '',
@@ -17,19 +17,17 @@ UE.ui.define('button', {
     },
     init: function (options) {
         var me = this;
+
         me.root($($.parseTmpl(me.tpl, options)))
             .click(function (evt) {
                 me.wrapclick(options.click, evt)
             });
 
-
-        //处理ie6以下不支持:hover伪类
-        if ($.IE6) {
-            me.root().hover(function () {
+        me.root().hover(function () {
+            if(!me.root().hasClass("disabled")){
                 me.root().toggleClass('hover')
-            });
-        }
-
+            }
+        });
 
         return me;
     },
