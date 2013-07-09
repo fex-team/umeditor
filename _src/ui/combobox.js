@@ -33,9 +33,6 @@
 
             },
             defaultOpt: {
-                //按钮初始文字
-                label: '',
-                title: '',
                 //记录栈初始列表
                 recordStack: [],
                 //可用项列表
@@ -52,14 +49,6 @@
 
                 var me = this;
 
-//                var btnWidget = $.eduibutton({
-//                    caret: true,
-//                    title: options.title,
-//                    mode: options.mode,
-//                    text: options.label,
-//                    click: $.proxy( me.open, me )
-//                });
-
                 //参数适配转换一下
                 optionAdaptation( options );
 
@@ -72,8 +61,6 @@
                 this.data( 'options', options );
 
                 this.initEvent();
-
-                this._init && this._init( options );
 
             },
             initEvent: function(){

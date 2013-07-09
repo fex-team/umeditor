@@ -13,6 +13,7 @@ UE.registerUI('fontfamily', function( name ) {
             recordStack: []
         },
         fontFamily = options.items,
+        $fontFamilyCombobox = null,
         temp = null,
         tempItems = [];
 
@@ -36,7 +37,7 @@ UE.registerUI('fontfamily', function( name ) {
     options.items = tempItems;
 
 
-    $fontCombobox = $.eduibuttoncombobox( options ).edui().on( 'comboboxselect', function( evt, res ){
+    $fontFamilyCombobox = $.eduibuttoncombobox( options ).edui().on( 'comboboxselect', function( evt, res ){
         me.execCommand( name, res.value );
     });
 
@@ -45,19 +46,19 @@ UE.registerUI('fontfamily', function( name ) {
 
         //设置按钮状态
         var state = this.queryCommandState( name );
-        $fontCombobox.button().edui().disabled( state == -1 ).active( state == 1 );
+        $fontFamilyCombobox.button().edui().disabled( state == -1 ).active( state == 1 );
 
         //设置当前字体
         var fontFamily = this.queryCommandValue( name );
 
         fontFamily = fontFamily.replace(/^\s*['|"]|['|"]\s*$/g, '');
 
-        $fontCombobox.selectItemByLabel( fontFamily.split(/['|"]?\s*,\s*[\1]?/) );
+        $fontFamilyCombobox.selectItemByLabel( fontFamily.split(/['|"]?\s*,\s*[\1]?/) );
 
     });
 
 
-    return $fontCombobox.button();
+    return $fontFamilyCombobox.button().addClass('edui-combobox');
 
     /**
      * 执行宽度自适应
@@ -99,23 +100,30 @@ UE.registerUI('fontfamily', function( name ) {
 });
 
 
-//
-//UE.registerUI('fontsize', function( name ) {
-//
-//        var me = this,
-//            $fontCombobox = $.eduicombobox({
-//                label: '16',
-//                title: me.getLang("labelMap")[name],
-//                autorecord: false,
-//                mode: 'fontSize',
-//                items: me.options.fontsize
-//            }),
-//            $btn = $fontCombobox.eduicombobox('box').eduicombobox('on', 'comboboxselect', function(evt, res) {
-//
-//                me.execCommand( name, res.value + 'px' );
-//
-//            });
-//        $btn.addClass('edui-combobox');
+UE.registerUI('fontsize', function( name ) {
+
+        var me = this,
+            options = {
+                label: '16',
+                title: me.getLang("labelMap")[name],
+                autorecord: false,
+                items: me.options.fontsize
+            },
+            $fontSizeCombobox = null;
+
+        options = parseOption( options );
+
+        $fontSizeCombobox = $.eduibuttoncombobox( options );
+
+        $btn = $fontSizeCombobox.edui().button();
+        $btn.on( 'comboboxselect', function(evt, res) {
+
+            me.execCommand( name, res.value + 'px' );
+
+        });
+
+        $btn.addClass('edui-combobox');
+
 //        //querycommand
 //        this.addListener('selectionchange',function(){
 //
@@ -128,13 +136,42 @@ UE.registerUI('fontfamily', function( name ) {
 //            $fontCombobox.eduicombobox( 'selectItemByLabel', fontSize.replace('px', '') );
 //
 //        });
-//
-//        return $btn;
-//
-//    }
-//
-//);
-//
+
+        return $btn;
+
+        /**
+         * font-size参数解析
+         * @param options 原始参数
+         * @returns 解析后的参数
+         */
+        function parseOption( options ) {
+
+            var fontSize = options.items,
+                temp = null,
+                tempItems = [];
+
+            options.itemStyles = [];
+            options.value = [];
+
+            for( var i = 0, len = fontSize.length; i < len; i++ ) {
+
+                temp = fontSize[ i ];
+                tempItems.push( temp );
+                options.itemStyles.push('font-size: ' + temp +'px');
+
+            }
+
+            options.value = options.items;
+            options.items = tempItems;
+
+            return options;
+
+        }
+
+    }
+
+);
+
 //
 //UE.registerUI('forecolor',
 //    function( name ) {

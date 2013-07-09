@@ -78,6 +78,15 @@
             true
         );
         ClassObj.prototype.supper = (UE.ui[supperClass] || _widget).prototype;
+        //父class的defaultOpt 合并
+        if( UE.ui[supperClass] && UE.ui[supperClass].prototype.defaultOpt ) {
+
+            var parentDefaultOptions = UE.ui[supperClass].prototype.defaultOpt,
+                subDefaultOptions = ClassObj.prototype.defaultOpt;
+
+            ClassObj.prototype.defaultOpt = $.extend( {}, parentDefaultOptions, subDefaultOptions || {} );
+
+        }
         return ClassObj
     }
 
