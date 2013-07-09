@@ -2,15 +2,15 @@
 UE.ui.define ('modal' , {
     tpl: '<div class="modal hide edui-modal" tabindex="-1" >' +
         '<div class="modal-header">' +
-        '<button type="button" class="close" data-hide="modal">×</button>' +
+        '<div type="button" class="close" data-hide="modal">×</div>' +
         '<h3 class="edui-title"><%=title%></h3>' +
         '</div>' +
         '<div class="modal-body edui-modal-body">' +
         ' </div>' +
         '<% if(cancellabel || oklabel) {%>' +
         '<div class="modal-footer">' +
-        '<%if(oklabel){%><button class="btn btn-primary" data-ok="modal"><%=oklabel%></button><%}%>' +
-        '<%if(cancellabel){%><button class="btn" data-hide="modal"><%=cancellabel%></button><%}%>' +
+        '<%if(oklabel){%><div class="btn btn-primary" data-ok="modal"><%=oklabel%></div><%}%>' +
+        '<%if(cancellabel){%><div class="btn" data-hide="modal"><%=cancellabel%></div><%}%>' +
         '</div>' +
         '<%}%></div>' ,
     defaultOpt: {
