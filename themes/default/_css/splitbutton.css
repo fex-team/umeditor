@@ -3,18 +3,14 @@
     position: relative;
     margin: 2px;
     border: 1px solid #ccc;
-    width:40px;
+    width:35px;
+    height: 25px;
 }
-.edui-splitbutton .btn{
-}
-.edui-splitbutton .dropdown-toggle{
-    width:9px;
-    height:20px;
-}
+
 .edui-splitbutton .caret{
    display: inline-block;*display:inline;zoom:1;
-    width: 9px;
-    height: 100%;
+    width: 10px;
+    height: 20px;
     background: url(../images/icons.png) -741px 0;
     _background: url(../images/icons.gif) -741px 0;
 }

@@ -1,6 +1,5 @@
 /*普通按钮*/
-.edui-btn-toolbar .edui-btn-toolbar{
-    display: inline-block;*display:inline;zoom:1;
+.edui-btn-toolbar{
     position: relative;
     margin: 5px;
 }
@@ -10,16 +9,14 @@
     width:auto;
     margin: 0;
     padding:1px;
-    border-width: 0;
+    border:none;
     background: none;
 }
 .edui-btn-toolbar .btn .edui-icon{
-    display: inline-block ;*display:inline;zoom:1;
     width: 20px;
     height: 20px;
     margin: 0;
     padding:0;
-    outline: 0;
     background-repeat: no-repeat;
     background-image: url(../images/icons.png);
     background-image: url(../images/icons.gif) \9;
@@ -34,7 +31,7 @@
     border: 1px solid #dcac6c;
 }
 
-.edui-btn-toolbar .btn.disable{
+.edui-btn-toolbar .btn.disabled{
     opacity: 0.3;
     filter: alpha(opacity = 30);
 }
