@@ -2,16 +2,15 @@
 UE.ui.define ('modal' , {
     tpl: '<div class="modal hide edui-modal" tabindex="-1" >' +
         '<div class="modal-header">' +
-        '<button type="button" class="close" data-hide="modal">×</button>' +
+        '<div type="button" class="close" data-hide="modal">×</div>' +
         '<h3 class="edui-title"><%=title%></h3>' +
         '</div>' +
         '<div class="modal-body edui-modal-body">' +
-        '<iframe height="100%" width="100%" frameborder="0" src="<%=url%>"></iframe>' +
         ' </div>' +
         '<% if(cancellabel || oklabel) {%>' +
         '<div class="modal-footer">' +
-        '<%if(oklabel){%><button class="btn btn-primary" data-ok="modal"><%=oklabel%></button><%}%>' +
-        '<%if(cancellabel){%><button class="btn" data-hide="modal"><%=cancellabel%></button><%}%>' +
+        '<%if(oklabel){%><div class="btn btn-primary" data-ok="modal"><%=oklabel%></div><%}%>' +
+        '<%if(cancellabel){%><div class="btn" data-hide="modal"><%=cancellabel%></div><%}%>' +
         '</div>' +
         '<%}%></div>' ,
     defaultOpt: {
@@ -30,9 +29,28 @@ UE.ui.define ('modal' , {
 
         me.data ("options" , options);
 
+        me.loadData(options.url);
+
         me.root ().delegate ('[data-hide="modal"]' , 'click' , $.proxy (me.hide , me));
         me.root ().delegate ('[data-ok="modal"]' , 'click' , $.proxy (me.ok , me));
-    } ,
+    },
+    loadData : function(url){
+        utils.loadFile(document, {
+            src: url,
+            tag: "script",
+            type: "text/javascript",
+            defer: "defer"
+        });
+        return this;
+    },
+    body:function($cont){
+        if($cont){
+            this.root().find('.modal-body').html('').append($cont);
+            return this
+        }else{
+            return $(this.root().find('.modal-body').html())
+        }
+    },
     toggle: function () {
         var me = this;
         return me[!me.data ("isShown") ? 'show' : 'hide'] ();

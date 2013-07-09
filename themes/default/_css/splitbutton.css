@@ -1,9 +1,11 @@
-.edui-splitbutton{
+.edui-btn-toolbar .edui-splitbutton{
    display: inline-block;*display:inline;zoom:1;
     position: relative;
     margin: 2px;
     border: 1px solid #ccc;
     width:40px;
+}
+.edui-splitbutton .btn{
 }
 .edui-splitbutton .dropdown-toggle{
     width:9px;
@@ -25,16 +27,16 @@
     background-color: #ffffff;
     border: 1px solid #ccc;
 }
-.edui-btn-group .edui-splitbutton:hover,
-.edui-btn-group .edui-splitbutton.hover
+.edui-btn-toolbar .edui-splitbutton:hover,
+.edui-btn-toolbar .edui-splitbutton.hover
 {
     background-color: #fff5d4;
     padding: 0;
     border: 1px solid #dcac6c;
 }
 
-.edui-btn-group .edui-splitbutton .btn:hover,
-.edui-btn-group .edui-splitbutton .btn.hover
+.edui-btn-toolbar .edui-splitbutton .btn:hover,
+.edui-btn-toolbar .edui-splitbutton .btn.hover
 {
     background-color: transparent;
     padding:0;
