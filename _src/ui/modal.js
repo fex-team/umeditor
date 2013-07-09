@@ -29,19 +29,8 @@ UE.ui.define ('modal' , {
 
         me.data ("options" , options);
 
-        me.loadData(options.url);
-
         me.root ().delegate ('[data-hide="modal"]' , 'click' , $.proxy (me.hide , me));
         me.root ().delegate ('[data-ok="modal"]' , 'click' , $.proxy (me.ok , me));
-    },
-    loadData : function(url){
-        utils.loadFile(document, {
-            src: url,
-            tag: "script",
-            type: "text/javascript",
-            defer: "defer"
-        });
-        return this;
     },
     body:function($cont){
         if($cont){

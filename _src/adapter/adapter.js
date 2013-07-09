@@ -10,7 +10,7 @@
         _readyFn = [],
         _activeEditor = null,
         _activeWidget = null,
-        _dialogs = {};
+        _widgetData = {};
 
 
     utils.extend(UE, {
@@ -20,7 +20,7 @@
             })
         },
         registerWidget : function(name,pro){
-            _dialogs[name] = $.extend(pro,{
+            _widgetData[name] = $.extend(pro,{
                 $root : null,
                 preventDefault:false,
                 root:function($el){
@@ -31,8 +31,11 @@
                 }
             });
         },
+        getWidgetData : function(name){
+            return _widgetData[name]
+        },
         setWidgetBody : function(name,$widget,editor){
-            var pro = _dialogs[name];
+            var pro = _widgetData[name];
             if(!pro){
                 return null;
             }
