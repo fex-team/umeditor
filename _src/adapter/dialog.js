@@ -14,26 +14,27 @@
                  };
 
              //加载模版数据
-             utils.loadFile({
+             utils.loadFile(document,{
                  src: opt.url,
                  tag: "script",
                  type: "text/javascript",
                  defer: "defer"
              },function(){
+                 //调整数据
                  var data = UE.getWidgetData(name);
                  if(data.buttons){
                      var tmpObj = data.buttons.ok;
                      if(tmpObj){
                          opt.oklabel = tmpObj.oklabel || me.getLang('ok');
                          if(tmpObj.exec){
-                             opt.okFn = $.proxy(opt.exec,editor)
+                             opt.okFn = $.proxy(tmpObj.exec,null,editor)
                          }
                      }
-                     tmpObj = data.buttons.cancal;
+                     tmpObj = data.buttons.cancel;
                      if(tmpObj){
                          opt.cancellabel = tmpObj.cancellabel || me.getLang('cancel');
                          if(tmpObj.exec){
-                             opt.okFn = $.proxy(tmpObj.exec,editor)
+                             opt.cancelFn = $.proxy(tmpObj.exec,null,editor)
                          }
                      }
                  }
@@ -51,13 +52,13 @@
                          rng.select()
                      }
                  }).on('beforeshow', function () {
-                         currentRange = me.selection.getRange();
-                         UE.setActiveWidget(this.root());
-                         UE.setWidgetBody(name,$dialog,me);
+                     currentRange = me.selection.getRange();
+                     UE.setActiveWidget(this.root());
+                     UE.setWidgetBody(name,$dialog,me);
 
-                     });
+                 });
 
-             })
+             });
 
 
              var $btn = $.eduibutton({
