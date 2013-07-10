@@ -49,6 +49,8 @@ UE.ready(function () {
             return;
         }
         me.autoHeightEnabled = true;
+        bakOverflow = me.body.style.overflowY;
+        me.body.style.overflowY = 'hidden';
         me.addListener('contentchange afterinserthtml keyup mouseup', adjustHeight);
         //ff不给事件算得不对
         setTimeout(function () {
@@ -57,6 +59,9 @@ UE.ready(function () {
         me.fireEvent('autoheightchanged', me.autoHeightEnabled);
     };
     me.disableAutoHeight = function () {
+
+        me.body.style.overflowY = bakOverflow || '';
+
         me.removeListener('contentchange', adjustHeight);
         me.removeListener('keyup', adjustHeight);
         me.removeListener('mouseup', adjustHeight);
@@ -68,7 +73,7 @@ UE.ready(function () {
     domUtils.on(browser.ie ? me.body : me.document, browser.webkit ? 'dragover' : 'drop', function () {
         clearTimeout(timer);
         timer = setTimeout(function () {
-            adjustHeight.call(this);
+            adjustHeight.call(me);
         }, 100);
 
     });
