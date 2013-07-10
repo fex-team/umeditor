@@ -11,10 +11,12 @@
         CONTENT_AREA_STATUS = {},
         //页面状态
         DOCUMENT_STATUS = {},
+        DOCUMENT_ELEMENT_STATUS = {},
 
         FULLSCREENS = [];
 
-    UE.registerUI('fullscreen', function( name, mode, title, item ){
+
+    UE.registerUI('fullscreen', function( name ){
 
         var me = this,
             fullscreenHandler = new UE.Fullscreen( me ),
@@ -33,7 +35,6 @@
     });
 
     (function(){
-
 
         UE.Fullscreen = Fullscreen;
 
@@ -79,7 +80,7 @@
 
                 this.saveSataus();
 
-                this.getEditorDocument().style.overflow = 'hidden';
+                this.setDocumentStatus();
 
                 this.resize();
 
@@ -89,10 +90,8 @@
              */
             revert: function(){
 
-                var editor = this.editor,
-                    status = this.getEditorStatus();
-
-                $( editor.container ).css( status );
+                //还原容器状态
+                this.revertContainerStatus();
 
                 this.revertContentAreaStatus();
 
@@ -114,7 +113,9 @@
                 var $win = null,
                     height = 0,
                     width = 0,
-                    editor = this.editor;
+                    borderWidth = 0,
+                    editor = this.editor,
+                    editorBody = null;
 
                 if( !this.isFullState() ) {
                     return;
@@ -123,20 +124,27 @@
                 $win = $( window );
                 width = $win.width();
                 height = $win.height();
+                editorBody = this.getEditorHolder();
+                //文本编辑区border宽度
+                borderWidth = parseInt( domUtils.getComputedStyle( editorBody, 'border-width' ), 10 ) || 0;
+                //容器border宽度
+                borderWidth += parseInt( domUtils.getComputedStyle( editor.container, 'border-width' ), 10 ) || 0;
 
                 $( editor.container ).css( {
                     width: width + 'px',
                     height: height + 'px',
                     position: 'fixed',
+                    _position: 'absolute',
                     top: 0,
                     left: 0,
                     margin: 0,
                     padding: 0
                 } );
 
-                $( this.getEditorHolder() ).css({
-                    width: width + 'px',
-                    height: height - $( '.edui-toolbar', editor.container ).outerHeight() - $( '.edui-bottombar', editor.container).outerHeight() + 'px'
+
+                $( editorBody ).css({
+                    width: width - 2*borderWidth + 'px',
+                    height: height - 2*borderWidth - $( '.edui-toolbar', editor.container ).outerHeight() - $( '.edui-bottombar', editor.container).outerHeight() + 'px'
                 });
 
             },
@@ -177,34 +185,41 @@
              */
             saveDocumentStatus: function(){
 
-                var $doc = $( this.getEditorDocument() );
+                var $doc = $( this.getEditorDocumentBody() );
 
                 DOCUMENT_STATUS[ this.editor.uid ] = {
                     overflow: $doc.css( 'overflow' )
                 };
+                DOCUMENT_ELEMENT_STATUS[ this.editor.uid ] = {
+                    overflow: $( this.getEditorDocumentElement() ).css( 'overflow' )
+                };
 
+            },
+            /**
+             * 恢复容器状态
+             */
+            revertContainerStatus: function(){
+                $( this.editor.container ).css( this.getEditorStatus() );
             },
             /**
              * 恢复编辑区状态
              */
             revertContentAreaStatus: function(){
-
-                var status = this.getContentAreaStatus(),
-                    $contentArea = $( this.getEditorHolder() );
-
-                $contentArea.css( status );
-
+                $( this.getEditorHolder() ).css( this.getContentAreaStatus() );
             },
             /**
              * 恢复页面状态
              */
             revertDocumentStatus: function() {
 
-                var status = this.getDocumentStatus(),
-                    $doc = $( this.getEditorDocument() );
+                var status = this.getDocumentStatus();
+                $( this.getEditorDocumentBody() ).css( 'overflow', status.body.overflow );
+                $( this.getEditorDocumentElement() ).css( 'overflow', status.html.overflow );
 
-                $doc.css( 'overflow', status.overflow );
-
+            },
+            setDocumentStatus: function(){
+                this.getEditorDocumentBody().style.overflow = 'hidden';
+                this.getEditorDocumentElement().style.overflow = 'hidden';
             },
             /**
              * 检测当前编辑器是否处于全屏状态全屏状态
@@ -222,7 +237,10 @@
             getContentAreaStatus: function(){
                 return CONTENT_AREA_STATUS[ this.editor.uid ];
             },
-            getEditorDocument: function(){
+            getEditorDocumentElement: function(){
+                return this.editor.container.ownerDocument.documentElement;
+            },
+            getEditorDocumentBody: function(){
                 return this.editor.container.ownerDocument.body;
             },
             /**
@@ -236,7 +254,10 @@
              * @returns {*}
              */
             getDocumentStatus: function(){
-                return DOCUMENT_STATUS[ this.editor.uid ];
+                return {
+                    'body': DOCUMENT_STATUS[ this.editor.uid ],
+                    'html': DOCUMENT_ELEMENT_STATUS[ this.editor.uid ]
+                };
             }
 
         };
@@ -248,6 +269,8 @@
              */
             listen: function(){
 
+                var timer = null;
+
                 if( UE._hasFullscreenListener ) {
                     return;
                 }
@@ -256,9 +279,20 @@
 
                 $( window ).on( 'resize', function(){
 
-                    for( var i = 0, len = FULLSCREENS.length; i < len; i++ ) {
-                        FULLSCREENS[ i ].resize();
+                    if( timer !== null ) {
+                        window.clearTimeout( timer );
+                        timer = null;
                     }
+
+                    timer = window.setTimeout(function(){
+
+                        for( var i = 0, len = FULLSCREENS.length; i < len; i++ ) {
+                            FULLSCREENS[ i ].resize();
+                        }
+
+                        timer = null;
+
+                    }, 50);
 
                 } );
 
@@ -267,7 +301,6 @@
 
         //开始监听
         Fullscreen.listen();
-
 
     })();
 
