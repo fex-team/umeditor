@@ -7,26 +7,24 @@
     margin-left: -280px;
     background-color: #ffffff;
     border: 1px solid #999;
-    outline: none;
 }
 .edui-modal-header {
     padding: 9px 15px;
     border-bottom: 1px solid #eee;
 }
 .edui-modal-header .edui-close {
-    margin-top: 2px;
     float: right;
-    font-size: 20px;
-    font-weight: bold;
-    line-height: 20px;
-    color: #000000;
-    text-shadow: 0 1px 0 #ffffff;
-    opacity: 0.2;
-    filter: alpha(opacity=20);
+    width:20px;
+    height:20px;
+    margin-top: 2px;
     padding: 0;
-    cursor: pointer;
-    background: url("../images/icons-all.gif") no-repeat 0 -89px;
     border: 0;
+    background-image: url("../images/icons-all.gif");
+    background-position: 0 -59px;
+    cursor: pointer;
+}
+.edui-modal-header .edui-close.hover {
+    background-position: 0 -89px;
 }
 .edui-modal-header .edui-title {
     margin: 0;
