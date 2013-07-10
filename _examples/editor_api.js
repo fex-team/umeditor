@@ -42,6 +42,7 @@
             'ui/dropmenu.js',
             'ui/contextmenu.js',
             'ui/splitbutton.js',
+            'ui/colorsplitbutton.js',
             'ui/popup.js',
             'ui/colorpicker.js',
             'ui/tablepicker.js',

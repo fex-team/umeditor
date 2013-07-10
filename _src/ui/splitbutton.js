@@ -14,7 +14,7 @@ UE.ui.define('splitbutton',{
     init : function(options){
         var me = this;
         me.root( $($.parseTmpl(me.tpl,options)));
-        me.root().find('button:first').click(function(evt){
+        me.root().find('.edui-btn:first').click(function(evt){
             if(!me.disabled()){
                 $.proxy(options.click,me)();
             }

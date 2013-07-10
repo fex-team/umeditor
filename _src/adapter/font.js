@@ -183,7 +183,7 @@ UE.registerUI('forecolor', function( name ) {
 
     var me = this,
         colorPickerWidget = null,
-        fontIcon = null,
+        $colorLabel = null,
         $btn = null;
 
     //querycommand
@@ -194,7 +194,7 @@ UE.registerUI('forecolor', function( name ) {
 
     });
 
-    $btn = $.eduisplitbutton({
+    $btn = $.eduicolorsplitbutton({
         icon: 'font',
         caret: true,
         title: me.getLang("labelMap")[name],
@@ -203,7 +203,7 @@ UE.registerUI('forecolor', function( name ) {
         }
     });
 
-    fontIcon = $btn.find(".icon-font");
+    $colorLabel = $btn.edui().colorLabel();
 
     colorPickerWidget = $.eduicolorpicker({
         lang_clearColor: me.getLang('clearColor') || '',
@@ -211,7 +211,7 @@ UE.registerUI('forecolor', function( name ) {
         lang_standardColor: me.getLang('standardColor') || ''
     }).eduitablepicker( "attachTo", $btn ).edui().on('pickcolor', function( evt, color ){
             window.setTimeout( function(){
-                fontIcon.css("color", color);
+                $colorLabel.css("backgroundColor", color);
                 me.execCommand( name, color );
             }, 0 );
         });
@@ -225,7 +225,7 @@ UE.registerUI('forecolor', function( name ) {
     return $btn;
 
     function getCurrentColor() {
-        return domUtils.getComputedStyle( fontIcon[0], 'color' );
+        return domUtils.getComputedStyle( $colorLabel[0], 'background-color' );
     }
 
 });
@@ -235,7 +235,7 @@ UE.registerUI('backcolor', function( name ) {
 
     var me = this,
         colorPickerWidget = null,
-        fontIcon = null,
+        $colorLabel = null,
         $btn = null;
 
     //querycommand
@@ -244,23 +244,27 @@ UE.registerUI('backcolor', function( name ) {
         $btn.edui().disabled( state == -1 ).active( state == 1 );
     });
 
-    $btn = $.eduisplitbutton({
+    $btn = $.eduicolorsplitbutton({
         icon: 'font',
         title: me.getLang("labelMap")[name],
         caret: true,
+        color: 'transparent',
         click: function() {
             me.execCommand( name, getCurrentColor() );
         }
     });
 
-    fontIcon = $btn.find(".edui-icon-font");
+    $colorLabel = $btn.edui().colorLabel()
 
     colorPickerWidget = $.eduicolorpicker({
         lang_clearColor: me.getLang('clearColor') || '',
         lang_themeColor: me.getLang('themeColor') || '',
         lang_standardColor: me.getLang('standardColor') || ''
     }).eduitablepicker( "attachTo", $btn ).edui().on('pickcolor', function( evt, color ){
-            me.execCommand( name, color );
+            window.setTimeout( function(){
+                $colorLabel.css("backgroundColor", color);
+                me.execCommand( name, color );
+            }, 0 );
     });
     colorPickerWidget.root().css('zIndex',me.getOpt('zIndex') + 1);
     $btn.edui().mergeWith( colorPickerWidget.root() );
@@ -270,7 +274,7 @@ UE.registerUI('backcolor', function( name ) {
     return $btn;
 
     function getCurrentColor() {
-        return domUtils.getComputedStyle( fontIcon[0], 'color' );
+        return domUtils.getComputedStyle( $colorLabel[0], 'background-color' );
     }
 
 });

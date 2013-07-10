@@ -51,3 +51,13 @@
     opacity: 0.3;
     filter: alpha(opacity = 30);
 }
+
+/* colorsplitbutton 的color-label样式 */
+.edui-splitbutton-color-label {
+    width: 16px;
+    height: 3px;
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    margin-left: -8px;
+}
