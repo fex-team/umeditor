@@ -41,10 +41,20 @@
 .edui-modal-footer {
     float: right;
     padding: 14px 15px 15px;
-    font-size: 12px;
     overflow: hidden;
 }
 .edui-modal-footer .edui-btn {
     float: left;
+    height: 24px;
+    width: 96px;
     margin: 0 10px;
+    background-image: url("../images/icons-all.gif") ;
+    background-position:0 0;
+    font-size: 12px;
+    line-height: 24px;
+    text-align: center;
+    cursor: default;
+}
+.edui-modal-footer .edui-btn.hover{
+    background-position:0 -30px;
 }
