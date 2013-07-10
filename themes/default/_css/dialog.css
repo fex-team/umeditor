@@ -2,11 +2,12 @@
     position: fixed;
     top: 10%;
     left: 50%;
-    z-index: 1050;
     width: auto;
     margin-left: -280px;
-    background-color: #ffffff;
     border: 1px solid #999;
+    background-color: #ffffff;
+    z-index: 1050;
+    outline: 0;
 }
 .edui-modal-header {
     padding: 9px 15px;
