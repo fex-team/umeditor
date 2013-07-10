@@ -38,10 +38,13 @@
     font-size: 12px;
     overflow-y: auto;
 }
-.modal-footer {
+.edui-modal-footer {
+    float: right;
     padding: 14px 15px 15px;
-    margin-bottom: 0;
-    text-align: right;
-    background-color: #f5f5f5;
-    border-top: 1px solid #ddd;
+    font-size: 12px;
+    overflow: hidden;
+}
+.edui-modal-footer .edui-btn {
+    float: left;
+    margin: 0 10px;
 }
