@@ -10,7 +10,7 @@
     outline: 0;
 }
 .edui-modal-header {
-    padding: 9px 15px;
+    padding: 5px 10px;
     border-bottom: 1px solid #eee;
 }
 .edui-modal-header .edui-close {
@@ -29,20 +29,15 @@
 }
 .edui-modal-header .edui-title {
     margin: 0;
-    line-height: 30px;
-    font-size: 24.5px;
+    line-height: 25px;
+    font-size: 20px;
 }
 .edui-modal-body {
     position: relative;
     max-height: 400px;
     padding: 15px;
+    font-size: 12px;
     overflow-y: auto;
-}
-.edui-modal-body iframe {
-    border: 0;
-    padding: 0;
-    margin: 0;
-    vertical-align: top;
 }
 .modal-footer {
     padding: 14px 15px 15px;
