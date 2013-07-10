@@ -48,10 +48,7 @@ UE.ready(function () {
         if (!me.autoHeightEnabled) {
             return;
         }
-        var doc = me.document;
         me.autoHeightEnabled = true;
-        bakOverflow = doc.body.style.overflowY;
-        doc.body.style.overflowY = 'hidden';
         me.addListener('contentchange afterinserthtml keyup mouseup', adjustHeight);
         //ff不给事件算得不对
         setTimeout(function () {
@@ -60,9 +57,6 @@ UE.ready(function () {
         me.fireEvent('autoheightchanged', me.autoHeightEnabled);
     };
     me.disableAutoHeight = function () {
-
-        me.body.style.overflowY = bakOverflow || '';
-
         me.removeListener('contentchange', adjustHeight);
         me.removeListener('keyup', adjustHeight);
         me.removeListener('mouseup', adjustHeight);
