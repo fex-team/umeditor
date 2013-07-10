@@ -36,7 +36,7 @@ UE.ready(function () {
 
     me.addListener('fullscreenchanged', function (cmd, f) {
         isFullscreen = f;
-        me.body.style.overflowY = f ? "scroll" : "hidden";
+        me.body.style.overflowY = f ? "auto" : "hidden";
     });
     me.addListener('destroy', function () {
         me.removeListener('contentchange afterinserthtml keyup mouseup', adjustHeight)
