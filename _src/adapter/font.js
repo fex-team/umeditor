@@ -13,6 +13,7 @@ UE.registerUI('fontfamily', function( name ) {
         },
         fontFamily = options.items,
         $fontFamilyCombobox = null,
+        comboboxWidget = null,
         temp = null,
         tempItems = [];
 
@@ -36,7 +37,10 @@ UE.registerUI('fontfamily', function( name ) {
     options.items = tempItems;
 
 
-    $fontFamilyCombobox = $.eduibuttoncombobox( options ).edui().on( 'comboboxselect', function( evt, res ){
+    $fontFamilyCombobox = $.eduibuttoncombobox( options );
+    comboboxWidget = $fontFamilyCombobox.edui();
+
+    comboboxWidget.on( 'comboboxselect', function( evt, res ){
         me.execCommand( name, res.value );
     });
 
@@ -45,19 +49,19 @@ UE.registerUI('fontfamily', function( name ) {
 
         //设置按钮状态
         var state = this.queryCommandState( name );
-        $fontFamilyCombobox.button().edui().disabled( state == -1 ).active( state == 1 );
+        comboboxWidget.button().edui().disabled( state == -1 ).active( state == 1 );
 
         //设置当前字体
         var fontFamily = this.queryCommandValue( name );
 
         fontFamily = fontFamily.replace(/^\s*['|"]|['|"]\s*$/g, '');
 
-        $fontFamilyCombobox.selectItemByLabel( fontFamily.split(/['|"]?\s*,\s*[\1]?/) );
+        comboboxWidget.selectItemByLabel( fontFamily.split(/['|"]?\s*,\s*[\1]?/) );
 
     });
 
 
-    return $fontFamilyCombobox.button().addClass('edui-combobox');
+    return comboboxWidget.button().addClass('edui-combobox');
 
     /**
      * 执行宽度自适应
@@ -108,7 +112,8 @@ UE.registerUI('fontsize', function( name ) {
             autoRecord: false,
             items: me.options.fontsize
         },
-        $fontSizeCombobox = null;
+        $fontSizeCombobox = null,
+        $btn = null;
 
     options = parseOption( options );
 
@@ -131,8 +136,9 @@ UE.registerUI('fontsize', function( name ) {
 
         //值反射
         var fontSize = this.queryCommandValue( name );
+        fontSize += "";
 
-        $fontSizeCombobox.eduicombobox( 'selectItemByLabel', fontSize.replace('px', '') );
+        $fontSizeCombobox.edui().selectItemByLabel( fontSize.replace('px', '') );
 
     });
 
@@ -207,7 +213,7 @@ UE.registerUI('forecolor', function( name ) {
             }, 0 );
         });
     colorPickerWidget.on('show',function(){
-        UE.setActiveWidget(colorPickerWidget.root())
+        UE.setActiveWidget( colorPickerWidget.root() );
     });
     $btn.edui().mergeWith( colorPickerWidget.root() );
 
@@ -222,44 +228,44 @@ UE.registerUI('forecolor', function( name ) {
 
 UE.registerUI('backcolor', function( name ) {
 
-        var me = this,
-            colorPickerWidget = null,
-            fontIcon = null,
-            $btn = null;
+    var me = this,
+        colorPickerWidget = null,
+        fontIcon = null,
+        $btn = null;
 
-        //querycommand
-        this.addListener('selectionchange', function(){
-            var state = this.queryCommandState( name );
-            $btn.edui().disabled( state == -1 ).active( state == 1 );
-        });
-
-        $btn = $.eduisplitbutton({
-            icon: 'font',
-            title: me.getLang("labelMap")[name],
-            caret: true,
-            click: function() {
-                me.execCommand( name, getCurrentColor() );
-            }
-        });
-
-        fontIcon = $btn.find(".icon-font");
-
-        colorPickerWidget = $.eduicolorpicker({
-            lang_clearColor: me.getLang('clearColor') || '',
-            lang_themeColor: me.getLang('themeColor') || '',
-            lang_standardColor: me.getLang('standardColor') || ''
-        }).eduitablepicker( "attachTo", $btn ).edui().on('pickcolor', function( evt, color ){
-                me.execCommand( name, color );
-        });
-
-        $btn.edui().mergeWith( colorPickerWidget.root() );
-        colorPickerWidget.on('show',function(){
-            UE.setActiveWidget(colorPickerWidget.root())
-        });
-        return $btn;
-
-        function getCurrentColor() {
-            return domUtils.getComputedStyle( fontIcon[0], 'color' );
-        }
-
+    //querycommand
+    this.addListener('selectionchange', function(){
+        var state = this.queryCommandState( name );
+        $btn.edui().disabled( state == -1 ).active( state == 1 );
     });
+
+    $btn = $.eduisplitbutton({
+        icon: 'font',
+        title: me.getLang("labelMap")[name],
+        caret: true,
+        click: function() {
+            me.execCommand( name, getCurrentColor() );
+        }
+    });
+
+    fontIcon = $btn.find(".edui-icon-font");
+
+    colorPickerWidget = $.eduicolorpicker({
+        lang_clearColor: me.getLang('clearColor') || '',
+        lang_themeColor: me.getLang('themeColor') || '',
+        lang_standardColor: me.getLang('standardColor') || ''
+    }).eduitablepicker( "attachTo", $btn ).edui().on('pickcolor', function( evt, color ){
+        me.execCommand( name, color );
+    });
+
+    $btn.edui().mergeWith( colorPickerWidget.root() );
+    colorPickerWidget.on('show',function(){
+        UE.setActiveWidget(colorPickerWidget.root())
+    });
+    return $btn;
+
+    function getCurrentColor() {
+        return domUtils.getComputedStyle( fontIcon[0], 'color' );
+    }
+
+});
