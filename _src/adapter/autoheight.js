@@ -1,5 +1,5 @@
 UE.ready(function () {
-    var me = this,bakOverflow, timer, isFullscreen;
+    var me = this,bakOverflow, timer, isFullscreen,lastHeight = 0;
 
     me.autoHeightEnabled = me.options.autoHeightEnabled !== false;
     if (!me.autoHeightEnabled) {
@@ -9,7 +9,7 @@ UE.ready(function () {
     function adjustHeight() {
         var me = this,
             options=me.options,
-            lastHeight = 0, span, node,currentHeight;
+            span, node,currentHeight;
 
         clearTimeout(timer);
         if (isFullscreen)return;
@@ -25,7 +25,7 @@ UE.ready(function () {
                 me.body.appendChild(node);
                 currentHeight = Math.max(domUtils.getXY(node).y + node.offsetHeight, Math.max(options.minFrameHeight, options.initialFrameHeight));
                 if (currentHeight != lastHeight) {
-
+                    console.log(currentHeight)
                     me.setHeight(currentHeight);
 
                     lastHeight = currentHeight;
@@ -33,7 +33,7 @@ UE.ready(function () {
                 domUtils.remove(node);
 
             }
-        }, 50);
+        });
     }
 
     me.addListener('fullscreenchanged', function (cmd, f) {
