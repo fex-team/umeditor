@@ -39,7 +39,7 @@
             if(!pro){
                 return null;
             }
-            pro.root($widget.edui().getBodyCont());
+            pro.root($widget.edui().getBodyContainer());
             pro.root().html('');
             pro.initContent(editor);
             if(!pro.preventDefault){
@@ -128,6 +128,7 @@
 
                     //添加tooltip;
                     $.eduitooltip('attachTo');
+
                     $container.find('a').click(function(evt){
                         evt.preventDefault()
                     })
@@ -141,8 +142,9 @@
         createUI: function (id, editor) {
             var $editorCont = $(id),
                 $container = $('<div class="edui-container"><div class="edui-editor-body"></div><div class="edui-dialog-container"></div></div>').insertBefore($editorCont);
-            editor.$container = $container;
+            editor.$container = $container.css('zIndex',editor.getOpt('zIndex') + 1);
             editor.container = $container[0];
+
             $container.find('.edui-editor-body').append($editorCont).before(this.createToolbar(editor.options, editor));
 
             if(editor.options.elementpath || editor.options.wordCount){

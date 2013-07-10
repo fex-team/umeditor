@@ -160,7 +160,7 @@ UE.ui.define('modal', {
         }
         me.hide();
     },
-    getBodyCont: function () {
+    getBodyContainer: function () {
         return this.root().find('.edui-modal-body')
     }
 });
