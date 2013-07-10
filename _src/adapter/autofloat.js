@@ -1,13 +1,4 @@
-///import core
-///commands 悬浮工具栏
-///commandsName  AutoFloat,autoFloatEnabled
-///commandsTitle  悬浮工具栏
-/*
- *  modified by chengchao01
- *
- *  注意： 引入此功能后，在IE6下会将body的背景图片覆盖掉！
- */
-UE.plugins['autofloat'] = function() {
+UE.ready(function() {
     var me = this,
         lang = me.getLang();
     me.setOpt({
@@ -115,8 +106,7 @@ UE.plugins['autofloat'] = function() {
         me.removeListener('keydown', defer_updateFloating);
     });
 
-    me.addListener('ready', function(){
-        if(checkHasUI(me)){
+    if(checkHasUI(me)){
             toolbarBox = $('.edui-toolbar')[0];
             orgTop = getPosition(toolbarBox).top;
             bakCssText = toolbarBox.style.cssText;
@@ -149,5 +139,4 @@ UE.plugins['autofloat'] = function() {
 
             })
         }
-    });
-};
+});
