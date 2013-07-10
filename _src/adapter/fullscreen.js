@@ -4,43 +4,55 @@
 
 (function(){
 
-        //编辑器和全屏按钮映射
-        var BUTTON_MAPPING = {},
+    //编辑器和全屏按钮映射
+    var BUTTON_MAPPING = {},
 
-            //编辑器和菜单项按钮映射
-            MENUITEM_MAPPING = {},
+        //编辑器和菜单项按钮映射
+        MENUITEM_MAPPING = {},
 
-            //状态缓存
-            STATUS_CACHE = {},
-            //状态值列表
-            STATUS_LIST = [ 'width', 'height', 'position', 'top', 'left', 'margin', 'padding' ],
-            CONTENT_AREA_STATUS = {},
+        //状态缓存
+        STATUS_CACHE = {},
+        //状态值列表
+        STATUS_LIST = [ 'width', 'height', 'position', 'top', 'left', 'margin', 'padding' ],
+        CONTENT_AREA_STATUS = {},
 
-            //编辑器缓存
-            EDITOR_CACHE = [],
+        //编辑器缓存
+        EDITOR_CACHE = [],
 
-            //页面状态
-            DOCUMENT_STATUS = {};
+        //页面状态
+        DOCUMENT_STATUS = {};
 
     UE.registerUI('fullscreen', function( name, mode, title, item ){
 
-        var editor = this;
+        var me = this,
+            fullscreenHandler = new UE.Fullscreen( me ),
+            $button = $.eduibutton({
+                'icon': 'fullscreen',
+                'title': (me.options.labelMap && me.options.labelMap[name]) || me.getLang("labelMap." + name),
+                'click': function(){
+                    //切换
+                    fullscreenHandler.toggle();
+                }
+            });
+
+
+        return $button;
+
+    });
+
+    (function(){
+
 
         UE.Fullscreen = Fullscreen;
 
-        function Fullscreen( options ) {
+        function Fullscreen( editor ) {
 
-            if( !options.editor ) {
+            if( !editor ) {
                 throw new Error('invalid params, notfound editor');
             }
 
-            this._button = $.eduibutton({
-                icon: options.icon || 'resize-full',
-                title: options.title || editor.getLang("labelMap.fullscreen") || '',
-                click: options.click || function(){}
-            });
-
-            this.register( options.editor );
+            this.editor = editor;
+            this.register();
 
         }
 
@@ -48,9 +60,10 @@
 
             /**
              * 为该按钮注册对应的编辑器
-             * @param editor 编辑器对象
              */
-            register: function( editor ){
+            register: function(){
+
+                var editor = this.editor;
 
                 if( !BUTTON_MAPPING[ editor.uid ] ) {
                     BUTTON_MAPPING[ editor.uid ] = [];
@@ -60,40 +73,32 @@
 
             },
             /**
-             * 返回按钮对象
-             */
-            button: function(){
-                return this._button;
-            }
-
-        }
-
-        $.extend( Fullscreen, {
-
-            /**
              * 全屏状态切换
              * @param editor 需要切换状态的编辑器对象
              */
-            toggle: function( editor ){
+            toggle: function(){
 
-                //当前编辑器的缩放状态
-                var _edui_fullscreen_status = Fullscreen.getEditorFullState( editor );
+                var editor = this.editor,
+                    //当前编辑器的缩放状态
+                    _edui_fullscreen_status = this.isFullState();
 
                 //更新状态
-                this.update( editor, !_edui_fullscreen_status );
+                this.update( !_edui_fullscreen_status );
 
                 editor.fireEvent('beforefullscreenchange', !_edui_fullscreen_status );
 
-                !_edui_fullscreen_status ? Fullscreen.full( editor ) : Fullscreen.revert( editor );
+                !_edui_fullscreen_status ? this.enlarge() : this.revert();
+
+                editor.fireEvent('afterfullscreenchange', _edui_fullscreen_status );
 
             },
             /**
-             * 全屏
-             * @param editor 需要执行全屏动作的编辑器实例
+             * 执行放大
              */
-            full: function( editor ){
+            enlarge: function(){
 
-                var $win = $(window);
+                var $win = $(window),
+                    editor = this.editor;
 
                 this.saveSataus( editor );
 
@@ -112,7 +117,7 @@
                     padding: 0
                 } );
 
-                $( this.getEditorHolder( editor ) ).css({
+                $( this.getEditorHolder() ).css({
                     width: width + 'px',
                     height: height - $( '.edui-toolbar', editor.container ).outerHeight() - $( '.edui-bottombar', editor.container).outerHeight() + 'px'
                 });
@@ -120,37 +125,36 @@
             },
             /**
              * 全屏还原
-             * @param editor 需要执行全屏还原动作的编辑器实例
              */
-            revert: function( editor ){
+            revert: function(){
 
-                var status = this.getEditorStatus( editor );
+                var editor = this.editor,
+                    status = this.getEditorStatus();
 
                 $( editor.container ).css( status );
 
-                this.revertContentAreaStatus( editor );
+                this.revertContentAreaStatus();
 
-                this.revertDocumentStatus( editor );
+                this.revertDocumentStatus();
 
             },
             /**
              * 更新状态
-             * @param editor 编辑器对象
              * @param isFull 当前状态是否是全屏状态
              */
-            update: function( editor, isFull ) {
+            update: function( isFull ) {
 
                 var buttons = BUTTON_MAPPING[ editor.uid ],
                     items = MENUITEM_MAPPING[ editor.uid ];
 
-                editor._edui_fullscreen_status = isFull;
+                this.editor._edui_fullscreen_status = isFull;
 
-                //按钮状态更新
+//                按钮状态更新
                 if( buttons ) {
 
                     $.each( buttons, function( index, $btn ){
 
-                        $btn.find('.edui-icon').toggleClass( 'icon-resize-full').toggleClass( 'icon-resize-small' );
+//                        $btn.find('.edui-icon').toggleClass( 'icon-resize-full').toggleClass( 'icon-resize-small' );
                         $btn.attr('data-original-title', isFull ? editor.getLang('labelMap.revert') : editor.getLang('labelMap.fullscreen') );
 
                     } );
@@ -161,7 +165,7 @@
 
                     $.each( items, function( index, $item ){
 
-                        $item.find('.edui-icon').toggleClass( 'icon-resize-full').toggleClass( 'icon-resize-small' );
+//                        $item.find('.edui-icon').toggleClass( 'icon-resize-full').toggleClass( 'icon-resize-small' );
                         $item.find('.edui-item-label').text( isFull ? editor.getLang('labelMap.revert') : editor.getLang('labelMap.fullscreen') );
 
                     } )
@@ -305,10 +309,10 @@
             /**
              * 恢复编辑区状态
              */
-            revertContentAreaStatus: function( editor ){
+            revertContentAreaStatus: function(){
 
-                var status = this.getContentAreaStatus( editor),
-                    $contentArea = $( this.getEditorHolder( editor ) );
+                var status = this.getContentAreaStatus(),
+                    $contentArea = $( this.getEditorHolder() );
 
                 $contentArea.css( status );
 
@@ -318,88 +322,56 @@
              */
             revertDocumentStatus: function( editor ) {
 
-                var status = this.getDocumentStatus( editor),
-                    $doc = $( this.getEditorDocument( editor ) );
+                var status = this.getDocumentStatus(),
+                    $doc = $( this.getEditorDocument() );
 
                 $doc.css( 'overflow', status.overflow );
 
             },
             /**
-             * 根据提供的编辑器获取编辑器的全屏状态
-             * @param editor 指定的编辑器
+             * 检测当前编辑器是否处于全屏状态全屏状态
              * @returns {boolean} 是否处于全屏状态
              */
-            getEditorFullState: function( editor ){
-                return !!editor._edui_fullscreen_status;
+            isFullState: function(){
+                return !!this.editor._edui_fullscreen_status;
             },
             /**
              * 获取编辑器状态
-             * @param editor 指定的编辑器对象
              */
-            getEditorStatus: function( editor ){
-
-                return STATUS_CACHE[ editor.uid ];
-
+            getEditorStatus: function(){
+                return STATUS_CACHE[ this.editor.uid ];
             },
-            getContentAreaStatus: function( editor ){
-
-                return CONTENT_AREA_STATUS[ editor.uid ];
-
+            getContentAreaStatus: function(){
+                return CONTENT_AREA_STATUS[ this.editor.uid ];
             },
-            getEditorDocument: function( editor ){
-
-                return editor.container.ownerDocument.body;
-
+            getEditorDocument: function(){
+                return this.editor.container.ownerDocument.body;
             },
             /**
              * 获取编辑区包裹对象
              */
-            getEditorHolder: function( editor ){
+            getEditorHolder: function(){
 
-                return editor.iframe.parentNode;
+                return this.editor.iframe.parentNode;
 
             },
             /**
              * 获取编辑器状态
-             * @param editor
              * @returns {*}
              */
-            getDocumentStatus: function( editor ){
-
-                return DOCUMENT_STATUS[ editor.uid ];
-
+            getDocumentStatus: function(){
+                return DOCUMENT_STATUS[ this.editor.uid ];
             }
-
-        } );
-
-
-        //开始监听
-        Fullscreen.registerEditor( editor );
-        Fullscreen.listen();
-
-
-        //初始化全屏按钮
-        if( mode !== 'menu' ) {
-
-            return new Fullscreen({
-                icon: 'resize-full',
-                title: editor.getLang("labelMap.fullscreen") || '',
-                click: function(){
-                    Fullscreen.toggle( editor );
-                },
-                editor: editor
-            }).button();
-
-        } else {
-
-            //注册菜单栏
-            Fullscreen.registerMenuItem( editor, item );
-            //菜单栏
-            Fullscreen.toggle( editor );
 
         }
 
 
-    });
+
+        //开始监听
+//        Fullscreen.registerEditor( editor );
+//        Fullscreen.listen();
+
+
+    })();
 
 })();
