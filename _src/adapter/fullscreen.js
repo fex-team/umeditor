@@ -4,23 +4,15 @@
 
 (function(){
 
-    //编辑器和全屏按钮映射
-    var BUTTON_MAPPING = {},
-
-        //编辑器和菜单项按钮映射
-        MENUITEM_MAPPING = {},
-
         //状态缓存
-        STATUS_CACHE = {},
+    var STATUS_CACHE = {},
         //状态值列表
         STATUS_LIST = [ 'width', 'height', 'position', 'top', 'left', 'margin', 'padding' ],
         CONTENT_AREA_STATUS = {},
-
-        //编辑器缓存
-        EDITOR_CACHE = [],
-
         //页面状态
-        DOCUMENT_STATUS = {};
+        DOCUMENT_STATUS = {},
+
+        FULLSCREENS = [];
 
     UE.registerUI('fullscreen', function( name, mode, title, item ){
 
@@ -52,26 +44,14 @@
             }
 
             this.editor = editor;
-            this.register();
+
+            //记录初始化的全屏组件
+            FULLSCREENS[ editor.uid ] = this;
 
         }
 
         Fullscreen.prototype = {
 
-            /**
-             * 为该按钮注册对应的编辑器
-             */
-            register: function(){
-
-                var editor = this.editor;
-
-                if( !BUTTON_MAPPING[ editor.uid ] ) {
-                    BUTTON_MAPPING[ editor.uid ] = [];
-                }
-
-                BUTTON_MAPPING[ editor.uid ].push( this._button );
-
-            },
             /**
              * 全屏状态切换
              * @param editor 需要切换状态的编辑器对象
@@ -82,10 +62,10 @@
                     //当前编辑器的缩放状态
                     _edui_fullscreen_status = this.isFullState();
 
+                editor.fireEvent('beforefullscreenchange', !_edui_fullscreen_status );
+
                 //更新状态
                 this.update( !_edui_fullscreen_status );
-
-                editor.fireEvent('beforefullscreenchange', !_edui_fullscreen_status );
 
                 !_edui_fullscreen_status ? this.enlarge() : this.revert();
 
@@ -97,30 +77,11 @@
              */
             enlarge: function(){
 
-                var $win = $(window),
-                    editor = this.editor;
+                this.saveSataus();
 
-                this.saveSataus( editor );
+                this.getEditorDocument().style.overflow = 'hidden';
 
-                this.getEditorDocument( editor ).style.overflow = 'hidden';
-
-                var width = $win.width(),
-                    height = $win.height();
-
-                $( editor.container ).css( {
-                    width: width + 'px',
-                    height: height + 'px',
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    margin: 0,
-                    padding: 0
-                } );
-
-                $( this.getEditorHolder() ).css({
-                    width: width + 'px',
-                    height: height - $( '.edui-toolbar', editor.container ).outerHeight() - $( '.edui-bottombar', editor.container).outerHeight() + 'px'
-                });
+                this.resize();
 
             },
             /**
@@ -143,130 +104,48 @@
              * @param isFull 当前状态是否是全屏状态
              */
             update: function( isFull ) {
-
-                var buttons = BUTTON_MAPPING[ editor.uid ],
-                    items = MENUITEM_MAPPING[ editor.uid ];
-
                 this.editor._edui_fullscreen_status = isFull;
-
-//                按钮状态更新
-                if( buttons ) {
-
-                    $.each( buttons, function( index, $btn ){
-
-//                        $btn.find('.edui-icon').toggleClass( 'icon-resize-full').toggleClass( 'icon-resize-small' );
-                        $btn.attr('data-original-title', isFull ? editor.getLang('labelMap.revert') : editor.getLang('labelMap.fullscreen') );
-
-                    } );
-
-                }
-
-                if( items ) {
-
-                    $.each( items, function( index, $item ){
-
-//                        $item.find('.edui-icon').toggleClass( 'icon-resize-full').toggleClass( 'icon-resize-small' );
-                        $item.find('.edui-item-label').text( isFull ? editor.getLang('labelMap.revert') : editor.getLang('labelMap.fullscreen') );
-
-                    } )
-
-                }
-
-
             },
             /**
-             * 监听resize
+             * 调整当前编辑器的大小, 如果当前编辑器不处于全屏状态， 则不做调整
              */
-            listen: function(){
+            resize: function(){
 
-                var editor = null,
-                    me = this;
+                var $win = null,
+                    height = 0,
+                    width = 0,
+                    editor = this.editor;
 
-                if( UE._hasFullscreenListener ) {
+                if( !this.isFullState() ) {
                     return;
                 }
 
-                UE._hasFullscreenListener = true;
-
-                $( window ).on( 'resize', function(){
-
-                    for( var i = 0, len = EDITOR_CACHE.length; i < len; i++ ) {
-
-                        editor = EDITOR_CACHE[ i ];
-
-                        //处于全屏状态才执行resize
-                        if( Fullscreen.getEditorFullState( editor ) ) {
-
-                            me.resize( editor );
-
-                        }
-
-                    }
-
-                    editor = null;
-
-                } );
-
-            },
-            /**
-             * 注册编辑器, 以便统一处理resize
-             */
-            registerEditor: function( editor ){
-
-                if( editor._fullscreen_reged ) {
-                    return true;
-                }
-
-                editor._fullscreen_reged = true;
-
-                EDITOR_CACHE.push( editor );
-
-            },
-            /**
-             * 注册菜单项， 仍然为了统一处理
-             */
-            registerMenuItem: function( editor, item ){
-
-                if( item._fullscreen_reged ) {
-                    return;
-                }
-
-                item._fullscreen_reged = true;
-
-                if( !MENUITEM_MAPPING[ editor.uid ] ) {
-                    MENUITEM_MAPPING[ editor.uid ] = [];
-                }
-
-                MENUITEM_MAPPING[ editor.uid ].push( $( item ) );
-
-            },
-            /**
-             * 调整给定编辑器的大小
-             * @param editor 给定的编辑器对象
-             */
-            resize: function( editor ){
-
-                var $win = $( window ),
-                    width = $win.width(),
-                    height = $win.height();
+                $win = $( window );
+                width = $win.width();
+                height = $win.height();
 
                 $( editor.container ).css( {
                     width: width + 'px',
-                    height: height + 'px'
+                    height: height + 'px',
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    margin: 0,
+                    padding: 0
                 } );
 
-                $( this.getEditorHolder( editor ) ).css( {
+                $( this.getEditorHolder() ).css({
                     width: width + 'px',
                     height: height - $( '.edui-toolbar', editor.container ).outerHeight() - $( '.edui-bottombar', editor.container).outerHeight() + 'px'
-                } );
+                });
 
             },
             /**
              * 保存状态
              */
-            saveSataus: function( editor ){
+            saveSataus: function(){
 
-                var styles = editor.container.style,
+                var styles = this.editor.container.style,
                     tmp = null,
                     cache = {};
 
@@ -277,17 +156,17 @@
 
                 }
 
-                STATUS_CACHE[ editor.uid ] = cache;
+                STATUS_CACHE[ this.editor.uid ] = cache;
 
-                this.saveContentAreaStatus( editor );
-                this.saveDocumentStatus( editor );
+                this.saveContentAreaStatus();
+                this.saveDocumentStatus();
 
             },
-            saveContentAreaStatus: function( editor ){
+            saveContentAreaStatus: function(){
 
-                var style = this.getEditorHolder( editor ).style;
+                var style = this.getEditorHolder().style;
 
-                CONTENT_AREA_STATUS[ editor.uid ] = {
+                CONTENT_AREA_STATUS[ this.editor.uid ] = {
                     width: style.width,
                     height: style.height
                 };
@@ -295,13 +174,12 @@
             },
             /**
              * 保存与指定editor相关的页面的状态
-             * @param editor 指定的编辑器实例
              */
-            saveDocumentStatus: function( editor ){
+            saveDocumentStatus: function(){
 
-                var $doc = $( this.getEditorDocument( editor ) );
+                var $doc = $( this.getEditorDocument() );
 
-                DOCUMENT_STATUS[ editor.uid ] = {
+                DOCUMENT_STATUS[ this.editor.uid ] = {
                     overflow: $doc.css( 'overflow' )
                 };
 
@@ -320,7 +198,7 @@
             /**
              * 恢复页面状态
              */
-            revertDocumentStatus: function( editor ) {
+            revertDocumentStatus: function() {
 
                 var status = this.getDocumentStatus(),
                     $doc = $( this.getEditorDocument() );
@@ -351,9 +229,7 @@
              * 获取编辑区包裹对象
              */
             getEditorHolder: function(){
-
-                return this.editor.iframe.parentNode;
-
+                return this.editor.iframe;
             },
             /**
              * 获取编辑器状态
@@ -363,13 +239,34 @@
                 return DOCUMENT_STATUS[ this.editor.uid ];
             }
 
-        }
+        };
 
 
+        $.extend( Fullscreen, {
+            /**
+             * 监听resize
+             */
+            listen: function(){
+
+                if( UE._hasFullscreenListener ) {
+                    return;
+                }
+
+                UE._hasFullscreenListener = true;
+
+                $( window ).on( 'resize', function(){
+
+                    for( var i = 0, len = FULLSCREENS.length; i < len; i++ ) {
+                        FULLSCREENS[ i ].resize();
+                    }
+
+                } );
+
+            }
+        });
 
         //开始监听
-//        Fullscreen.registerEditor( editor );
-//        Fullscreen.listen();
+        Fullscreen.listen();
 
 
     })();
