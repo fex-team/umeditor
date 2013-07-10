@@ -127,7 +127,8 @@
                     });
 
                     //添加tooltip;
-                    $.eduitooltip('attachTo');
+                    $.eduitooltip('attachTo').css('z-index',editor.getOpt('zIndex')+1);
+
 
                     $container.find('a').click(function(evt){
                         evt.preventDefault()
