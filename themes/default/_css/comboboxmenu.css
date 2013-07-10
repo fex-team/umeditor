@@ -21,6 +21,7 @@
 .edui-combobox-menu .edui-common-dis-none {
     display: none;
 }
+
 .edui-combobox-menu .edui-combobox-item, .edui-combobox-menu .edui-combobox-stack-item{
     margin: 3px 0;
     padding: 1px;
@@ -32,6 +33,7 @@
     padding: 0;
     border: 1px solid #dcac6c;
 }
+
 .edui-combobox-menu .edui-combobox-link{
     line-height: 20px;
     color:#333;
