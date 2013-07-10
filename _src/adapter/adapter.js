@@ -10,7 +10,7 @@
         _readyFn = [],
         _activeEditor = null,
         _activeWidget = null,
-        _dialogs = {};
+        _widgetData = {};
 
 
     utils.extend(UE, {
@@ -20,7 +20,7 @@
             })
         },
         registerWidget : function(name,pro){
-            _dialogs[name] = $.extend(pro,{
+            _widgetData[name] = $.extend(pro,{
                 $root : null,
                 preventDefault:false,
                 root:function($el){
@@ -31,16 +31,15 @@
                 }
             });
         },
+        getWidgetData : function(name){
+            return _widgetData[name]
+        },
         setWidgetBody : function(name,$widget,editor){
-            var pro = _dialogs[name];
+            var pro = _widgetData[name];
             if(!pro){
                 return null;
             }
-
-            pro.root($widget.edui().getBodyCont());
-            if(pro.ok){
-                $widget.edui().on('ok', $.proxy(pro.ok,pro,editor,$widget))
-            }
+            pro.root($widget.edui().getBodyContainer());
             pro.root().html('');
             pro.initContent(editor);
             if(!pro.preventDefault){
@@ -128,7 +127,9 @@
                     });
 
                     //添加tooltip;
-                    $.eduitooltip('attachTo');
+                    $.eduitooltip('attachTo').css('z-index',editor.getOpt('zIndex')+1);
+
+
                     $container.find('a').click(function(evt){
                         evt.preventDefault()
                     })
@@ -142,8 +143,9 @@
         createUI: function (id, editor) {
             var $editorCont = $(id),
                 $container = $('<div class="edui-container"><div class="edui-editor-body"></div><div class="edui-dialog-container"></div></div>').insertBefore($editorCont);
-            editor.$container = $container;
+            editor.$container = $container.css('zIndex',editor.getOpt('zIndex') + 1);
             editor.container = $container[0];
+
             $container.find('.edui-editor-body').append($editorCont).before(this.createToolbar(editor.options, editor));
 
             if(editor.options.elementpath || editor.options.wordCount){

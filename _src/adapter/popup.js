@@ -1,22 +1,40 @@
-UE.registerUI( 'link emotion', function( name ){
-    var editor = this,
-        emotionUrl = editor.options.UEDITOR_HOME_URL + 'dialogs/' +name+ '/'+name+'.js';
+UE.registerUI( 'emotion', function( name ){
+    var me = this,
+        url  = me.options.UEDITOR_HOME_URL + 'dialogs/' +name+ '/'+name+'.js',
+        $popup;
 
-    var $popup = $.eduipopup({
-        url: emotionUrl
-    }).edui().on('beforeshow',function(){
+    //加载模版数据
+    utils.loadFile(document,{
+        src: url,
+        tag: "script",
+        type: "text/javascript",
+        defer: "defer"
+    },function(){
+        var opt = {
+            url : url
+        };
+        //调整数据
+        var data = UE.getWidgetData(name);
+
+        data.width && (opt.width = data.width);
+        data.height && (opt.height = data.height);
+
+        $popup = $.eduipopup(opt).on('beforeshow',function(){
             UE.setWidgetBody(name,$popup,editor)
-        }).root();
+        });
+    });
 
 
     var $btn = $.eduibutton({
         icon: name,
         click: function () {
-            $popup.edui().show();
+            if(!$popup.parent().length){
+                me.$container.find('.edui-dialog-container').append($popup);
+            }
+            $popup.css('zIndex',me.options.zIndex + 1).edui().show($btn,'left','position');
         },
         title: this.getLang('labelMap')[name] || ''
     });
-    $btn.edui().mergeWith($popup);
 
     return $btn;
 

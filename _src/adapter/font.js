@@ -44,6 +44,7 @@ UE.registerUI('fontfamily', function( name ) {
         me.execCommand( name, res.value );
     });
 
+    $fontFamilyCombobox.css('zIndex',me.getOpt('zIndex') + 1);
     //querycommand
     this.addListener('selectionchange',function(){
 
@@ -118,6 +119,8 @@ UE.registerUI('fontsize', function( name ) {
     options = parseOption( options );
 
     $fontSizeCombobox = $.eduibuttoncombobox( options );
+
+    $fontSizeCombobox.css('zIndex',me.getOpt('zIndex') + 1);
 
     $btn = $fontSizeCombobox.edui().button();
     $btn.on( 'comboboxselect', function(evt, res) {
@@ -212,6 +215,8 @@ UE.registerUI('forecolor', function( name ) {
                 me.execCommand( name, color );
             }, 0 );
         });
+    colorPickerWidget.root().css('zIndex',me.getOpt('zIndex') + 1);
+
     colorPickerWidget.on('show',function(){
         UE.setActiveWidget( colorPickerWidget.root() );
     });
@@ -255,9 +260,9 @@ UE.registerUI('backcolor', function( name ) {
         lang_themeColor: me.getLang('themeColor') || '',
         lang_standardColor: me.getLang('standardColor') || ''
     }).eduitablepicker( "attachTo", $btn ).edui().on('pickcolor', function( evt, color ){
-        me.execCommand( name, color );
+            me.execCommand( name, color );
     });
-
+    colorPickerWidget.root().css('zIndex',me.getOpt('zIndex') + 1);
     $btn.edui().mergeWith( colorPickerWidget.root() );
     colorPickerWidget.on('show',function(){
         UE.setActiveWidget(colorPickerWidget.root())

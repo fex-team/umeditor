@@ -2,15 +2,11 @@
 UE.ui.define('popup',{
     tpl:'<div class="edui-dropdown-menu edui-popup" onmousedown="return false"><%=subtpl%></div>',
     defaultOpt:{
-        subtpl:''
+        subtpl:'',
+        width:'',
+        height:''
     },
     init : function(options){
-        utils.loadFile(document, {
-            src: options.url,
-            tag: "script",
-            type: "text/javascript",
-            defer: "defer"
-        });
         this.root($($.parseTmpl(this.tpl,options)));
         return this;
     },
@@ -24,7 +20,8 @@ UE.ui.define('popup',{
         }else{
             this.root().css($.extend({display:'block'},$obj ? {
                 top : $obj[fnname]().top + ( dir == 'right' ? 0 : $obj.outerHeight()) - (topOffset || 0),
-                left : $obj[fnname]().left + (dir == 'right' ?  $obj.outerWidth() : 0) -  (leftOffset || 0)
+                left : $obj[fnname]().left + (dir == 'right' ?  $obj.outerWidth() : 0) -  (leftOffset || 0),
+                position:'absolute'
             }:{}))
         }
     },
@@ -48,7 +45,15 @@ UE.ui.define('popup',{
             me.data('$mergeObj',$obj)
         }
     },
-    getBodyCont:function(){
-        return this.root()
+    body: function ($cont) {
+        if ($cont) {
+            this.root().html('').append($cont);
+            return this
+        } else {
+            return $(this.root().find('.modal-body').html())
+        }
+    },
+    getBodyContainer : function(){
+        return this.root();
     }
 });

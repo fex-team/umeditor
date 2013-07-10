@@ -2,7 +2,7 @@
 UE.ui.define('modal', {
     tpl: '<div class="hide edui-modal" tabindex="-1" >' +
         '<div class="edui-modal-header">' +
-        '<div class="edui-close" data-hide="modal">×</div>' +
+        '<div class="edui-close" data-hide="modal"></div>' +
         '<h3 class="edui-title"><%=title%></h3>' +
         '</div>' +
         '<div class="edui-modal-body"  style="<%if(width){%>width:<%=width%>px;<%}%>' +
@@ -30,9 +30,20 @@ UE.ui.define('modal', {
         me.root($($.parseTmpl(me.tpl, options || {})));
 
         me.data("options", options);
+        if (options.okFn) {
+            me.on('ok', $.proxy(options.okFn, me))
+        }
+        if (options.cancelFn) {
+            me.on('beforehide', $.proxy(options.cancelFn, me))
+        }
 
-        me.root().delegate('[data-hide="modal"]', 'click', $.proxy(me.hide, me));
-        me.root().delegate('[data-ok="modal"]', 'click', $.proxy(me.ok, me));
+        me.root()
+            .delegate('[data-hide="modal"]', 'click', $.proxy(me.hide, me))
+            .delegate('[data-ok="modal"]', 'click', $.proxy(me.ok, me));
+
+        $('[data-hide="modal"],[data-ok="modal"]',me.root()).hover(function(){
+            $(this).toggleClass('hover')
+        });
     },
     body: function ($cont) {
         if ($cont) {
@@ -149,8 +160,8 @@ UE.ui.define('modal', {
         }
         me.hide();
     },
-    getBodyCont: function () {
-        return this.root().find('.modal-body')
+    getBodyContainer: function () {
+        return this.root().find('.edui-modal-body')
     }
 });
 
