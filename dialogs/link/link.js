@@ -16,7 +16,17 @@ UE.registerWidget('link',{
         this.root().html(html);
     },
     initEvent:function(editor,$w){
+    },
+    buttons:{
+        'ok':{
+            label:'插入链接',
+            exec:function(editor,$w){
+            }
+        },
+        'cancel':{
 
+        }
     }
+
 })
 
