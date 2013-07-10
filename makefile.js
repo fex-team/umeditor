@@ -107,7 +107,7 @@ var getConfigCont = function(){
 
 /**********main********/
 ////创建部署目录
-createDeployDir();
+//createDeployDir();
 ////得到输入编码
 //getEncoding();
 //////添加后台语言
@@ -123,12 +123,12 @@ createDeployDir();
 ////合并js
 mergeJs();
 
-////添加config.js
-addConfig();
-////添加parse.js
-addParse();
-////添加第三方插件
-addThirdParty();
+//////添加config.js
+//addConfig();
+//////添加parse.js
+//addParse();
+//////添加第三方插件
+//addThirdParty();
 /*******/
 
 
