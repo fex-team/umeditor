@@ -41,11 +41,15 @@
     border-width: 1px 0 1px 1px;
     border-color:#dcac6c;
     background-color: #fff5d4;
+    *border: none;
 }
+
+
 .edui-btn-toolbar .edui-splitbutton.hover .edui-dropdown-toggle{
     padding:1px;
     border:1px solid #dcac6c;
     background-color: #fff5d4;
+    *border-width: 0 0 0 1px;
 }
 .edui-btn-toolbar .edui-splitbutton.disabled{
     opacity: 0.3;
@@ -60,4 +64,6 @@
     bottom: 2px;
     left: 50%;
     margin-left: -8px;
+    overflow: hidden;
+    line-height: 3px;
 }
