@@ -12,13 +12,6 @@ UE.registerUI( 'emotion', function( name ){
         UE.setActiveWidget(this.root())
     }).root();
 
-
-    emotionPopup.on('beforeshow', function(){
-
-        UE.setActiveWidget( emotionPopup );
-
-    });
-
     return emotionPopup;
 
 } );
