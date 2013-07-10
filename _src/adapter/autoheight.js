@@ -1,5 +1,5 @@
 UE.ready(function () {
-    var me = this,bakOverflow, timer, isFullscreen,lastHeight = 0;
+    var me = this, bakOverflow, timer, isFullscreen, lastHeight = 0;
 
     me.autoHeightEnabled = me.options.autoHeightEnabled !== false;
     if (!me.autoHeightEnabled) {
@@ -8,8 +8,8 @@ UE.ready(function () {
 
     function adjustHeight() {
         var me = this,
-            options=me.options,
-            span, node,currentHeight;
+            options = me.options,
+            span, node, currentHeight;
 
         clearTimeout(timer);
         if (isFullscreen)return;
@@ -35,7 +35,8 @@ UE.ready(function () {
     }
 
     me.addListener('fullscreenchanged', function (cmd, f) {
-        isFullscreen = f
+        isFullscreen = f;
+        me.body.style.overflowY = f ? "scroll" : "hidden";
     });
     me.addListener('destroy', function () {
         me.removeListener('contentchange afterinserthtml keyup mouseup', adjustHeight)
