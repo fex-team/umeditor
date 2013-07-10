@@ -17,7 +17,6 @@ UE.ready(function () {
             if (!me.queryCommandState || me.queryCommandState && me.queryCommandState('source') != 1) {
                 if (!span) {
                     span = me.document.createElement('span');
-                    //trace:1764
                     span.style.cssText = 'display:block;width:0;margin:0;padding:0;border:0;clear:both;';
                     span.innerHTML = '.';
                 }

@@ -36,6 +36,9 @@ UE.registerUI( 'emotion', function( name ){
         title: this.getLang('labelMap')[name] || ''
     });
 
+    $btn.edui().register('click', $btn, function () {
+        $popup.hide()
+    });
     return $btn;
 
 } );
