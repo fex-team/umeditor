@@ -10,7 +10,7 @@
     *display: inline !important;
     *zoom:1;
     width:auto;
-    margin: 0;
+    margin: 0 1px;
     padding:1px;
     border:none;
     background: none;
