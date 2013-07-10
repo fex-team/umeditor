@@ -6,9 +6,10 @@
 UE.registerUI('fontfamily', function( name ) {
 
     var me = this,
+        fontLabel = (me.options.labelMap && me.options.labelMap[name]) || me.getLang("labelMap." + name),
         options = {
-            label: '字体',
-            title: me.getLang("labelMap")[name],
+            label: fontLabel,
+            title: fontLabel,
             items: me.options.fontfamily
         },
         fontFamily = options.items,
@@ -107,9 +108,10 @@ UE.registerUI('fontfamily', function( name ) {
 UE.registerUI('fontsize', function( name ) {
 
     var me = this,
+        sizeLabel = (me.options.labelMap && me.options.labelMap[name]) || me.getLang("labelMap." + name),
         options = {
-            label: '16',
-            title: me.getLang("labelMap")[name],
+            label: sizeLabel,
+            title: sizeLabel,
             autoRecord: false,
             items: me.options.fontsize
         },

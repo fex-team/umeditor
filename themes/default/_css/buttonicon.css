@@ -106,3 +106,7 @@
 .edui-btn-toolbar .edui-btn .edui-icon-preview {
     background-position: -420px -20px;
 }
+
+.edui-btn-toolbar .edui-btn .edui-icon-fullscreen {
+    background-position: -100px -20px;
+}

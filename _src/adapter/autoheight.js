@@ -24,7 +24,6 @@ UE.ready(function () {
                 me.body.appendChild(node);
                 currentHeight = Math.max(domUtils.getXY(node).y + node.offsetHeight, Math.max(options.minFrameHeight, options.initialFrameHeight));
                 if (currentHeight != lastHeight) {
-                    console.log(currentHeight)
                     me.setHeight(currentHeight);
 
                     lastHeight = currentHeight;
