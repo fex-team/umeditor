@@ -70,7 +70,10 @@
 
                 !_edui_fullscreen_status ? this.enlarge() : this.revert();
 
-                editor.fireEvent('afterfullscreenchange', _edui_fullscreen_status );
+                editor.fireEvent('afterfullscreenchange', !_edui_fullscreen_status );
+                if(editor.body.contentEditable === 'true'){
+                    editor.fireEvent( 'fullscreenchanged', !_edui_fullscreen_status );
+                }
 
             },
             /**
