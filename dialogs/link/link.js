@@ -71,7 +71,8 @@
                         editor.execCommand('link', obj);
                     }
                 }
-            }
+            },
+            'cancel':{}
         }
 
     })

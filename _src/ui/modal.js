@@ -1,6 +1,6 @@
 /*modal 类*/
 UE.ui.define('modal', {
-    tpl: '<div class="hide edui-modal" tabindex="-1" >' +
+    tpl: '<div class="edui-modal" tabindex="-1" >' +
         '<div class="edui-modal-header">' +
         '<div class="edui-close" data-hide="modal"></div>' +
         '<h3 class="edui-title"><%=title%></h3>' +
@@ -37,8 +37,7 @@ UE.ui.define('modal', {
             me.on('beforehide', $.proxy(options.cancelFn, me))
         }
 
-        me.root()
-            .delegate('[data-hide="modal"]', 'click', $.proxy(me.hide, me))
+        me.root().delegate('[data-hide="modal"]', 'click', $.proxy(me.hide, me))
             .delegate('[data-ok="modal"]', 'click', $.proxy(me.ok, me));
 
         $('[data-hide="modal"],[data-ok="modal"]',me.root()).hover(function(){
@@ -66,6 +65,8 @@ UE.ui.define('modal', {
 
         me.data("isShown", true);
 
+        me.confirm();
+
         me.escape();
 
         me.backdrop(function () {
@@ -89,11 +90,24 @@ UE.ui.define('modal', {
 
         me.data("isShown", false);
 
+        me.confirm();
+
         me.escape();
 
         me.root().removeClass('in');
 
         me.hideModal();
+    },
+    confirm:function(){
+        var me = this;
+        if (me.data("isShown") && me.data("options").keyboard) {
+            me.root().on('keyup', function (e) {
+                e.which == 13 && me.ok();
+            })
+        }
+        else if (!me.data("isShown")) {
+            me.root().off('keyup');
+        }
     },
     escape: function () {
         var me = this;
@@ -121,20 +135,13 @@ UE.ui.define('modal', {
     backdrop: function (callback) {
         var me = this;
         if (me.data("isShown") && me.data("options").backdrop) {
-            me.$backdrop = $('<div class="modal-backdrop" />')
-                .appendTo(document.body);
+            me.$backdrop = $('<div class="edui-modal-backdrop" />').appendTo(document.body);
 
             me.$backdrop.click(
                 me.data("options").backdrop == 'static' ?
                     $.proxy(me.root()[0].focus, me.root()[0])
                     : $.proxy(me.hide, me)
             )
-
-            me.$backdrop.addClass('in');
-
-        }
-        else if (!me.data("isShown") && me.$backdrop) {
-            me.$backdrop.removeClass('in');
         }
 
         callback && callback();
