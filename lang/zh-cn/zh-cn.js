@@ -222,7 +222,7 @@ UE.I18N['zh-cn'] = {
         'toggleSelect':"单击可切换选中状态\n原图尺寸: "
     },
     //===============dialog i18N=======================
-    'insertimage':{
+    'image':{
         'static':{
             lang_tab_remote:"远程图片", //节点
             lang_tab_local:"本地上传",
