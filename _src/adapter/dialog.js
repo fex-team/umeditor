@@ -1,4 +1,4 @@
-UE.registerUI('link',function(name){
+UE.registerUI('link image',function(name){
 
     var me = this, currentRange, $dialog,
         opt = {
