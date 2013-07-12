@@ -1,4 +1,4 @@
-UE.registerUI('link',function(name){
+UE.registerUI('link image',function(name){
 
     var me = this, currentRange, $dialog,
         opt = {
@@ -37,7 +37,7 @@ UE.registerUI('link',function(name){
         $dialog = $.eduimodal(opt);
 
         $dialog.attr('id', 'edui-dialog-' + name)
-            .find('.modal-body').addClass('edui-dialog-' + name + '-body');
+            .find('.edui-modal-body').addClass('edui-dialog-' + name + '-body');
 
         $dialog.css('zIndex',me.getOpt('zIndex') + 1).edui().on('beforehide',function () {
             var rng = me.selection.getRange();
