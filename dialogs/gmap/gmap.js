@@ -56,6 +56,7 @@
             me.google = google;
             me.map = map;
             me.marker = marker;
+            me.imgcss = imgcss;
 
             if(img && img.src.indexOf("http://maps.google.com/maps/api/staticmap")!=-1){
                 var url = img.getAttribute("src");
@@ -112,16 +113,14 @@
         height:498,
         buttons: {
             ok: {
-                exec: function( editor, $widget ){
+                exec: function( editor ){
 
-
-                    debugger;
-                    var widget = $widget.edui(),
+                    var widget = UE._widgetData['gmap'],
                         center = widget.map.getCenter(),
                         point = widget.marker.getPosition(),
-                        url = "http://maps.google.com/maps/api/staticmap?center=" + center.lat() + ',' + center.lng() + "&zoom=" + map.zoom + "&size=520x340&maptype=" + map.getMapTypeId() + "&markers=" + point.lat() + ',' + point.lng() + "&sensor=false";
+                        url = "http://maps.google.com/maps/api/staticmap?center=" + center.lat() + ',' + center.lng() + "&zoom=" + widget.map.zoom + "&size=520x340&maptype=" + widget.map.getMapTypeId() + "&markers=" + point.lat() + ',' + point.lng() + "&sensor=false";
 
-                    editor.execCommand('inserthtml', '<img width="520" height="340" src="' + url + '"' + (imgcss ? ' style="' + imgcss + '"' :'') + '/>');
+                    editor.execCommand('inserthtml', '<img width="520" height="340" src="' + url + '"' + (widget.imgcss ? ' style="' + widget.imgcss + '"' :'') + '/>');
 
                 }
             },

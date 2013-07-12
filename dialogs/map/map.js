@@ -120,6 +120,7 @@
 
             me.map = map;
             me.marker = marker;
+            me.imgcss = imgcss;
 
         },
         doSearch: function(){
@@ -171,16 +172,6 @@
                 me.doSearch();
             });
 
-//            dialog.onok = function (){
-//                var center = map.getCenter();
-//                var zoom = map.zoomLevel;
-//                var size = map.getSize();
-//                var point = marker.getPoint();
-//                var url = "http://api.map.baidu.com/staticimage?center=" + center.lng + ',' + center.lat +
-//                    "&zoom=" + zoom + "&width=" + size.width + '&height=' + size.height + "&markers=" + point.lng + ',' + point.lat;
-//                editor.execCommand('inserthtml', '<img width="'+ size.width +'"height="'+ size.height +'" src="' + url + '"' + (imgcss ? ' style="' + imgcss + '"' :'') + '/>');
-//            };
-
             $G("eduiMapAddress").focus();
 
         },
@@ -188,7 +179,20 @@
         height:498,
         buttons: {
             ok: {
-                exec: function(){}
+                exec: function( editor ){
+
+
+                    var widget = UE._widgetData[ widgetName ],
+                        center = widget.map.getCenter(),
+                        zoom = widget.map.zoomLevel,
+                        size = widget.map.getSize(),
+                        point = widget.marker.getPoint(),
+                        url = "http://api.map.baidu.com/staticimage?center=" + center.lng + ',' + center.lat +
+                        "&zoom=" + zoom + "&width=" + size.width + '&height=' + size.height + "&markers=" + point.lng + ',' + point.lat;
+
+                    editor.execCommand('inserthtml', '<img width="'+ size.width +'"height="'+ size.height +'" src="' + url + '"' + (widget.imgcss ? ' style="' + widget.imgcss + '"' :'') + '/>');
+
+                }
             },
             cancel: {}
         }
