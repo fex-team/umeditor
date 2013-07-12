@@ -58,7 +58,6 @@ UE.ui.define('modal', {
     },
     show: function () {
         var me = this;
-        e.stopPropagation();
 
         me.trigger("beforeshow");
 
