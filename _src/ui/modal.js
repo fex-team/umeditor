@@ -46,10 +46,10 @@ UE.ui.define('modal', {
     },
     body: function ($cont) {
         if ($cont) {
-            this.root().find('.modal-body').html('').append($cont);
+            this.root().find('.edui-modal-body').html('').append($cont);
             return this
         } else {
-            return $(this.root().find('.modal-body').html())
+            return $(this.root().find('.edui-modal-body').html())
         }
     },
     toggle: function () {
@@ -73,7 +73,6 @@ UE.ui.define('modal', {
             me.autoCenter();
             me.root()
                 .show()
-                .addClass('in')
                 .focus()
                 .trigger('aftershow');
         })
@@ -93,8 +92,6 @@ UE.ui.define('modal', {
         me.confirm();
 
         me.escape();
-
-        me.root().removeClass('in');
 
         me.hideModal();
     },
