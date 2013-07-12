@@ -20,7 +20,7 @@ UE.registerUI( 'emotion', function( name ){
         data.height && (opt.height = data.height);
 
         $popup = $.eduipopup(opt).on('beforeshow',function(){
-            UE.setWidgetBody(name,$popup,editor)
+            UE.setWidgetBody(name,$popup,me);
         });
     });
 
@@ -39,6 +39,7 @@ UE.registerUI( 'emotion', function( name ){
     $btn.edui().register('click', $btn, function () {
         $popup.hide()
     });
+
     return $btn;
 
 } );
