@@ -22,12 +22,12 @@
         registerWidget : function(name,pro){
             _widgetData[name] = $.extend(pro,{
                 $root : null,
-                preventDefault:false,
+                _preventDefault:false,
                 root:function($el){
                     return this.$root || (this.$root = $el);
                 },
                 preventDefault:function(){
-                    this.preventDefault = true;
+                    this._preventDefault = true;
                 }
             });
         },
@@ -42,7 +42,7 @@
             pro.root($widget.edui().getBodyContainer());
             pro.root().html('');
             pro.initContent(editor);
-            if(!pro.preventDefault){
+            if(!pro._preventDefault){
                 pro.initEvent(editor);
             }
 
