@@ -38,7 +38,9 @@ UE.ui.define ( 'tab' , {
             relatedTarget : previous
         } );
 
-        me.trigger ( e );
+        e.stopPropagation()
+
+        me.trigger (e );
 
         if ( e.isDefaultPrevented () ) return;
 
