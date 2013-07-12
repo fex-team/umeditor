@@ -34,7 +34,6 @@
 .edui-modal-body {
     position: relative;
     max-height: 400px;
-    padding: 15px;
     font-size: 12px;
     overflow-y: auto;
 }

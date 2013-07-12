@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<script src="http://api.map.baidu.com/api?v=1.1&services=true"></script>
+<script>
+    window.onload = function(){
+
+        var scripts = document.scripts || document.getElementsByTagName("script"),
+            src = [];
+
+        for( var i = 1, len = scripts.length; i<len; i++ ) {
+
+            src.push( scripts[i].src );
+
+        }
+
+        parent.UE._widgetData.map.requestMapApi( src );
+
+    };
+</script>
+</body>
+</html>
