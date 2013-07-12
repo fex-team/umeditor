@@ -41,9 +41,9 @@
             }
             pro.root($widget.edui().getBodyContainer());
             pro.root().html('');
-            pro.initContent(editor);
+            pro.initContent(editor,$widget);
             if(!pro._preventDefault){
-                pro.initEvent(editor);
+                pro.initEvent(editor,$widget);
             }
 
             pro.width &&  $widget.width(pro.width);
