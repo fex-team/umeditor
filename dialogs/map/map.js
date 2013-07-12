@@ -13,6 +13,8 @@
             ".edui-map-content{width:530px; height: 350px;margin: 10px auto;}" +
             ".edui-map-content table{width: 100%}" +
             ".edui-map-content table td{vertical-align: middle;}" +
+            ".edui-map-button { width: 80px; height: 30px; line-height: 30px; display: block; text-align: center; border: 1px solid #cfcfcf; cursor: default; }" +
+            ".edui-map-button:hover {border-color: #3f3f3f;}" +
             "#eduiMapCity,#eduiMapAddress{height:21px;background: #FFF;border:1px solid #d7d7d7; line-height: 21px;}" +
             "#eduiMapCity{width:90px}" +
             "#eduiMapAddress{width:220px}" +
@@ -21,26 +23,44 @@
             "<table>" +
             "<tr>" +
             "<td><%=lang_city%>:</td>" +
-            "<td><input id=\"eduiMapCity\" type=\"text\" /></td>" +
+            "<td><input id=\"eduiMapCity\" type=\"text\" value=\"<%=city.value%>\"/></td>" +
             "<td><%=lang_address%>:</td>" +
             "<td><input id=\"eduiMapAddress\" type=\"text\" value=\"\" /></td>" +
-            "<td><a class=\"edui-map-button\"><%=lang_search%></a></td>" +
+            "<td><a id=\"eduiMapSearchBtn\" class=\"edui-map-button\"><%=lang_search%></a></td>" +
             "</tr>" +
             "</table>" +
             "<div style=\"width:100%;height:340px;margin:5px auto;border:1px solid gray\" id=\"eduiMapContainer\"></div>" +
-            "</div>" +
-            "<iframe style=\"display: none;\" src=\"<%=map_home_url%>/proxy.html\"></iframe>",
+            "</div>",
         initContent:function( editor, $widget ){
 
             var me = this,
-                lang = editor.getLang( widgetName ),
-                options = $.extend( {}, lang['static'], {
-                    map_home_url: UEDITOR_CONFIG.UEDITOR_HOME_URL + '/dialogs/'+ widgetName +'/'
-                } );
+                lang = editor.getLang( widgetName );
 
             me.lang = lang;
             me.editor = editor;
-            me.root().html( $.parseTmpl( me.tpl, options ) );
+            me.root().html( $.parseTmpl( me.tpl, lang['static'] ) );
+
+            me.initRequestApi();
+
+        },
+        /**
+         * 初始化请求API
+         */
+        initRequestApi: function(){
+
+            //已经初始化过， 不用再次初始化
+            if( window.BMap && window.BMap.Map ) {
+                this.initBaiduMap();
+            } else {
+
+                var ifr = document.createElement('iframe');
+
+                ifr.style.display = 'none';
+                ifr.src = UEDITOR_CONFIG.UEDITOR_HOME_URL + '/dialogs/'+ widgetName +'/proxy.html';
+
+                this.root().append( ifr );
+
+            }
 
         },
         requestMapApi: function( src ){
@@ -98,15 +118,19 @@
             marker.enableDragging();
             map.addOverlay(marker);
 
-            me.initEvent();
+            me.map = map;
+            me.marker = marker;
 
         },
         doSearch: function(){
-            if (!$G('city').value) {
-                alert(lang.cityMsg);
+
+            var me = this;
+
+            if (!$G('eduiMapCity').value) {
+                alert(me.lang.cityMsg);
                 return;
             }
-            var search = new BMap.LocalSearch(document.getElementById('city').value, {
+            var search = new BMap.LocalSearch($G("eduiMapCity").value, {
                 onSearchComplete: function (results){
                     if (results && results.getNumPois()) {
                         var points = [];
@@ -114,18 +138,18 @@
                             points.push(results.getPoi(i).point);
                         }
                         if (points.length > 1) {
-                            map.setViewport(points);
+                            me.map.setViewport(points);
                         } else {
-                            map.centerAndZoom(points[0], 13);
+                            me.map.centerAndZoom(points[0], 13);
                         }
-                        point = map.getCenter();
-                        marker.setPoint(point);
+                        point = me.map.getCenter();
+                        me.marker.setPoint(point);
                     } else {
-                        alert(lang.errorMsg);
+                        alert(me.lang.errorMsg);
                     }
                 }
             });
-            search.search($G('address').value || $G('city').value);
+            search.search($G('eduiMapAddress').value || $G('eduiMapCity').value);
         },
         getPars: function(str,par){
             var reg = new RegExp(par+"=((\\d+|[.,])*)","g");
@@ -135,12 +159,17 @@
 
             var me = this;
 
-            $G('eduiMapAddress').onkeydown = function (evt){
+            $('#eduiMapAddress').on('keydown', function (evt){
                 evt = evt || event;
                 if (evt.keyCode == 13) {
                     me.doSearch();
+                    return false;
                 }
-            };
+            });
+
+            $("#eduiMapSearchBtn").on('click', function(evt){
+                me.doSearch();
+            });
 
 //            dialog.onok = function (){
 //                var center = map.getCenter();
@@ -156,7 +185,13 @@
 
         },
         width:580,
-        height:448
+        height:498,
+        buttons: {
+            ok: {
+                exec: function(){}
+            },
+            cancel: {}
+        }
     });
 
 })();
