@@ -65,8 +65,6 @@ UE.ui.define('modal', {
 
         me.data("isShown", true);
 
-        me.confirm();
-
         me.escape();
 
         me.backdrop(function () {
@@ -89,22 +87,9 @@ UE.ui.define('modal', {
 
         me.data("isShown", false);
 
-        me.confirm();
-
         me.escape();
 
         me.hideModal();
-    },
-    confirm:function(){
-        var me = this;
-        if (me.data("isShown") && me.data("options").keyboard) {
-            me.root().on('keyup', function (e) {
-                e.which == 13 && me.ok();
-            })
-        }
-        else if (!me.data("isShown")) {
-            me.root().off('keyup');
-        }
     },
     escape: function () {
         var me = this;
