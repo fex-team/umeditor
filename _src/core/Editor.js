@@ -79,7 +79,9 @@
         me.setOpt({
             isShow: true,
             initialContent: '',
-            initialStyle:'',
+            initialStyle:'.edui-editor-body .edui-body-container p{margin:5px 0;} ' +
+                '.edui-editor-body .edui-body-container{border:0;outline:none;cursor:text;padding:0 5px 0;word-wrap;break-word;font-size:16px;font-family:sans-serif;}' +
+                '.edui-editor-body.focus{border:1px solid #5c9dff}',
             autoClearinitialContent: false,
             iframeCssUrl: me.options.UEDITOR_HOME_URL + 'themes/iframe.css',
             textarea: 'editorValue',
@@ -226,13 +228,18 @@
             var me = this,
                 options = me.options,
                 getStyleValue=function(attr){
-                   return parseInt(domUtils.getComputedStyle(container,attr));
+                    return parseInt(domUtils.getComputedStyle(container,attr));
                 };
+
             if (utils.isString(container)) {
                 container = document.getElementById(container);
             }
             if (container) {
+                utils.cssRule('ueditor_body_css',me.options.initialStyle,document);
+
                 container = this.initialCont(container);
+                container.className += ' edui-body-container';
+
                 if(options.initialFrameWidth){
                     options.minFrameWidth = options.initialFrameWidth
                 }else{
@@ -245,9 +252,9 @@
                 }
 
                 container.style.width = /%$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth-
-                   getStyleValue("padding-left")- getStyleValue("padding-right") +'px';
+                    getStyleValue("padding-left")- getStyleValue("padding-right") - getStyleValue('border-width') +'px';
                 container.style.height = /%$/.test(options.initialFrameHeight) ?  '100%' : options.initialFrameHeight -
-                    getStyleValue("padding-top")- getStyleValue("padding-bottom") +'px';
+                    getStyleValue("padding-top")- getStyleValue("padding-bottom") - getStyleValue('border-width') +'px';
 
                 container.style.zIndex = options.zIndex;
 
@@ -257,7 +264,7 @@
                 setTimeout(function(){
                     if( /%$/.test(options.initialFrameWidth)){
                         options.minFrameWidth = options.initialFrameWidth = container.offsetWidth;
-                        container.style.width = options.initialFrameWidth + 'px';
+                        container.style.width = options.initialFrameWidth  + 'px';
                     }
                     if(/%$/.test(options.initialFrameHeight)){
                         options.minFrameHeight = options.initialFrameHeight = container.offsetHeight;
@@ -282,7 +289,7 @@
 
             me.document = document;
             me.window = document.defaultView || document.parentWindow;
-            me.body = me.iframe = cont;
+            me.body = cont;
             me.selection = new dom.Selection(document,me.body);
             //gecko初始化就能得到range,无法判断isFocus了
             var geckoSel;
@@ -339,27 +346,22 @@
             me.isReady = 1;
             me.fireEvent('ready');
             options.onready && options.onready.call(me);
+            if(!browser.ie || browser.ie9above){
 
-            if (!browser.ie) {
-                domUtils.on(me.window, ['blur', 'focus'], function (e) {
+                domUtils.on(me.body, ['blur', 'focus'], function (e) {
                     //chrome下会出现alt+tab切换时，导致选区位置不对
                     if (e.type == 'blur') {
                         me._bakRange = me.selection.getRange();
-                        try {
-                            me._bakNativeRange = me.selection.getNative().getRangeAt(0);
-                            me.selection.getNative().removeAllRanges();
-                        } catch (e) {
-                            me._bakNativeRange = null;
-                        }
-
                     } else {
                         try {
                             me._bakRange && me._bakRange.select();
                         } catch (e) {
                         }
+                        me._bakRange = null;
                     }
                 });
             }
+
             !options.isShow && me.setHide();
             options.readonly && me.setDisabled();
         },

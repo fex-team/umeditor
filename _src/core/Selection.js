@@ -117,6 +117,20 @@
         var me = this;
         me.document = doc;
         me.body = body;
+        if ( ie ) {
+            domUtils.on( body, 'beforedeactivate', function () {
+                me._bakIERange = me.getIERange();
+            } );
+            domUtils.on( body, 'activate', function () {
+                try {
+                    if ( !_getIERange( me ) && me._bakIERange ) {
+                        me._bakIERange.select();
+                    }
+                } catch ( ex ) {
+                }
+                me._bakIERange = null;
+            } );
+        }
     };
 
     Selection.prototype = {
@@ -130,7 +144,7 @@
         getNative:function () {
             var doc = this.document;
             try {
-                return !doc ? null : ie && browser.ie < 9 ? doc.selection : domUtils.getWindow( doc ).getSelection();
+                return !doc ? null : browser.ie9below ? doc.selection : domUtils.getWindow( doc ).getSelection();
             } catch ( e ) {
                 return null;
             }
@@ -144,7 +158,7 @@
          */
         getIERange:function () {
             var ieRange = _getIERange( this );
-            if ( !ieRange ) {
+            if ( !ieRange  || !this.rangeInBody(ieRange)) {
                 if ( this._bakIERange ) {
                     return this._bakIERange;
                 }
@@ -152,7 +166,7 @@
             return ieRange;
         },
         rangeInBody : function(rng){
-            return this.body.contains(rng.startContainer)
+            return domUtils.inDoc(browser.ie9below ? rng.parentElement() : rng.startContainer,this.body);
         },
         /**
          * 缓存当前选区的range和选区的开始节点
@@ -207,14 +221,14 @@
         getRange:function () {
             var me = this;
             function optimze( range ) {
-                var child = me.document.body.firstChild,
+                var child = me.body.firstChild,
                     collapsed = range.collapsed;
                 while ( child && child.firstChild ) {
                     range.setStart( child, 0 );
                     child = child.firstChild;
                 }
                 if ( !range.startContainer ) {
-                    range.setStart( me.document.body, 0 )
+                    range.setStart( me.body, 0 )
                 }
                 if ( collapsed ) {
                     range.collapse( true );
@@ -225,10 +239,10 @@
                 return this._cachedRange;
             }
             var range = new dom.Range( me.document );
-            if ( ie && browser.ie < 9 ) {
+            if ( browser.ie9below ) {
                 var nativeRange = me.getIERange();
                 if ( nativeRange ) {
-                    //备份的_bakIERange可能已经实效了，dom树发生了变化比如从源码模式切回来，所以try一下，实效就放到body开始位置
+
                     try{
                         transformIERangeToRange( nativeRange, range );
                     }catch(e){

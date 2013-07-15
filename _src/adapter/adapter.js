@@ -118,17 +118,26 @@
                             $.proxy( fn, editor )();
                         } );
                     });
-
-
-                    editor.render(id);
+                    var options = editor.options;
+                    if(options.initialFrameWidth){
+                        options.minFrameWidth = options.initialFrameWidth
+                    }else{
+                        options.minFrameWidth = options.initialFrameWidth = editor.$body.width();
+                    }
+                    if(options.initialFrameHeight){
+                        options.minFrameHeight = options.initialFrameHeight
+                    }else{
+                        options.initialFrameHeight = options.minFrameHeight = editor.$body.height();
+                    }
                     $container.css({
-                        width: $(editor.iframe).width()
+                        width: options.initialFrameWidth,
+                        zIndex:editor.getOpt('zIndex')
                     });
+                    editor.render(id);
+
 
                     //添加tooltip;
                     $.eduitooltip('attachTo').css('z-index',editor.getOpt('zIndex')+1);
-
-
                     $container.find('a').click(function(evt){
                         evt.preventDefault()
                     })
@@ -142,9 +151,9 @@
         createUI: function (id, editor) {
             var $editorCont = $(id),
                 $container = $('<div class="edui-container"><div class="edui-editor-body"></div><div class="edui-dialog-container"></div></div>').insertBefore($editorCont);
-            editor.$container = $container.css('zIndex',editor.getOpt('zIndex') + 1);
+            editor.$container = $container;
             editor.container = $container[0];
-
+            editor.$body = $editorCont;
             $container.find('.edui-editor-body').append($editorCont).before(this.createToolbar(editor.options, editor));
 
             if(editor.options.elementpath || editor.options.wordCount){
