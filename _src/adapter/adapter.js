@@ -12,8 +12,6 @@
         _activeWidget = null,
         _widgetData = {};
 
-    UE._widgetData = _widgetData;
-
     utils.extend(UE, {
         registerUI: function (name, fn) {
             utils.each(name.split(/\s+/), function (uiname) {
