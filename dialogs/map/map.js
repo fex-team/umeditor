@@ -13,8 +13,8 @@
             ".edui-map-content{width:530px; height: 350px;margin: 10px auto;}" +
             ".edui-map-content table{width: 100%}" +
             ".edui-map-content table td{vertical-align: middle;}" +
-            ".edui-map-button { width: 80px; height: 30px; line-height: 30px; display: block; text-align: center; border: 1px solid #cfcfcf; cursor: default; }" +
-            ".edui-map-button:hover {border-color: #3f3f3f;}" +
+            ".edui-map-button { float: left; cursor: default; height: 24px; width: 96px; margin: 0 10px; background-image: url(\"<%=theme_url%>/images/icons-all.gif\") ; background-position:0 0; font-size: 12px; line-height: 24px; text-align: center; }" +
+            ".edui-map-button:hover {background-position:0 -30px;}" +
             "#eduiMapCity,#eduiMapAddress{height:21px;background: #FFF;border:1px solid #d7d7d7; line-height: 21px;}" +
             "#eduiMapCity{width:90px}" +
             "#eduiMapAddress{width:220px}" +
@@ -31,14 +31,19 @@
             "</table>" +
             "<div style=\"width:100%;height:340px;margin:5px auto;border:1px solid gray\" id=\"eduiMapContainer\"></div>" +
             "</div>",
+
         initContent:function( editor, $widget ){
 
             var me = this,
-                lang = editor.getLang( widgetName );
+                lang = editor.getLang( widgetName ),
+                theme_url = editor.options.themePath + editor.options.theme;
 
             me.lang = lang;
             me.editor = editor;
-            me.root().html( $.parseTmpl( me.tpl, lang['static'] ) );
+
+            me.root().html( $.parseTmpl( me.tpl, $.extend( {}, lang['static'], {
+                'theme_url' : theme_url
+            } ) ) );
 
             me.initRequestApi();
 
