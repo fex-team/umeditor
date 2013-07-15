@@ -58,8 +58,8 @@
     background-position:0 -30px;
 }
 .edui-modal-backdrop{
-    opacity: 0.8;
-    filter: alpha(opacity=80);
+    opacity: 0.6;
+    filter: alpha(opacity=60);
     position: fixed;
     top: 0;
     right: 0;
