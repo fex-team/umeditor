@@ -29,6 +29,9 @@
                 }
             });
 
+        //附加一个按钮
+        fullscreenHandler.attachButton( $button );
+
         return $button;
 
     });
@@ -36,19 +39,33 @@
 
     function Fullscreen( editor ) {
 
+        var me = this;
+
         if( !editor ) {
             throw new Error('invalid params, notfound editor');
         }
 
-        this.editor = editor;
+        me.editor = editor;
+        //附加按钮对象列表
+        me.buttons = [];
 
         //记录初始化的全屏组件
         FULLSCREENS[ editor.uid ] = this;
 
         editor.addListener('destroy', function(){
             delete FULLSCREENS[ editor.uid ];
-            this.editor = null;
+            me.editor = null;
         });
+
+        //响应编辑器的全屏选项
+        if( editor.options.fullscreen ) {
+
+            //切换至全屏
+            editor.addListener('ready', function(){
+                me.toggle();
+            });
+
+        }
 
     }
 
@@ -56,7 +73,6 @@
 
         /**
          * 全屏状态切换
-         * @param editor 需要切换状态的编辑器对象
          */
         toggle: function(){
 
@@ -76,6 +92,10 @@
                 editor.fireEvent( 'fullscreenchanged', !_edui_fullscreen_status );
             }
 
+        },
+        //附加一个按钮
+        attachButton: function( $btn ){
+            this.buttons.push( $btn );
         },
         /**
          * 执行放大
@@ -108,6 +128,14 @@
          */
         update: function( isFull ) {
             this.editor._edui_fullscreen_status = isFull;
+
+            //切换按钮状态
+            for( var i = 0, btn; btn = this.buttons[ i ]; i++ ) {
+
+                $(btn)[ isFull ? 'addClass' : 'removeClass' ]('active');
+
+            }
+
         },
         /**
          * 调整当前编辑器的大小, 如果当前编辑器不处于全屏状态， 则不做调整
