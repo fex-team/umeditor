@@ -25,7 +25,7 @@
             'ok': {
                 label: '插入图片',
                 exec: function () {
-
+                    editor.execCommand('insertimage', obj);
                 }
             },
             'cancel': {}
