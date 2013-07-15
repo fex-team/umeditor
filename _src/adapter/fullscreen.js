@@ -79,7 +79,6 @@
             var editor = this.editor,
                 //当前编辑器的缩放状态
                 _edui_fullscreen_status = this.isFullState();
-
             editor.fireEvent('beforefullscreenchange', !_edui_fullscreen_status );
 
             //更新状态
