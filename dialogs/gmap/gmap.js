@@ -1,16 +1,20 @@
 
 (function(){
 
+    var widgetName = 'gmap';
+
     function $G( id ) {
         return document.getElementById( id );
     }
 
-    UE.registerWidget('gmap',{
+    UE.registerWidget(widgetName,{
 
         tpl: "<style type=\"text/css\">" +
             ".edui-gmap-content{width:530px; height: 350px;margin: 10px auto;}" +
             ".edui-gmap-content table{width: 100%}" +
             ".edui-gmap-content table td{vertical-align: middle;}" +
+            ".edui-gmap-button{width: 80px; height: 30px; line-height: 30px; display: block; text-align: center; border: 1px solid #cfcfcf; cursor: default;}" +
+            ".edui-gmap-button:hover {border-color: #3f3f3f;}" +
             "#eduiGMapAddress{width:220px;height:21px;background: #FFF;border:1px solid #d7d7d7; line-height: 21px;}" +
             "</style>" +
             "<div class=\"edui-gmap-content\">" +
@@ -18,7 +22,7 @@
             "<tr>" +
             "<td><label for=\"eduiGMapAddress\"><%=lang_input_address%></label></td>" +
             "<td><input id=\"eduiGMapAddress\" type=\"text\" value=\"<%=address.value%>\"/></td>" +
-            "<td><a id=\"eduiGMapDoSearch\" href=\"javascript:void(0)\" class=\"edui-gmap-button\"><%=lang_input_search%></a></td>" +
+            "<td><a id=\"eduiGMapDoSearch\" class=\"edui-gmap-button\"><%=lang_input_search%></a></td>" +
             "</tr>" +
             "</table>" +
             "<div id=\"eduiGMapContainer\" style=\"width: 100%; height: 340px;margin: 5px auto; border: 1px solid gray;\"></div>" +
@@ -27,7 +31,7 @@
         initContent:function( editor, $widget ){
 
             var me = this,
-                lang = editor.getLang( 'gmap' ),
+                lang = editor.getLang( widgetName ),
                 options = $.extend( {}, lang['static'], {
                     gmap_home_url: UEDITOR_CONFIG.UEDITOR_HOME_URL + '/dialogs/gmap/'
                 } );
@@ -115,7 +119,7 @@
             ok: {
                 exec: function( editor ){
 
-                    var widget = UE._widgetData['gmap'],
+                    var widget = UE.getWidgetData(widgetName),
                         center = widget.map.getCenter(),
                         point = widget.marker.getPosition(),
                         url = "http://maps.google.com/maps/api/staticmap?center=" + center.lat() + ',' + center.lng() + "&zoom=" + widget.map.zoom + "&size=520x340&maptype=" + widget.map.getMapTypeId() + "&markers=" + point.lat() + ',' + point.lng() + "&sensor=false";

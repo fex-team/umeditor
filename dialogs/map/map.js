@@ -182,7 +182,7 @@
                 exec: function( editor ){
 
 
-                    var widget = UE._widgetData[ widgetName ],
+                    var widget = UE.getWidgetData( widgetName ),
                         center = widget.map.getCenter(),
                         zoom = widget.map.zoomLevel,
                         size = widget.map.getSize(),
