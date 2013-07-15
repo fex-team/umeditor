@@ -12,7 +12,6 @@
             'core/Range.js',
             'core/Selection.js',
             'core/Editor.js',
-            'core/ajax.js',
             'core/filterword.js',
             'core/node.js',
             'core/htmlparser.js',
