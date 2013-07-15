@@ -8,8 +8,7 @@
 
     UE.registerWidget('emotion',{
 
-        tpl: "<link rel=\"stylesheet\" type=\"text/css\" href=\"<%=emotion_url%>emotion.css\">" +
-            "<div id=\"eduiEmotionTabPanel\" class=\"edui-emotion-wrapper\">" +
+        tpl: "<div id=\"eduiEmotionTabPanel\" class=\"edui-emotion-wrapper\">" +
             "<div id=\"eduiEmotionTabHeads\" class=\"edui-emotion-tabhead\">" +
             "<ul class=\"edui-tab-nav\">" +
             "<li class=\"edui-tab-item active\"><%=lang_input_choice%></li>" +
@@ -20,7 +19,6 @@
             "<li class=\"edui-tab-item\"><%=lang_input_bubble%></li>" +
             "<li class=\"edui-tab-item\"><%=lang_input_youa%></li>" +
             "</ul>" +
-            "</div>" +
             "<div id=\"eduiEmotionTabBodys\" class=\"edui-emotion-tabbody edui-tab-content\">" +
             "<div id=\"eduiEmotionTab0\" class=\"edui-tab-pane active\"></div>" +
             "<div id=\"eduiEmotionTab1\" class=\"edui-tab-pane\"></div>" +
@@ -29,7 +27,6 @@
             "<div id=\"eduiEmotionTab4\" class=\"edui-tab-pane\"></div>" +
             "<div id=\"eduiEmotionTab5\" class=\"edui-tab-pane\"></div>" +
             "<div id=\"eduiEmotionTab6\" class=\"edui-tab-pane\"></div>" +
-            "</div>" +
             "</div>" +
             "<div id=\"eduiEmotionTabIconReview\">" +
             "<img id=\'eduiEmotionFaceReview\' class=\'edui-emotion-review\'/>" +
@@ -79,7 +76,7 @@
         initEvent:function(){
 
             $.eduitab({selector:"#eduiEmotionTabPanel"});
-            this.root().on('mouseup', function(e){
+            this.root().on('click', function(e){
                 return false;
             });
             return;
