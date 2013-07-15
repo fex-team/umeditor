@@ -1,6 +1,9 @@
 (function () {
     UE.registerWidget('image', {
-        tpl: "<div id=\"edui-image-Jwrapper\">" +
+        tpl:  "<style type=\"text/css\">" +
+            ".edui-image-wrapper{font-size: 12px;margin: 15px;}" +
+            "</style>" +
+            "<div id=\"edui-image-Jwrapper\" class=\"edui-image-wrapper\">" +
             "<ul class=\"edui-tab-nav\">" +
             "<li class=\"edui-tab-item active\"><a href=\"#edui-image-Jlocal\" class=\"edui-tab-text\">本地上传</a></li>" +
             "<li  class=\"edui-tab-item\"><a href=\"#edui-image-JimgSearch\" class=\"edui-tab-text\">图片搜索</a></li>" +
