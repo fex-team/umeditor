@@ -13,8 +13,8 @@
             ".edui-gmap-content{width:530px; height: 350px;margin: 10px auto;}" +
             ".edui-gmap-content table{width: 100%}" +
             ".edui-gmap-content table td{vertical-align: middle;}" +
-            ".edui-gmap-button{width: 80px; height: 30px; line-height: 30px; display: block; text-align: center; border: 1px solid #cfcfcf; cursor: default;}" +
-            ".edui-gmap-button:hover {border-color: #3f3f3f;}" +
+            ".edui-gmap-button{float: left; cursor: default; height: 24px; width: 96px; margin: 0 10px; background-image: url(\"<%=theme_url%>/images/icons-all.gif\") ; background-position:0 0; font-size: 12px; line-height: 24px; text-align: center;}" +
+            ".edui-gmap-button:hover {background-position:0 -30px;}" +
             "#eduiGMapAddress{width:220px;height:21px;background: #FFF;border:1px solid #d7d7d7; line-height: 21px;}" +
             "</style>" +
             "<div class=\"edui-gmap-content\">" +
@@ -33,6 +33,7 @@
             var me = this,
                 lang = editor.getLang( widgetName ),
                 options = $.extend( {}, lang['static'], {
+                    theme_url: editor.options.themePath + editor.options.theme,
                     gmap_home_url: UEDITOR_CONFIG.UEDITOR_HOME_URL + '/dialogs/gmap/'
                 } );
 
