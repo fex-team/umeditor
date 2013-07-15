@@ -283,7 +283,7 @@
             me.document = document;
             me.window = document.defaultView || document.parentWindow;
             me.body = me.iframe = cont;
-            me.selection = new dom.Selection(document);
+            me.selection = new dom.Selection(document,me.body);
             //gecko初始化就能得到range,无法判断isFocus了
             var geckoSel;
             if (browser.gecko && (geckoSel = this.selection.getNative())) {
@@ -334,9 +334,6 @@
             if (!me.container) {
                 me.container = cont.parentNode;
             }
-            if (options.fullscreen && me.ui) {
-                me.ui.setFullScreen(true);
-            }
 
             me._bindshortcutKeys();
             me.isReady = 1;
@@ -344,10 +341,17 @@
             options.onready && options.onready.call(me);
 
             if (!browser.ie) {
-                domUtils.on(me.body, ['blur', 'focus'], function (e) {
+                domUtils.on(me.window, ['blur', 'focus'], function (e) {
                     //chrome下会出现alt+tab切换时，导致选区位置不对
                     if (e.type == 'blur') {
                         me._bakRange = me.selection.getRange();
+                        try {
+                            me._bakNativeRange = me.selection.getNative().getRangeAt(0);
+                            me.selection.getNative().removeAllRanges();
+                        } catch (e) {
+                            me._bakNativeRange = null;
+                        }
+
                     } else {
                         try {
                             me._bakRange && me._bakRange.select();

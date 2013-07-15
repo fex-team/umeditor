@@ -113,9 +113,10 @@
         return null;
     }
 
-    var Selection = dom.Selection = function ( doc ) {
-        var me = this, iframe;
+    var Selection = dom.Selection = function ( doc,body ) {
+        var me = this;
         me.document = doc;
+        me.body = body;
     };
 
     Selection.prototype = {
@@ -150,7 +151,9 @@
             }
             return ieRange;
         },
-
+        rangeInBody : function(rng){
+            return this.body.contains(rng.startContainer)
+        },
         /**
          * 缓存当前选区的range和选区的开始节点
          * @public
@@ -221,7 +224,7 @@
             if ( me._cachedRange != null ) {
                 return this._cachedRange;
             }
-            var range = new baidu.editor.dom.Range( me.document );
+            var range = new dom.Range( me.document );
             if ( ie && browser.ie < 9 ) {
                 var nativeRange = me.getIERange();
                 if ( nativeRange ) {
@@ -237,7 +240,7 @@
                 }
             } else {
                 var sel = me.getNative();
-                if ( sel && sel.rangeCount ) {
+                if ( sel && sel.rangeCount && me.rangeInBody(sel.getRangeAt( 0 ))) {
                     var firstRange = sel.getRangeAt( 0 );
                     var lastRange = sel.getRangeAt( sel.rangeCount - 1 );
                     range.setStart( firstRange.startContainer, firstRange.startOffset ).setEnd( lastRange.endContainer, lastRange.endOffset );
