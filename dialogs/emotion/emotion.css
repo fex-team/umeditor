@@ -66,6 +66,7 @@
     position: absolute;
     top: 67px;
     left: 494px;
+    display: none;
 }
 
 .edui-emotion-wrapper .edui-emotion-preview-left {

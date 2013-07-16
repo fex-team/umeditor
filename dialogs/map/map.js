@@ -33,6 +33,13 @@
                 lang = editor.getLang(widgetName),
                 theme_url = editor.options.themePath + editor.options.theme;
 
+            if( me.inited ) {
+                me.preventDEfault();
+                return false;
+            }
+
+            me.inited = true;
+
             me.lang = lang;
             me.editor = editor;
 
