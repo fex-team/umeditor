@@ -32,11 +32,6 @@
         //附加一个按钮
         fullscreenHandler.attachButton( $button );
 
-        me.addListener('selectionchange', function () {
-            var state = this.queryCommandState(name);
-            $button.edui().disabled(state == -1).active(state == 1)
-        });
-
         return $button;
 
     });
@@ -283,7 +278,7 @@
          * 获取编辑区包裹对象
          */
         getEditorHolder: function(){
-            return this.editor.iframe;
+            return this.editor.body;
         },
         /**
          * 获取编辑器状态
