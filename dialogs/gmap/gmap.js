@@ -3,10 +3,6 @@
 
     var widgetName = 'gmap';
 
-    function $G( id ) {
-        return document.getElementById( id );
-    }
-
     UE.registerWidget(widgetName,{
 
         tpl: "<style type=\"text/css\">" +
@@ -44,7 +40,7 @@
         },
         initGMap: function( google ){
 
-            var map = new google.maps.Map( $G("eduiGMapContainer"), {
+            var map = new google.maps.Map( $("#eduiGMapContainer")[0], {
                 zoom: 3,
                 streetViewControl: false,
                 scaleControl: true,
@@ -52,35 +48,35 @@
             }),
             me = this,
             imgcss,
+            point,
             marker = new google.maps.Marker({
                 map: map,
                 draggable: true
             }),
-            img = me.editor.selection.getRange().getClosedNode();
-
-            me.google = google;
-            me.map = map;
-            me.marker = marker;
-            me.imgcss = imgcss;
-
-            if(img && img.src.indexOf("http://maps.google.com/maps/api/staticmap")!=-1){
-                var url = img.getAttribute("src");
-                var centers = me.getPars(url,"center").split(",");
-                point = new google.maps.LatLng(Number(centers[0]),Number(centers[1]));
+            img = $(me.editor.selection.getRange().getClosedNode());
+            if(img.length && img.attr("src").indexOf("http://maps.google.com/maps/api/staticmap")!=-1){
+                var url = img.attr("src");
+                var centerPos = me.getPars(url,"center").split(","),
+                    markerPos = me.getPars(url,"markers").split(",");
+                point = new google.maps.LatLng(Number(centerPos[0]),Number(centerPos[1]));
                 map.setCenter(point);
-                map.setZoom(Number(getPars(url,"zoom")));
-                centers = me.getPars(url,"markers").split(",");
-                marker.setPosition(new google.maps.LatLng(Number(centers[0]),Number(centers[1])));
-                imgcss = img.style.cssText;
+                map.setZoom(Number(me.getPars(url,"zoom")));
+                marker.setPosition(new google.maps.LatLng(Number(markerPos[0]),Number(markerPos[1])));
+                imgcss = img.attr('style');
             }else{
                 setTimeout(function(){
                     me.doSearch();
                 },30)
             }
 
+            me.google = google;
+            me.map = map;
+            me.marker = marker;
+            me.imgcss = imgcss;
+
         },
         doSearch: function(){
-            var address = $G("eduiGMapAddress").value,
+            var address = $("#eduiGMapAddress").val(),
                 me = this,
                 google = me.google,
                 geocoder = new google.maps.Geocoder();
@@ -102,16 +98,16 @@
 
             var me = this;
 
-            $G('eduiGMapAddress').onkeydown = function (evt){
+            $('#eduiGMapAddress').keydown(function (evt){
                 evt = evt || event;
                 if (evt.keyCode == 13) {
                     me.doSearch();
                 }
-            };
+            });
 
-            $G("eduiGMapDoSearch").onclick = function(){
+            $("#eduiGMapDoSearch").click(function(){
                 me.doSearch();
-            };
+            });
 
         },
         width:580,

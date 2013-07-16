@@ -96,7 +96,7 @@
             map.enableScrollWheelZoom();
             map.enableContinuousZoom();
 
-            if (img && /api[.]map[.]baidu[.]com/ig.test(img.attr("src"))) {
+            if (img.length && /api[.]map[.]baidu[.]com/ig.test(img.attr("src"))) {
                 var url = img.attr("src"),
                     centerPos = me.getPars(url, "center").split(","),
                     markerPos = me.getPars(url, "markers").split(",");
