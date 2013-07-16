@@ -178,8 +178,13 @@
                 var btns = [];
                 $.each(options.toolbar,function(i,uiNames){
                     $.each(uiNames.split(/\s+/),function(index,name){
-                        var ui = me.getUI(editor,name);
-                        ui && btns.push(ui);
+                        if(name == '|'){
+                            btns.push($.eduiseparator());
+                        }else{
+                            var ui = me.getUI(editor,name);
+                            ui && btns.push(ui);
+                        }
+
                     });
                     btns.length && toolbar.appendToBtnmenu(btns);
                 });
