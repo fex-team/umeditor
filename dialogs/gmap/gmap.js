@@ -40,6 +40,7 @@
 
             me.inited = true;
 
+            me._defaultCity = options.address.value;
             me.lang = lang;
             me.editor = editor;
             me.root().html( $.parseTmpl( me.tpl, options ) );
@@ -88,10 +89,6 @@
                 google = me.google,
                 geocoder = new google.maps.Geocoder();
 
-            if( !this._defaultCity ) {
-                this._defaultCity = address;
-            }
-
             geocoder.geocode( { 'address': address}, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     var bounds = results[0].geometry.viewport;
@@ -109,10 +106,25 @@
             var me = this,
                 google = me.google;
 
-            $("#eduiGMapAddress").val( this._defaultCity );
-            setTimeout(function(){
-                me.doSearch();
-            },30)
+            if( !me._center ) {
+
+                new google.maps.Geocoder().geocode( { 'address': me._defaultCity }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        if( me._center ) {
+                            return;
+                        }
+                        me._center = new google.maps.LatLng( results[0].geometry.location.jb, results[0].geometry.location.kb );
+                        me.map.setCenter(me._center);
+                        me.marker.setPosition( me._center );
+                        me.map.panTo( me._center );
+                    }
+                });
+
+            } else {
+                me.map.setCenter(me._center);
+                me.marker.setPosition( me._center );
+                me.map.panTo( me._center );
+            }
         },
         initEvent:function(){
 
