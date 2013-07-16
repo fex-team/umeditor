@@ -33,6 +33,13 @@
                     gmap_home_url: UEDITOR_CONFIG.UEDITOR_HOME_URL + '/dialogs/gmap/'
                 } );
 
+            if( me.inited ) {
+                me.preventDefault();
+                return false;
+            }
+
+            me.inited = true;
+
             me.lang = lang;
             me.editor = editor;
             me.root().html( $.parseTmpl( me.tpl, options ) );
@@ -66,7 +73,7 @@
             }else{
                 setTimeout(function(){
                     me.doSearch();
-                },30)
+                },30);
             }
 
             me.google = google;
@@ -81,6 +88,10 @@
                 google = me.google,
                 geocoder = new google.maps.Geocoder();
 
+            if( !this._defaultCity ) {
+                this._defaultCity = address;
+            }
+
             geocoder.geocode( { 'address': address}, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     var bounds = results[0].geometry.viewport;
@@ -93,6 +104,15 @@
         getPars: function(str,par){
             var reg = new RegExp(par+"=((\\d+|[.,])*)","g");
             return reg.exec(str)[1];
+        },
+        reset: function(){
+            var me = this,
+                google = me.google;
+
+            $("#eduiGMapAddress").val( this._defaultCity );
+            setTimeout(function(){
+                me.doSearch();
+            },30)
         },
         initEvent:function(){
 
@@ -122,10 +142,13 @@
                         url = "http://maps.google.com/maps/api/staticmap?center=" + center.lat() + ',' + center.lng() + "&zoom=" + widget.map.zoom + "&size=520x340&maptype=" + widget.map.getMapTypeId() + "&markers=" + point.lat() + ',' + point.lng() + "&sensor=false";
 
                     editor.execCommand('inserthtml', '<img width="520" height="340" src="' + url + '"' + (widget.imgcss ? ' style="' + widget.imgcss + '"' :'') + '/>');
-
                 }
             },
-            cancel: {}
+            cancel: {
+                exec: function(){
+                    UE.getWidgetData(widgetName).reset();
+                }
+            }
         }
     });
 
