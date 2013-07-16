@@ -50,7 +50,7 @@
             'ui/modal.js',
             'ui/tooltip.js',
             'ui/tab.js',
-            'ui/elementpath.js',
+            'ui/separator.js',
             'adapter/adapter.js',
             'adapter/ready.js',
             'adapter/button.js',
