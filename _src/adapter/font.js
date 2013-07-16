@@ -197,7 +197,7 @@ UE.registerUI('forecolor', function( name ) {
     });
 
     $btn = $.eduicolorsplitbutton({
-        icon: 'font',
+        icon: name,
         caret: true,
         title: me.getLang("labelMap")[name],
         click: function() {
@@ -247,7 +247,7 @@ UE.registerUI('backcolor', function( name ) {
     });
 
     $btn = $.eduicolorsplitbutton({
-        icon: 'font',
+        icon: name,
         title: me.getLang("labelMap")[name],
         caret: true,
         color: 'transparent',
