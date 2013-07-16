@@ -390,7 +390,16 @@ var domUtils = dom.domUtils = {
     getElementsByTagName:function (node, name,filter) {
         if(filter && utils.isString(filter)){
            var className = filter;
-           filter =  function(node){return domUtils.hasClass(node,className)}
+           filter =  function(node){
+               var result = false;
+               $.each(utils.trim(className).replace(/[ ]{2,}/g,' ').split(' '),function(i,v){
+                    if($(node).hasClass(v)){
+                        result = true;
+                        return false;
+                    }
+               })
+               return result;
+           }
         }
         name = utils.trim(name).replace(/[ ]{2,}/g,' ').split(' ');
         var arr = [];
@@ -401,7 +410,6 @@ var domUtils = dom.domUtils = {
                     arr.push(ci);
             }
         }
-
         return arr;
     },
 
@@ -544,24 +552,6 @@ var domUtils = dom.domUtils = {
             return "";
         }
         return utils.transUnitToPx(utils.fixColor(styleName, value));
-    },
-
-    /**
-     * 判断元素element是否包含样式类名className,支持以空格分开的多个类名,多个类名顺序不同也可以比较
-     * @name hasClass
-     * @grammar UE.dom.domUtils.hasClass(element,className)  =>true|false
-     */
-    hasClass:function (element, className) {
-        if(utils.isRegExp(className)){
-            return className.test(element.className)
-        }
-        className = utils.trim(className).replace(/[ ]{2,}/g,' ').split(' ');
-        for(var i = 0,ci,cls = element.className;ci=className[i++];){
-            if(!new RegExp('\\b' + ci + '\\b','i').test(cls)){
-                return false;
-            }
-        }
-        return i - 1 == className.length;
     },
 
     /**
