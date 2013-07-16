@@ -33,6 +33,13 @@
                 lang = editor.getLang(widgetName),
                 theme_url = editor.options.themePath + editor.options.theme;
 
+            if( me.inited ) {
+                me.preventDefault();
+                return false;
+            }
+
+            me.inited = true;
+
             me.lang = lang;
             me.editor = editor;
 
@@ -152,6 +159,9 @@
             var reg = new RegExp(par + "=((\\d+|[.,])*)", "g");
             return reg.exec(str)[1];
         },
+        reset: function(){
+            this.map.reset();
+        },
         initEvent: function () {
             var me = this;
 
@@ -184,9 +194,14 @@
                             "&zoom=" + zoom + "&width=" + size.width + '&height=' + size.height + "&markers=" + point.lng + ',' + point.lat;
 
                     editor.execCommand('inserthtml', '<img width="' + size.width + '"height="' + size.height + '" src="' + url + '"' + (widget.imgcss ? ' style="' + widget.imgcss + '"' : '') + '/>');
+                    widget.reset();
                 }
             },
-            cancel: {}
+            cancel: {
+                exec: function(){
+                    UE.getWidgetData(widgetName).reset();
+                }
+            }
         }
     });
 

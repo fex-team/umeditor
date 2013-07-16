@@ -17,13 +17,13 @@
             "<li class=\"edui-emotion-tabs\"></li>" +
             "</ul>" +
             "<div id=\"eduiEmotionTabBodys\" class=\"edui-tab-content\">" +
-            "<div id=\"eduiEmotionTab0\" class=\"edui-tab-pane\">1</div>" +
-            "<div id=\"eduiEmotionTab1\" class=\"edui-tab-pane\">2</div>" +
-            "<div id=\"eduiEmotionTab2\" class=\"edui-tab-pane\">3</div>" +
-            "<div id=\"eduiEmotionTab3\" class=\"edui-tab-pane\">4</div>" +
-            "<div id=\"eduiEmotionTab4\" class=\"edui-tab-pane\">5</div>" +
-            "<div id=\"eduiEmotionTab5\" class=\"edui-tab-pane\">6</div>" +
-            "<div id=\"eduiEmotionTab6\" class=\"edui-tab-pane\">7</div>" +
+            "<div id=\"eduiEmotionTab0\" class=\"edui-tab-pane\"></div>" +
+            "<div id=\"eduiEmotionTab1\" class=\"edui-tab-pane\"></div>" +
+            "<div id=\"eduiEmotionTab2\" class=\"edui-tab-pane\"></div>" +
+            "<div id=\"eduiEmotionTab3\" class=\"edui-tab-pane\"></div>" +
+            "<div id=\"eduiEmotionTab4\" class=\"edui-tab-pane\"></div>" +
+            "<div id=\"eduiEmotionTab5\" class=\"edui-tab-pane\"></div>" +
+            "<div id=\"eduiEmotionTab6\" class=\"edui-tab-pane\"></div>" +
             "</div>" +
             "<div id=\"eduiEmotionTabIconReview\" class=\"edui-emotion-preview-box\">" +
             "<img id=\'eduiEmotionFaceReview\' class=\'edui-emotion-preview-img\'/>" +
@@ -278,8 +278,7 @@
             return arr;
         },
         width:603,
-        height:387,
-        clear: false
+        height:387
     });
 
 })();
