@@ -19,7 +19,7 @@
             })
         },
         registerWidget : function(name,pro){
-            _widgetData[name] = $.extend(pro,{
+            _widgetData[name] = $.extend2(pro,{
                 $root : null,
                 _preventDefault:false,
                 root:function($el){
@@ -27,7 +27,8 @@
                 },
                 preventDefault:function(){
                     this._preventDefault = true;
-                }
+                },
+                clear:false
             });
         },
         getWidgetData : function(name){
@@ -39,7 +40,7 @@
                 return null;
             }
             pro.root($widget.edui().getBodyContainer());
-            pro.root().html('');
+
             pro.initContent(editor,$widget);
             if(!pro._preventDefault){
                 pro.initEvent(editor,$widget);

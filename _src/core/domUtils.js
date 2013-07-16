@@ -390,7 +390,16 @@ var domUtils = dom.domUtils = {
     getElementsByTagName:function (node, name,filter) {
         if(filter && utils.isString(filter)){
            var className = filter;
-           filter =  function(node){return domUtils.hasClass(node,className)}
+           filter =  function(node){
+               var result = false;
+               $.each(utils.trim(className).replace(/[ ]{2,}/g,' ').split(' '),function(i,v){
+                    if($(node).hasClass(v)){
+                        result = true;
+                        return false;
+                    }
+               })
+               return result;
+           }
         }
         name = utils.trim(name).replace(/[ ]{2,}/g,' ').split(' ');
         var arr = [];
@@ -401,7 +410,6 @@ var domUtils = dom.domUtils = {
                     arr.push(ci);
             }
         }
-
         return arr;
     },
 
@@ -545,63 +553,6 @@ var domUtils = dom.domUtils = {
         }
         return utils.transUnitToPx(utils.fixColor(styleName, value));
     },
-    /**
-     * 在元素element上删除classNames，支持同时删除多个
-     * @name removeClasses
-     * @grammar UE.dom.domUtils.removeClasses(element,classNames)
-     * @example
-     * //执行方法前的dom结构
-     * <span class="test1 test2 test3">xxx</span>
-     * //执行方法
-     * UE.dom.domUtils.removeClasses(element,["test1","test3"])
-     * //执行方法后的dom结构
-     * <span class="test2">xxx</span>
-     */
-    removeClasses:function (elm, classNames) {
-        classNames = utils.isArray(classNames) ? classNames :
-            utils.trim(classNames).replace(/[ ]{2,}/g,' ').split(' ');
-        for(var i = 0,ci,cls = elm.className;ci=classNames[i++];){
-            cls = cls.replace(new RegExp('\\b' + ci + '\\b'),'')
-        }
-        cls = utils.trim(cls).replace(/[ ]{2,}/g,' ');
-        if(cls){
-            elm.className = cls;
-        }else{
-            domUtils.removeAttributes(elm,['class']);
-        }
-    },
-    /**
-     * 在元素element上增加一个样式类className，支持以空格分开的多个类名
-     * 如果相同的类名将不会添加
-     * @name addClass
-     * @grammar UE.dom.domUtils.addClass(element,classNames)
-     */
-    addClass:function (elm, classNames) {
-        if(!elm)return;
-        classNames = utils.trim(classNames).replace(/[ ]{2,}/g,' ').split(' ');
-        for(var i = 0,ci,cls = elm.className;ci=classNames[i++];){
-            if(!new RegExp('\\b' + ci + '\\b').test(cls)){
-                elm.className += ' ' + ci;
-            }
-        }
-    },
-    /**
-     * 判断元素element是否包含样式类名className,支持以空格分开的多个类名,多个类名顺序不同也可以比较
-     * @name hasClass
-     * @grammar UE.dom.domUtils.hasClass(element,className)  =>true|false
-     */
-    hasClass:function (element, className) {
-        if(utils.isRegExp(className)){
-            return className.test(element.className)
-        }
-        className = utils.trim(className).replace(/[ ]{2,}/g,' ').split(' ');
-        for(var i = 0,ci,cls = element.className;ci=className[i++];){
-            if(!new RegExp('\\b' + ci + '\\b','i').test(cls)){
-                return false;
-            }
-        }
-        return i - 1 == className.length;
-    },
 
     /**
      * 阻止事件默认行为
@@ -610,26 +561,7 @@ var domUtils = dom.domUtils = {
     preventDefault:function (evt) {
         evt.preventDefault ? evt.preventDefault() : (evt.returnValue = false);
     },
-    /**
-     * 删除元素element的样式
-     * @grammar UE.dom.domUtils.removeStyle(element,name)        删除的样式名称
-     */
-    removeStyle:function (element, name) {
-        if(browser.ie ){
-            element.style.cssText = element.style.cssText.replace(new RegExp(name + '[^:]*:[^;]+;?','ig'),'')
-        }else{
-            if (element.style.removeProperty) {
-                element.style.removeProperty (name);
-            }else {
-                element.style.removeAttribute (utils.cssStyleToDomStyle(name));
-            }
-        }
 
-
-        if (!element.style.cssText) {
-            domUtils.removeAttributes(element, ['style']);
-        }
-    },
     /**
      * 获取元素element的某个样式值
      * @name getStyle
@@ -650,18 +582,7 @@ var domUtils = dom.domUtils = {
             this.removeAttributes(element,'style')
         }
     },
-    /**
-     * 为元素element设置样式属性值
-     * @name setStyles
-     * @grammar UE.dom.domUtils.setStyle(element,styles)  //styles为样式键值对
-     */
-    setStyles:function (element, styles) {
-        for (var name in styles) {
-            if (styles.hasOwnProperty(name)) {
-                domUtils.setStyle(element, name, styles[name]);
-            }
-        }
-    },
+
     /**
      * 删除_moz_dirty属性
      * @function
