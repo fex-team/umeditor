@@ -2,16 +2,12 @@
 
     var editor = null;
 
-    function $G( id ) {
-        return document.getElementById( id );
-    }
-
     UE.registerWidget('emotion',{
 
         tpl: "<link type=\"text/css\" rel=\"stylesheet\" href=\"<%=emotion_url%>emotion.css\">" +
             "<div id=\"eduiEmotionTabPanel\" class=\"edui-emotion-wrapper\">" +
-            "<ul class=\"edui-tab-nav\">" +
-            "<li class=\"edui-tab-item active\"><a href=\"#eduiEmotionTab0\" class=\"edui-tab-text\"><%=lang_input_choice%></a></li>" +
+            "<ul id=\"eduiEmotionTabNav\" class=\"edui-tab-nav\">" +
+            "<li class=\"edui-tab-item\"><a href=\"#eduiEmotionTab0\" class=\"edui-tab-text\"><%=lang_input_choice%></a></li>" +
             "<li class=\"edui-tab-item\"><a href=\"#eduiEmotionTab1\" class=\"edui-tab-text\"><%=lang_input_Tuzki%></a></li>" +
             "<li class=\"edui-tab-item\"><a href=\"#eduiEmotionTab2\" class=\"edui-tab-text\"><%=lang_input_lvdouwa%></a></li>" +
             "<li class=\"edui-tab-item\"><a href=\"#eduiEmotionTab3\" class=\"edui-tab-text\"><%=lang_input_BOBO%></a></li>" +
@@ -21,7 +17,7 @@
             "<li class=\"edui-emotion-tabs\"></li>" +
             "</ul>" +
             "<div id=\"eduiEmotionTabBodys\" class=\"edui-tab-content\">" +
-            "<div id=\"eduiEmotionTab0\" class=\"edui-tab-pane active\">1</div>" +
+            "<div id=\"eduiEmotionTab0\" class=\"edui-tab-pane\">1</div>" +
             "<div id=\"eduiEmotionTab1\" class=\"edui-tab-pane\">2</div>" +
             "<div id=\"eduiEmotionTab2\" class=\"edui-tab-pane\">3</div>" +
             "<div id=\"eduiEmotionTab3\" class=\"edui-tab-pane\">4</div>" +
@@ -29,8 +25,8 @@
             "<div id=\"eduiEmotionTab5\" class=\"edui-tab-pane\">6</div>" +
             "<div id=\"eduiEmotionTab6\" class=\"edui-tab-pane\">7</div>" +
             "</div>" +
-            "<div id=\"eduiEmotionTabIconReview\">" +
-            "<img id=\'eduiEmotionFaceReview\' class=\'edui-emotion-review\'/>" +
+            "<div id=\"eduiEmotionTabIconReview\" class=\"edui-emotion-preview-box\">" +
+            "<img id=\'eduiEmotionFaceReview\' class=\'edui-emotion-preview-img\'/>" +
             "</div>",
 
         sourceData: {
@@ -61,6 +57,13 @@
                     emotion_url: emotionUrl
                 } );
 
+            if( me.inited ) {
+                me.preventDefault();
+                return;
+            }
+
+            me.inited = true;
+
             editor = _editor;
             this.widget = $widget;
 
@@ -72,10 +75,11 @@
 
             me.tabs = $.eduitab({selector:"#eduiEmotionTabPanel"});
 
-            me.initImgName();
+            //缓存预览对象
+            me.previewBox = $("#eduiEmotionTabIconReview");
+            me.previewImg = $("#eduiEmotionFaceReview");
 
-            //激活第一个选项
-            me.tabs.edui().activate( $("#eduiEmotionTab0"), $("#eduiEmotionTab0").parent());
+            me.initImgName();
 
         },
         initEvent:function(){
@@ -124,6 +128,9 @@
 
             });
 
+            //激活第一个选项
+            $("#eduiEmotionTabNav .edui-tab-text:first").trigger('click');
+
         },
         initImgName: function() {
 
@@ -150,7 +157,7 @@
             var me = this,
                 emotion = me.sourceData.emotion;
 
-//            me.autoHeight( index );
+            me.autoHeight( contentBoxId );
 
             if ( !emotion.tabExist[ contentBoxId ] ) {
 
@@ -160,37 +167,30 @@
             }
 
         },
-        autoHeight: function( index ) {
-            var iframe = this.root()[0],
-                parent = iframe.parentNode.parentNode;
+        autoHeight: function( contentBoxId ) {
+            var panel = this.widget[0],
+                index = +contentBoxId.replace( /[a-zA-Z]+/, '' );
             switch ( index ) {
                 case 0:
-                    iframe.style.height = "380px";
-                    parent.style.height = "392px";
+                    panel.style.height = "387px";
                     break;
                 case 1:
-                    iframe.style.height = "220px";
-                    parent.style.height = "232px";
+                    panel.style.height = "235px";
                     break;
                 case 2:
-                    iframe.style.height = "260px";
-                    parent.style.height = "272px";
+                    panel.style.height = "275px";
                     break;
                 case 3:
-                    iframe.style.height = "300px";
-                    parent.style.height = "312px";
+                    panel.style.height = "310px";
                     break;
                 case 4:
-                    iframe.style.height = "140px";
-                    parent.style.height = "152px";
+                    panel.style.height = "160px";
                     break;
                 case 5:
-                    iframe.style.height = "260px";
-                    parent.style.height = "272px";
+                    panel.style.height = "225px";
                     break;
                 case 6:
-                    iframe.style.height = "230px";
-                    parent.style.height = "242px";
+                    panel.style.height = "235px";
                     break;
                 default:
 
@@ -204,16 +204,19 @@
             return obj;
         },
         mouseover: function( td, srcPath, posFlag ) {
-            td.style.backgroundColor = "#ACCD3C";
-            $G( 'eduiEmotionFaceReview' ).style.backgroundImage = "url(" + srcPath + ")";
-            if ( posFlag == 1 ) $G( "eduiEmotionTabIconReview" ).className = "show";
-            $G( "eduiEmotionTabIconReview" ).style.display = 'block';
+
+            posFlag -= 0;
+
+            $(td).css( 'backgroundColor', '#ACCD3C' );
+
+            this.previewImg.css( "backgroundImage", "url(" + srcPath + ")" );
+            posFlag && this.previewBox.addClass('edui-emotion-preview-left');
+            this.previewBox.show();
+
         },
         mouseout: function( td ) {
-            td.style.backgroundColor = "transparent";
-            var tabIconRevew = $G( "eduiEmotionTabIconReview" );
-            tabIconRevew.className = "";
-            tabIconRevew.style.display = 'none';
+            $(td).css( 'backgroundColor', 'transparent' );
+            this.previewBox.removeClass('edui-emotion-preview-left').hide();
         },
         insertSmiley: function( url, evt ) {
             var obj = {
@@ -257,7 +260,7 @@
                         textHTML.push( '<img  style="background-position:left ' + offset + 'px;" title="' + infor + '" src="' + emotion.SmileyPath + (editor.options.emotionLocalization ? '0.gif" width="' : 'default/0.gif" width="') + iWidth + '" height="' + iHeight + '"></img>' );
                         textHTML.push( '</span>' );
                     } else {
-                        textHTML.push( '<td width="' + iColWidth + '%"   bgcolor="#FFFFFF">' );
+                        textHTML.push( '<td bgcolor="#FFFFFF">' );
                     }
                     textHTML.push( '</td>' );
                 }
@@ -275,7 +278,8 @@
             return arr;
         },
         width:603,
-        height:407
+        height:387,
+        clear: false
     });
 
 })();
