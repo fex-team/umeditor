@@ -32,6 +32,11 @@
         //附加一个按钮
         fullscreenHandler.attachButton( $button );
 
+        me.addListener('selectionchange', function () {
+            var state = this.queryCommandState(name);
+            $button.edui().disabled(state == -1).active(state == 1)
+        });
+
         return $button;
 
     });
