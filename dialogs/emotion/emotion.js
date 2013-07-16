@@ -2,36 +2,33 @@
 
     var editor = null;
 
-    function $G( id ) {
-        return document.getElementById( id );
-    }
-
     UE.registerWidget('emotion',{
 
-        tpl: "<div id=\"eduiEmotionTabPanel\" class=\"edui-emotion-wrapper\">" +
-            "<div id=\"eduiEmotionTabHeads\" class=\"edui-emotion-tabhead\">" +
-            "<ul class=\"edui-tab-nav\">" +
-            "<li class=\"edui-tab-item active\"><%=lang_input_choice%></li>" +
-            "<li class=\"edui-tab-item\"><%=lang_input_Tuzki%></li>" +
-            "<li class=\"edui-tab-item\"><%=lang_input_lvdouwa%></li>" +
-            "<li class=\"edui-tab-item\"><%=lang_input_BOBO%></li>" +
-            "<li class=\"edui-tab-item\"><%=lang_input_babyCat%></li>" +
-            "<li class=\"edui-tab-item\"><%=lang_input_bubble%></li>" +
-            "<li class=\"edui-tab-item\"><%=lang_input_youa%></li>" +
+        tpl: "<link type=\"text/css\" rel=\"stylesheet\" href=\"<%=emotion_url%>emotion.css\">" +
+            "<div id=\"eduiEmotionTabPanel\" class=\"edui-emotion-wrapper\">" +
+            "<ul id=\"eduiEmotionTabNav\" class=\"edui-tab-nav\">" +
+            "<li class=\"edui-tab-item\"><a href=\"#eduiEmotionTab0\" class=\"edui-tab-text\"><%=lang_input_choice%></a></li>" +
+            "<li class=\"edui-tab-item\"><a href=\"#eduiEmotionTab1\" class=\"edui-tab-text\"><%=lang_input_Tuzki%></a></li>" +
+            "<li class=\"edui-tab-item\"><a href=\"#eduiEmotionTab2\" class=\"edui-tab-text\"><%=lang_input_lvdouwa%></a></li>" +
+            "<li class=\"edui-tab-item\"><a href=\"#eduiEmotionTab3\" class=\"edui-tab-text\"><%=lang_input_BOBO%></a></li>" +
+            "<li class=\"edui-tab-item\"><a href=\"#eduiEmotionTab4\" class=\"edui-tab-text\"><%=lang_input_babyCat%></a></li>" +
+            "<li class=\"edui-tab-item\"><a href=\"#eduiEmotionTab5\" class=\"edui-tab-text\"><%=lang_input_bubble%></a></li>" +
+            "<li class=\"edui-tab-item\"><a href=\"#eduiEmotionTab6\" class=\"edui-tab-text\"><%=lang_input_youa%></a></li>" +
+            "<li class=\"edui-emotion-tabs\"></li>" +
             "</ul>" +
-            "<div id=\"eduiEmotionTabBodys\" class=\"edui-emotion-tabbody edui-tab-content\">" +
-            "<div id=\"eduiEmotionTab0\" class=\"edui-tab-pane active\"></div>" +
-            "<div id=\"eduiEmotionTab1\" class=\"edui-tab-pane\"></div>" +
-            "<div id=\"eduiEmotionTab2\" class=\"edui-tab-pane\"></div>" +
-            "<div id=\"eduiEmotionTab3\" class=\"edui-tab-pane\"></div>" +
-            "<div id=\"eduiEmotionTab4\" class=\"edui-tab-pane\"></div>" +
-            "<div id=\"eduiEmotionTab5\" class=\"edui-tab-pane\"></div>" +
-            "<div id=\"eduiEmotionTab6\" class=\"edui-tab-pane\"></div>" +
+            "<div id=\"eduiEmotionTabBodys\" class=\"edui-tab-content\">" +
+            "<div id=\"eduiEmotionTab0\" class=\"edui-tab-pane\">1</div>" +
+            "<div id=\"eduiEmotionTab1\" class=\"edui-tab-pane\">2</div>" +
+            "<div id=\"eduiEmotionTab2\" class=\"edui-tab-pane\">3</div>" +
+            "<div id=\"eduiEmotionTab3\" class=\"edui-tab-pane\">4</div>" +
+            "<div id=\"eduiEmotionTab4\" class=\"edui-tab-pane\">5</div>" +
+            "<div id=\"eduiEmotionTab5\" class=\"edui-tab-pane\">6</div>" +
+            "<div id=\"eduiEmotionTab6\" class=\"edui-tab-pane\">7</div>" +
             "</div>" +
-            "<div id=\"eduiEmotionTabIconReview\">" +
-            "<img id=\'eduiEmotionFaceReview\' class=\'edui-emotion-review\'/>" +
-            "</div>" +
-            "",
+            "<div id=\"eduiEmotionTabIconReview\" class=\"edui-emotion-preview-box\">" +
+            "<img id=\'eduiEmotionFaceReview\' class=\'edui-emotion-preview-img\'/>" +
+            "</div>",
+
         sourceData: {
             emotion: {
                 tabNum:7, //切换面板数量
@@ -60,6 +57,13 @@
                     emotion_url: emotionUrl
                 } );
 
+            if( me.inited ) {
+                me.preventDefault();
+                return;
+            }
+
+            me.inited = true;
+
             editor = _editor;
             this.widget = $widget;
 
@@ -69,20 +73,26 @@
             emotion.SmileyBox = me.createTabList( emotion.tabNum );
             emotion.tabExist = me.createArr( emotion.tabNum );
 
-//            me.initImgName();
-//            me.initEvtHandler( "eduiEmotionTabHeads" );
+            me.tabs = $.eduitab({selector:"#eduiEmotionTabPanel"});
+
+            //缓存预览对象
+            me.previewBox = $("#eduiEmotionTabIconReview");
+            me.previewImg = $("#eduiEmotionFaceReview");
+
+            me.initImgName();
 
         },
         initEvent:function(){
 
-            $.eduitab({selector:"#eduiEmotionTabPanel"});
-            this.root().on('click', function(e){
-                return false;
-            });
-            return;
             var me = this;
 
-            this.root().delegate( 'td', 'mouseover mouseout', function( evt ){
+            //防止点击过后关闭popup
+            me.root().on('click', function(e){
+                return false;
+            });
+
+            //移动预览
+            me.root().delegate( 'td', 'mouseover mouseout', function( evt ){
 
                 var $td = $( this),
                     url = $td.attr('data-surl') || null;
@@ -95,7 +105,8 @@
 
             } );
 
-            this.root().delegate( 'td', 'click', function( evt ){
+            //点击选中
+            me.root().delegate( 'td', 'click', function( evt ){
 
                 var $td = $( this),
                     realUrl = $td.attr('data-realurl') || null;
@@ -108,6 +119,18 @@
 
             } );
 
+            //更新模板
+            me.tabs.edui().on("tabbeforeshow", function( evt ){
+
+                var contentId = evt.target.href.replace( /^.*#(?=[^\s]*$)/, '' );
+
+                me.updateTab( contentId );
+
+            });
+
+            //激活第一个选项
+            $("#eduiEmotionTabNav .edui-tab-text:first").trigger('click');
+
         },
         initImgName: function() {
 
@@ -119,6 +142,7 @@
                     tempStr = "";
 
                 if ( tempBox.length ) return;
+
                 for ( var i = 1; i <= tempName[1]; i++ ) {
                     tempStr = tempName[0];
                     if ( i < 10 ) tempStr = tempStr + '0';
@@ -128,80 +152,45 @@
             }
 
         },
-        initEvtHandler: function( conId ) {
-            var tabHeads = $( "#"+conId )[0],
-                me = this;
-
-            for ( var i = 0, j = 0; i < tabHeads.childNodes.length; i++ ) {
-                var tabObj = tabHeads.childNodes[i];
-                if ( tabObj.nodeType == 1 ) {
-                    $(tabObj).on("click", (function ( index ) {
-                        return function () {
-                            me.switchTab( index );
-                            return false;
-                        };
-                    })( j ) );
-                    j++;
-                }
-            }
-            this.switchTab( 0 );
-            $G( "eduiEmotionTabIconReview" ).style.display = 'none';
-        },
-        switchTab: function( index ) {
+        updateTab: function( contentBoxId ) {
 
             var me = this,
                 emotion = me.sourceData.emotion;
 
-            me.autoHeight( index );
+            me.autoHeight( contentBoxId );
 
-            if ( emotion.tabExist[index] == 0 ) {
-                emotion.tabExist[index] = 1;
-                me.createTab( 'eduiEmotionTab' + index );
+            if ( !emotion.tabExist[ contentBoxId ] ) {
+
+                emotion.tabExist[ contentBoxId ] = true;
+                me.createTab( contentBoxId );
+
             }
-            //获取呈现元素句柄数组
-            var tabHeads = $G( "eduiEmotionTabHeads" ).getElementsByTagName( "span" ),
-                tabBodys = $G( "eduiEmotionTabBodys" ).getElementsByTagName( "div" ),
-                i = 0, L = tabHeads.length;
-            //隐藏所有呈现元素
-            for ( ; i < L; i++ ) {
-                tabHeads[i].className = "";
-                tabBodys[i].style.display = "none";
-            }
-            //显示对应呈现元素
-            tabHeads[index].className = "focus";
-            tabBodys[index].style.display = "block";
+
         },
-        autoHeight: function( index ) {
-            var iframe = this.root()[0],
-                parent = iframe.parentNode.parentNode;
+        autoHeight: function( contentBoxId ) {
+            var panel = this.widget[0],
+                index = +contentBoxId.replace( /[a-zA-Z]+/, '' );
             switch ( index ) {
                 case 0:
-                    iframe.style.height = "380px";
-                    parent.style.height = "392px";
+                    panel.style.height = "387px";
                     break;
                 case 1:
-                    iframe.style.height = "220px";
-                    parent.style.height = "232px";
+                    panel.style.height = "235px";
                     break;
                 case 2:
-                    iframe.style.height = "260px";
-                    parent.style.height = "272px";
+                    panel.style.height = "275px";
                     break;
                 case 3:
-                    iframe.style.height = "300px";
-                    parent.style.height = "312px";
+                    panel.style.height = "310px";
                     break;
                 case 4:
-                    iframe.style.height = "140px";
-                    parent.style.height = "152px";
+                    panel.style.height = "160px";
                     break;
                 case 5:
-                    iframe.style.height = "260px";
-                    parent.style.height = "272px";
+                    panel.style.height = "225px";
                     break;
                 case 6:
-                    iframe.style.height = "230px";
-                    parent.style.height = "242px";
+                    panel.style.height = "235px";
                     break;
                 default:
 
@@ -215,16 +204,19 @@
             return obj;
         },
         mouseover: function( td, srcPath, posFlag ) {
-            td.style.backgroundColor = "#ACCD3C";
-            $G( 'eduiEmotionFaceReview' ).style.backgroundImage = "url(" + srcPath + ")";
-            if ( posFlag == 1 ) $G( "eduiEmotionTabIconReview" ).className = "show";
-            $G( "eduiEmotionTabIconReview" ).style.display = 'block';
+
+            posFlag -= 0;
+
+            $(td).css( 'backgroundColor', '#ACCD3C' );
+
+            this.previewImg.css( "backgroundImage", "url(" + srcPath + ")" );
+            posFlag && this.previewBox.addClass('edui-emotion-preview-left');
+            this.previewBox.show();
+
         },
         mouseout: function( td ) {
-            td.style.backgroundColor = "transparent";
-            var tabIconRevew = $G( "eduiEmotionTabIconReview" );
-            tabIconRevew.className = "";
-            tabIconRevew.style.display = 'none';
+            $(td).css( 'backgroundColor', 'transparent' );
+            this.previewBox.removeClass('edui-emotion-preview-left').hide();
         },
         insertSmiley: function( url, evt ) {
             var obj = {
@@ -236,38 +228,39 @@
                 this.widget.edui().hide();
             }
         },
-        createTab: function( tabName ) {
+        createTab: function( contentBoxId ) {
+
             var faceVersion = "?v=1.1", //版本号
                 me = this,
+                $contentBox = $("#"+contentBoxId),
                 emotion = me.sourceData.emotion,
-                tab = $G( tabName ), //获取将要生成的Div句柄
-                imagePath = emotion.SmileyPath + emotion.imageFolders[tabName], //获取显示表情和预览表情的路径
+                imagePath = emotion.SmileyPath + emotion.imageFolders[ contentBoxId ], //获取显示表情和预览表情的路径
                 positionLine = 11 / 2, //中间数
                 iWidth = iHeight = 35, //图片长宽
                 iColWidth = 3, //表格剩余空间的显示比例
-                tableCss = emotion.imageCss[tabName],
-                cssOffset = emotion.imageCssOffset[tabName],
-                textHTML = ['<table class="edui-emotion-smileytable">'],
-                i = 0, imgNum = emotion.SmileyBox[tabName].length, imgColNum = 11, faceImage,
+                tableCss = emotion.imageCss[ contentBoxId ],
+                cssOffset = emotion.imageCssOffset[ contentBoxId ],
+                textHTML = ['<table border="1" class="edui-emotion-smileytable">'],
+                i = 0, imgNum = emotion.SmileyBox[ contentBoxId ].length, imgColNum = 11, faceImage,
                 sUrl, realUrl, posflag, offset, infor;
 
             for ( ; i < imgNum; ) {
                 textHTML.push( '<tr>' );
                 for ( var j = 0; j < imgColNum; j++, i++ ) {
-                    faceImage = emotion.SmileyBox[tabName][i];
+                    faceImage = emotion.SmileyBox[ contentBoxId ][i];
                     if ( faceImage ) {
                         sUrl = imagePath + faceImage + faceVersion;
                         realUrl = imagePath + faceImage;
                         posflag = j < positionLine ? 0 : 1;
                         offset = cssOffset * i * (-1) - 1;
-                        infor = emotion.SmileyInfor[tabName][i];
+                        infor = emotion.SmileyInfor[ contentBoxId ][i];
 
-                        textHTML.push( '<td  class="edui-emotion-' + tableCss + '" data-surl="'+ sUrl +'" data-realurl="'+ realUrl +'" data-posflag="'+ posflag +'" border="1" width="' + iColWidth + '%" style="border-collapse:collapse;" align="center"  bgcolor="transparent">' );
+                        textHTML.push( '<td  class="edui-emotion-' + tableCss + '" data-surl="'+ sUrl +'" data-realurl="'+ realUrl +'" data-posflag="'+ posflag +'" align="center">' );
                         textHTML.push( '<span>' );
                         textHTML.push( '<img  style="background-position:left ' + offset + 'px;" title="' + infor + '" src="' + emotion.SmileyPath + (editor.options.emotionLocalization ? '0.gif" width="' : 'default/0.gif" width="') + iWidth + '" height="' + iHeight + '"></img>' );
                         textHTML.push( '</span>' );
                     } else {
-                        textHTML.push( '<td width="' + iColWidth + '%"   bgcolor="#FFFFFF">' );
+                        textHTML.push( '<td bgcolor="#FFFFFF">' );
                     }
                     textHTML.push( '</td>' );
                 }
@@ -275,7 +268,7 @@
             }
             textHTML.push( '</table>' );
             textHTML = textHTML.join( "" );
-            tab.innerHTML = textHTML;
+            $contentBox.html( textHTML );
         },
         createArr: function( tabNum ) {
             var arr = [];
@@ -284,8 +277,9 @@
             }
             return arr;
         },
-        width:573,
-        height:397
+        width:603,
+        height:387,
+        clear: false
     });
 
 })();
