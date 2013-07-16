@@ -278,8 +278,7 @@
             return arr;
         },
         width:603,
-        height:387,
-        clear: false
+        height:387
     });
 
 })();

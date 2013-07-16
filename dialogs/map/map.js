@@ -34,7 +34,7 @@
                 theme_url = editor.options.themePath + editor.options.theme;
 
             if( me.inited ) {
-                me.preventDEfault();
+                me.preventDefault();
                 return false;
             }
 
