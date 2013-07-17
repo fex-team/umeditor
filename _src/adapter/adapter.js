@@ -10,7 +10,8 @@
         _readyFn = [],
         _activeEditor = null,
         _activeWidget = null,
-        _widgetData = {};
+        _widgetData = {},
+        _widgetCallBack = {};
 
     utils.extend(UE, {
         registerUI: function (name, fn) {
@@ -18,7 +19,10 @@
                 _editorUI[uiname] = fn;
             })
         },
-        registerWidget : function(name,pro){
+        getWidgetCallback : function(widgetName){
+            return _widgetCallBack[widgetName];
+        },
+        registerWidget : function(name,pro,cb){
             _widgetData[name] = $.extend2(pro,{
                 $root : null,
                 _preventDefault:false,
@@ -30,6 +34,9 @@
                 },
                 clear:false
             });
+            if(cb){
+                _widgetCallBack[name] = cb;
+            }
         },
         getWidgetData : function(name){
             return _widgetData[name]
@@ -48,6 +55,16 @@
 
             pro.width &&  $widget.width(pro.width);
             pro.height  &&  $widget.height(pro.height)
+
+            //为回调进行参数绑定
+            var cb = _widgetCallBack[name];
+            if(cb && !cb.init){
+                _widgetCallBack[name] = function(){
+                   var args = Array.prototype.slice.call(arguments,0);
+                   cb.apply(editor,[editor,$widget].concat(args));
+                }
+                _widgetCallBack[name].init = true;
+            }
 
         },
         getUI:function(editor,name,mode){
