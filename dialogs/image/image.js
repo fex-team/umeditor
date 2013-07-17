@@ -1,4 +1,54 @@
 (function () {
+    var Base = {
+        checkURL: function (url) {
+            url = url.trim();
+            if (url.length <= 0) {
+                return false;
+            }
+            if (url.search(/http:\/\/|https:\/\//) !== 0) {
+                url += 'http://';
+            }
+            if (!/(.gif|.jpg|.jpeg|.png)$/i.test(url)) {
+                return false;
+            }
+            return url;
+        },
+        scale: function (img, max, oWidth, oHeight) {
+            var width = 0, height = 0, percent, ow = img.width || oWidth, oh = img.height || oHeight;
+            if (ow > max || oh > max) {
+                if (ow >= oh) {
+                    if (width = ow - max) {
+                        percent = (width / ow).toFixed(2);
+                        img.height = oh - oh * percent;
+                        img.width = max;
+                    }
+                } else {
+                    if (height = oh - max) {
+                        percent = (height / oh).toFixed(2);
+                        img.width = ow - ow * percent;
+                        img.height = max;
+                    }
+                }
+            }
+
+            return this;
+        },
+        close: function ($img) {
+            $img.css({
+                top: ($img.parent().height() - $img.height()) / 2,
+                left: 0
+            }).prev().on("click",function () {
+                    $(this).parent().remove();
+                }).parent().hover(function () {
+                    $(this).toggleClass("hover");
+                });
+
+
+            return this;
+        }
+
+    };
+
     /*
      * 本地上传
      * */
@@ -48,19 +98,6 @@
 
             return me;
         },
-        close: function ($img) {
-            $img.css({
-                top: ($img.parent().height() - $img.height()) / 2,
-                left: 0
-            }).prev().on("click",function () {
-                    $(this).parent().remove();
-                }).parent().hover(function () {
-                    $(this).toggleClass("hover");
-                });
-
-
-            return this;
-        },
         toggleMask: function (html) {
             var me = this;
 
@@ -72,40 +109,47 @@
             }
 
             return me;
-        },
-        scale: function (img, max, oWidth, oHeight) {
-            var width = 0, height = 0, percent, ow = img.width || oWidth, oh = img.height || oHeight;
-            if (ow > max || oh > max) {
-                if (ow >= oh) {
-                    if (width = ow - max) {
-                        percent = (width / ow).toFixed(2);
-                        img.height = oh - oh * percent;
-                        img.width = max;
-                    }
-                } else {
-                    if (height = oh - max) {
-                        percent = (height / oh).toFixed(2);
-                        img.width = ow - ow * percent;
-                        img.height = max;
-                    }
-                }
-            }
-
-            return this;
         }
     };
 
     /*
-     * 网络搜索
+     * 网络图片
      * */
-    var Search = {
+    var NetWork = {
         init: function (editor, $w) {
             var me = this;
 
             me.editor = editor;
             me.dialog = $w;
 
+            me.initEvt();
+        },
+        initEvt: function () {
+            var me = this,
+                url,
+                $ele = $("#edui-image-JsearchTxt",me.dialog);
+
+            $("#edui-image-JsearchAdd", me.dialog).on("click", function () {
+                url = Base.checkURL($ele.val());
+
+                if (url) {
+
+                    $("<img src='" + url + "' class='edui-image-pic' />").on("load", function () {
+
+                        Base.scale(this, 120);
+
+                        var $item = $("<div class='edui-image-item'><div class='edui-image-close'></div></div>").append(this);
+
+                        $("#edui-image-JsearchRes",me.dialog).append($item);
+
+                        Base.close($(this));
+
+                        $ele.val("");
+                    });
+                }
+            });
         }
+
     }
 
     UE.registerWidget('image', {
@@ -121,7 +165,11 @@
             "<div class=\"edui-image-mask\" id=\"edui-image-Jmask\"></div>" +
             "</div>" +
             "<div id=\"edui-image-JimgSearch\" class=\"edui-tab-pane\">" +
-
+            "<div class=\"edui-image-searchBar\">" +
+            "<input class=\"edui-image-searchTxt\" id=\"edui-image-JsearchTxt\" type=\"text\">" +
+            "<input class=\"edui-image-searchAdd\" id=\"edui-image-JsearchAdd\" type=\"button\" value=\"添加\">" +
+            "</div>" +
+            "<div class=\"edui-image-searchRes\" id=\"edui-image-JsearchRes\"></div>"+
             "</div>" +
             "</div>" +
             "</div>",
@@ -143,7 +191,7 @@
 
             Upload.init(editor, $w);
 
-            Search.init(editor, $w);
+            NetWork.init(editor, $w);
         },
         buttons: {
             'ok': {
@@ -159,7 +207,7 @@
 
         if (state == "SUCCESS") {
             $("<img src='" + editor.options.imagePath + url + "' class='edui-image-pic' />").on("load", function () {
-                Upload.scale(this, 120);
+                Base.scale(this, 120);
 
                 var $item = $("<div class='edui-image-item'><div class='edui-image-close'></div></div>").append(this);
 
@@ -173,7 +221,7 @@
                     $("#edui-image-Jupload2", $w).before($item);
                 }
 
-                Upload.close($(this));
+                Base.close($(this));
             });
 
         } else {
