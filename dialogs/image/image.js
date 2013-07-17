@@ -9,7 +9,9 @@
             "<li  class=\"edui-tab-item\"><a href=\"#edui-image-JimgSearch\" class=\"edui-tab-text\">图片搜索</a></li>" +
             "</ul>" +
             "<div class=\"edui-tab-content\">" +
-            "<div id=\"edui-image-Jlocal\" class=\"edui-tab-pane active\">1</div>" +
+            "<div id=\"edui-image-Jlocal\" class=\"edui-tab-pane active\">" +
+
+            "</div>" +
             "<div id=\"edui-image-JimgSearch\" class=\"edui-tab-pane\">2</div>" +
             "</div>" +
             "</div>",

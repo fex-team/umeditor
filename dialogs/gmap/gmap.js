@@ -33,6 +33,14 @@
                     gmap_home_url: UEDITOR_CONFIG.UEDITOR_HOME_URL + '/dialogs/gmap/'
                 } );
 
+            if( me.inited ) {
+                me.preventDefault();
+                return false;
+            }
+
+            me.inited = true;
+
+            me._defaultCity = options.address.value;
             me.lang = lang;
             me.editor = editor;
             me.root().html( $.parseTmpl( me.tpl, options ) );
@@ -66,7 +74,7 @@
             }else{
                 setTimeout(function(){
                     me.doSearch();
-                },30)
+                },30);
             }
 
             me.google = google;
@@ -93,6 +101,30 @@
         getPars: function(str,par){
             var reg = new RegExp(par+"=((\\d+|[.,])*)","g");
             return reg.exec(str)[1];
+        },
+        reset: function(){
+            var me = this,
+                google = me.google;
+
+            if( !me._center ) {
+
+                new google.maps.Geocoder().geocode( { 'address': me._defaultCity }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        if( me._center ) {
+                            return;
+                        }
+                        me._center = new google.maps.LatLng( results[0].geometry.location.jb, results[0].geometry.location.kb );
+                        me.map.setCenter(me._center);
+                        me.marker.setPosition( me._center );
+                        me.map.panTo( me._center );
+                    }
+                });
+
+            } else {
+                me.map.setCenter(me._center);
+                me.marker.setPosition( me._center );
+                me.map.panTo( me._center );
+            }
         },
         initEvent:function(){
 
@@ -122,10 +154,13 @@
                         url = "http://maps.google.com/maps/api/staticmap?center=" + center.lat() + ',' + center.lng() + "&zoom=" + widget.map.zoom + "&size=520x340&maptype=" + widget.map.getMapTypeId() + "&markers=" + point.lat() + ',' + point.lng() + "&sensor=false";
 
                     editor.execCommand('inserthtml', '<img width="520" height="340" src="' + url + '"' + (widget.imgcss ? ' style="' + widget.imgcss + '"' :'') + '/>');
-
                 }
             },
-            cancel: {}
+            cancel: {
+                exec: function(){
+                    UE.getWidgetData(widgetName).reset();
+                }
+            }
         }
     });
 
