@@ -221,31 +221,6 @@
 
         }
 
-        function fontFamilyAdaptation( options ) {
-
-            var fontFamily = options.items,
-                temp = null,
-                tempItems = [];
-
-            options.itemStyles = [];
-            options.value = [];
-
-            options.autowidthitem = [];
-
-            for( var i = 0, len = fontFamily.length; i < len; i++ ) {
-
-                temp = fontFamily[ i ].val;
-                tempItems.push( temp.split(/\s*,\s*/)[0] );
-                options.itemStyles.push('font-family: ' + temp);
-                options.value.push( temp );
-                options.autowidthitem.push( wordCountAdaptive( tempItems[ i ] ) );
-
-            }
-
-            options.items = tempItems;
-
-        }
-
         /**
          * 执行宽度自适应
          */
@@ -279,39 +254,6 @@
 
                 return wordCountAdaptive( word + '...', true );
 
-            }
-
-
-        }
-
-        function fontSizeAdaption( options ) {
-
-            var fontSize = options.items,
-                temp = null,
-                tempItems = [];
-
-            options.itemStyles = [];
-            options.value = [];
-
-            for( var i = 0, len = fontSize.length; i < len; i++ ) {
-
-                temp = fontSize[ i ];
-                tempItems.push( temp );
-                options.itemStyles.push('font-size: ' + temp +'px');
-
-            }
-
-            options.value = options.items;
-            options.items = tempItems;
-
-        }
-
-        function commonAdaptation( options ) {
-
-            options.itemStyles = [];
-
-            for( var i = 0, len = options.items.length; i < len; i++ ) {
-                options.itemStyles.push('');
             }
 
         }

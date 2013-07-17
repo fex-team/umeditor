@@ -278,7 +278,7 @@
          * 获取编辑区包裹对象
          */
         getEditorHolder: function(){
-            return this.editor.iframe;
+            return this.editor.body;
         },
         /**
          * 获取编辑器状态

@@ -14,18 +14,18 @@
 <script type="text/plain" id="editor" style="width:800px;height:300px;">
     <p>sdfsfsdfsdf</p>
 </script>
-
+           <div class="test1 test2 test3"></div>
 <script type="text/javascript">
-    UE.getEditor('editor',{
+    var ue = UE.getEditor('editor',{
         toolbar:[
-            'source undo redo bold italic underline strikethrough superscript subscript forecolor backcolor',
-            'insertorderedlist insertunorderedlist selectall cleardoc paragraph fontfamily fontsize' ,
-            'justifyleft justifycenter justifyright justifyjustify',
-            'link unlink emotion image insertvideo map gmap',
-            'horizontal',
-            'print preview fullscreen'
+            'source | undo redo | bold italic underline strikethrough | superscript subscript | forecolor backcolor |',
+            'insertorderedlist insertunorderedlist | selectall cleardoc paragraph | fontfamily fontsize' ,
+            '| justifyleft justifycenter justifyright justifyjustify |',
+            'link unlink | emotion image insertvideo  | map gmap',
+            '| horizontal print preview fullscreen'
         ]
     });
+    console.log($.extend2({a:false},{a:true},true))
 </script>
 </body>
 </html>
