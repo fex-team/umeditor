@@ -9,7 +9,6 @@ UE.ui.define('tab', {
             me.data("context", options.context);
 
             $(slr, me.data("context")).on('click', function (e) {
-                e.preventDefault();
                 me.show(e);
             });
         }
