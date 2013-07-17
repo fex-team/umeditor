@@ -13,6 +13,19 @@
             }
             return url;
         },
+        getAllPic: function (sel, $w) {
+            var arr = [],
+                $imgs = $(sel, $w);
+
+            $.each($imgs, function (index, node) {
+                return arr.push({
+                    _src: node.src,
+                    src: node.src
+                });
+            });
+
+            return arr;
+        },
         scale: function (img, max, oWidth, oHeight) {
             var width = 0, height = 0, percent, ow = img.width || oWidth, oh = img.height || oHeight;
             if (ow > max || oh > max) {
@@ -46,7 +59,6 @@
 
             return this;
         }
-
     };
 
     /*
@@ -127,7 +139,7 @@
         initEvt: function () {
             var me = this,
                 url,
-                $ele = $("#edui-image-JsearchTxt",me.dialog);
+                $ele = $("#edui-image-JsearchTxt", me.dialog);
 
             $("#edui-image-JsearchAdd", me.dialog).on("click", function () {
                 url = Base.checkURL($ele.val());
@@ -140,7 +152,7 @@
 
                         var $item = $("<div class='edui-image-item'><div class='edui-image-close'></div></div>").append(this);
 
-                        $("#edui-image-JsearchRes",me.dialog).append($item);
+                        $("#edui-image-JsearchRes", me.dialog).append($item);
 
                         Base.close($(this));
 
@@ -149,8 +161,9 @@
                 }
             });
         }
-
     }
+
+    var $tab = null;
 
     UE.registerWidget('image', {
         tpl: "<link rel=\"stylesheet\" type=\"text/css\" href=\"<%=image_url%>image.css\">" +
@@ -169,7 +182,7 @@
             "<input class=\"edui-image-searchTxt\" id=\"edui-image-JsearchTxt\" type=\"text\">" +
             "<input class=\"edui-image-searchAdd\" id=\"edui-image-JsearchAdd\" type=\"button\" value=\"添加\">" +
             "</div>" +
-            "<div class=\"edui-image-searchRes\" id=\"edui-image-JsearchRes\"></div>"+
+            "<div class=\"edui-image-searchRes\" id=\"edui-image-JsearchRes\"></div>" +
             "</div>" +
             "</div>" +
             "</div>",
@@ -187,7 +200,7 @@
 
         },
         initEvent: function (editor, $w) {
-            $.eduitab({selector: "#edui-image-Jwrapper"});
+            $tab = $.eduitab({selector: "#edui-image-Jwrapper"});
 
             Upload.init(editor, $w);
 
@@ -196,8 +209,22 @@
         buttons: {
             'ok': {
                 label: '插入图片',
-                exec: function () {
-                    editor.execCommand('insertimage', obj);
+                exec: function (editor, $w) {
+                    var list = [],
+                        sel = "",
+                        index = $tab.edui().activate();
+
+                    if (index == 0) {
+                        sel = "#edui-image-Jcontent .edui-image-pic";
+                    } else if (index == 1) {
+                        sel = "#edui-image-JsearchRes .edui-image-pic";
+                    }
+
+                    list == Base.getAllPic(sel,$w);
+
+                    if (index != -1) {
+                        editor.execCommand('insertimage', list);
+                    }
                 }
             },
             'cancel': {}

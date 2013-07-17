@@ -53,6 +53,10 @@ UE.ui.define('tab', {
         });
     },
     activate: function (element, container, callback) {
+        if (element === undefined) {
+            return $(".edui-tab-item.active",this.root()).index();
+        }
+
         var $active = container.find('> .active');
 
         $active.removeClass('active');
