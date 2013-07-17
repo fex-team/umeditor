@@ -1,4 +1,7 @@
 (function () {
+    /*
+    * 本地上传
+    * */
     var Upload = {
         uploadTpl: '<div class="edui-image-upload%%" id="edui-image-Jupload%%">' +
             '<span class="edui-image-icon"></span>' +
@@ -7,11 +10,11 @@
             '</form>' +
             '<iframe name="up" style="display: none"></iframe>' +
             '</div>',
-        init: function (editor,$w) {
+        init: function (editor, $w) {
             var me = this;
 
             me.editor = editor;
-            me.dialog=$w;
+            me.dialog = $w;
 
             me.render("#edui-image-Jlocal", 1);
             me.config("#edui-image-Jupload1");
@@ -59,7 +62,7 @@
             return this;
         },
         toggleMask: function (html) {
-            var me=this;
+            var me = this;
 
             var $mask = $("#edui-image-Jmask", me.dialog);
             if (html) {
@@ -90,13 +93,22 @@
 
             return this;
         }
+    };
+
+    /*
+    * 网络搜索
+    * */
+    var Search = {
+        init:function(editor,$w){
+            var me = this;
+
+            me.editor = editor;
+            me.dialog = $w;
+        }
     }
 
     UE.registerWidget('image', {
-        tpl: "<style type=\"text/css\">" +
-            ".edui-image-wrapper{font-size: 12px;margin: 15px;}" +
-            "</style>" +
-            "<link rel=\"stylesheet\" type=\"text/css\" href=\"<%=image_url%>image.css\">" +
+        tpl: "<link rel=\"stylesheet\" type=\"text/css\" href=\"<%=image_url%>image.css\">" +
             "<div id=\"edui-image-Jwrapper\" class=\"edui-image-wrapper\">" +
             "<ul class=\"edui-tab-nav\">" +
             "<li class=\"edui-tab-item active\"><a href=\"#edui-image-Jlocal\" class=\"edui-tab-text\">本地上传</a></li>" +
@@ -107,15 +119,32 @@
             "<div class=\"edui-image-content\" id=\"edui-image-Jcontent\"></div>" +
             "<div class=\"edui-image-mask\" id=\"edui-image-Jmask\"></div>" +
             "</div>" +
-            "<div id=\"edui-image-JimgSearch\" class=\"edui-tab-pane\">2</div>" +
+            "<div id=\"edui-image-JimgSearch\" class=\"edui-tab-pane\">" +
+            "<table>" +
+            "<tr>" +
+            "<td width=\"200\"><input id=\"edui-image-JsearchTxt\" class=\"edui-image-searchTxt\" type=\"text\" /></td>" +
+            "<td width=\"65\">" +
+            "<select id=\"edui-image-JsearchType\" class=\"edui-image-searchType\">" +
+            "<option value=\"&s=4&z=0\"></option>" +
+            "<option value=\"&s=1&z=19\"></option>" +
+            "<option value=\"&s=2&z=0\"></option>" +
+            "<option value=\"&s=3&z=0\"></option>" +
+            "</select>" +
+            "</td>" +
+            "<td width=\"80\"><input id=\"edui-image-JSearchBtn\" class=\"edui-image-searchBtn\" type=\"button\"  /></td>" +
+            "<td width=\"80\"><input id=\"edui-image-JSearchReset\" class=\"edui-image-searchReset\" type=\"button\" /></td>" +
+            "</tr>" +
+            "</table>" +
+            "<div id=\"edui-image-JsearchList\" class=\"edui-image-searchList\"></div>" +
+            "</div>" +
             "</div>" +
             "</div>",
         initContent: function (editor) {
-            var lang = editor.getLang('image')["static"];
-
-            var opt=$.extend({}, lang, {
+            var lang = editor.getLang('image')["static"],
+                opt = $.extend({}, lang, {
                 image_url: UEDITOR_CONFIG.UEDITOR_HOME_URL + 'dialogs/image/'
             });
+
             if (lang) {
                 var html = $.parseTmpl(this.tpl, opt);
             }
@@ -125,7 +154,8 @@
         },
         initEvent: function (editor, $w) {
             $.eduitab({selector: "#edui-image-Jwrapper"});
-            Upload.init(editor,$w);
+            Upload.init(editor, $w);
+            Search.init(editor.$w);
         },
         buttons: {
             'ok': {
@@ -136,7 +166,7 @@
             },
             'cancel': {}
         }
-    },function(editor,$w,url,state){
+    }, function (editor, $w, url, state) {
         Upload.toggleMask();
 
         if (state == "SUCCESS") {
@@ -145,14 +175,14 @@
 
                 var $item = $("<div class='edui-image-item'><div class='edui-image-close'></div></div>").append(this);
 
-                if ($("#edui-image-Jupload2",$w).length < 1) {
-                    $("#edui-image-Jcontent",$w).append($item);
+                if ($("#edui-image-Jupload2", $w).length < 1) {
+                    $("#edui-image-Jcontent", $w).append($item);
 
                     Upload.render("#edui-image-Jcontent", 2)
                         .config("#edui-image-Jupload2")
                         .submit("#edui-image-Jupload2");
                 } else {
-                    $("#edui-image-Jupload2",$w).before($item);
+                    $("#edui-image-Jupload2", $w).before($item);
                 }
 
                 Upload.close($(this));
