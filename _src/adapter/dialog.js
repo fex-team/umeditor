@@ -20,18 +20,22 @@ UE.registerUI('link image gmap map insertvideo',function(name){
         //调整数据
         var data = UE.getWidgetData(name);
         if(data.buttons){
-            var tmpObj = data.buttons.ok;
-            if(tmpObj){
-                opt.oklabel = tmpObj.label || me.getLang('ok');
-                if(tmpObj.exec){
-                    opt.okFn = $.proxy(tmpObj.exec,null,me)
+            var ok = data.buttons.ok;
+            if(ok){
+                opt.oklabel = ok.label || me.getLang('ok');
+                if(ok.exec){
+                    opt.okFn = function(){
+                        return $.proxy(ok.exec,null,me,$dialog)()
+                    }
                 }
             }
-            tmpObj = data.buttons.cancel;
-            if(tmpObj){
-                opt.cancellabel = tmpObj.label || me.getLang('cancel');
-                if(tmpObj.exec){
-                    opt.cancelFn = $.proxy(tmpObj.exec,null,me)
+            var cancel = data.buttons.cancel;
+            if(cancel){
+                opt.cancellabel = cancel.label || me.getLang('cancel');
+                if(cancel.exec){
+                    opt.cancelFn = function(){
+                        return $.proxy(cancel.exec,null,me,$dialog)()
+                    }
                 }
             }
         }
