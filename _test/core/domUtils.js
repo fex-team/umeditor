@@ -320,7 +320,7 @@ test( 'isWhitespace', function() {
     var domUtils = te.obj[3];
     div.innerHTML = "aaa\ufeff\u200B\t\t\n\r";
     ok( !domUtils.isWhitespace( div.firstChild ), 'not whiteSpace' );
-    div.innerHTML = baidu.editor.browser.ie && baidu.editor.browser.version == '6' ? '\ufeff' : '\u200B' + '\t\t\n\r';
+    div.innerHTML = UE.browser.ie && UE.browser.version == '6' ? '\ufeff' : '\u200B' + '\t\t\n\r';
     ok( domUtils.isWhitespace( div.firstChild ), 'is whiteSpace' );
 } );
 
@@ -672,7 +672,7 @@ test( 'isSameElement--A比B多一个属性', function() {
 test( 'isSameElement--img的属性比较', function() {
     var div = te.dom[2];
     var domUtils = te.obj[3];
-//    var editor = new baidu.editor.Editor();
+//    var editor = new UE.Editor();
 //    editor.render(div);
     div.innerHTML = '<img  style="width: 200px;height: 200px" src="http://ueditor.baidu.com/img/logo.png">hello';
     var div1 = document.createElement( 'div' );
@@ -776,7 +776,7 @@ test( 'isbody', function() {
 /*parent参数是 node的直接父亲*/
 test( 'breakParent--一级祖先', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<p><span>xxxx</span><u><i>uitext</i></u><br /></p><div>xxxx</div>';
     var br = div.firstChild.lastChild;
     var returnNode = domUtils.breakParent( br, div.firstChild );
@@ -787,7 +787,7 @@ test( 'breakParent--一级祖先', function() {
 /*parent参数是 node的祖先节点*/
 test( 'breakParent--二级祖先', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<p><span>xxxx</span><u><i>uitext</i></u><br /></p><div>xxxx</div>';
     domUtils.breakParent( div.firstChild.firstChild.firstChild, div.firstChild );
     equal( ua.getChildHTML( div ), '<p><span></span></p>xxxx<p><span></span><u><i>uitext</i></u><br></p><div>xxxx</div>' );
@@ -795,7 +795,7 @@ test( 'breakParent--二级祖先', function() {
 /*bookMark已在clearEmptySibling中验证*/
 test( 'isEmptyInlineElement', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<p><u><em></em></u><span>xxxx</span><u><i>uitext</i></u><br /></p><div>xxxx</div><div></div>';
     var p = div.firstChild;
     /*非空元素*/
@@ -809,7 +809,7 @@ test( 'isEmptyInlineElement', function() {
 
 test( 'trimWhiteTextNode', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '\n\t    <p><u><em></em></u><span>xxxx</span><u><i>uitext</i></u><br /></p><div>xxxx</div>    ';
     domUtils.trimWhiteTextNode( div );
     equal( ua.getChildHTML( div ), '<p><u><em></em></u><span>xxxx</span><u><i>uitext</i></u><br></p><div>xxxx</div>', 'trim white textnode' );
@@ -818,7 +818,7 @@ test( 'trimWhiteTextNode', function() {
 /*适用于inline节点*/
 test( 'mergeChild--span', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
 
     var div_new = document.createElement( 'div' );
     div_new.id = 'test';
@@ -857,7 +857,7 @@ test( 'mergeChild--span', function() {
 
 test( 'mergeChild--非span', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     /*父节点和子节点属性不同*/
     div.innerHTML = '<b style="color:red;font-size:12px">b1<b style="font-size:12px;">b2</b></b>';
     var div_new = document.createElement( 'div' );
@@ -877,7 +877,7 @@ test( 'mergeChild--非span', function() {
 
 test( 'getElementsByTagName', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<p><u><em></em></u><span>xxxx</span><u><i>uitext</i></u><br /></p><div>xxxx</div> <p>xxxx</p>';
     var elms = domUtils.getElementsByTagName( div, 'p' );
     equal( elms.length, 2, 'check elem count' );
@@ -887,7 +887,7 @@ test( 'getElementsByTagName', function() {
 
 test( 'mergeToParent--一个span孩子', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<span style="color:red;font-size:12px;"><span style="left:10px;right:20px;"></span></span>';
     domUtils.mergeToParent( div.firstChild.firstChild );
     var div_new = document.createElement( 'div' );
@@ -897,7 +897,7 @@ test( 'mergeToParent--一个span孩子', function() {
 
 test( 'mergeToParent--一个span孩子，孩子css样式与父节点相同', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<span style="color:red;font-size:12px;"><span style="font-size:12px;color:red;">xxxxx</span></span>';
     domUtils.mergeToParent( div.firstChild.firstChild );
     var div_new = document.createElement( 'div' );
@@ -907,7 +907,7 @@ test( 'mergeToParent--一个span孩子，孩子css样式与父节点相同', fun
 
 test( 'mergeToParent--多个span孩子,祖先节点不可被合并', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<span style="color:red;font-size:12px;"><span style="left:10px;right:20px;"></span><span style="top:10px"></span></span>';
     domUtils.mergeToParent( div.firstChild.firstChild );
     var div_new = document.createElement( 'div' );
@@ -917,7 +917,7 @@ test( 'mergeToParent--多个span孩子,祖先节点不可被合并', function() 
 
 //test( 'mergeToParent--a', function() {
 //    var div = te.dom[2];
-//    var domUtils = baidu.editor.dom.domUtils;
+//    var domUtils = UE.dom.domUtils;
 //    div.innerHTML = '<span style="text-decoration: line-through"><a href="http://www.baidu.com/">www.baidu.com</a></span>';
 //
 //
@@ -926,7 +926,7 @@ test( 'mergeToParent--多个span孩子,祖先节点不可被合并', function() 
 
 test( 'mergeToParent--其他inline节点', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<b>xxx<i>xxx<u>xxxx<em>xxx<i id="secondI"><b>xxxxxx</b></i></em></u></i></b>';
     var i = document.getElementById( 'secondI' );
     domUtils.mergeToParent( i.firstChild );
@@ -938,7 +938,7 @@ test( 'mergeToParent--其他inline节点', function() {
 /*合并兄弟节点中有相同属性包括style的节点*/
 test( 'mergeSibling--左边没有兄弟', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<b>b1</b><b>b2</b><b id="b3">b3</b>';
     domUtils.mergeSibling( div.firstChild );
     ok( ua.getChildHTML( div ), '<b>b1b2</b><b id="b3">b3</b>' );
@@ -946,7 +946,7 @@ test( 'mergeSibling--左边没有兄弟', function() {
 
 test( 'mergeSibling--右边没有兄弟', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<b>b1</b><b>b2</b><b>b3</b>';
     domUtils.mergeSibling( div.lastChild );
     ok( ua.getChildHTML( div ), '<b>b1b2</b><b id="b3">b3</b>' );
@@ -955,7 +955,7 @@ test( 'mergeSibling--右边没有兄弟', function() {
 
 test( 'mergeSibling--兄弟节点没有孩子', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<b></b><b>b2</b><b id="b3">b3</b>';
     domUtils.mergeSibling( div.firstChild.nextSibling );
     ok( ua.getChildHTML( div ), '<b>b2</b><b id="b3">b3</b>' );
@@ -964,10 +964,10 @@ test( 'mergeSibling--兄弟节点没有孩子', function() {
 
 test( 'unselectable--检查赋值是否成功', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<div><p>xxxx<span><b><i>xxx</i></b>xxxx</span></p>dddd<p><img /><a>aaaa</a></p></div>';
     domUtils.unSelectable( div );
-    if ( baidu.editor.browser.gecko || baidu.editor.browser.webkit ) {
+    if ( UE.browser.gecko || UE.browser.webkit ) {
         equal( div.style.MozUserSelect || div.style.KhtmlUserSelect, 'none', 'webkit or gecko unselectable' );
     } else {
         equal( div.unselectable, 'on', '检查unselectable属性' );
@@ -979,7 +979,7 @@ test( 'unselectable--检查赋值是否成功', function() {
 
 test( 'unselectable--检查是否真的不能选中', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<p>xxx</p>';
     //TODO ie下如何选中文本节点需要重新想一想，用程序选择文本貌似不会考虑unselectable属性，都是可以选中的
     if ( ! ua.browser.ie && !ua.browser.opera) {
@@ -1006,7 +1006,7 @@ test( 'unselectable--检查是否真的不能选中', function() {
 //test( 'removeAttributes--删除一个属性', function() {
 //    var div = te.dom[2];
 //    div.innerHTML = '<div class="div_class" name="div_name"></div>';
-//    var domUtils = baidu.editor.dom.domUtils;
+//    var domUtils = UE.dom.domUtils;
 //    domUtils.removeAttributes( div.firstChild, 'class' );
 //    equal( ua.getChildHTML( div ), '<div name="div_name"></div>' );
 //} );
@@ -1014,7 +1014,7 @@ test( 'unselectable--检查是否真的不能选中', function() {
 test( 'removeAttributes--删除多个属性，包括style', function() {
     var div = te.dom[2];
     div.innerHTML = '<div class="div_class" name="div_name" style="color:red;font-size:12px"></div>';
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     /*诡异模式下className可以删除，而非诡异模式下不能删除*/
     domUtils.removeAttributes( div.firstChild, ['class','name','style'] );
     equal( ua.getChildHTML( div ), '<div></div>' );
@@ -1022,7 +1022,7 @@ test( 'removeAttributes--删除多个属性，包括style', function() {
 
 test( 'setAttributes--设置class,style', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<div></div>';
     domUtils.setAttributes( div.firstChild, {'class':'div_class','id':'div_id','style':'color:red;font-size:12px;'} );
     var div_new = document.createElement( 'div' );
@@ -1033,7 +1033,7 @@ test( 'setAttributes--设置class,style', function() {
 
 test( 'getComputedStyle', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<div class="div_class" name="div_name" style="color:red;font-size:12px"></div><span></span>';
     equal( domUtils.getComputedStyle( div.firstChild, 'font-size' ), '12px' );
     equal( domUtils.getComputedStyle( div.firstChild, 'display' ), 'block' );
@@ -1045,16 +1045,16 @@ test( 'getComputedStyle', function() {
 
 test( 'getComputedStyle--获取默认的背景色', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<div>hello</div>';
     /*chrome下不作特殊处理得到的结果是rgba(0,0,0,0)，处理后是结果是“”*/
-    var result = baidu.editor.browser.webkit ? "" : "transparent";
+    var result = UE.browser.webkit ? "" : "transparent";
     equal( domUtils.getComputedStyle( div, 'background-color' ), result, '默认背景色为透明色' );
 } );
 
 test( 'getComputedStyle-border', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<table style="border: 5px solid red"></table>';
     equal( domUtils.getComputedStyle( div.firstChild, 'border-width' ), '5px' );
     equal( domUtils.getComputedStyle( div.lastChild, 'border-style' ), 'solid' );
@@ -1062,14 +1062,14 @@ test( 'getComputedStyle-border', function() {
 } );
 //修复ie下的一个bug，如果在body上强制设了字体大小，h1的字体大小就会继承body的字体，而没有办法取到真是的字体大小
 test( 'getComputedStyle-在body上设置字体大小', function() {
-    var domUtils = baidu.editor.dom.domUtils;
-    var editor = new baidu.editor.Editor({'autoFloatEnabled':false});
+    var domUtils = UE.dom.domUtils;
+    var editor = new UE.Editor({'autoFloatEnabled':false});
     var div = document.body.appendChild( document.createElement( 'div' ) );
     editor.render( div );
     stop();
     editor.ready(function(){
         var body = editor.body;
-        var range = new baidu.editor.dom.Range( editor.document );
+        var range = new UE.dom.Range( editor.document );
         var h1 = body.appendChild( editor.document.createElement( 'h1' ) );
 //    editor.body.style['fontSize'] = '10px';
 //   h1的字体大小不是10px
@@ -1084,7 +1084,7 @@ test( 'getComputedStyle-在body上设置字体大小', function() {
 /*不支持一个class的删除，必须为一个数组*/
 //test( 'removeClasses--一个class', function() {
 //    var div = te.dom[2];
-//    var domUtils = baidu.editor.dom.domUtils;
+//    var domUtils = UE.dom.domUtils;
 //    div.innerHTML = '<div class="div_class" name="div_name" style="color:red;font-size:12px"></div>';
 //    domUtils.removeClasses( div.firstChild, 'div_class' );
 //    ok( ua.getChildHTML( div ) == '<div name="div_name" style="color:red;font-size:12px"></div>' || ua.getChildHTML( div ) == '<div name="div_name" style="font-size:12px;color:red;"></div>' );
@@ -1092,7 +1092,7 @@ test( 'getComputedStyle-在body上设置字体大小', function() {
 
 test( 'removeClasses--多个class', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<div class="div_class div_class2 div_class3" name="div_name" style="color:red;font-size:12px"></div>';
     var divChild = div.firstChild;
     domUtils.removeClasses( divChild, ['div_class2' ,'div_class3','div_class'] );
@@ -1105,7 +1105,7 @@ test( 'removeClasses--多个class', function() {
 
 test( 'removeClasses--class包含”-“', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<div class="b-b b-b-a " name="div_name" style="color:red;font-size:12px"></div>';
     var divChild = div.firstChild;
     domUtils.removeClasses( divChild, ['b-b'] );
@@ -1120,7 +1120,7 @@ test( 'removeClasses--class包含”-“', function() {
 
 test( 'removeStyle--style不为空', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<div name="div_name" style="color:red;font-size:12px"></div>';
     domUtils.removeStyle( div.firstChild, 'font-size' );
     var div_new = document.createElement( 'div' );
@@ -1131,7 +1131,7 @@ test( 'removeStyle--style不为空', function() {
 } );
 test( 'removeStyle--style不为空', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<div name="div_name" style="border-left:1px solid #ccc"></div>';
     domUtils.removeStyle( div.firstChild, 'border-left' );
     var div_new = document.createElement( 'div' );
@@ -1142,7 +1142,7 @@ test( 'removeStyle--style不为空', function() {
 } );
 test( 'removeStyle--style为空', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<div name="div_name"></div>';
     domUtils.removeStyle( div.firstChild, 'color' );
     equal( ua.getChildHTML( div ), '<div name="div_name"></div>', ' style为空' );
@@ -1150,7 +1150,7 @@ test( 'removeStyle--style为空', function() {
 
 test( 'hasClass', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<div class="div_class div_class2 div_class3" name="div_name" style="color:red;font-size:12px"></div>';
     var divChild = div.firstChild;
     ok( domUtils.hasClass( divChild, 'div_class3' ), '有这个class' );
@@ -1161,7 +1161,7 @@ test( 'hasClass', function() {
 
 test( 'addClass', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<div class="div_class div_class2 div_class3" name="div_name" style="color:red;font-size:12px"></div>';
     domUtils.addClass(div.firstChild,'div_class4')
     equal(div.firstChild.className,'div_class div_class2 div_class3 div_class4','增加class4');
@@ -1172,7 +1172,7 @@ test( 'addClass', function() {
 test( "preventDefault", function() {
     expect( 1 );
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     /*img用来撑大页面*/
     var img = document.createElement( 'img' );
     img.src = upath + 'test.jpg';
@@ -1201,7 +1201,7 @@ test( "preventDefault", function() {
 
 test( 'getStyle--color is red', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<div class="div_class div_class2 div_class3" name="div_name" style="top:13px;color:red;font-size:12px"></div>';
     equal( domUtils.getStyle( div.firstChild, 'color' ), 'red', 'check color' );
     equal( domUtils.getStyle( div.firstChild, 'font-size' ), '12px', 'check font size' );
@@ -1210,7 +1210,7 @@ test( 'getStyle--color is red', function() {
 
 test( 'getStyle--color is rgb', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<div class="div_class div_class2 div_class3" name="div_name" style="top:13px;color:rgb(255,0,0);font-size:12px"></div>';
     equal( domUtils.getStyle( div.firstChild, 'color' ), '#FF0000', 'check color' );
     equal( domUtils.getStyle( div.firstChild, 'font-size' ), '12px', 'check font size' );
@@ -1219,7 +1219,7 @@ test( 'getStyle--color is rgb', function() {
 
 test( 'getStyle--color is #ff0000', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<div class="div_class div_class2 div_class3" name="div_name" style="top:13px;color:#ff0000;font-size:12px"></div>';
     equal( domUtils.getStyle( div.firstChild, 'color' ).toUpperCase(), '#FF0000', 'check color' );
     equal( domUtils.getStyle( div.firstChild, 'font-size' ), '12px', 'check font size' );
@@ -1233,7 +1233,7 @@ test( 'getStyle--color is #ff0000', function() {
 //} );
 test( 'removeDirtyAttr', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<div><span>xxx</span><img /></div>xx';
     $( div ).attr( '_moz_dirty', 'xxxx' );
     for ( var i = 0,ci,nodes = div.getElementsByTagName( '*' ); ci = nodes[i++]; ) {
@@ -1249,7 +1249,7 @@ test( 'removeDirtyAttr', function() {
 
 test( 'getChildCount', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<div name="div_name" style="top:13px;color:#ff0000;font-size:12px"><p><span>xxx<b><u></u></b></span></p><span>xxxx</span>xxx<img/>xxx</div>';
     var divChild = div.firstChild;
     equal( domUtils.getChildCount( div ), 1, 'one childNode' );
@@ -1262,7 +1262,7 @@ test( 'getChildCount', function() {
 
 test( 'setStyle', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<div style="float: left"><p style="background: red"></p></div>';
     /*修改float值*/
     domUtils.setStyle( div.firstChild, 'float', 'right' );
@@ -1273,7 +1273,7 @@ test( 'setStyle', function() {
 
 test( 'setStyles', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = '<div style="float: left"><p style="background: red"></p></div>';
     /*修改float值*/
     domUtils.setStyles( div.firstChild, {'float':'right','text-align':'center'} );
@@ -1284,7 +1284,7 @@ test( 'setStyles', function() {
 //zhuwenxuan add
 //test( 'clearReduent', function() {
 //    var div = te.dom[2];
-//    var domUtils = baidu.editor.dom.domUtils;
+//    var domUtils = UE.dom.domUtils;
 //    //没有内容
 //    div.innerHTML = '<div><b><i></i></b></div>';
 //    document.body.appendChild(div);
@@ -1303,7 +1303,7 @@ test( 'setStyles', function() {
 //zhuwenxuan add
 test( 'isEmptyNode', function() {
     var div = te.dom[2];
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     div.innerHTML = " \t\t\n\r";
     ok(domUtils.isEmptyNode(div));
     div.innerHTML = '<div><i></i><b>dasdf</b></div>';
@@ -1312,7 +1312,7 @@ test( 'isEmptyNode', function() {
 
 //zhuwenxuan add
 test( 'clearSelectedArr', function() {
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     var div = te.dom[2];
     var span = document.createElement("span");
     div.className = "aaa";
@@ -1330,7 +1330,7 @@ test( 'clearSelectedArr', function() {
 
 //zhuwenxuan add
 test( 'isBr', function() {
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     var div = te.dom[2];
     div.innerHTML = "<br>";
     equal(true,domUtils.isBr(div.firstChild));
@@ -1338,7 +1338,7 @@ test( 'isBr', function() {
 
 //zhuwenxuan add
 test( 'isFillChar', function() {
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     var div = te.dom[2];
     domUtils.fillNode(document,div);
     if(ua.browser.ie){
@@ -1349,9 +1349,9 @@ test( 'isFillChar', function() {
 
 //zhuwenxuan add
 test( 'isStartInblock', function() {
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range( document );
+    var range = new UE.dom.Range( document );
     domUtils.fillNode(document,div);
     range.setStart(div,0);
     ok(domUtils.isStartInblock(range));
@@ -1362,7 +1362,7 @@ test( 'isStartInblock', function() {
 
 //zhuwenxuan add
 test( 'isEmptyBlock', function() {
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     var div = te.dom[2];
     domUtils.fillNode(document,div);
     ok(domUtils.isEmptyBlock(div));
@@ -1374,7 +1374,7 @@ test( 'isEmptyBlock', function() {
 
 //zhuwenxuan add
 test( 'fillNode', function() {
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     var div = te.dom[2];
     domUtils.fillNode(document,div);
     ok(div.innerHTML.length>0);
@@ -1382,7 +1382,7 @@ test( 'fillNode', function() {
 
 //zhuwenxuan add
 test( 'moveChild', function() {
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     var div = te.dom[2];
     div.innerHTML = "div child";
     var p = document.createElement("p");
@@ -1395,7 +1395,7 @@ test( 'moveChild', function() {
 } );
 
 test( 'hasNoAttributes', function() {
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     var div = te.dom[2];
     div.innerHTML = "<span>sdf</span>";
 
@@ -1409,7 +1409,7 @@ test( 'hasNoAttributes', function() {
 
 } );
 test( 'isTagNode', function() {
-    var domUtils = baidu.editor.dom.domUtils;
+    var domUtils = UE.dom.domUtils;
     var div = te.dom[2];
     div.innerHTML = "<p><span>sdf</span></p>";
     ok(domUtils.isTagNode(div.firstChild,"p"));
@@ -1448,11 +1448,11 @@ test('inNodeEndBoundary',function(){
 });
 
 //test( '闭合选区，标签边界', function() {
-//    var domUtils = baidu.editor.dom.domUtils;
+//    var domUtils = UE.dom.domUtils;
 //    var div = te.dom[2];
-//    var editor = new baidu.editor.ui.Editor({autoFloatEnabled:true});
+//    var editor = new UE.ui.Editor({autoFloatEnabled:true});
 //    editor.render( div );
-//    var range = new baidu.editor.dom.Range( editor.document );
+//    var range = new UE.dom.Range( editor.document );
 //    editor.setContent( '<a>a_text1</a><a>a_text2</a>' );
 //    var a = editor.body.firstChild.firstChild;
 //    range.setStart( a, 0 ).collapse( 1 ).select();
@@ -1466,11 +1466,11 @@ test('inNodeEndBoundary',function(){
 //} );
 
 //test( '<strong style="color:red">文本闭合选区</strong>中查找是否包含特定的标签列表', function() {
-//    var domUtils = baidu.editor.dom.domUtils;
-//    var editor = new baidu.editor.ui.Editor({autoFloatEnabled:true});
+//    var domUtils = UE.dom.domUtils;
+//    var editor = new UE.ui.Editor({autoFloatEnabled:true});
 //    var div = te.dom[2];
 //    editor.render( div );
-//    var range = new baidu.editor.dom.Range( editor.document );
+//    var range = new UE.dom.Range( editor.document );
 //    var body = editor.body;
 //
 //    editor.setContent( '<h2 id="tt-h2">我是测试的header:h2</h2><p id="tt-p"><strong>xx乐乐乐乐x</strong><a id="tt-a">我是标签</a></p>' );
@@ -1506,11 +1506,11 @@ test('inNodeEndBoundary',function(){
 
 
 //test( '<strong style="color:red">不闭合选区</strong>中查找，如果包含，则返回第一个dom节点', function() {
-//    var domUtils = baidu.editor.dom.domUtils;
-//    var editor = new baidu.editor.ui.Editor({autoFloatEnabled:true});
+//    var domUtils = UE.dom.domUtils;
+//    var editor = new UE.ui.Editor({autoFloatEnabled:true});
 //    var div = te.dom[2];
 //    editor.render( div );
-//    var range = new baidu.editor.dom.Range( editor.document );
+//    var range = new UE.dom.Range( editor.document );
 //    var body = editor.body;
 //
 //    editor.setContent( '<h2 id="tt-h2">我是测试的header:h2</h2><p id="tt-p"><strong>xx乐乐乐乐x</strong><a id="tt-a">我是标签</a></p>' );
@@ -1532,12 +1532,12 @@ test('inNodeEndBoundary',function(){
 //} );
 
 //test( '不闭合选区，选区包含<strong style="color:red">前半个</strong>半个标签', function() {
-//    var domUtils = baidu.editor.dom.domUtils;
-//    var editor = new baidu.editor.ui.Editor({autoFloatEnabled:true});
+//    var domUtils = UE.dom.domUtils;
+//    var editor = new UE.ui.Editor({autoFloatEnabled:true});
 //    var div = te.dom[2];
 //    editor.render( div );
 //    var body = editor.body;
-//    var range = new baidu.editor.dom.Range( editor.document );
+//    var range = new UE.dom.Range( editor.document );
 //    editor.setContent( '<h2>这是h2的文本<a>这是一个超链接</a></h2>' );
 //    var a = body.firstChild.lastChild;
 //    range.setStart( body, 0 ).setEnd( a.firstChild, 3 ).select();
@@ -1547,12 +1547,12 @@ test('inNodeEndBoundary',function(){
 //} );
 
 //test( '不闭合选区，选区包含<strong style="color:red">后半个</strong>标签', function() {
-//    var domUtils = baidu.editor.dom.domUtils;
-//    var editor = new baidu.editor.ui.Editor({autoFloatEnabled:true});
+//    var domUtils = UE.dom.domUtils;
+//    var editor = new UE.ui.Editor({autoFloatEnabled:true});
 //    var div = te.dom[2];
 //    editor.render( div );
 //    var body = editor.body;
-//    var range = new baidu.editor.dom.Range( editor.document );
+//    var range = new UE.dom.Range( editor.document );
 //    editor.setContent( '<h2>这是h2的文本<a>这是一个超链接</a></h2>' );
 //    var a = body.firstChild.lastChild;
 //    range.setStart( a.firstChild, 3 ).setEnd( body, 1 ).select();
@@ -1562,12 +1562,12 @@ test('inNodeEndBoundary',function(){
 //} );
 
 //test( '不闭合选区，选区包含2个相同的标签', function() {
-//    var domUtils = baidu.editor.dom.domUtils;
-//    var editor = new baidu.editor.ui.Editor({autoFloatEnabled:true});
+//    var domUtils = UE.dom.domUtils;
+//    var editor = new UE.ui.Editor({autoFloatEnabled:true});
 //    var div = te.dom[2];
 //    editor.render( div );
 //    var body = editor.body;
-//    var range = new baidu.editor.dom.Range( editor.document );
+//    var range = new UE.dom.Range( editor.document );
 //    editor.setContent( '<p><a>a_text1</a><a>a_tex2</a></p>' );
 //    var a = body.firstChild.firstChild;
 //    range.setStart( body.firstChild, 0 ).setEnd( body.firstChild, 2 ).select();
@@ -1581,12 +1581,12 @@ test('inNodeEndBoundary',function(){
 //} );
 
 //test( '不闭合选区，选区紧挨着标签边界', function() {
-//    var domUtils = baidu.editor.dom.domUtils;
-//    var editor = new baidu.editor.ui.Editor({autoFloatEnabled:true});
+//    var domUtils = UE.dom.domUtils;
+//    var editor = new UE.ui.Editor({autoFloatEnabled:true});
 //    var div = te.dom[2];
 //    editor.render( div );
 //    var body = editor.body;
-//    var range = new baidu.editor.dom.Range( editor.document );
+//    var range = new UE.dom.Range( editor.document );
 //    editor.setContent( '<p><a>a_text1</a>a_text3<a>a_tex2</a></p>' );
 //    range.selectNode( body.firstChild.childNodes[1] ).select();
 //    same( domUtils.findTagNamesInSelection( range, ['a'] ), null, '选区紧挨着a边缘,找a返回null' );
@@ -1595,12 +1595,12 @@ test('inNodeEndBoundary',function(){
 //} );
 
 //test( '不闭合选区，多节点，压力测试', function() {
-//    var domUtils = baidu.editor.dom.domUtils;
-//    var editor = new baidu.editor.ui.Editor({autoFloatEnabled:true});
+//    var domUtils = UE.dom.domUtils;
+//    var editor = new UE.ui.Editor({autoFloatEnabled:true});
 //    var div = te.dom[2];
 //    editor.render( div );
 //    var body = editor.body;
-//    var range = new baidu.editor.dom.Range( editor.document );
+//    var range = new UE.dom.Range( editor.document );
 //    editor.setContent( '<p><strong><em>我是p里的文本<span style="color:red">textTD2</span></em></strong></p><table><tbody><tr><td>textTD1</td><td><ol><li><p>我是列表1</p><p><strong><em>我是p里的文本<span style="color:red">textTD2</span></em></strong></p></li><li><strong><em>我是li 2里的文本<span style="color:red">textTD2</span></em></strong><p><strong><em>TextEM1<span id="spanID" style="color:red">我是列表2里的文本</span></em></strong></p></li></ol></td></tr></tbody></table>' );
 //    var span = editor.document.getElementById( 'spanID' );
 //    range.selectNode( span.firstChild ).select();
@@ -1608,11 +1608,11 @@ test('inNodeEndBoundary',function(){
 //} );
 
 //test( '<strong style="color:red">control range</strong>中查找是否包含特定的标签列表', function() {
-//    var domUtils = baidu.editor.dom.domUtils;
-//    var editor = new baidu.editor.ui.Editor({autoFloatEnabled:true});
+//    var domUtils = UE.dom.domUtils;
+//    var editor = new UE.ui.Editor({autoFloatEnabled:true});
 //    var div = te.dom[2];
 //    editor.render( div );
-//    var range = new baidu.editor.dom.Range( editor.document );
+//    var range = new UE.dom.Range( editor.document );
 //
 //    editor.setContent( '<span id="tt-span">test_</span><img id="tt-h2" src="http://www.baidu.com/img/baidu_sylogo1.gif"/><p id="tt-p"><strong>xx乐乐乐乐x</strong><a id="tt-a">我是标签</a></p>' );
 //    var expectH2 = editor.document.getElementById( 'tt-h2' ),

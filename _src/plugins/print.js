@@ -4,7 +4,7 @@
 ///commandsTitle  打印
 /**
  * @description 打印
- * @name baidu.editor.execCommand
+ * @name UE.execCommand
  * @param   {String}   cmdName     print打印编辑器内容
  * @author zhanyi
  */

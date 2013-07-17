@@ -1,7 +1,7 @@
 ///import core
 /**
  * @description 插入内容
- * @name baidu.editor.execCommand
+ * @name UE.execCommand
  * @param   {String}   cmdName     inserthtml插入内容的命令
  * @param   {String}   html                要插入的内容
  * @author zhanyi

@@ -6,7 +6,7 @@
  *
  * 清空文档
  * @function
- * @name baidu.editor.execCommand
+ * @name UE.execCommand
  * @param   {String}   cmdName     cleardoc清空文档
  */
 

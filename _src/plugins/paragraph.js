@@ -5,7 +5,7 @@
 /**
  * 段落样式
  * @function
- * @name baidu.editor.execCommand
+ * @name UE.execCommand
  * @param   {String}   cmdName     paragraph插入段落执行命令
  * @param   {String}   style               标签值为：'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
  * @param   {String}   attrs               标签的属性

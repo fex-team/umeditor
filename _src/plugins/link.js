@@ -6,7 +6,7 @@
 /**
  * 超链接
  * @function
- * @name baidu.editor.execCommand
+ * @name UE.execCommand
  * @param   {String}   cmdName     link插入超链接
  * @param   {Object}  options         url地址，title标题，target是否打开新页
  * @author zhanyi
@@ -14,7 +14,7 @@
 /**
  * 取消链接
  * @function
- * @name baidu.editor.execCommand
+ * @name UE.execCommand
  * @param   {String}   cmdName     unlink取消链接
  * @author zhanyi
  */

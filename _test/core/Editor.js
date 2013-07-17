@@ -154,7 +154,7 @@ test("setDisabled,setEnabled", function () {
     stop();
 });
 test("render-- element", function () {
-    var editor = new baidu.editor.Editor({'UEDITOR_HOME_URL':'../../../', 'autoFloatEnabled':false});
+    var editor = new UE.Editor({'UEDITOR_HOME_URL':'../../../', 'autoFloatEnabled':false});
     var div = document.body.appendChild(document.createElement('div'));
     equal(div.innerHTML, "", "before render");
     editor.render(div);
@@ -173,13 +173,13 @@ test("render-- elementid", function () {
 
 test("render-- options", function () {
     var options = {'initialContent':'<span class="span">xxx</span><div>xxx<p></p></div>', 'UEDITOR_HOME_URL':'../../../', autoClearinitialContent:false, 'autoFloatEnabled':false};
-    var editor = new baidu.editor.Editor(options);
+    var editor = new UE.Editor(options);
     stop();
     setTimeout(function () {
         var div = document.body.appendChild(document.createElement('div'));
         editor.render(div);
         /*会自动用p标签包围*/
-        var space = baidu.editor.browser.ie ? '&nbsp;' : '<br>';
+        var space = UE.browser.ie ? '&nbsp;' : '<br>';
         //策略变化，自1.2.6，div 标签都会被过滤
         setTimeout(function () {
             equal(ua.getChildHTML(editor.body), '<p><span class="span">xxx</span></p><p>xxx</p><p>' + space + '</p>', 'check initialContent');
@@ -190,7 +190,7 @@ test("render-- options", function () {
 });
 
 //test( 'destroy', function() {
-////    var editor = new baidu.editor.Editor( {'autoFloatEnabled':false} );
+////    var editor = new UE.Editor( {'autoFloatEnabled':false} );
 //    var editor = new UE.ui.Editor( {'autoFloatEnabled':false} );
 //    editor.key = 'ed';
 //    var div = document.body.appendChild( document.createElement( 'div' ) );
@@ -330,7 +330,7 @@ test("focus(false)", function () {
     var editor = UE.getEditor('test1');
     stop();
     editor.ready(function () {
-        var range = new baidu.editor.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document);
         editor.setContent("<p>hello1</p><p>hello2</p>");
         editor.focus(false);
         if (ua.browser.gecko) {
@@ -354,7 +354,7 @@ test("focus(true)", function () {
     var editor = UE.getEditor('ue');
     stop();
     editor.ready(function () {
-        var range = new baidu.editor.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document);
         editor.setContent("<p>hello1</p><p>hello2</p>");
         editor.focus(true);
         if (ua.browser.gecko) {
@@ -449,7 +449,7 @@ test("queryCommandState", function () {
         editor.focus();
         editor.setContent("<p><b>xxx</b>xxx</p>");
         var p = editor.document.getElementsByTagName('p')[0];
-        var r = new baidu.editor.dom.Range(editor.document);
+        var r = new UE.dom.Range(editor.document);
         r.setStart(p.firstChild, 0).setEnd(p.firstChild, 1).select();
         equal(editor.queryCommandState('bold'), 1, '加粗状态为1');
         r.setStart(p, 1).setEnd(p, 2).select();
@@ -468,7 +468,7 @@ test("queryCommandValue", function () {
     editor.ready(function () {
         editor.focus();
         editor.setContent('<p style="text-align:left">xxx</p>');
-        var range = new baidu.editor.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document);
         var p = editor.document.getElementsByTagName("p")[0];
         range.selectNode(p).select();
         equal(editor.queryCommandValue('justify'), 'left', 'text align is left');
@@ -488,7 +488,7 @@ test("execCommand", function () {
 
         editor.setContent("<p>xx</p><p>xxx</p>");
         var doc = editor.document;
-        var range = new baidu.editor.dom.Range(doc);
+        var range = new UE.dom.Range(doc);
         var p = doc.getElementsByTagName('p')[1];
         range.setStart(p, 0).setEnd(p, 1).select();
         editor.execCommand('justify', 'right');
@@ -663,7 +663,7 @@ test('绑定事件', function () {
     document.onkeyup = function (event) {
         ok(true, "keyup is fired");
     };
-    var editor = new baidu.editor.Editor({'autoFloatEnabled':false});
+    var editor = new UE.Editor({'autoFloatEnabled':false});
     var div = document.body.appendChild(document.createElement('div'));
     editor.render(div);
     expect(5);
@@ -686,7 +686,7 @@ test('绑定事件', function () {
 
 ////.fireMouseEvent(target, "contextmenu", options);
 //test('dragover',function(){
-//    var editor = new baidu.editor.Editor({'autoFloatEnabled':false});
+//    var editor = new UE.Editor({'autoFloatEnabled':false});
 //    var div = document.body.appendChild(document.createElement('div'));
 //    editor.render(div);
 //    editor.ready(function(){

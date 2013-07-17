@@ -9,7 +9,7 @@ module("core.Selection");
 //    /*防止frame没有加载好导致无法取到document*/
 //    setTimeout( function() {
 //        var doc = te.dom[1].contentWindow.document;
-//        var range = new baidu.editor.dom.Range( doc );
+//        var range = new UE.dom.Range( doc );
 //        var div = doc.createElement( 'div' );
 //        doc.body.appendChild( div );
 //        div.innerHTML = '<strong>first</strong>second';
@@ -17,7 +17,7 @@ module("core.Selection");
 //         * select后会把文本节点切开
 //         * */
 //        range.setStart( div.firstChild, 0 ).setEnd( div.lastChild, 1 ).select();
-//        var selection = new baidu.editor.dom.Selection( doc );
+//        var selection = new UE.dom.Selection( doc );
 //        var nativeRange = selection.getRange();
 //        var sc = nativeRange.startContainer;
 //        var so = nativeRange.startOffset;
@@ -36,13 +36,13 @@ module("core.Selection");
 //    stop();
 //    setTimeout( function() {
 //        var doc = te.dom[1].contentWindow.document;
-//        var range = new baidu.editor.dom.Range( doc );
+//        var range = new UE.dom.Range( doc );
 //        var div = doc.createElement( 'div' );
 //        doc.body.appendChild( div );
 //        div.innerHTML = '<em></em><span>spanText</span><strong>first</strong>second';
 //
 //        range.setStart( div.firstChild, 0 ).setEnd( div.lastChild, 1 ).select();
-//        var selection = new baidu.editor.dom.Selection( doc );
+//        var selection = new UE.dom.Selection( doc );
 //
 //        var text = selection.getText();
 //        equal( text, 'spanTextfirsts', 'check getText function' );
@@ -55,13 +55,13 @@ module("core.Selection");
 //    stop();
 //    setTimeout( function() {
 //        var doc = te.dom[1].contentWindow.document;
-//        var range = new baidu.editor.dom.Range( doc );
+//        var range = new UE.dom.Range( doc );
 //        var div = doc.createElement( 'div' );
 //        doc.body.appendChild( div );
 //        div.innerHTML = '<em>em<strong><span>spanText</span></strong></em><strong>first</strong>second';
 //
 //        range.setStart( div.firstChild.lastChild.lastChild.firstChild, 0 ).setEnd( div.lastChild, 1 ).select();
-//        var selection = new baidu.editor.dom.Selection( doc );
+//        var selection = new UE.dom.Selection( doc );
 //        var startNode = selection.getStart();
 //        /*textNode*/
 //        ok( startNode === div.firstChild.lastChild.lastChild, 'check startNode' );
@@ -73,13 +73,13 @@ module("core.Selection");
 //    stop();
 //    setTimeout( function() {
 //        var doc = te.dom[1].contentWindow.document;
-//        var range = new baidu.editor.dom.Range( doc );
+//        var range = new UE.dom.Range( doc );
 //        var div = doc.createElement( 'div' );
 //        doc.body.appendChild( div );
 //        div.innerHTML = '<em>em<strong><span>spanText</span></strong></em><strong>first</strong>second';
 //
 //        range.setStart( div.firstChild.lastChild, 0 ).collapse().select();
-//        var selection = new baidu.editor.dom.Selection( doc );
+//        var selection = new UE.dom.Selection( doc );
 //        var startNode = selection.getStart();
 //        /*边界情况，ie下好像会尽量贴文本，因此startNode为em*/
 //        ok( startNode === div.firstChild.lastChild || startNode === div.firstChild, 'check startNode' );
@@ -90,12 +90,12 @@ module("core.Selection");
 test('getRange--闭合选区的边界情况', function () {
     var div_new = document.createElement('div');
     document.body.appendChild(div_new);
-    var editor = new baidu.editor.Editor({'autoFloatEnabled':false});
+    var editor = new UE.Editor({'autoFloatEnabled':false});
     stop();
     setTimeout(function () {
         editor.render(div_new);
         editor.ready(function () {
-            var range = new baidu.editor.dom.Range(editor.document);
+            var range = new UE.dom.Range(editor.document);
 
             editor.setContent('<p><strong>xxx</strong></p>');
 

@@ -9,14 +9,14 @@ var checkBookmark = function (bookmark, pre, latter, id) {
 test('init', function () {
     expect(6);
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     ua.checkResult(range, null, null, null, null, true, 'for init range');
     same(range.document, document, 'check current document of range');
 });
 
 
 test('setStart/startEnd 自闭合元素', function () {
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     var div = te.dom[2];
     var img = document.createElement('img');
     div.appendChild(img);
@@ -32,7 +32,7 @@ test('setStart/startEnd 自闭合元素', function () {
 });
 
 test('setStart/startEnd--nodeType不为1', function () {
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     var div = te.dom[2];
     var text = document.createTextNode("text");
     div.appendChild(text);
@@ -43,7 +43,7 @@ test('setStart/startEnd--nodeType不为1', function () {
 });
 
 test('setStart/setEnd--nodeType为1', function () {
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     var div = te.dom[2];
     range.setStart(div, 0);
     ua.checkResult(range, div, div, 0, 0, true, "endContainer is null");
@@ -59,7 +59,7 @@ test('setStartAfter,setStartBefore', function () {
     div.innerHTML = '<span></span><a></a>';
     var span = div.firstChild;
     var a = div.lastChild;
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     range.setStartAfter(a);
     equal(range.startOffset, 2, 'check startOffset for setStartAfter--boundary testing');
     range.setStartAfter(span);
@@ -80,7 +80,7 @@ test('setEndAfter,setEndBefore', function () {
     div.innerHTML = '<span></span><a></a>';
     var span = div.firstChild;
     var a = div.lastChild;
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     range.setEndAfter(a);
     equal(range.endOffset, 2, 'check startOffset for setEndAfter--boundary testing');
     range.setEndAfter(span);
@@ -95,7 +95,7 @@ test('setEndAfter,setEndBefore', function () {
 test('collapse', function () {
     var text = document.createTextNode('TextNode');
     te.dom[2].appendChild(text);
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     range.setStart(text, 1);
 //    ua.checkResult(range.endContainer,range.startContainer,0)
     ok(range.collapsed, 'check collapse method true--setStart');
@@ -116,7 +116,7 @@ test('selectNode', function () {
     var div = te.dom[2];
     div.innerHTML = "text!";
     div.id = 'div_id';
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     range.selectNode(div);
     var index = ua.getIndex(div);
     ua.checkResult(range, document.body, document.body, index, index + 1, false, 'check selectNode');
@@ -124,7 +124,7 @@ test('selectNode', function () {
 
 test('selectNode--空节点', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     range.selectNode(div);
     var index = ua.getIndex(div);
     ua.checkResult(range, document.body, document.body, index, index + 1, false, 'check selectNode');
@@ -132,7 +132,7 @@ test('selectNode--空节点', function () {
 
 test('selectNode--空文本节点', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     var textNode = document.createTextNode('');
     div.appendChild(textNode);
     range.selectNode(div);
@@ -145,14 +145,14 @@ test('selectNodeContents', function () {
     var div = te.dom[2];
     div.innerHTML = '<div>text</div><a>';
     var text = div.firstChild.firstChild;
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     range = range.selectNodeContents(div);
     ua.checkResult(range, div, div, 0, 2, false, 'selectNodeContents');
     /*textNode*/
     range = range.selectNodeContents((text));
     ua.checkResult(range, text, text, 0, 4, false, 'selectNodeContents for textNode');
     div.innerHTML = '<b>xxx<i>xxx</i>xxx</b>';
-    range = new baidu.editor.dom.Range(document);
+    range = new UE.dom.Range(document);
     range = range.selectNodeContents(div.firstChild);
     ua.checkResult(range, div.firstChild, div.firstChild, 0, 3, false, 'selectNodeContents');
 
@@ -162,7 +162,7 @@ test('selectNodeContents', function () {
 test('cloneRange', function () {
     expect(5);
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<div>cloneRange</div>';
     range.setStart(div, 0);
     range.setEnd(div, 1);
@@ -175,7 +175,7 @@ test('cloneRange', function () {
 /*循环缩进子节点，直到子节点元素类型不为1或为自闭合元素*/
 test('shrinkBoundary--not ignore end', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
 //    $('#test').css('background','red');
     div.innerHTML = '<div>div1_text</div><a>a_text</a><div><span>span_text</span>div3_text</div>';
 
@@ -188,7 +188,7 @@ test('shrinkBoundary--not ignore end', function () {
 
 test('shrinkBoundary--ignoreEnd', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = "<div><p>p_text</p></div>";
     var div_child = div.firstChild;
     var p = div_child.firstChild;
@@ -199,7 +199,7 @@ test('shrinkBoundary--ignoreEnd', function () {
 });
 test('shrinkBonudaryl', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<b><i>xxxx</i>xxxxxxx</b>';
     /*ignoreEnd=true*/
     range.selectNodeContents(div).shrinkBoundary(true);
@@ -246,7 +246,7 @@ test('shrinkBonudaryl', function () {
 test('txtToElmBoundary', function () {
     var div = te.dom[2];
     div.innerHTML = 'text_node';
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     var text = div.firstChild;
     /*endOffset大于text的长度*/
     range.setStart(text, 0).setEnd(text, 10);
@@ -269,7 +269,7 @@ test('txtToElmBoundary', function () {
 test('trimBonudary', function () {
     var div = te.dom[2];
     div.innerHTML = '<table border="1"><tr><td>td_xxxx<b><i><u>u_text</u></i></b></td></tr></table>';
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     var td = div.getElementsByTagName('td')[0];
     var td_text = td.firstChild;
     /*startOffset为0，在第一个孩子节点前插入*/
@@ -307,7 +307,7 @@ test('trimBonudary', function () {
 
 /*前面尽可能往右边跳，后面尽可能往左边跳*/
 test('adjustmentBoundary--startContainer为文本节点', function () {
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     var div = te.dom[2];
     div.innerHTML = 'div_text<p><span id="span">span_text</span></p>div_text2<p id="p">p_text<em>em_text</em></p>';
     var span_text = document.getElementById('span').firstChild;
@@ -320,7 +320,7 @@ test('adjustmentBoundary--startContainer为文本节点', function () {
 
 //TODO
 test('adjustmentBoundary--非文本节点', function () {
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     var div = te.dom[2];
     div.innerHTML = 'div_text<p><span id="span">span_text</span></p>div_text2<p id="p">p_text<em>em_text</em></p>';
     var span = document.getElementById('span');
@@ -332,7 +332,7 @@ test('adjustmentBoundary--非文本节点', function () {
 });
 
 test('getCommonAncestor--初始startContainer和endContainer相同', function () {
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     var div = te.dom[2];
     div.innerHTML = "div_text<p><span>span_text</span></p>div_text2";
     range.setStart(div, 0).setEnd(div, 1);
@@ -358,7 +358,7 @@ test('getCommonAncestor--初始startContainer和endContainer相同', function ()
 
 
 test('getCommonAncestor--初始startContainer和endContainer不同', function () {
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     var div = te.dom[2];
     div.innerHTML = "div_text<p><span>span_text</span></p>div_text2";
     var span = div.getElementsByTagName('span')[0];
@@ -375,7 +375,7 @@ test('getCommonAncestor--初始startContainer和endContainer不同', function ()
 test('selectNodeContents', function () {
     var div = te.dom[2];
     div.innerHTML = '<b>xxxx</b>div_text';
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     /*选中非文本节点*/
     range.selectNodeContents(div);
     ua.checkResult(range, div, div, 0, 2, false, 'selectNodeContents');
@@ -388,7 +388,7 @@ test('cloneContents', function () {
     var div = te.dom[2];
     div.innerHTML = '<b>b_text</b>div_text';
 //    div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     var b = div.firstChild;
     range.setStart(b, 1).setEnd(div, 1);
     var frag = range.cloneContents();
@@ -416,7 +416,7 @@ test('cloneContents', function () {
 /*startContainer和endContainer为文本节点，补全后面</b></tr>之类的标签*/
 test('cloneContents--补全后面的标签', function () {
     var div = te.dom[2];
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var first = document.getElementById('first').firstChild;
     var two = document.getElementById('two').firstChild;
@@ -428,7 +428,7 @@ test('cloneContents--补全后面的标签', function () {
 /*startContainer和endContainer为文本节点，层级各不相同，补全前面 的<b><tr>之类的标签*/
 test('cloneContents--补全前面的标签', function () {
     var div = te.dom[2];
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var last = document.getElementById('last').firstChild;
     var two = document.getElementById('two').firstChild;
@@ -441,7 +441,7 @@ test('cloneContents--补全前面的标签', function () {
 /*startContainer和endContainer为文本节点，为兄弟节点*/
 test('cloneContents--切的部分为兄弟节点', function () {
     var div = te.dom[2];
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var first = document.getElementById('first');
 
@@ -454,7 +454,7 @@ test('cloneContents--切的部分为兄弟节点', function () {
 
 test('cloneContents--切同一个文本节点', function () {
     var div = te.dom[2];
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var first = document.getElementById('first').firstChild;
 
@@ -466,7 +466,7 @@ test('cloneContents--切同一个文本节点', function () {
 /*startContainer和endContainer的nodeType=1*/
 test('cloneContents--startContainer和endContainer为非文本节点', function () {
     var div = te.dom[2];
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var first = document.getElementById('first');
     var last = document.getElementById('last');
@@ -482,7 +482,7 @@ test('cloneContents--startContainer和endContainer为非文本节点', function 
 
 test('cloneContents--完整切掉一个节点', function () {
     var div = te.dom[2];
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var first = document.getElementById('first');
     r.setStart(div, 0).setEnd(div, div.childNodes.length - 1);
@@ -492,7 +492,7 @@ test('cloneContents--完整切掉一个节点', function () {
 
 test('cloneContents--startContainer和endContainer节点类型不同', function () {
     var div = te.dom[2];
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var first = document.getElementById('first');
     var last = document.getElementById('last');
@@ -508,7 +508,7 @@ test('cloneContents--startContainer和endContainer节点类型不同', function 
 
 test('cloneContents--endContainer为em', function () {
     var div = te.dom[2];
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var traverse = document.getElementById('traverse');
     r.setStart(div, 0).setEnd(traverse, 1);
@@ -522,9 +522,9 @@ test('cloneContents--endContainer为em', function () {
 
 test('cloneContents--元素闭合', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<p>p_text</p>';
-//    if ( baidu.editor.browser.gecko ) {
+//    if ( UE.browser.gecko ) {
 
     var text = div.firstChild.firstChild;
     range.setStart(text, 1).setEnd(text, 1);
@@ -539,7 +539,7 @@ test('cloneContents--元素闭合', function () {
 
 test('cloneContents--自闭合元素', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<b>b_text<i id="ii">i_text</i><img /></b>xxx';
     var b = div.firstChild;
     range.setStart(b.firstChild, 2).setEnd(b, b.childNodes.length);
@@ -565,7 +565,7 @@ test('cloneContents--自闭合元素', function () {
 
 test('deleteContents--删除空', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<p>p_text</p>';
     var p_text = div.firstChild.firstChild;
     range.setStart(p_text, 2).setEnd(p_text, 2);
@@ -578,7 +578,7 @@ test('deleteContents--删除相邻节点之间的内容', function () {
     var div = te.dom[2];
     var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     div.innerHTML = html;
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     var two = document.getElementById('two');
     var last = document.getElementById('last');
     r.setStart(two, 1).setEnd(last, 2);
@@ -593,7 +593,7 @@ test('deleteContents--删除子节点', function () {
     var div = te.dom[2];
     var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     div.innerHTML = html;
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
 
     r.setStart(div, 0).setEnd(div, 2);
     r.deleteContents();
@@ -607,7 +607,7 @@ test('deleteContents--删除同一文本节点内容', function () {
     var div = te.dom[2];
     var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     div.innerHTML = html;
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     var p = div.firstChild;
     var strong_text = document.getElementById('strong').firstChild;
     r.setStart(strong_text, 0).setEnd(strong_text, 2);
@@ -620,7 +620,7 @@ test('deleteContents--删除同一文本节点内容', function () {
 
 test('deleteContents--startContainer是endContainer父亲', function () {
     var div = te.dom[2];
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     r.setStart(div, 0);
     r.setEnd(document.getElementById('traverse'), 2);
@@ -633,7 +633,7 @@ test('deleteContents--startContainer和endContainer为不同文本节点', funct
     var div = te.dom[2];
     var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     div.innerHTML = html;
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     var first = document.getElementById('first');
     r.setStart(first.firstChild, 1).setEnd(first.lastChild, 4);
     var p = div.firstChild;
@@ -649,7 +649,7 @@ test('deleteContents--startContainer是endContainer后代', function () {
     var div = te.dom[2];
     var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     div.innerHTML = html;
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     var em = document.getElementById('em');
     r.setStart(em, 1).setEnd(div, 3);
     r.deleteContents();
@@ -661,7 +661,7 @@ test('deleteContents--startContainer是文本，endContainer的nodeType=1', func
     var div = te.dom[2];
     var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     div.innerHTML = html;
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     var em = document.getElementById('em').firstChild;
     var two = document.getElementById('two');
     r.setStart(em, 1).setEnd(two, 0);
@@ -674,7 +674,7 @@ test('deleteContents--startContainer是文本，endContainer的nodeType=1', func
 /*startContainer和endContainer为文本节点，补全后面</b></tr>之类的标签*/
 test('extractContents--补全后面的标签', function () {
     var div = te.dom[2];
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var first = document.getElementById('first').firstChild;
     var two = document.getElementById('two').firstChild;
@@ -687,7 +687,7 @@ test('extractContents--补全后面的标签', function () {
 /*startContainer和endContainer为文本节点，层级各不相同，补全前面 的<b><tr>之类的标签*/
 test('extractContents--补全前面的标签', function () {
     var div = te.dom[2];
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var last = document.getElementById('last').firstChild;
     var two = document.getElementById('two').firstChild;
@@ -700,7 +700,7 @@ test('extractContents--补全前面的标签', function () {
 /*startContainer和endContainer为文本节点，为兄弟节点*/
 test('extractContents--切的部分为兄弟节点', function () {
     var div = te.dom[2];
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var first = document.getElementById('first');
 
@@ -714,7 +714,7 @@ test('extractContents--切的部分为兄弟节点', function () {
 
 test('extractContents--切同一个文本节点', function () {
     var div = te.dom[2];
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var first = document.getElementById('first').firstChild;
 
@@ -727,7 +727,7 @@ test('extractContents--切同一个文本节点', function () {
 /*startContainer和endContainer的nodeType=1*/
 test('extractContents--startContainer和endContainer为非文本节点', function () {
     var div = te.dom[2];
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var first = document.getElementById('first');
     var last = document.getElementById('last');
@@ -749,7 +749,7 @@ test('extractContents--startContainer和endContainer为非文本节点', functio
 
 test('extractContents--完整切掉一个节点', function () {
     var div = te.dom[2];
-    var r = new baidu.editor.dom.Range(document);
+    var r = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var first = document.getElementById('first');
     r.setStart(div, 0).setEnd(div, div.childNodes.length - 1);
@@ -760,7 +760,7 @@ test('extractContents--完整切掉一个节点', function () {
 
 test('extractContents--元素闭合', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<p>p_text</p>';
     var text = div.firstChild.firstChild;
     range.setStart(text, 1).setEnd(text, 1);
@@ -777,7 +777,7 @@ test('extractContents--元素闭合', function () {
 
 test('extractContents--自闭合元素', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     var inner = '<b>b_text<i id="ii">i_text</i><img /></b>xxx';
     div.innerHTML = inner;
     var b = div.firstChild;
@@ -803,7 +803,7 @@ test('extractContents', function () {
 
     var div = te.dom[2];
 
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var r = range;
 
@@ -825,7 +825,7 @@ test('extractContents', function () {
 /*只要邻居节点不是块元素就左扩或右扩*/
 test('enlarge--文本节点左边扩到body', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<div>div_text</div></p>';
     var first = document.getElementById('first').firstChild;
     var last = document.getElementById('last').firstChild;
@@ -838,7 +838,7 @@ test('enlarge--文本节点左边扩到body', function () {
 
 test('enlarge--文本节点右边扩到body', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<div id=\"first\"><p>xxx</p>first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</div><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var strong = document.getElementById('strong').firstChild;
     var span = document.getElementById('last').lastChild.firstChild;
@@ -851,7 +851,7 @@ test('enlarge--文本节点右边扩到body', function () {
 
 test('enlarge--文本节点左右边扩到body', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var first = document.getElementById('first').firstChild;
     var span = document.getElementById('last').lastChild.firstChild;
@@ -864,7 +864,7 @@ test('enlarge--文本节点左右边扩到body', function () {
 
 test('enlarge--startContainer和endContainer的nodeType为1', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong<strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     range.setStart(div, 0).setEnd(div, 2);
     range.enlarge(true);
@@ -874,7 +874,7 @@ test('enlarge--startContainer和endContainer的nodeType为1', function () {
 
 test('enlarge--左边非块元素节点', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var strong = document.getElementById('strong');
     var table = div.getElementsByTagName('table')[0];
@@ -886,7 +886,7 @@ test('enlarge--左边非块元素节点', function () {
 
 test('enlarge--左右属于同一非块元素节点', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var strong = document.getElementById('strong');
     range.setStart(strong, 0).setEnd(strong, 1);
@@ -902,7 +902,7 @@ test('enlarge--左右属于同一非块元素节点', function () {
 
 test('enlarge--isBlock为null', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = 'xx<b><i>xxxx</i>xxxxxxx</b>';
 
     range.selectNodeContents(div.getElementsByTagName('i')[0]);
@@ -918,7 +918,7 @@ test('enlarge--stopFn', function () {
             return true;
         return false;
     };
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     var strong = document.getElementById('strong');
     var table = div.getElementsByTagName('table')[0];
@@ -931,7 +931,7 @@ test('enlarge--stopFn', function () {
 
 //test( 'enlarge--闭合特殊情况，有歧义', function() {
 //    var div = te.dom[2];
-//    var range = new baidu.editor.dom.Range( document );
+//    var range = new UE.dom.Range( document );
 //    div.innerHTML = '<p>p_text</p>';
 //    var p = div.firstChild;
 //    range.setStart( p.firstChild, 0 ).setEnd( p.firstChild, 3 ).trimBoundary();
@@ -943,7 +943,7 @@ test('enlarge--stopFn', function () {
 
 test('enlarge--闭合', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = 'xxx<p>xxxxx</p>xxx<em>xxx</em>xxxxxxx<b>xxxx|xxx</b><p>bbbbb</p>xx';
     range.setStart(div.getElementsByTagName('b')[0], 2).collapse(true);
 
@@ -959,7 +959,7 @@ test('enlarge--闭合', function () {
 
 test('insertNode--文本中插入', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = 'div_text1<p>p_text</p>xxx<em>em_text</em>xxxxxxx<b>xxxx|xxx</b><p>bbbbb</p>text2_div';
     var p_text = div.firstChild.nextSibling.firstChild;
     range.setStart(p_text, 1).setEnd(p_text, 2);
@@ -982,7 +982,7 @@ test('insertNode--文本中插入', function () {
 
 test('inserNode--块元素中插入', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = 'div_text1<p>p_text</p>xxx<em>em_text</em>xxxxxxx<b>xxxx|xxx</b><p>bbbbb</p>text2_div';
 //	var p_text = div.firstChild.nextSibling.firstChild;
     range.setStart(div, 1).setEnd(div.lastChild, 2);
@@ -996,7 +996,7 @@ test('inserNode--块元素中插入', function () {
 
 test('insertNode--插入的节点为endContainer孩子', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = 'xxx<p>xxxxx</p>xxx<em>xxx</em>xxxxxxx<b>xxxx|xxx</b><p>bbbbb</p>xx';
     var length = div.childNodes.length;
     range.setStart(div, 1).setEnd(div, length);
@@ -1009,7 +1009,7 @@ test('insertNode--插入的节点为endContainer孩子', function () {
 
 test('insertNode--插入的fragment为endContainer孩子', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     var frag = document.createDocumentFragment();
 
     div.innerHTML = 'xxx<p>xxxxx</p>xxx<em>xxx</em>xxxxxxx<b>xxxx|xxx</b><p>bbbbb</p>xx';
@@ -1026,7 +1026,7 @@ test('insertNode--插入的fragment为endContainer孩子', function () {
 
 test('createBookmark/moveToBookmark--元素不闭合', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = 'first_text<b><i>i_text</i>xxxxxxx</b><span id="span">span_text</span><p id="second"><em>em_text</em>p_text</p>';
     var bookmark = range.selectNode(div).createBookmark();
     ua.checkResult(range, document.body, document.body, ua.getIndex(div), ua.getIndex(div) + 1, false, "元素不闭合,创建书签");
@@ -1055,7 +1055,7 @@ test('createBookmark/moveToBookmark--元素不闭合', function () {
 
 test('createBookmark/moveToBookmark--span嵌套', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = 'first_text<b><i>i_text</i>xxxxxxx</b><span id="span">span_text</span><p id="second"><em>em_text</em>p_text</p>';
     var span = document.getElementById('span');
     range.setStart(span, 0).setEnd(span, 1);
@@ -1070,7 +1070,7 @@ test('createBookmark/moveToBookmark--span嵌套', function () {
 
 test('createBookmark/moveToBookmark--元素闭合', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = 'first_text<b><i>i_text</i>xxxxxxx</b><span id="span">span_text</span><p id="second"><em id="em">em_text</em>p_text</p>';
     var em_text = document.getElementById('em').firstChild;
     var em = em_text.parentNode;
@@ -1086,7 +1086,7 @@ test('createBookmark/moveToBookmark--元素闭合', function () {
 
 test('getClosedNode', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = 'xxx<span>xxx</span><img />xxxx';
     range.setStart(div, 2).setEnd(div, 3);
     same(range.getClosedNode(), div.lastChild.previousSibling, 'check result is img');
@@ -1101,7 +1101,7 @@ test('getClosedNode', function () {
 
 test('applyInlineStyle--strong', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = 'div_text';
     range.setStart(div, 0).setEnd(div, 1);
 
@@ -1111,7 +1111,7 @@ test('applyInlineStyle--strong', function () {
 
 test('applyInlineStyle--双重strong', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = 'div_text';
 
     div.innerHTML = 'div_text<strong>strong_text</strong>';
@@ -1131,7 +1131,7 @@ test('applyInlineStyle--双重strong', function () {
 
 test('applyInlineStyle--span放在em外面', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<div><em>div_text</em></div>';
     range.setStart(div, 0).setEnd(div, 1);
     range.applyInlineStyle('span', {style:'font-size:12px'});
@@ -1141,7 +1141,7 @@ test('applyInlineStyle--span放在em外面', function () {
 
 test('applyInlineStyle--span', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = 'div_text';
     range.setStart(div, 0).setEnd(div, 1);
     range.applyInlineStyle('span', {style:'font-size:12px'});
@@ -1152,7 +1152,7 @@ test('applyInlineStyle--span', function () {
 
 test('applyInlineStyle--span元素闭合', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = 'div_text';
     range.setStart(div, 0).setEnd(div, 0);
     range.applyInlineStyle('span', {style:'font-size:12px'});
@@ -1162,7 +1162,7 @@ test('applyInlineStyle--span元素闭合', function () {
 //TODO
 test('applyInlineStyle-双重span', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
 
     div.innerHTML = '<span style="font-size:12px">div_text</span>';
     var span = div.firstChild;
@@ -1180,7 +1180,7 @@ test('applyInlineStyle-双重span', function () {
 
 test('applyInlineStyle--b', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<ul><li>li_text</li><li>bbbb</li></ul>';
     var li_text = div.firstChild.firstChild;
     range.setStart(li_text, 0).setEnd(div, 1);
@@ -1197,7 +1197,7 @@ test('applyInlineStyle--b', function () {
 
 test('applyInlineStyle-b元素闭合', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<ul><li>li_text</li><li>bbbb</li></ul>';
     var li_text = div.firstChild.firstChild;
     range.setStart(li_text, 1).setEnd(li_text, 1);
@@ -1208,7 +1208,7 @@ test('applyInlineStyle-b元素闭合', function () {
 
 test('applyInlineStyle-b有属性', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<p>1234</p>';
     range.setStart(div, 0).setEnd(div.firstChild, 4);
     range.applyInlineStyle('b', {title:'b_title', id:'b_id'});
@@ -1221,7 +1221,7 @@ test('applyInlineStyle-b有属性', function () {
 
 test('applyInlineStyle--b放在Inline元素外面', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<p><em>1234</em>5678<span>9</span></p><p><em>1234</em>5678<span>9</span></p>';
 
     range.setStart(div, 0).setEnd(div, 2);
@@ -1237,7 +1237,7 @@ test('applyInlineStyle--b放在Inline元素外面', function () {
 
 test('applyInlinestyle--b没有文字', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<table><tr><td><br/></td></tr><tr><td><br/></td></tr><tr><td><br/></td></tr></table>';
     range.setStart(div, 0).setEnd(div, 1);
     range.applyInlineStyle('b');
@@ -1245,7 +1245,7 @@ test('applyInlinestyle--b没有文字', function () {
     ua.checkResult(range, div, div, 0, 1, false, '对空表格进行b');
     //todo ie6下不知道为啥strong用不上去
 //    div.innerHTML = '';
-//    var ie6 = (baidu.editor.browser.ie == 6);
+//    var ie6 = (UE.browser.ie == 6);
 //    if ( ie6 ) {
 //        div.appendChild( document.createTextNode( '\u200B' ) );
 //        div.appendChild( document.createTextNode( '\u200B' ) );
@@ -1265,7 +1265,7 @@ test('applyInlinestyle--b没有文字', function () {
 
 test('applyInlineStyle-双重b', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<p><b>b_text</b></p>';
     var b_text = div.firstChild.firstChild.firstChild;
     range.setStart(b_text, 1).setEnd(b_text, 2);
@@ -1291,7 +1291,7 @@ test('applyInlineStyle-双重b', function () {
 
 test('applyInlineStyle--多个style', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = 'xxxx';
     range.setStart(div, 0).setEnd(div, 1);
 
@@ -1308,7 +1308,7 @@ test('applyInlineStyle--多个style', function () {
 //todo 1.2.6.1 把这个改到font上
 //test( 'trace1583:applyInlineStyle--MergeToParent', function() {
 //    var div = te.dom[2];
-//    var range = new baidu.editor.dom.Range( document );
+//    var range = new UE.dom.Range( document );
 //    div.innerHTML = '1<span style="font-size: 24px; ">23456<span style="font-size: 16px; ">7</span></span><span style="font-size: 16px; ">89</span>10';
 //    range.selectNode( div ).select();
 //    range.applyInlineStyle( 'span', {style:'font-size:24px'} );
@@ -1324,7 +1324,7 @@ test('applyInlineStyle--多个style', function () {
 //} );
 test('applyInlineStyle--MergeToParent', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '1<strong style="font-size: 24px; ">23456</strong>8910';
     range.setStart(div.firstChild, 0).setEnd(div.childNodes[1], 1).select();
     range.applyInlineStyle('strong', {style:'font-size:24px'});
@@ -1333,7 +1333,7 @@ test('applyInlineStyle--MergeToParent', function () {
 });
 test('trace1583:applyInlineStyle--MergeToChild', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<span style="font-size: 24px; ">​123<span style="font-size: 16px; ">45678</span>9</span>';
 
     var span = div.getElementsByTagName('span')[1];
@@ -1345,7 +1345,7 @@ test('trace1583:applyInlineStyle--MergeToChild', function () {
 
 test('applyInlineStyle--选区包含部分兄弟', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = 'xxxx<span>span_text</span>';
     range.setStart(div, 0).setEnd(div.firstChild.nextSibling, 0);
     range.applyInlineStyle('u');
@@ -1355,7 +1355,7 @@ test('applyInlineStyle--选区包含部分兄弟', function () {
 
 test('removeInlineStyle--删除父节点b', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = '<b>xxxx</b>';
     range.setStart(div, 0).setEnd(div, 1);
     range.removeInlineStyle('b');
@@ -1364,7 +1364,7 @@ test('removeInlineStyle--删除父节点b', function () {
 
 test('removeInlineStyle--删除祖先b', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = "<b><i>xxxx</i></b>";
     var i = div.firstChild.firstChild;
     range.setStart(i, 0).setEnd(i, 1);
@@ -1375,7 +1375,7 @@ test('removeInlineStyle--删除祖先b', function () {
 
 test('removeInlineStyle--删除部分b', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = "<b><i>i_text</i></b><span>span_text</span>";
     var b = div.firstChild;
     range.setStart(b, 0).setEnd(b.firstChild.firstChild, 3);
@@ -1387,7 +1387,7 @@ test('removeInlineStyle--删除部分b', function () {
 
 test('removeInlineStyle--删除多个b', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = "<table><tr><td>&nbsp;</td><td><table><tr><td><b>xxxxxx</b></td></tr></table></td><td><b>xxxxxx</b></td></tr></table>";
     range.setStart(div, 0).setEnd(div, 1);
     range.removeInlineStyle('b');
@@ -1403,7 +1403,7 @@ test('removeInlineStyle--删除多个b', function () {
 
 test('removeInlineStyle--删除不同层文本的样式', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = "xxx<b>b_text</b><span><b>b2_text</b></span>";
     range.setStart(div, 0).setEnd(div, 1);
     var b1 = div.firstChild.nextSibling;
@@ -1417,7 +1417,7 @@ test('removeInlineStyle--删除不同层文本的样式', function () {
 
 test('removeInlineStyle--删除部分文本样式，需要切分文本节点', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = 'xxx<b><i id="i"><u>u_text</u></i></b>';
     range.setStart(div.firstChild, 2).setEnd(div.getElementsByTagName('u')[0].firstChild, 2);
     range.removeInlineStyle('u');
@@ -1447,7 +1447,7 @@ test('removeInlineStyle--删除部分文本样式，需要切分文本节点', f
 /*闭合情况挪到basestyle中去做了，在这里不做任何处理*/
 test('removeInlineStyle--删除闭合元素的样式', function () {
     var div = te.dom[2];
-    var range = new baidu.editor.dom.Range(document);
+    var range = new UE.dom.Range(document);
     div.innerHTML = "<b><i>b_text</i></b>";
     range.setStart(div.firstChild.firstChild.firstChild, 2).collapse(true);
     range.removeInlineStyle('b');
@@ -1457,11 +1457,11 @@ test('removeInlineStyle--删除闭合元素的样式', function () {
 
 test('b节点取range', function () {
     var div = te.dom[2];
-    var editor = new baidu.editor.Editor({'autoFloatEnabled':false});
+    var editor = new UE.Editor({'autoFloatEnabled':false});
     stop();
     editor.render(div);
     editor.ready(function () {
-        var range = new baidu.editor.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document);
         editor.setContent('<p>hello<strong>hello1</strong>hello2</p>');
         range.setStart(editor.body.firstChild.lastChild, 0).collapse(1).select();
         range = editor.selection.getRange();
@@ -1494,11 +1494,11 @@ test('b节点取range', function () {
 
 test('文本节点中间取range', function () {
     var div = te.dom[2];
-    var editor = new baidu.editor.Editor({'autoFloatEnabled':false});
+    var editor = new UE.Editor({'autoFloatEnabled':false});
     stop();
     editor.render(div);
     editor.ready(function () {
-        var range = new baidu.editor.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document);
         editor.setContent('<p>hello2</p>');
         range.setStart(editor.body.firstChild.firstChild, 2).collapse(1).select();
         range = editor.selection.getRange();
@@ -1512,7 +1512,7 @@ test('文本节点中间取range', function () {
 
 //test( 'select--closedNode', function() {
 //    var div = te.dom[2];
-//    var range = new baidu.editor.dom.Range( document );
+//    var range = new UE.dom.Range( document );
 //    div.innerHTML = 'div_text<span style="color:red">span_text</span><img />div2_text<em>em_text</em>';
 ////    range.setStart(div.getElementsBytagName('img'),0).setEnd(div.)
 ////    var span = div.firstChild.nextSibling;
@@ -1521,7 +1521,7 @@ test('文本节点中间取range', function () {
 ////
 ////     ua.checkResult(range,span,div,1,4,false,'check range');
 ////    range.insertNode(document.createTextNode('aa'));
-////    var selection = new baidu.editor.dom.Selection( document );
+////    var selection = new UE.dom.Selection( document );
 ////    var nativeRange = selection.getRange();
 //    //TODO
 //} );
