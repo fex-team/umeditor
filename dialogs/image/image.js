@@ -210,8 +210,7 @@
             'ok': {
                 label: '插入图片',
                 exec: function (editor, $w) {
-                    var list = [],
-                        sel = "",
+                    var sel = "",
                         index = $tab.edui().activate();
 
                     if (index == 0) {
@@ -220,7 +219,7 @@
                         sel = "#edui-image-JsearchRes .edui-image-pic";
                     }
 
-                    list == Base.getAllPic(sel,$w);
+                   var list = Base.getAllPic(sel,$w);
 
                     if (index != -1) {
                         editor.execCommand('insertimage', list);
