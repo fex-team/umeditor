@@ -22,15 +22,7 @@
     text-align: center;line-height:300px;color:#fff;font-size:14px;font-weight:bold;opacity: 0.6;filter: alpha(opacity=60);}
 .edui-image-mask.active{display: block;}
 
-/*search*/
-.edui-image-searchTxt{padding-left:2px;margin-left:15px;background: #FFF;width:200px;height:21px;line-height:21px;border: 1px solid #d7d7d7;}
-.edui-image-searchType{ width: 65px;height: 23px;line-height: 22px;border: 1px solid #d7d7d7;}
-.edui-image-searchBtn,.edui-image-searchReset{ width: 100%;height: 25px;margin: 0 3px;line-height: 25px;background: #eee; border: 1px solid #d7d7d7;cursor: pointer}
-.edui-image-searchList{width: 620px;overflow: auto;zoom:1;height: 270px;}
-
-.edui-image-searchList div{float: left;width: 116px;height: 135px;margin: 5px 15px;_margin:5px 10px;}
-.edui-image-searchList img{margin: 2px 8px;cursor: pointer;border: 2px solid #fff} /*不用缩略图*/
-.edui-image-searchList p{margin-left: 10px;_margin-left:8px;}
+/*network*/
 
 
 

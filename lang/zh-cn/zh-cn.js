@@ -105,68 +105,6 @@ UE.I18N['zh-cn'] = {
         'uploadErrorMsg':"截图上传失败，请检查服务器端环境! "
     },
     'confirmClear':"确定清空当前文档么？",
-    'contextMenu':{
-        'delete':"删除",
-        'selectall':"全选",
-        'deletecode':"删除代码",
-        'cleardoc':"清空文档",
-        'confirmclear':"确定清空当前文档么？",
-        'unlink':"删除超链接",
-        'paragraph':"段落格式",
-        'edittable':"表格属性",
-        'aligntd':"单元格对齐方式",
-        'aligntable':'表格对齐方式',
-        'tableleft':'左浮动',
-        'tablecenter':'居中显示',
-        'tableright':'右浮动',
-        'edittd':"单元格属性",
-        'justifyleft':'左对齐',
-        'justifyright':'右对齐',
-        'justifycenter':'居中对齐',
-        'justifyjustify':'两端对齐',
-        'table':"表格",
-        'inserttable':'插入表格',
-        'deletetable':"删除表格",
-        'insertparagraphbefore':"前插入段落",
-        'insertparagraphafter':'后插入段落',
-        'deleterow':"删除当前行",
-        'deletecol':"删除当前列",
-        'insertrow':"前插入行",
-        'insertcol':"左插入列",
-        'insertrownext':'后插入行',
-        'insertcolnext':'右插入列',
-        'insertcaption':'插入表格名称',
-        'deletecaption':'删除表格名称',
-        'inserttitle':'插入表格标题行',
-        'deletetitle':'删除表格标题行',
-        'averageDiseRow':'平均分布各行',
-        'averageDisCol':'平均分布各列',
-        'mergeright':"向右合并",
-        'mergeleft':"向左合并",
-        'mergedown':"向下合并",
-        'mergecells':"合并单元格",
-        'splittocells':"完全拆分单元格",
-        'splittocols':"拆分成列",
-        'splittorows':"拆分成行",
-        'tablesort':'表格排序',
-        'reversecurrent':'逆序当前',
-        'orderbyasc':'按ASCII字符升序',
-        'reversebyasc':'按ASCII字符降序',
-        'orderbynum':'按数值大小升序',
-        'reversebynum':'按数值大小降序',
-        'borderbk':'边框底纹',
-        'setcolor':'表格隔行变色',
-        'unsetcolor':'取消表格隔行变色',
-        'setbackground':'选区背景隔行',
-        'unsetbackground':'取消选区背景',
-        'redandblue':'红蓝相间',
-        'threecolorgradient':'三色渐变',
-        'copy':"复制(Ctrl + c)",
-        'copymsg':"请使用 'Ctrl + c'执行复制操作",
-        'paste':"粘贴(Ctrl + v)",
-         'pastemsg':"请使用 'Ctrl + v'执行复制操作",
-        'highlightcode':'插入代码'
-    },
 
     'anthorMsg':"链接",
     'clearColor':'清空颜色',
@@ -205,22 +143,6 @@ UE.I18N['zh-cn'] = {
         run:"执行"
     },
 
-    'background':{
-        'static':{
-            'lang_background_normal':'背景设置',
-            'lang_background_local':'本地图片',
-            'lang_background_set':'选项',
-            'lang_background_none':'无',
-            'lang_background_color':'颜色设置',
-            'lang_background_netimg':'网络图片',
-            'lang_background_align':'对齐方式',
-            'lang_background_position':'精确定位',
-            'repeatType':{options:["居中", "横向重复", "纵向重复", "平铺","自定义"]}
-
-        },
-        'noUploadImage':"当前未上传过任何图片！",
-        'toggleSelect':"单击可切换选中状态\n原图尺寸: "
-    },
     //===============dialog i18N=======================
     'image':{
         'static':{
@@ -262,96 +184,6 @@ UE.I18N['zh-cn'] = {
         'floatCenter':"居中",
         'flashI18n':{} //留空默认中文
     },
-    'webapp':{
-        tip1:"本功能由百度APP提供，如看到此页面，请各位站长首先申请百度APPKey!",
-        tip2:"申请完成之后请至ueditor.config.js中配置获得的appkey! ",
-        applyFor:"点此申请",
-        anthorApi:"百度API"
-    },
-    template:{
-        'static':{
-            'lang_template_bkcolor':'背景颜色',
-            'lang_template_clear' : '保留原有内容',
-            'lang_template_select' : '选择模板'
-        },
-        'blank':"空白文档",
-        'blog':"博客文章",
-        'resume':"个人简历",
-        'richText':"图文混排",
-        'sciPapers':"科技论文"
-
-
-    },
-    'scrawl':{
-        'static':{
-            'lang_input_previousStep':"上一步",
-            'lang_input_nextsStep':"下一步",
-            'lang_input_clear':'清空',
-            'lang_input_addPic':'添加背景',
-            'lang_input_ScalePic':'缩放背景',
-            'lang_input_removePic':'删除背景',
-            'J_imgTxt':{title:'添加背景图片'}
-        },
-        'noScarwl':"尚未作画，白纸一张~",
-        'scrawlUpLoading':"涂鸦上传中,别急哦~",
-        'continueBtn':"继续",
-        'imageError':"糟糕，图片读取失败了！",
-        'backgroundUploading':'背景图片上传中,别急哦~'
-    },
-    'music':{
-        'static':{
-            'lang_input_tips':"输入歌手/歌曲/专辑，搜索您感兴趣的音乐！",
-            'J_searchBtn':{value:'搜索歌曲'}
-        },
-        'emptyTxt':'未搜索到相关音乐结果，请换一个关键词试试。',
-        'chapter':'歌曲',
-        'singer':'歌手',
-        'special':'专辑',
-        'listenTest':'试听'
-    },
-    'anchor':{
-        'static':{
-            'lang_input_anchorName':'锚点名字：'
-        }
-    },
-    'attachment':{
-        'static':{
-            'lang_input_fileStatus':' 当前未上传文件',
-            'startUpload':{style:"background:url(upload.png) no-repeat;"}
-        },
-        'browseFiles':'文件浏览…',
-        'uploadSuccess':'上传成功!',
-        'delSuccessFile':'从成功队列中移除',
-        'delFailSaveFile':'移除保存失败文件',
-        'statusPrompt':' 个文件已上传！ ',
-        'flashVersionError':'当前Flash版本过低，请更新FlashPlayer后重试！',
-        'flashLoadingError':'Flash加载失败!请检查路径或网络状态',
-        'fileUploadReady':'等待上传……',
-        'delUploadQueue':'从上传队列中移除',
-        'limitPrompt1':'单次不能选择超过',
-        'limitPrompt2':'个文件！请重新选择！',
-        'delFailFile':'移除失败文件',
-        'fileSizeLimit':'文件大小超出限制！',
-        'emptyFile':'空文件无法上传！',
-        'fileTypeError':'文件类型错误！',
-        'unknownError':'未知错误！',
-        'fileUploading':'上传中，请等待……',
-        'cancelUpload':'取消上传',
-        'netError':'网络错误',
-        'failUpload':'上传失败!',
-        'serverIOError':'服务器IO错误！',
-        'noAuthority':'无权限！',
-        'fileNumLimit':'上传个数限制',
-        'failCheck':'验证失败，本次上传被跳过！',
-        'fileCanceling':'取消中，请等待……',
-        'stopUploading':'上传已停止……'
-    },
-    'highlightcode':{
-        'static':{
-            'lang_input_selectLang':'选择语言'
-        },
-        importCode:'请输入代码'
-    },
     'emotion':{
         'static':{
             'lang_input_choice':'精选',
@@ -370,39 +202,6 @@ UE.I18N['zh-cn'] = {
             'address':{value:"北京"}
         },
         searchError:'无法定位到该地址!'
-    },
-    'help':{
-        'static':{
-            'lang_input_about':'关于UEditor',
-            'lang_input_shortcuts':'快捷键',
-            'lang_input_version':'版本:1.2.6',
-            'lang_input_introduction':'UEditor是由百度web前端研发部开发的所见即所得富文本web编辑器，具有轻量，可定制，注重用户体验等特点。开源基于BSD协议，允许自由使用和修改代码。',
-            'lang_Txt_shortcuts':'快捷键',
-            'lang_Txt_func':'功能',
-            'lang_Txt_bold':'给选中字设置为加粗',
-            'lang_Txt_copy':'复制选中内容',
-            'lang_Txt_cut':'剪切选中内容',
-            'lang_Txt_Paste':'粘贴',
-            'lang_Txt_undo':'重新执行上次操作',
-            'lang_Txt_redo':'撤销上一次操作',
-            'lang_Txt_italic':'给选中字设置为斜体',
-            'lang_Txt_underline':'给选中字加下划线',
-            'lang_Txt_selectAll':'全部选中',
-            'lang_Txt_visualEnter':'软回车',
-            'lang_Txt_fullscreen':'全屏'
-        }
-    },
-    'insertframe':{
-        'static':{
-            'lang_input_address':'地址：',
-            'lang_input_width':'宽度：',
-            'lang_input_height':'高度：',
-            'lang_input_isScroll':'允许滚动条：',
-            'lang_input_frameborder':'显示框架边框：',
-            'lang_input_alignMode':'对齐方式：',
-            'align':{title:"对齐方式", options:["默认", "左对齐", "右对齐", "居中"]}
-        },
-        'enterAddress':'请输入地址!'
     },
     'link':{
         'static':{
@@ -423,36 +222,6 @@ UE.I18N['zh-cn'] = {
         },
         cityMsg:"请选择城市",
         errorMsg:"抱歉，找不到该位置！"
-    },
-    'searchreplace':{
-        'static':{
-            lang_tab_search:"查找",
-            lang_tab_replace:"替换",
-            lang_search1:"查找",
-            lang_search2:"查找",
-            lang_replace:"替换",
-            lang_searchReg:'支持正则表达式，添加前后斜杠标示为正则表达式，例如“/表达式/”',
-            lang_searchReg1:'支持正则表达式，添加前后斜杠标示为正则表达式，例如“/表达式/”',
-            lang_case_sensitive1:"区分大小写",
-            lang_case_sensitive2:"区分大小写",
-            nextFindBtn:{value:"下一个"},
-            preFindBtn:{value:"上一个"},
-            nextReplaceBtn:{value:"下一个"},
-            preReplaceBtn:{value:"上一个"},
-            repalceBtn:{value:"替换"},
-            repalceAllBtn:{value:"全部替换"}
-        },
-        getEnd:"已经搜索到文章末尾！",
-        getStart:"已经搜索到文章头部",
-        countMsg:"总共替换了{#count}处！"
-    },
-    'snapscreen':{
-        'static':{
-            lang_showMsg:"截图功能需要首先安装UEditor截图插件！ ",
-            lang_download:"点此下载",
-            lang_step1:"第一步，下载UEditor截图插件并运行安装。",
-            lang_step2:"第二不，插件安装完成后即可使用，如不生效，请重启浏览器后再试！"
-        }
     },
     'insertvideo':{
         'static':{
@@ -478,61 +247,5 @@ UE.I18N['zh-cn'] = {
         clickToSelect:"点击选中",
         goToSource:'访问源视频',
         noVideo:" &nbsp; &nbsp;抱歉，找不到对应的视频，请重试！"
-    },
-    'spechars':{
-        'static':{},
-        tsfh:"特殊字符",
-        lmsz:"罗马字符",
-        szfh:"数学字符",
-        rwfh:"日文字符",
-        xlzm:"希腊字母",
-        ewzm:"俄文字符",
-        pyzm:"拼音字母",
-        zyzf:"注音及其他"
-    },
-    'edittable':{
-        'static':{
-            'lang_tableStyle':'表格样式',
-            'lang_insertCaption':'添加表格标题行',
-            'lang_insertTitle':'添加表格名称行',
-            'lang_orderbycontent':"使表格内容可排序",
-            'lang_tableSize':'自动调整表格尺寸',
-            'lang_autoSizeContent':'按表格文字自适应',
-            'lang_autoSizePage':'按页面宽度自适应',
-            'lang_example':'示例',
-            'lang_borderStyle':'表格边框',
-            'lang_color':'颜色:'
-        },
-        captionName:'表格名称',
-        titleName:'标题',
-        cellsName:'内容'
-    },
-    'edittip':{
-        'static':{
-            lang_delRow:'删除整行',
-            lang_delCol:'删除整列'
-        }
-    },
-    'edittd':{
-        'static':{
-            lang_tdBkColor:'背景颜色:'
-        }
-    },
-    'formula':{
-        'static':{
-        }
-    },
-    'wordimage':{
-        'static':{
-            lang_resave:"转存步骤",
-            uploadBtn:{src:"upload.png",alt:"上传"},
-            clipboard:{style:"background: url(copy.png) -153px -1px no-repeat;"},
-            lang_step:"1、点击顶部复制按钮，将地址复制到剪贴板；2、点击添加照片按钮，在弹出的对话框中使用Ctrl+V粘贴地址；3、点击打开后选择图片上传流程。"
-        },
-        'fileType':"图片",
-        'flashError':"FLASH初始化失败，请检查FLASH插件是否正确安装！",
-        'netError':"网络连接错误，请重试！",
-        'copySuccess':"图片地址已经复制！",
-        'flashI18n':{} //留空默认中文
     }
 };

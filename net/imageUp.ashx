@@ -23,7 +23,7 @@ public class  imageUp: IHttpHandler
             Uploader up = new Uploader();
             info = up.upFile(context, pathbase, filetype, size); //获取上传状态
 
-            HttpContext.Current.Response.Write("<script>parent.UE.getModule('image')('" + info["url"] + "','" + info["state"] + "')</script>");//回调函数
+            HttpContext.Current.Response.Write("<script>parent.UE.getWidgetCallback('image')('" + info["url"] + "','" + info["state"] + "')</script>");//回调函数
     }
 
     public bool IsReusable

@@ -1,7 +1,7 @@
 (function () {
     /*
-    * 本地上传
-    * */
+     * 本地上传
+     * */
     var Upload = {
         uploadTpl: '<div class="edui-image-upload%%" id="edui-image-Jupload%%">' +
             '<span class="edui-image-icon"></span>' +
@@ -96,14 +96,15 @@
     };
 
     /*
-    * 网络搜索
-    * */
+     * 网络搜索
+     * */
     var Search = {
-        init:function(editor,$w){
+        init: function (editor, $w) {
             var me = this;
 
             me.editor = editor;
             me.dialog = $w;
+
         }
     }
 
@@ -112,7 +113,7 @@
             "<div id=\"edui-image-Jwrapper\" class=\"edui-image-wrapper\">" +
             "<ul class=\"edui-tab-nav\">" +
             "<li class=\"edui-tab-item active\"><a href=\"#edui-image-Jlocal\" class=\"edui-tab-text\">本地上传</a></li>" +
-            "<li  class=\"edui-tab-item\"><a href=\"#edui-image-JimgSearch\" class=\"edui-tab-text\">图片搜索</a></li>" +
+            "<li  class=\"edui-tab-item\"><a href=\"#edui-image-JimgSearch\" class=\"edui-tab-text\">网络图片</a></li>" +
             "</ul>" +
             "<div class=\"edui-tab-content\">" +
             "<div id=\"edui-image-Jlocal\" class=\"edui-tab-pane active\">" +
@@ -120,30 +121,15 @@
             "<div class=\"edui-image-mask\" id=\"edui-image-Jmask\"></div>" +
             "</div>" +
             "<div id=\"edui-image-JimgSearch\" class=\"edui-tab-pane\">" +
-            "<table>" +
-            "<tr>" +
-            "<td width=\"200\"><input id=\"edui-image-JsearchTxt\" class=\"edui-image-searchTxt\" type=\"text\" /></td>" +
-            "<td width=\"65\">" +
-            "<select id=\"edui-image-JsearchType\" class=\"edui-image-searchType\">" +
-            "<option value=\"&s=4&z=0\"></option>" +
-            "<option value=\"&s=1&z=19\"></option>" +
-            "<option value=\"&s=2&z=0\"></option>" +
-            "<option value=\"&s=3&z=0\"></option>" +
-            "</select>" +
-            "</td>" +
-            "<td width=\"80\"><input id=\"edui-image-JSearchBtn\" class=\"edui-image-searchBtn\" type=\"button\"  /></td>" +
-            "<td width=\"80\"><input id=\"edui-image-JSearchReset\" class=\"edui-image-searchReset\" type=\"button\" /></td>" +
-            "</tr>" +
-            "</table>" +
-            "<div id=\"edui-image-JsearchList\" class=\"edui-image-searchList\"></div>" +
+
             "</div>" +
             "</div>" +
             "</div>",
         initContent: function (editor) {
             var lang = editor.getLang('image')["static"],
                 opt = $.extend({}, lang, {
-                image_url: UEDITOR_CONFIG.UEDITOR_HOME_URL + 'dialogs/image/'
-            });
+                    image_url: UEDITOR_CONFIG.UEDITOR_HOME_URL + 'dialogs/image/'
+                });
 
             if (lang) {
                 var html = $.parseTmpl(this.tpl, opt);
@@ -154,8 +140,10 @@
         },
         initEvent: function (editor, $w) {
             $.eduitab({selector: "#edui-image-Jwrapper"});
+
             Upload.init(editor, $w);
-            Search.init(editor.$w);
+
+            Search.init(editor, $w);
         },
         buttons: {
             'ok': {
