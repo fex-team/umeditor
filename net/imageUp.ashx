@@ -14,7 +14,7 @@ public class  imageUp: IHttpHandler
         context.Response.ContentType = "text/html";
 
             //上传配置
-            string pathbase = "tmp/";                                                          //保存路径
+            string pathbase = "upload/";                                                          //保存路径
             int size = 2;                     //文件大小限制,单位mb                                                                                   //文件大小限制，单位KB
             string[] filetype = { ".gif", ".png", ".jpg", ".jpeg", ".bmp" };                    //文件允许格式
 
