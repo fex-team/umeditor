@@ -22,7 +22,7 @@
 .edui-image-searchBar .edui-image-searchAdd{display: inline-block !important;vertical-align: top;
     *display: inline !important;*zoom:1;height: 28px;text-align: center;line-height: 28px;}
 
-.edui-image-searchRes{height:330px;overflow:auto;}
+.edui-image-searchRes{height:280px;overflow:auto;}
 
 
 /*common*/
