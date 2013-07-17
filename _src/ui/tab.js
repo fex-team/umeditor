@@ -9,7 +9,6 @@ UE.ui.define('tab', {
             me.data("context", options.context);
 
             $(slr, me.data("context")).on('click', function (e) {
-                e.preventDefault();
                 me.show(e);
             });
         }
@@ -54,6 +53,10 @@ UE.ui.define('tab', {
         });
     },
     activate: function (element, container, callback) {
+        if (element === undefined) {
+            return $(".edui-tab-item.active",this.root()).index();
+        }
+
         var $active = container.find('> .active');
 
         $active.removeClass('active');
