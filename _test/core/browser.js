@@ -2,7 +2,7 @@ module( "core.browser" );
 
 
 test( 'browser', function() {
-    var browser = baidu.editor.browser;
+    var browser = UE.browser;
     /*ie*/
     if ( browser.ie ) {
         ok( ua.browser.ie, 'is ie' );

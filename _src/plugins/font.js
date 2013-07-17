@@ -5,7 +5,7 @@
 ///commandsTitle  字体颜色,背景色,字号,字体,下划线,删除线
 /**
  * @description 字体
- * @name baidu.editor.execCommand
+ * @name UE.execCommand
  * @param {String}     cmdName    执行的功能名称
  * @param {String}    value             传入的值
  */

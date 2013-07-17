@@ -6,7 +6,7 @@
 /**
  * 分割线
  * @function
- * @name baidu.editor.execCommand
+ * @name UE.execCommand
  * @param {String}     cmdName    horizontal插入分割线
  */
 UE.plugins['horizontal'] = function(){

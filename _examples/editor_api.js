@@ -57,7 +57,6 @@
             'adapter/tablepicker.js',
             'adapter/fullscreen.js',
             'adapter/font.js',
-            'adapter/elementpath.js',
             'adapter/dialog.js',
             'adapter/popup.js',
             'adapter/autoheight.js',

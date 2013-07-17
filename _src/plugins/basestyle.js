@@ -5,7 +5,7 @@
 /**
  * b u i等基础功能实现
  * @function
- * @name baidu.editor.execCommands
+ * @name UE.execCommands
  * @param    {String}    cmdName    bold加粗。italic斜体。subscript上标。superscript下标。
 */
 UE.plugins['basestyle'] = function(){

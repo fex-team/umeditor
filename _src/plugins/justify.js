@@ -4,7 +4,7 @@
 ///commandsTitle  居左对齐,居中对齐,居右对齐,两端对齐
 /**
  * @description 居左右中
- * @name baidu.editor.execCommand
+ * @name UE.execCommand
  * @param   {String}   cmdName     justify执行对齐方式的命令
  * @param   {String}   align               对齐方式：left居左，right居右，center居中，justify两端对齐
  * @author zhanyi

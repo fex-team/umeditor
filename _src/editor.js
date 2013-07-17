@@ -1,10 +1,6 @@
 UEDITOR_CONFIG = window.UEDITOR_CONFIG || {};
 
-var baidu = window.baidu || {};
-
-window.baidu = baidu;
-
-window.UE = baidu.editor =  {
+window.UE = {
     plugins : {},
 
     commands : {},
@@ -15,7 +11,5 @@ window.UE = baidu.editor =  {
 
     version : "mini1.0.0.0"
 };
-
-
 
 var dom = UE.dom = {};

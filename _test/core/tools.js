@@ -7,13 +7,13 @@
 
         var div = document.body.appendChild(document.createElement('div'));
         div.id = 'test1';
-        var utils = baidu.editor.utils;
-        var editor = new baidu.editor.Editor({'UEDITOR_HOME_URL':'../../../', 'autoFloatEnabled':false,initialContent:'tool'});
+        var utils = UE.utils;
+        var editor = new UE.Editor({'UEDITOR_HOME_URL':'../../../', 'autoFloatEnabled':false,initialContent:'tool'});
         var iframe = document.createElement('iframe');
         document.body.appendChild(iframe);
         iframe.id = 'iframe';
-        var range = new baidu.editor.dom.Range(document);
-        var domUtils = baidu.editor.dom.domUtils;
+        var range = new UE.dom.Range(document);
+        var domUtils = UE.dom.domUtils;
         var div_dom = document.body.appendChild(document.createElement('div'));
         div_dom.id = 'test';
         te.dom.push(div);
