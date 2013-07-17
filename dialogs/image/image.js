@@ -18,15 +18,21 @@
             me.submit("#edui-image-Jupload1", function () {
                 $("#edui-image-Jupload1").css("display", "none");
             });
+
+            return me;
         },
         render: function (sel, t) {
             var me = this;
 
             $(sel, me.dialog).append($(me.uploadTpl.replace(/%%/g, t)));
+
+            return me;
         },
         config: function (sel) {
             var me = this;
             $("form", $(sel, me.dialog)).attr("action", me.editor.options.imageUrl);
+
+            return me;
         },
         submit: function (sel, callback) {
             var me = this;
@@ -36,6 +42,8 @@
                 me.toggleMask("图片上传中，别着急哦~~");
                 callback && callback();
             });
+
+            return me;
         },
         close: function ($img) {
             $img.css({
@@ -46,15 +54,21 @@
                 }).parent().hover(function () {
                     $(this).toggleClass("hover");
                 });
+
+
+            return this;
         },
         toggleMask: function (html) {
             var me=this;
+
             var $mask = $("#edui-image-Jmask", me.dialog);
             if (html) {
                 $mask.addClass("active").html(html);
             } else {
                 $mask.removeClass("active").html();
             }
+
+            return me;
         },
         scale: function (img, max, oWidth, oHeight) {
             var width = 0, height = 0, percent, ow = img.width || oWidth, oh = img.height || oHeight;
@@ -73,6 +87,8 @@
                     }
                 }
             }
+
+            return this;
         }
     }
 
@@ -132,9 +148,9 @@
                 if ($("#edui-image-Jupload2",$w).length < 1) {
                     $("#edui-image-Jcontent",$w).append($item);
 
-                    Upload.render("#edui-image-Jcontent", 2);
-                    Upload.config("#edui-image-Jupload2");
-                    Upload.submit("#edui-image-Jupload2");
+                    Upload.render("#edui-image-Jcontent", 2)
+                        .config("#edui-image-Jupload2")
+                        .submit("#edui-image-Jupload2");
                 } else {
                     $("#edui-image-Jupload2",$w).before($item);
                 }
