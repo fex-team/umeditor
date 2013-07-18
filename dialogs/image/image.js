@@ -159,7 +159,10 @@
                         $ele.val("");
                     });
                 }
-            });
+            })
+                .hover(function(){
+                    $(this).toggleClass("hover");
+                });
         }
     }
 
@@ -180,7 +183,7 @@
             "<div id=\"edui-image-JimgSearch\" class=\"edui-tab-pane\">" +
             "<div class=\"edui-image-searchBar\">" +
             "<input class=\"edui-image-searchTxt\" id=\"edui-image-JsearchTxt\" type=\"text\">" +
-            "<input class=\"edui-image-searchAdd\" id=\"edui-image-JsearchAdd\" type=\"button\" value=\"添加\">" +
+            "<div class=\"edui-image-searchAdd\" id=\"edui-image-JsearchAdd\">添加</div>"+
             "</div>" +
             "<div class=\"edui-image-searchRes\" id=\"edui-image-JsearchRes\"></div>" +
             "</div>" +

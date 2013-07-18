@@ -115,7 +115,7 @@ var getConfigCont = function(){
 //////添加dialog
 //addDialogs();
 //////合并css
-//mergeCss();
+mergeCss();
 //////添加样式
 //addtheme();
 /////添加语言
