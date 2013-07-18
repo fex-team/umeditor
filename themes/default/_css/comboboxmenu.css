@@ -29,9 +29,9 @@
     white-space: nowrap;
 }
 .edui-combobox-menu .edui-combobox-item:hover, .edui-combobox-menu .edui-combobox-stack-item:hover {
-    background-color: #fff5d4;
+    background-color: #d5e1f2;
     padding: 0;
-    border: 1px solid #dcac6c;
+    border: 1px solid #a3bde3;
 }
 
 .edui-combobox-menu .edui-combobox-link{
