@@ -200,7 +200,7 @@
 
         },
         initEvent: function (editor, $w) {
-            $.eduitab({selector: "#edui-image-Jwrapper"})
+            $tab=$.eduitab({selector: "#edui-image-Jwrapper"})
                 .edui().on("beforeshow", function (e) {
                     e.stopPropagation();
                 });
@@ -214,7 +214,7 @@
                 label: '插入图片',
                 exec: function (editor, $w) {
                     var sel = "",
-                        index = $tab.edui().activate();
+                        index = $tab.activate();
 
                     if (index == 0) {
                         sel = "#edui-image-Jcontent .edui-image-pic";
