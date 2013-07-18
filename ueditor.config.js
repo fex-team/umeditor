@@ -363,7 +363,6 @@
         //首行缩进距离,默认是2em
         //,indentValue:'2em'
 
-
         //填写过滤规则
         //filterRules : {}
     };
