@@ -1,9 +1,9 @@
 .edui-container{
-    border: 1px solid #d4d4d4;
+    border: 1px solid #e1e1e1;
 }
 .edui-container .edui-toolbar{
-    border-bottom: 1px solid #f5f5f5;
-    background-color: #fafafa;
+    border-bottom: 1px solid #e1e1e1;
+    background-color: #fff;
     position: relative;
 }
 .edui-toolbar .edui-btn-toolbar{
