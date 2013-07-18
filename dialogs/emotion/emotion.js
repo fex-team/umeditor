@@ -120,8 +120,7 @@
             } );
 
             //更新模板
-            me.tabs.edui().on("tabbeforeshow", function( evt ){
-
+            me.tabs.edui().on("beforeshow", function( evt ){
                 var contentId = evt.target.href.replace( /^.*#(?=[^\s]*$)/, '' );
 
                 me.updateTab( contentId );

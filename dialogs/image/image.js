@@ -200,7 +200,10 @@
 
         },
         initEvent: function (editor, $w) {
-            $tab = $.eduitab({selector: "#edui-image-Jwrapper"});
+            $.eduitab({selector: "#edui-image-Jwrapper"})
+                .edui().on("beforeshow", function (e) {
+                    e.stopPropagation();
+                });
 
             Upload.init(editor, $w);
 
@@ -219,7 +222,7 @@
                         sel = "#edui-image-JsearchRes .edui-image-pic";
                     }
 
-                   var list = Base.getAllPic(sel,$w);
+                    var list = Base.getAllPic(sel, $w);
 
                     if (index != -1) {
                         editor.execCommand('insertimage', list);
