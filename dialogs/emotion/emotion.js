@@ -123,6 +123,8 @@
             me.tabs.edui().on("beforeshow", function( evt ){
                 var contentId = evt.target.href.replace( /^.*#(?=[^\s]*$)/, '' );
 
+                evt.stopPropagation();
+
                 me.updateTab( contentId );
 
             });
