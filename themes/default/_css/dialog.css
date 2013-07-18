@@ -47,15 +47,17 @@
     height: 24px;
     width: 96px;
     margin: 0 10px;
-    background-image: url("../images/icons-all.gif") ;
-    background-position:0 0;
+    background-color: #ffffff;
+    padding: 0;
+    border: 1px solid #ababab;
     font-size: 12px;
     line-height: 24px;
     text-align: center;
     cursor: default;
 }
 .edui-modal-footer .edui-btn.hover{
-    background-position:0 -30px;
+    background-color: #d5e1f2;
+    border: 1px solid #a3bde3;
 }
 .edui-modal-backdrop{
     opacity: 0.6;
