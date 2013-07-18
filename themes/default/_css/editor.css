@@ -2,9 +2,10 @@
     border: 1px solid #e1e1e1;
 }
 .edui-container .edui-toolbar{
+    position: relative;
+    width:auto;
     border-bottom: 1px solid #e1e1e1;
     background-color: #fff;
-    position: relative;
 }
 .edui-toolbar .edui-btn-toolbar{
     position: relative;
