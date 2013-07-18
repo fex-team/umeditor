@@ -69,6 +69,10 @@
     display: none;
 }
 
+.edui-emotion-wrapper .edui-tab-text {
+    font-size: 12px;
+}
+
 .edui-emotion-wrapper .edui-emotion-preview-left {
     left: 15px;
 }

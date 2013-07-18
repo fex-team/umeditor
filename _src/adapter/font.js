@@ -180,103 +180,59 @@ UE.registerUI('fontsize', function( name ) {
 
 });
 
-
-UE.registerUI('forecolor', function( name ) {
-
-    var me = this,
-        colorPickerWidget = null,
-        $colorLabel = null,
-        $btn = null;
-
-    //querycommand
-    this.addListener('selectionchange', function(){
-
-        var state = this.queryCommandState( name );
-        $btn.edui().disabled( state == -1 ).active( state == 1 );
-
-    });
-
-    $btn = $.eduicolorsplitbutton({
-        icon: name,
-        caret: true,
-        title: me.getLang("labelMap")[name],
-        click: function() {
-            me.execCommand( name, getCurrentColor() );
+$.each(['forecolor','backcolor'],function(i,v){
+    UE.registerUI(v, function( name ) {
+        function getCurrentColor() {
+            return domUtils.getComputedStyle( $colorLabel[0], 'background-color' );
         }
-    });
 
-    $colorLabel = $btn.edui().colorLabel();
+        var me = this,
+            $colorPickerWidget = null,
+            $colorLabel = null,
+            $btn = null;
 
-    colorPickerWidget = $.eduicolorpicker({
-        lang_clearColor: me.getLang('clearColor') || '',
-        lang_themeColor: me.getLang('themeColor') || '',
-        lang_standardColor: me.getLang('standardColor') || ''
-    }).eduitablepicker( "attachTo", $btn ).edui().on('pickcolor', function( evt, color ){
-            window.setTimeout( function(){
-                $colorLabel.css("backgroundColor", color);
-                me.execCommand( name, color );
-            }, 0 );
+        //querycommand
+        this.addListener('selectionchange', function(){
+
+            var state = this.queryCommandState( name );
+            $btn.edui().disabled( state == -1 ).active( state == 1 );
+
         });
-    colorPickerWidget.root().css('zIndex',me.getOpt('zIndex') + 1);
 
-    colorPickerWidget.on('show',function(){
-        UE.setActiveWidget( colorPickerWidget.root() );
+        $btn = $.eduicolorsplitbutton({
+            icon: name,
+            caret: true,
+            title: me.getLang("labelMap")[name],
+            click: function() {
+                me.execCommand( name, getCurrentColor() );
+            }
+        });
+
+        $colorLabel = $btn.edui().colorLabel();
+
+        $colorPickerWidget = $.eduicolorpicker({
+            lang_clearColor: me.getLang('clearColor') || '',
+            lang_themeColor: me.getLang('themeColor') || '',
+            lang_standardColor: me.getLang('standardColor') || ''
+        }).on('pickcolor', function( evt, color ){
+                window.setTimeout( function(){
+                    $colorLabel.css("backgroundColor", color);
+                    me.execCommand( name, color );
+                }, 0 );
+            }).on('show',function(){
+                UE.setActiveWidget( colorPickerWidget.root() );
+            }).css('zIndex',me.getOpt('zIndex') + 1);
+
+        $btn.edui().on('arrowclick',function(){
+            if(!$colorPickerWidget.parent().length){
+                me.$container.find('.edui-dialog-container').append($colorPickerWidget);
+            }
+            $colorPickerWidget.edui().show($btn,'left','offset');
+        }).register('click', $btn, function () {
+                $colorPickerWidget.edui().hide()
+            });
+
+        return $btn;
+
     });
-    $btn.edui().mergeWith( colorPickerWidget.root() );
-
-    return $btn;
-
-    function getCurrentColor() {
-        return domUtils.getComputedStyle( $colorLabel[0], 'background-color' );
-    }
-
-});
-
-
-UE.registerUI('backcolor', function( name ) {
-
-    var me = this,
-        colorPickerWidget = null,
-        $colorLabel = null,
-        $btn = null;
-
-    //querycommand
-    this.addListener('selectionchange', function(){
-        var state = this.queryCommandState( name );
-        $btn.edui().disabled( state == -1 ).active( state == 1 );
-    });
-
-    $btn = $.eduicolorsplitbutton({
-        icon: name,
-        title: me.getLang("labelMap")[name],
-        caret: true,
-        color: 'transparent',
-        click: function() {
-            me.execCommand( name, getCurrentColor() );
-        }
-    });
-
-    $colorLabel = $btn.edui().colorLabel()
-
-    colorPickerWidget = $.eduicolorpicker({
-        lang_clearColor: me.getLang('clearColor') || '',
-        lang_themeColor: me.getLang('themeColor') || '',
-        lang_standardColor: me.getLang('standardColor') || ''
-    }).eduitablepicker( "attachTo", $btn ).edui().on('pickcolor', function( evt, color ){
-            window.setTimeout( function(){
-                $colorLabel.css("backgroundColor", color);
-                me.execCommand( name, color );
-            }, 0 );
-    });
-    colorPickerWidget.root().css('zIndex',me.getOpt('zIndex') + 1);
-    $btn.edui().mergeWith( colorPickerWidget.root() );
-    colorPickerWidget.on('show',function(){
-        UE.setActiveWidget(colorPickerWidget.root())
-    });
-    return $btn;
-
-    function getCurrentColor() {
-        return domUtils.getComputedStyle( $colorLabel[0], 'background-color' );
-    }
-
 });
