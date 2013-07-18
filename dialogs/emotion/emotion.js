@@ -277,6 +277,7 @@
             return arr;
         },
         width:603,
+        
         height:387
     });
 
