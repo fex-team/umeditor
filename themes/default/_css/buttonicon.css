@@ -114,3 +114,7 @@
 .edui-btn-toolbar .edui-btn .edui-icon-fullscreen {
     background-position: -100px -20px;
 }
+
+.edui-btn-toolbar .edui-btn .edui-icon-removeformat {
+    background-position: -580px 0;
+}

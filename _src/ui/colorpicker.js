@@ -10,11 +10,7 @@ UE.ui.define('colorpicker', {
                 '7f7f7f,0c0c0c,1d1b10,0f243e,244061,632423,4f6128,3f3151,205867,974806,' +
                 'c00000,ff0000,ffc000,ffff00,92d050,00b050,00b0f0,0070c0,002060,7030a0,').split(',');
 
-        var html = '<div class="edui-colorpicker">' +
-            '<div class="edui-colorpicker-topbar">' +
-            '<div class="edui-colorpicker-preview"></div>' +
-            '<div class="edui-colorpicker-nocolor">'+opt.lang_clearColor+'</div>' +
-            '</div>' +
+        var html = '<div class="edui-colorpicker" >' +
             '<table>' +
             '<tr><td colspan="10">'+opt.lang_themeColor+'</td> </tr>' +
             '<tr class="edui-colorpicker-firstrow" >';
@@ -23,7 +19,7 @@ UE.ui.define('colorpicker', {
             if (i && i % 10 === 0) {
                 html += '</tr>' + (i == 60 ? '<tr><td colspan="10">'+opt.lang_standardColor+'</td></tr>' : '') + '<tr' + (i == 60 ? ' class="edui-colorpicker-firstrow"' : '') + '>';
             }
-            html += i < 70 ? '<td><a title="' + COLORS[i] + '" class="edui-colorpicker-colorcell"' +
+            html += i < 70 ? '<td><a unselectable="on" onmousedown="return false" title="' + COLORS[i] + '" class="edui-colorpicker-colorcell"' +
                 ' data-color="#' + COLORS[i] + '"' +
                 ' style="background-color:#' + COLORS[i] + ';border:solid #ccc;' +
                 (i < 10 || i >= 60 ? 'border-width:1px;' :
@@ -48,12 +44,9 @@ UE.ui.define('colorpicker', {
             })
             .on("mouseout",function () {
                 me.root().find(".edui-colorpicker-preview").css("background-color", "");
-            })
-            .on("click",function (e) {
-                var color = e.target.getAttribute('data-color');
-                if (color) {
-                    me.trigger('pickcolor', color);
-                }
             });
+        me.root().on("click",function (e) {
+            me.trigger('pickcolor',  $(e.target).data('color'));
+        });
     }
 }, 'popup');
