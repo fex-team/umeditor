@@ -1,8 +1,4 @@
 /*普通按钮*/
-.edui-btn-toolbar{
-    position: relative;
-    margin: 5px;
-}
 .edui-btn-toolbar .edui-btn{
     position: relative;
     display: inline-block !important;
