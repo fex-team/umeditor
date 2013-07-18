@@ -31,7 +31,7 @@ UE.registerUI( 'emotion', function( name ){
             if(!$popup.parent().length){
                 me.$container.find('.edui-dialog-container').append($popup);
             }
-            $popup.css('zIndex',me.options.zIndex + 1).edui().show($btn,'left','position');
+            $popup.css('zIndex',me.options.zIndex + 1).edui().show($btn,'left','offset');
         },
         title: this.getLang('labelMap')[name] || ''
     });
