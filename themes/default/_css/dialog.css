@@ -55,7 +55,7 @@
     font-size: 12px;
     line-height: 24px;
     text-align: center;
-    cursor: default;
+    cursor: pointer;
 }
 .edui-modal-footer .edui-btn.hover{
     background-color: #d5e1f2;
