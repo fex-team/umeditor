@@ -159,7 +159,10 @@
                         $ele.val("");
                     });
                 }
-            });
+            })
+                .hover(function(){
+                    $(this).toggleClass("hover");
+                });
         }
     }
 
@@ -180,7 +183,7 @@
             "<div id=\"edui-image-JimgSearch\" class=\"edui-tab-pane\">" +
             "<div class=\"edui-image-searchBar\">" +
             "<input class=\"edui-image-searchTxt\" id=\"edui-image-JsearchTxt\" type=\"text\">" +
-            "<input class=\"edui-image-searchAdd\" id=\"edui-image-JsearchAdd\" type=\"button\" value=\"添加\">" +
+            "<div class=\"edui-image-searchAdd\" id=\"edui-image-JsearchAdd\">添加</div>"+
             "</div>" +
             "<div class=\"edui-image-searchRes\" id=\"edui-image-JsearchRes\"></div>" +
             "</div>" +
@@ -200,7 +203,7 @@
 
         },
         initEvent: function (editor, $w) {
-            $.eduitab({selector: "#edui-image-Jwrapper"})
+            $tab=$.eduitab({selector: "#edui-image-Jwrapper"})
                 .edui().on("beforeshow", function (e) {
                     e.stopPropagation();
                 });
@@ -214,7 +217,7 @@
                 label: '插入图片',
                 exec: function (editor, $w) {
                     var sel = "",
-                        index = $tab.edui().activate();
+                        index = $tab.activate();
 
                     if (index == 0) {
                         sel = "#edui-image-Jcontent .edui-image-pic";

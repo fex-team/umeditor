@@ -18,10 +18,16 @@
 
 /*network*/
 .edui-image-searchBar{margin: 10px;}
-.edui-image-searchBar .edui-image-searchTxt{width:400px;}
-.edui-image-searchBar .edui-image-searchAdd{display: inline-block !important;vertical-align: top;
-    *display: inline !important;*zoom:1;height: 28px;text-align: center;line-height: 28px;}
-
+.edui-image-searchBar .edui-image-searchTxt{display: inline-block !important;*display: inline !important;*zoom:1;width:400px;height:25px;margin: 0;padding: 0;}
+.edui-image-searchBar .edui-image-searchAdd{display: inline-block !important;*display: inline !important;*zoom:1;
+    width:60px; text-align:center;height: 25px;text-align: center;line-height: 25px;
+    background-color: #ffffff;padding: 0; border: 1px solid #ababab;margin-left: 20px;cursor: pointer;
+}
+.edui-image-searchBar .edui-image-searchAdd.hover{
+    background-color: #d5e1f2;
+    padding: 0;
+    border: 1px solid #a3bde3;
+}
 .edui-image-searchRes{height:280px;overflow:auto;}
 
 

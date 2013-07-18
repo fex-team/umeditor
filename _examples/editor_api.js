@@ -34,6 +34,7 @@
             'plugins/basestyle.js',
             'plugins/video.js',
             'plugins/selectall.js',
+            'plugins/removeformat.js',
             'ui/widget.js',
             'ui/button.js',
             'ui/toolbar.js',

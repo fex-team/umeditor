@@ -1,8 +1,4 @@
 /*普通按钮*/
-.edui-btn-toolbar{
-    position: relative;
-    margin: 5px;
-}
 .edui-btn-toolbar .edui-btn{
     position: relative;
     display: inline-block !important;
@@ -28,9 +24,9 @@
 /*状态反射*/
 .edui-btn-toolbar .edui-btn.hover,
 .edui-btn-toolbar .edui-btn.active{
-    background-color: #fff5d4;
+    background-color: #d5e1f2;
     padding: 0;
-    border: 1px solid #dcac6c;
+    border: 1px solid #a3bde3;
 }
 .edui-btn-toolbar .edui-btn.disabled{
     opacity: 0.3;

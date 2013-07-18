@@ -141,9 +141,6 @@
         //,imageFieldName:"upfile"                   //图片数据的key,若此处修改，需要在后台对应文件修改对应参数
 
 
-        //获取视频数据的地址
-        ,getMovieUrl:URL+"php/getMovie.php"                   //视频数据获取地址
-
         //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的从新定义
         , toolbars:[
             ['fullscreen', 'source', '|', 'undo', 'redo', '|',
@@ -330,44 +327,12 @@
         //      {tag:'span',name:'hi', label:'', style:'font-style:italic;font-weight:bold;color:rgb(51, 153, 204)'}
         //  ]
 
-        //右键菜单的内容，可以参考plugins/contextmenu.js里边的默认菜单的例子，label留空支持国际化，否则以此配置为准
-//        ,contextMenu:[
-//            {
-//                label:'',       //显示的名称
-//                cmdName:'selectall',//执行的command命令，当点击这个右键菜单时
-//                //exec可选，有了exec就会在点击时执行这个function，优先级高于cmdName
-//                exec:function () {
-//                    //this是当前编辑器的实例
-//                    //this.ui._dialogs['inserttableDialog'].open();
-//                }
-//            }
-//           ]
 
-        //快捷菜单
-        //,shortcutMenu:["bold"]
-
-        //
-        //wordCount
-        //,wordCount:true          //是否开启字数统计
-        //,maximumWords:10000       //允许的最大字符数
-        //字数统计提示，{#count}代表当前字数，{#leave}代表还可以输入多少字符数,留空支持多语言自动切换，否则按此配置显示
-        //,wordCountMsg:''   //当前已输入 {#count} 个字符，您还可以输入{#leave} 个字符
-        //超出字数限制提示  留空支持多语言自动切换，否则按此配置显示
-        //,wordOverFlowMsg:''    //<span style="color:red;">你输入的字符个数已经超出最大允许值，服务器可能会拒绝保存！</span>
-
-        //highlightcode
-        // 代码高亮时需要加载的第三方插件的路径
-        // ,highlightJsUrl:URL + "third-party/SyntaxHighlighter/shCore.js"
-        // ,highlightCssUrl:URL + "third-party/SyntaxHighlighter/shCoreDefault.css"
 
         //tab
         //点击tab键时移动的距离,tabSize倍数，tabNode什么字符做为单位
         //,tabSize:4
         //,tabNode:'&nbsp;'
-
-        //elementPathEnabled
-        //是否启用元素路径，默认是显示
-        //,elementPathEnabled : true
 
         //removeFormat
         //清除格式时可以删除的标签和属性
@@ -386,12 +351,6 @@
         // 是否自动长高,默认true
         //,autoHeightEnabled:true
 
-        //scaleEnabled
-        //是否可以拉伸长高,默认true(当开启时，自动长高失效)
-        //,scaleEnabled:false
-        //,minFrameWidth:800    //编辑器拖动时最小宽度,默认800
-        //,minFrameHeight:220  //编辑器拖动时最小高度,默认220
-
         //autoFloatEnabled
         //是否保持toolbar的位置不动,默认true
         //,autoFloatEnabled:true
@@ -404,39 +363,6 @@
         //首行缩进距离,默认是2em
         //,indentValue:'2em'
 
-        //pageBreakTag
-        //分页标识符,默认是_ueditor_page_break_tag_
-        //,pageBreakTag:'_ueditor_page_break_tag_'
-
-        //sourceEditor
-        //源码的查看方式,codemirror 是代码高亮，textarea是文本框,默认是codemirror
-        //注意默认codemirror只能在ie8+和非ie中使用
-        //,sourceEditor:"codemirror"
-        //如果sourceEditor是codemirror，还用配置一下两个参数
-        //codeMirrorJsUrl js加载的路径，默认是 URL + "third-party/codemirror/codemirror.js"
-        //,codeMirrorJsUrl:URL + "third-party/codemirror/codemirror.js"
-        //codeMirrorCssUrl css加载的路径，默认是 URL + "third-party/codemirror/codemirror.css"
-        //,codeMirrorCssUrl:URL + "third-party/codemirror/codemirror.css"
-        //编辑器初始化完成后是否进入源码模式，默认为否。
-        //,sourceEditorFirst:false
-
-        //autotypeset
-        //  //自动排版参数
-        //  ,autotypeset:{
-        //      mergeEmptyline : true,         //合并空行
-        //      removeClass : true,           //去掉冗余的class
-        //      removeEmptyline : false,      //去掉空行
-        //      textAlign : "left" ,           //段落的排版方式，可以是 left,right,center,justify 去掉这个属性表示不执行排版
-        //      imageBlockLine : 'center',      //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
-        //      pasteFilter : false,            //根据规则过滤没事粘贴进来的内容
-        //      clearFontSize : false,          //去掉所有的内嵌字号，使用编辑器默认的字号
-        //      clearFontFamily : false,        //去掉所有的内嵌字体，使用编辑器默认的字体
-        //      removeEmptyNode : false ,       // 去掉空节点
-        //      //可以去掉的标签
-        //      removeTagNames : {标签名字:1},
-        //      indent : false,                 // 行首缩进
-        //      indentValue : '2em'             //行首缩进的大小
-        //  },
         //填写过滤规则
         //filterRules : {}
     };
