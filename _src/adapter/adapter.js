@@ -155,7 +155,8 @@
 
 
                     //添加tooltip;
-                    $.eduitooltip('attachTo').css('z-index',editor.getOpt('zIndex')+1);
+                    $.eduitooltip && $.eduitooltip('attachTo').css('z-index',editor.getOpt('zIndex')+1);
+
                     $container.find('a').click(function(evt){
                         evt.preventDefault()
                     })
@@ -196,7 +197,7 @@
                 $.each(options.toolbar,function(i,uiNames){
                     $.each(uiNames.split(/\s+/),function(index,name){
                         if(name == '|'){
-                            btns.push($.eduiseparator());
+                                $.eduiseparator && btns.push($.eduiseparator());
                         }else{
                             var ui = me.getUI(editor,name);
                             ui && btns.push(ui);
