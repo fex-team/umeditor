@@ -2,4 +2,6 @@ java -jar js.jar build_editor_css_all.js ../themes/default/ ../themes/default/cs
 
 java -jar js.jar build_editor_js_all.js ../ ../ueditor.all.js
 
+java -jar yuicompressor-2.4.6.jar --nomunge --preserve-semi  --disable-optimizations --charset utf-8 ../ueditor.all.js -o ../ueditor.all.min.js
+
 

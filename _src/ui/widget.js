@@ -148,14 +148,13 @@
                                 evt.preventDefault()
                             });
                         }catch(e){
-                            debugger
+//                            debugger
                         }
 
                         return obj.root().edui(obj);
                     }
 
-                },
-                properties, supperClass);
+                },properties, supperClass);
 
             mergeToJQ(ClassObj, className);
         }
