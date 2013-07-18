@@ -4,7 +4,8 @@
     left: 50%;
     width: auto;
     margin-left: -280px;
-    border: 1px solid #999;
+    border: 1px solid #acacac;
+    box-shadow: 2px 2px 5px #d3d6da;
     background-color: #ffffff;
     outline: 0;
 }
@@ -17,14 +18,15 @@
     width:20px;
     height:20px;
     margin-top: 2px;
-    padding: 0;
+    padding: 1px;
     border: 0;
-    background-image: url("../images/icons-all.gif");
-    background-position: 0 -59px;
+    background: url("../images/close.png") no-repeat center center;
     cursor: pointer;
 }
 .edui-modal-header .edui-close.hover {
-    background-position: 0 -89px;
+    background-color: #d5e1f2;
+    padding:0;
+    border: 1px solid #a3bde3;
 }
 .edui-modal-header .edui-title {
     margin: 0;
@@ -60,12 +62,12 @@
     border: 1px solid #a3bde3;
 }
 .edui-modal-backdrop{
-    opacity: 0.6;
-    filter: alpha(opacity=60);
+    opacity: 0.5;
+    filter: alpha(opacity=50);
     position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: #000000;
+    background-color: #c6c6c6;
 }
