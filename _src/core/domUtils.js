@@ -521,37 +521,7 @@ var domUtils = dom.domUtils = {
      * getComputedStyle(form,"color")  =>  "#ffccdd"
      */
     getComputedStyle:function (element, styleName) {
-        //一下的属性单独处理
-        var pros = 'width height top left';
-
-        if(pros.indexOf(styleName) > -1){
-            return element['offset' + styleName.replace(/^\w/,function(s){return s.toUpperCase()})] + 'px';
-        }
-        //忽略文本节点
-        if (element.nodeType == 3) {
-            element = element.parentNode;
-        }
-        //ie下font-size若body下定义了font-size，则从currentStyle里会取到这个font-size. 取不到实际值，故此修改.
-        if (browser.ie && browser.version < 9 && styleName == 'font-size' && !element.style.fontSize &&
-            !dtd.$empty[element.tagName] && !dtd.$nonChild[element.tagName]) {
-            var span = element.ownerDocument.createElement('span');
-            span.style.cssText = 'padding:0;border:0;font-family:simsun;';
-            span.innerHTML = '.';
-            element.appendChild(span);
-            var result = span.offsetHeight;
-            element.removeChild(span);
-            span = null;
-            return result + 'px';
-        }
-        try {
-            var value = domUtils.getStyle(element, styleName) ||
-                (window.getComputedStyle ? domUtils.getWindow(element).getComputedStyle(element, '').getPropertyValue(styleName) :
-                    ( element.currentStyle || element.style )[utils.cssStyleToDomStyle(styleName)]);
-
-        } catch (e) {
-            return "";
-        }
-        return utils.transUnitToPx(utils.fixColor(styleName, value));
+        return utils.transUnitToPx(utils.fixColor(styleName, $(element).css(styleName)));
     },
 
     /**

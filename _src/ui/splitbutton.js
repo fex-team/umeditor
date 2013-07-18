@@ -19,7 +19,11 @@ UE.ui.define('splitbutton',{
                 $.proxy(options.click,me)();
             }
         });
-
+        me.root().find('.edui-dropdown-toggle').click(function(){
+            if(!me.disabled()){
+                me.trigger('arrowclick')
+            }
+        });
         me.root().hover(function () {
             if(!me.root().hasClass("disabled")){
                 me.root().toggleClass('hover')
