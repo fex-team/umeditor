@@ -37,7 +37,7 @@
 }
 
 .edui-combobox-menu .edui-combobox-link{
-    line-height: 20px;
+    line-height: 1;
     color:#333;
     text-decoration: none;
     display: block;
