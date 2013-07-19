@@ -134,6 +134,15 @@
     };
 
     Selection.prototype = {
+        hasNativeRange : function(){
+            if(browser.ie9above){
+                var sel = this.getNative();
+                return sel.rangeCount
+            }else{
+                var ieRange = _getIERange( this );
+                return  ieRange && this.rangeInBody(ieRange)
+            }
+        },
         /**
          * 获取原生seleciton对象
          * @public
