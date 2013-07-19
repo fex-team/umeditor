@@ -146,43 +146,10 @@ UE.I18N['zh-cn'] = {
     //===============dialog i18N=======================
     'image':{
         'static':{
-            lang_tab_remote:"远程图片", //节点
             lang_tab_local:"本地上传",
-            lang_tab_imgManager:"在线管理",
-            lang_tab_imgSearch:"图片搜索",
-            lang_input_url:"地 址：",
-            lang_input_width:"宽 度：",
-            lang_input_height:"高 度：",
-            lang_input_border:"边 框：",
-            lang_input_vhspace:"边 距：",
-            lang_input_title:"描 述：",
-            lang_input_remoteAlign:'对 齐：',
-            lang_imgLoading:"　图片加载中……",
-            'lock':{title:"锁定宽高比例"}, //属性
-            'imgType':{title:"图片类型", options:["新闻", "壁纸", "表情", "头像"]}, //select的option
-            'imgSearchTxt':{value:"请输入搜索关键词"},
-            'imgSearchBtn':{value:"百度一下"},
-            'imgSearchReset':{value:"清空搜索"},
-            'upload':{style:'background: url(upload.png);'},
-            'duiqi':{style:'background: url(imglabel.png) -12px 2px no-repeat;'},
-            'lang_savePath':'选择保存目录'
-        },
-        'netError':"网络链接错误，请检查配置后重试！",
-        'noUploadImage':"当前未上传过任何图片！",
-        'imageLoading':"图片加载中，请稍后……",
-        'tryAgain':" :( ，抱歉，没有找到图片！请重试一次！",
-        'toggleSelect':"单击可切换选中状态\n原图尺寸: ",
-        'searchInitInfo':"请输入搜索关键词",
-        'numError':"请输入正确的长度或者宽度值！例如：123，400",
-        'fileType':"图片",
-        'imageUrlError':"不允许的图片格式或者图片域！",
-        'imageLoadError':"图片加载失败！请检查链接地址或网络状态！",
-        'flashError':'Flash插件初始化失败，请更新您的FlashPlayer版本之后重试！',
-        'floatDefault':"默认",
-        'floatLeft':"左浮动",
-        'floatRight':"右浮动",
-        'floatCenter':"居中",
-        'flashI18n':{} //留空默认中文
+            lang_tab_imgSearch:"网络图片",
+            lang_btn_add:"添加"
+        }
     },
     'emotion':{
         'static':{

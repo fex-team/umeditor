@@ -16,7 +16,7 @@ UE.I18N['en'] = {
         'deleterow':'DeleteRow', 'deletecol':'DeleteCol', 'splittorows':'SplitToRows','insertcode':'insert code',
         'splittocols':'SplitToCols', 'splittocells':'SplitToCells','deletecaption':'DeleteCaption','inserttitle':'InsertTitle',
         'mergecells':'MergeCells', 'deletetable':'DeleteTable', 'cleardoc':'Clear', 'insertparagraphbeforetable':"InsertParagraphBeforeTable",
-        'fontfamily':'FontFamily', 'fontsize':'FontSize', 'paragraph':'Paragraph', 'insertimage':'Image','edittable':'Edit Table', edittd:'Edit Td','link':'Link',
+        'fontfamily':'FontFamily', 'fontsize':'FontSize', 'paragraph':'Paragraph', 'image':'Image','edittable':'Edit Table', edittd:'Edit Td','link':'Link',
         'emotion':'Emotion', 'spechars':'Spechars', 'searchreplace':'SearchReplace', 'map':'BaiduMap', 'gmap':'GoogleMap',
         'insertvideo':'Video', 'help':'Help', 'justifyleft':'JustifyLeft', 'justifyright':'JustifyRight', 'justifycenter':'JustifyCenter',
         'justifyjustify':'Justify', 'forecolor':'FontColor', 'backcolor':'BackColor', 'insertorderedlist':'OL',
@@ -164,94 +164,10 @@ UE.I18N['en'] = {
     //===============dialog i18N=======================
     image:{
         'static':{
-            'lang_tab_remote':"Remote", //节点
-            'lang_tab_local':"Local",
-            'lang_tab_imgManager':"Manager",
-            'lang_tab_imgSearch':"Search",
-            'lang_input_url':"Address",
-            'lang_input_width':"Width",
-            'lang_input_height':"Height",
-            'lang_input_border':"Border",
-            'lang_input_vhspace':"Margins",
-            'lang_input_title':"Title",
-            'lang_input_remoteAlign':'Align',
-            'lang_imgLoading':"Loading...",
-            'lock':{title:"Lock rate"}, //属性
-            'imgType':{title:"ImageType", options:["News", "Wallpaper", "emotions", "photo"]}, //select的option
-            'imgSearchTxt':{value:"Enter the search keyword!"},
-            'imgSearchBtn':{value:"Search"},
-            'imgSearchReset':{value:"Clear"},
-            'upload':{style:'background: url(upload.png);'},
-            'duiqi':{style:'background: url(imglabel.png) -12px 2px no-repeat;'},
-            'lang_savePath':'Select savePath:'
-        },
-        'netError':"Network error,please check the config!",
-        'noUploadImage':"No pictures has been uploaded！",
-        'imageLoading':"Image is loading,please wait...",
-        'tryAgain':" Sorry,can't find the image,please try again!",
-        'toggleSelect':"Chang the active state by click!\n Image Size: ",
-        'searchInitInfo':"Enter the search keyword!",
-        'numError':"Please enter the correct Num. e.g 123,400",
-        'imageUrlError':"The image format may be wrong!",
-        'imageLoadError':"Error,please check the network or URL！",
-        'flashError':'Flash Initialization failed，please update and try again!',
-        'floatDefault':"Default",
-        'floatLeft':"Float left",
-        'floatRight':"Float right",
-        'floatCenter':"Center",
-        'fileType':"Image",
-        'flashI18n':{
-            lang:encodeURI( '{"UploadingState":"totalNum: ${a},uploadComplete: ${b}", "BeforeUpload":"waitingNum: ${a}", "ExceedSize":"Size exceed${a}", "ErrorInPreview":"Preview failed", "DefaultDescription":"Description", "LoadingImage":"Loading..."}' ),
-            uploadingTF:encodeURI( '{"font":"Arial", "size":12, "color":"0x000", "bold":"true", "italic":"false", "underline":"false"}' ),
-            imageTF:encodeURI( '{"font":"Arial", "size":11, "color":"red", "bold":"false", "italic":"false", "underline":"false"}' ),
-            textEncoding:"utf-8",
-            addImageSkinURL:"addimage.png",
-            allDeleteBtnUpSkinURL:"alldeletebtnupskin.png",
-            allDeleteBtnHoverSkinURL:"alldeletebtnhoverskin.png",
-            rotateLeftBtnEnableSkinURL:"rotateleftenable.png",
-            rotateLeftBtnDisableSkinURL:"rotateleftdisable.png",
-            rotateRightBtnEnableSkinURL:"rotaterightenable.png",
-            rotateRightBtnDisableSkinURL:"rotaterightdisable.png",
-            deleteBtnEnableSkinURL:"deleteenable.png",
-            deleteBtnDisableSkinURL:"deletedisable.png",
-            backgroundURL:'',
-            listBackgroundURL:'',
-            buttonURL:'button.png'
+            lang_tab_local:"Local Upload",
+            lang_tab_imgSearch:"Network Pictures",
+            lang_btn_add:"Add"
         }
-    },
-    webapp:{
-        tip1:"This function provided by Baidu APP,please apply for baidu APPKey webmaster first!",
-        tip2:"And then open the file ueditor.config.js to set it! ",
-        applyFor:"APPLY FOR",
-        anthorApi:"Baidu API"
-    },
-    template:{
-        'static':{
-            'lang_template_bkcolor':'Background Color',
-            'lang_template_clear' : 'Keep Content',
-            'lang_template_select':'Select Template'
-        },
-        'blank':"Blank",
-        'blog':"Blog",
-        'resume':"Resume",
-        'richText':"Rich Text",
-        'scrPapers':"Scientific Papers"
-    },
-    scrawl:{
-        'static':{
-            'lang_input_previousStep':"Previous",
-            'lang_input_nextsStep':"Next",
-            'lang_input_clear':'Clear',
-            'lang_input_addPic':'AddImage',
-            'lang_input_ScalePic':'ScaleImage',
-            'lang_input_removePic':'RemoveImage',
-            'J_imgTxt':{title:'Add background image'}
-        },
-        'noScarwl':"No paint, a white paper...",
-        'scrawlUpLoading':"Image is uploading, please wait...",
-        'continueBtn':"Try again",
-        'imageError':"Image failed to load!",
-        'backgroundUploading':'Image is uploading,please wait...'
     },
     emotion:{
         'static':{

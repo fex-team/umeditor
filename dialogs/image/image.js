@@ -172,8 +172,8 @@
         tpl: "<link rel=\"stylesheet\" type=\"text/css\" href=\"<%=image_url%>image.css\">" +
             "<div id=\"edui-image-Jwrapper\" class=\"edui-image-wrapper\">" +
             "<ul class=\"edui-tab-nav\">" +
-            "<li class=\"edui-tab-item active\"><a href=\"#edui-image-Jlocal\" class=\"edui-tab-text\">本地上传</a></li>" +
-            "<li  class=\"edui-tab-item\"><a href=\"#edui-image-JimgSearch\" class=\"edui-tab-text\">网络图片</a></li>" +
+            "<li class=\"edui-tab-item active\"><a href=\"#edui-image-Jlocal\" class=\"edui-tab-text\"><%=lang_tab_local%></a></li>" +
+            "<li  class=\"edui-tab-item\"><a href=\"#edui-image-JimgSearch\" class=\"edui-tab-text\"><%=lang_tab_imgSearch%></a></li>" +
             "</ul>" +
             "<div class=\"edui-tab-content\">" +
             "<div id=\"edui-image-Jlocal\" class=\"edui-tab-pane active\">" +
@@ -183,7 +183,7 @@
             "<div id=\"edui-image-JimgSearch\" class=\"edui-tab-pane\">" +
             "<div class=\"edui-image-searchBar\">" +
             "<input class=\"edui-image-searchTxt\" id=\"edui-image-JsearchTxt\" type=\"text\">" +
-            "<div class=\"edui-image-searchAdd\" id=\"edui-image-JsearchAdd\">添加</div>"+
+            "<div class=\"edui-image-searchAdd\" id=\"edui-image-JsearchAdd\"><%=lang_btn_add%></div>"+
             "</div>" +
             "<div class=\"edui-image-searchRes\" id=\"edui-image-JsearchRes\"></div>" +
             "</div>" +
