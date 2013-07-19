@@ -83,7 +83,9 @@
             me.submit("#edui-image-Jupload1", function () {
                 $("#edui-image-Jupload1").css("display", "none");
             });
-
+            $("#edui-image-Jupload1").hover(function(){
+                $(".edui-image-icon",this).toggleClass("hover");
+            });
             return me;
         },
         render: function (sel, t) {

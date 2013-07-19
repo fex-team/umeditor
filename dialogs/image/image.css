@@ -1,13 +1,14 @@
 .edui-image-wrapper{font-size: 12px;margin: 15px;}
 
 /*upload*/
-.edui-image-upload1{position: absolute;top:50%;left:50%;width:100px;height:28px;margin-top:-14px; margin-left: -50px;z-index: 100;}
+.edui-image-upload1{position: absolute;top:50%;left:50%;width:44px;height:38px;margin-top:-14px; margin-left: -50px;z-index: 100;}
 .edui-image-upload2{position:relative;float:left;width:120px;height:120px;margin:5px 0 0 5px;}
 
 .edui-image-form{position: absolute;left: 0px;top: 0px;width: 100%;height: 100%;opacity: 0;cursor: pointer;}
 .edui-image-form .edui-image-file{width: 100%;height:100%;}
 
-.edui-image-upload1 .edui-image-icon{display: inline-block;width:100px;height:28px;background-image: url('images/upload1.png')}
+.edui-image-upload1 .edui-image-icon{display: inline-block;width:44px;height:38px;background-image: url('images/upload1.png')}
+.edui-image-upload1 .edui-image-icon.hover{background-position: -50px 0;}
 .edui-image-upload2 .edui-image-icon{display: inline-block;width:120px;height:120px;background-image: url('images/upload2.png')}
 
 .edui-image-content{height:330px;overflow:auto;}
