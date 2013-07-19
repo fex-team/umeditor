@@ -53,7 +53,6 @@
         },
         buttons: {
             'ok': {
-                label: '插入链接',
                 exec: function (editor, $w) {
                     var href = $('#edui-link-Jhref').val().replace(/^\s+|\s+$/g, '');
 

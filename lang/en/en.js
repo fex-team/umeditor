@@ -108,69 +108,6 @@ UE.I18N['en'] = {
         'xml':'Xml'
     },
     'confirmClear':"Do you confirm to clear the Document?",
-    'contextMenu':{
-        'delete':"Delete",
-        'selectall':"Select all",
-        'deletecode':"Delete Code",
-        'cleardoc':"Clear Document",
-        'confirmclear':"Do you confirm to clear the Document?",
-        'unlink':"Unlink",
-        'paragraph':"Paragraph",
-        'edittable':"Table property",
-        'aligncell':'Align cell',
-        'aligntable':'Table alignment',
-        'tableleft':'Left float',
-        'tablecenter':'Center',
-        'tableright':'Right float',
-        'aligntd':'Cell alignment',
-        'edittd':"Cell property",
-        'table':"Table",
-        'justifyleft':'Justify Left',
-        'justifyright':'Justify Right',
-        'justifycenter':'Justify Center',
-        'justifyjustify':'Default',
-        'deletetable':"Delete table",
-        'insertparagraphbefore':"InsertedBeforeLine",
-        'insertparagraphafter':'InsertedAfterLine',
-        'inserttable':'Insert table',
-        'insertcaption':'Insert caption',
-        'deletecaption':'Delete Caption',
-        'inserttitle':'Insert Title',
-        'deletetitle':'Delete Title',
-        'averageDiseRow':'AverageDise Row',
-        'averageDisCol':'AverageDis Col',
-        'deleterow':"Delete row",
-        'deletecol':"Delete col",
-        'insertrow':"Insert row",
-        'insertcol':"Insert col",
-        'insertrownext':'Insert Row Next',
-        'insertcolnext':'Insert Col Next',
-        'mergeright':"Merge right",
-        'mergeleft':"Merge left",
-        'mergedown':"Merge down",
-        'mergecells':"Merge cells",
-        'splittocells':"Split to cells",
-        'splittocols':"Split to Cols",
-        'splittorows':"Split to Rows",
-        'tablesort':'Table sorting',
-        'reversecurrent':'Reverse current',
-        'orderbyasc':'Order By ASCII',
-        'reversebyasc':'Reverse By ASCII',
-        'orderbynum':'Order By Num',
-        'reversebynum':'Reverse By Num',
-        'borderbk':'Border shading',
-        'setcolor':'interlaced color',
-        'unsetcolor':'Cancel interlacedcolor',
-        'setbackground':'Background interlaced',
-        'unsetbackground':'Cancel Bk interlaced',
-        'redandblue':'Blue and red',
-        'threecolorgradient':'Three-color gradient',
-        'copy':"Copy(Ctrl + c)",
-        'copymsg':"Please use 'Ctrl + c' instead!",
-        'paste':"Paste(Ctrl + v)",
-        'pastemsg':"Please use 'Ctrl + v' instead!",
-        'highlightcode':'Insert code'
-    },
 
     'anthorMsg':"Link",
     'clearColor':'Clear',
@@ -225,7 +162,7 @@ UE.I18N['en'] = {
         'toggleSelect':'Change the active state by click!\n Image Size: '
     },
     //===============dialog i18N=======================
-    insertimage:{
+    image:{
         'static':{
             'lang_tab_remote':"Remote", //节点
             'lang_tab_local':"Local",
@@ -316,60 +253,6 @@ UE.I18N['en'] = {
         'imageError':"Image failed to load!",
         'backgroundUploading':'Image is uploading,please wait...'
     },
-    'music':{
-        'static':{
-            'lang_input_tips':"Input singer/song/album, search you interested in music!",
-            'J_searchBtn':{value:'Search songs'}
-        },
-        'emptyTxt':'Not search to the relevant music results, please change a keyword try.',
-        'chapter':'Songs',
-        'singer':'Singer',
-        'special':'Album',
-        'listenTest':'Audition'
-    },
-    anchor:{
-        'static':{
-            'lang_input_anchorName':'Anchor Name:'
-        }
-    },
-    attachment:{
-        'static':{
-            'lang_input_fileStatus':' No file uploaded!',
-            'startUpload':{style:"background:url(upload.png) no-repeat;"}
-        },
-        'browseFiles':'Open files',
-        'uploadSuccess':'Upload Successful!',
-        'delSuccessFile':'Remove from the success of the queue',
-        'delFailSaveFile':'Remove the save failed file',
-        'statusPrompt':' file(s) uploaded! ',
-        'flashVersionError':'The current Flash version is too low, please update FlashPlayer,then try again!',
-        'flashLoadingError':'The Flash failed loading! Please check the path or network state',
-        'fileUploadReady':'Wait for uploading...',
-        'delUploadQueue':'Remove from the uploading queue ',
-        'limitPrompt1':'Can not choose more than single',
-        'limitPrompt2':'file(s)！Please choose again！',
-        'delFailFile':'Remove failure file',
-        'fileSizeLimit':'File size exceeds the limit！',
-        'emptyFile':'Can not upload an empty file！',
-        'fileTypeError':'File type error！',
-        'unknownError':'Unknown error！',
-        'fileUploading':'Uploading,please wait...',
-        'cancelUpload':'Cancel upload',
-        'netError':'Network error',
-        'failUpload':'Upload failed',
-        'serverIOError':'Server IO error！',
-        'noAuthority':'No Permission！',
-        'fileNumLimit':'Upload limit to the number',
-        'failCheck':'Authentication fails, the upload is skipped!',
-        'fileCanceling':'Cancel, please wait...',
-        'stopUploading':'Upload has stopped...'
-    },
-    highlightcode:{
-        'static':{
-            'lang_input_selectLang':'Select Language'
-        },
-        importCode:'Please enter the code!'
-    },
     emotion:{
         'static':{
             'lang_input_choice':'Choice',
@@ -388,39 +271,6 @@ UE.I18N['en'] = {
             'address':{value:"Beijing"}
         },
         searchError:'Unable to locate the address!'
-    },
-    help:{
-        'static':{
-            'lang_input_about':'About',
-            'lang_input_shortcuts':'Shortcuts',
-            'lang_input_version':'Version:1.2.6',
-            'lang_input_introduction':"UEditor is developed by Baidu Co.ltd.  It is lightweight, customizable , focusing on user experience and etc. , UEditor is based on open source BSD license , allowing free use and redistribution.",
-            'lang_Txt_shortcuts':'Shortcuts',
-            'lang_Txt_func':'Function',
-            'lang_Txt_bold':'Bold',
-            'lang_Txt_copy':'Copy',
-            'lang_Txt_cut':'Cut',
-            'lang_Txt_Paste':'Paste',
-            'lang_Txt_undo':'Undo',
-            'lang_Txt_redo':'Redo',
-            'lang_Txt_italic':'Italic',
-            'lang_Txt_underline':'Underline',
-            'lang_Txt_selectAll':'Select All',
-            'lang_Txt_visualEnter':'Submit',
-            'lang_Txt_fullscreen':'Fullscreen'
-        }
-    },
-    insertframe:{
-        'static':{
-            'lang_input_address':'Address：',
-            'lang_input_width':'Width：',
-            'lang_input_height':'height：',
-            'lang_input_isScroll':'Enable scrollbars：',
-            'lang_input_frameborder':'Show frame border：',
-            'lang_input_alignMode':'Alignment：',
-            'align':{title:"Alignment", options:["Default", "Left", "Right", "Center"]}
-        },
-        'enterAddress':'Please enter an address!'
     },
     link:{
         'static':{
@@ -441,36 +291,6 @@ UE.I18N['en'] = {
         },
         cityMsg:"Please enter the city name!",
         errorMsg:"Can't find the place!"
-    },
-    searchreplace:{
-        'static':{
-            lang_tab_search:"Search",
-            lang_tab_replace:"Replace",
-            lang_search1:"Search",
-            lang_search2:"Search",
-            lang_replace:"Replace",
-            lang_searchReg:'Support regular expression ,which starts and ends with a slash ,for example "/expression/"',
-            lang_searchReg1:'Support regular expression ,which starts and ends with a slash ,for example "/expression/"',
-            lang_case_sensitive1:"Case sense",
-            lang_case_sensitive2:"Case sense",
-            nextFindBtn:{value:"Next"},
-            preFindBtn:{value:"Preview"},
-            nextReplaceBtn:{value:"Next"},
-            preReplaceBtn:{value:"Preview"},
-            repalceBtn:{value:"Replace"},
-            repalceAllBtn:{value:"Replace all"}
-        },
-        getEnd:"Has the search to the bottom!",
-        getStart:"Has the search to the top!",
-        countMsg:"Altogether replaced {#count} character(s)!"
-    },
-    snapscreen:{
-        'static':{
-            lang_showMsg:"You should install the UEditor screenshots program first!",
-            lang_download:"Download!",
-            lang_step1:"Step1:Download the program and then run it",
-            lang_step2:"Step2:After complete install,try to click the button again"
-        }
     },
     insertvideo:{
         'static':{
@@ -497,78 +317,4 @@ UE.I18N['en'] = {
         goToSource:'Visit source video ',
         noVideo:" &nbsp; &nbsp;Sorry,can't find the video,please try again!"
     },
-    spechars:{
-        'static':{},
-        tsfh:"Special",
-        lmsz:"Roman",
-        szfh:"Numeral",
-        rwfh:"Japanese",
-        xlzm:"The Greek",
-        ewzm:"Russian",
-        pyzm:"Phonetic",
-        zyzf:"Others"
-    },
-    'edittable':{
-        'static':{
-            'lang_tableStyle':'Table style',
-            'lang_insertCaption':'Add table header row',
-            'lang_insertTitle':'Add table title row',
-            'lang_tableSize':'Automatically adjust table size',
-            'lang_autoSizeContent':'Adaptive by form text',
-            'lang_orderbycontent':"Table of contents sortable",
-            'lang_autoSizePage':'Page width adaptive',
-            'lang_example':'Example',
-            'lang_borderStyle':'Table Border',
-            'lang_color':'Color:'
-        },
-        captionName:'Caption',
-        titleName:'Title',
-        cellsName:'text'
-    },
-    'edittip':{
-        'static':{
-            lang_delRow:'Delete entire row',
-            lang_delCol:'Delete entire col'
-        }
-    },
-    'edittd':{
-        'static':{
-            lang_tdBkColor:'Background Color:'
-        }
-    },
-    'formula':{
-        'static':{
-        }
-    },
-    wordimage:{
-        'static':{
-            lang_resave:"The re-save step",
-            uploadBtn:{src:"upload.png", alt:"Upload"},
-            clipboard:{style:"background: url(copy.png) -153px -1px no-repeat;"},
-            lang_step:" 1. Click top button to copy the url and then open the dialog to paste it. 2. Open after choose photos uploaded process."
-        },
-        fileType:"Image",
-        flashError:"Flash initialization failed!",
-        netError:"Network error! Please try again!",
-        copySuccess:"URL has been copied!",
-
-        'flashI18n':{
-            lang:encodeURI( '{"UploadingState":"totalNum: ${a},uploadComplete: ${b}", "BeforeUpload":"waitingNum: ${a}", "ExceedSize":"Size exceed${a}", "ErrorInPreview":"Preview failed", "DefaultDescription":"Description", "LoadingImage":"Loading..."}' ),
-            uploadingTF:encodeURI( '{"font":"Arial", "size":12, "color":"0x000", "bold":"true", "italic":"false", "underline":"false"}' ),
-            imageTF:encodeURI( '{"font":"Arial", "size":11, "color":"red", "bold":"false", "italic":"false", "underline":"false"}' ),
-            textEncoding:"utf-8",
-            addImageSkinURL:"addImage.png",
-            allDeleteBtnUpSkinURL:"allDeleteBtnUpSkin.png",
-            allDeleteBtnHoverSkinURL:"allDeleteBtnHoverSkin.png",
-            rotateLeftBtnEnableSkinURL:"rotateLeftEnable.png",
-            rotateLeftBtnDisableSkinURL:"rotateLeftDisable.png",
-            rotateRightBtnEnableSkinURL:"rotateRightEnable.png",
-            rotateRightBtnDisableSkinURL:"rotateRightDisable.png",
-            deleteBtnEnableSkinURL:"deleteEnable.png",
-            deleteBtnDisableSkinURL:"deleteDisable.png",
-            backgroundURL:'',
-            listBackgroundURL:'',
-            buttonURL:'button.png'
-        }
-    }
 };

@@ -214,7 +214,6 @@
         },
         buttons: {
             'ok': {
-                label: '插入图片',
                 exec: function (editor, $w) {
                     var sel = "",
                         index = $tab.activate();
