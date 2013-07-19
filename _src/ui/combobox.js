@@ -17,17 +17,17 @@
         return {
             tpl: function( options ){
 
-                return  '<ul class="dropdown-menu edui-combobox-menu" role="menu" aria-labelledby="dropdownMenu">' +
+                return  '<ul  class="dropdown-menu edui-combobox-menu" role="menu" aria-labelledby="dropdownMenu">' +
                         '<%for( var i=0, len=recordStack.length; i<len; i++ ){%>' +
-                        '<li class="' + stackItemClassName + '" data-stack-item-index="<%=mapping[recordStack[i]]%>"><a href="#" class="edui-combobox-link"><em class="edui-combobox-checkbox"><i class="icon-ok"></i></em><span class="edui-combobox-label" style="<%=itemStyles[i]%>"><%=recordStack[i]%></span></a></li>' +
+                        '<li  class="' + stackItemClassName + '" data-stack-item-index="<%=mapping[recordStack[i]]%>"><span class="edui-combobox-link" unselectable="on" onmousedown="return false" ><em class="edui-combobox-checkbox"><i class="icon-ok"></i></em><span unselectable="on" onmousedown="return false" class="edui-combobox-label" style="<%=itemStyles[i]%>"><%=recordStack[i]%></span></span></li>' +
                         '<%}%>' +
                         '<%if(recordStack.length){%>' +
-                        '<li class="divider edui-combobox-stack-separator"></li>' +
+                        '<li  class="divider edui-combobox-stack-separator"  ></li>' +
                         '<%} else {%>' +
-                        '<li class="divider edui-combobox-stack-separator edui-common-dis-none"></li>' +
+                        '<li  class="divider edui-combobox-stack-separator edui-common-dis-none"  ></li>' +
                         '<%}%>' +
                         '<%for( var i=0, len=items.length; i<len; i++){%>' +
-                        '<li class="' + itemClassName + '" data-item-index="<%=i%>"><a href="#" class="edui-combobox-link"><em class="edui-combobox-checkbox"><i class="icon-ok"></i></em><span class="edui-combobox-label" style="<%=itemStyles[i]%>"><%=items[i]%></span></a></li>' +
+                        '<li   class="' + itemClassName + '" data-item-index="<%=i%>"><span unselectable="on" onmousedown="return false" class="edui-combobox-link"><em class="edui-combobox-checkbox"><i class="icon-ok"></i></em><span unselectable="on" onmousedown="return false" class="edui-combobox-label" style="<%=itemStyles[i]%>"><%=items[i]%></span></span></li>' +
                         '<%}%>' +
                         '</ul>';
 
