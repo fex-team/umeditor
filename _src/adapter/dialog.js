@@ -47,7 +47,7 @@ UE.registerUI('link image gmap map insertvideo',function(name){
         $dialog.attr('id', 'edui-dialog-' + name)
             .find('.edui-modal-body').addClass('edui-dialog-' + name + '-body');
 
-        $dialog.css('zIndex',me.getOpt('zIndex') + 1).edui().on('beforehide',function () {
+        $dialog.edui().on('beforehide',function () {
             var rng = me.selection.getRange();
             if (rng.equals(currentRange)) {
                 rng.select()
@@ -55,7 +55,10 @@ UE.registerUI('link image gmap map insertvideo',function(name){
         }).on('beforeshow', function () {
                 currentRange = me.selection.getRange();
                 UE.setWidgetBody(name,$dialog,me);
-            });
+        }).on('afterbackdrop',function(){
+            this.$backdrop.css('zIndex',me.getOpt('zIndex')+1).appendTo(me.$container.find('.edui-dialog-container'))
+            $dialog.css('zIndex',me.getOpt('zIndex')+2)
+        })
 
 
     });

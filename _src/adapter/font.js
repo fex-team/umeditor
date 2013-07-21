@@ -227,7 +227,7 @@ $.each(['forecolor','backcolor'],function(i,v){
             if(!$colorPickerWidget.parent().length){
                 me.$container.find('.edui-dialog-container').append($colorPickerWidget);
             }
-            $colorPickerWidget.edui().show($btn,'left','offset');
+            $colorPickerWidget.edui().show($btn,'left');
         }).register('click', $btn, function () {
                 $colorPickerWidget.edui().hide()
             });

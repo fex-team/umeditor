@@ -54,7 +54,6 @@
             'adapter/adapter.js',
             'adapter/ready.js',
             'adapter/button.js',
-            'adapter/tablepicker.js',
             'adapter/fullscreen.js',
             'adapter/font.js',
             'adapter/dialog.js',
