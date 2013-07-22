@@ -50,6 +50,11 @@ UE.registerUI('fontfamily', function( name ) {
         }
     });
 
+    //注册互斥
+    comboboxWidget.register('click', comboboxWidget.button(), function () {
+        comboboxWidget.hide()
+    });
+
     $fontFamilyCombobox.css('zIndex',me.getOpt('zIndex') + 1);
     //querycommand
     this.addListener('selectionchange',function( evt, isUserTrigger ){
@@ -66,7 +71,6 @@ UE.registerUI('fontfamily', function( name ) {
         comboboxWidget.selectItemByLabel( fontFamily.split(/['|"]?\s*,\s*[\1]?/) );
 
     });
-
 
     return comboboxWidget.button().addClass('edui-combobox');
 
@@ -139,6 +143,10 @@ UE.registerUI('fontsize', function( name ) {
         if( this.root().parent().length === 0 ) {
             this.root().appendTo( $('.edui-dialog-container') );
         }
+    });
+
+    $fontSizeCombobox.edui().register('click', $btn, function () {
+        $fontSizeCombobox.edui().hide()
     });
 
     $btn.addClass('edui-combobox');

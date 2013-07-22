@@ -174,30 +174,6 @@
                 } );
 
             },
-            show: function( target ){
-
-                var me = this,
-                    $target = $(target);
-
-                if( !target ) {
-                    return this;
-                }
-
-                if( me.trigger('beforeshow') === false ) {
-                    return this;
-                }
-
-                me.root().css({
-                    display: 'block',
-                    top: $target.position().top + 1 + $target.height(),
-                    left: $target.position().left + parseInt( target.css("borderWidth"), 10 ) * 2
-                });
-
-                if( me.trigger('aftershow') === false ) {
-                    return this;
-                }
-
-            },
             /**
              * 转换记录栈
              */
