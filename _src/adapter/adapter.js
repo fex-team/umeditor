@@ -120,49 +120,42 @@
         createEditor: function (id, opt) {
             var editor = new UE.Editor(opt);
             var T = this;
-            utils.loadFile(document,{
-                href: editor.options.themePath +editor.options.theme+ "/_css/ueditor.css",
-                tag:"link",
-                type:"text/css",
-                rel:"stylesheet"
-            },function(){
-                editor.langIsReady ? $.proxy(renderUI,T)() : editor.addListener("langReady", $.proxy(renderUI,T));
-                function renderUI(){
+
+            editor.langIsReady ? $.proxy(renderUI,T)() : editor.addListener("langReady", $.proxy(renderUI,T));
+            function renderUI(){
 
 
-                    var $container = this.createUI('#' + id, editor);
-                    editor.ready(function(){
-                        $.each( _readyFn, function( index, fn ){
-                            $.proxy( fn, editor )();
-                        } );
-                    });
-                    var options = editor.options;
-                    if(options.initialFrameWidth){
-                        options.minFrameWidth = options.initialFrameWidth
-                    }else{
-                        options.minFrameWidth = options.initialFrameWidth = editor.$body.width();
-                    }
-                    if(options.initialFrameHeight){
-                        options.minFrameHeight = options.initialFrameHeight
-                    }else{
-                        options.initialFrameHeight = options.minFrameHeight = editor.$body.height();
-                    }
-                    $container.css({
-                        width: options.initialFrameWidth,
-                        zIndex:editor.getOpt('zIndex')
-                    });
-                    editor.render(id);
-
-
-                    //添加tooltip;
-                    $.eduitooltip && $.eduitooltip('attachTo').css('z-index',editor.getOpt('zIndex')+1);
-
-                    $container.find('a').click(function(evt){
-                        evt.preventDefault()
-                    })
+                var $container = this.createUI('#' + id, editor);
+                editor.ready(function(){
+                    $.each( _readyFn, function( index, fn ){
+                        $.proxy( fn, editor )();
+                    } );
+                });
+                var options = editor.options;
+                if(options.initialFrameWidth){
+                    options.minFrameWidth = options.initialFrameWidth
+                }else{
+                    options.minFrameWidth = options.initialFrameWidth = editor.$body.width();
                 }
-            });
+                if(options.initialFrameHeight){
+                    options.minFrameHeight = options.initialFrameHeight
+                }else{
+                    options.initialFrameHeight = options.minFrameHeight = editor.$body.height();
+                }
+                $container.css({
+                    width: options.initialFrameWidth,
+                    zIndex:editor.getOpt('zIndex')
+                });
+                editor.render(id);
 
+
+                //添加tooltip;
+                $.eduitooltip && $.eduitooltip('attachTo').css('z-index',editor.getOpt('zIndex')+1);
+
+                $container.find('a').click(function(evt){
+                    evt.preventDefault()
+                })
+            }
 
             return editor;
 

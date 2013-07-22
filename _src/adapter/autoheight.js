@@ -6,6 +6,18 @@ UE.ready(function () {
         return;
     }
 
+    function getPosY(body,ele) {
+        var y = 0;
+        while (ele.offsetParent) {
+            y += ele.offsetTop;
+            ele = ele.offsetParent;
+            if (ele===body) {
+                break;
+            }
+        }
+        return y;
+    }
+
     function adjustHeight() {
         var me = this,
             options = me.options,
@@ -22,7 +34,7 @@ UE.ready(function () {
                 }
                 node = span.cloneNode(true);
                 me.body.appendChild(node);
-                currentHeight = Math.max(domUtils.getXY(node).y + node.offsetHeight, Math.max(options.minFrameHeight, options.initialFrameHeight));
+                currentHeight = Math.max(getPosY(me.body,node) + node.offsetHeight, Math.max(options.minFrameHeight, options.initialFrameHeight));
                 if (currentHeight != lastHeight) {
                     me.setHeight(currentHeight);
 

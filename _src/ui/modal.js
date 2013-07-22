@@ -57,6 +57,7 @@ UE.ui.define('modal', {
         return me[!me.data("isShown") ? 'show' : 'hide']();
     },
     show: function () {
+        debugger
         var me = this;
 
         me.trigger("beforeshow");
@@ -117,15 +118,13 @@ UE.ui.define('modal', {
     backdrop: function (callback) {
         var me = this;
         if (me.data("isShown") && me.data("options").backdrop) {
-            me.$backdrop = $('<div class="edui-modal-backdrop" />').appendTo(document.body);
-
-            me.$backdrop.click(
+            me.$backdrop = $('<div class="edui-modal-backdrop" />').click(
                 me.data("options").backdrop == 'static' ?
                     $.proxy(me.root()[0].focus, me.root()[0])
                     : $.proxy(me.hide, me)
             )
         }
-
+        me.trigger('afterbackdrop');
         callback && callback();
 
     },
