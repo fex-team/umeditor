@@ -135,7 +135,7 @@
 
     Selection.prototype = {
         hasNativeRange : function(){
-            if(browser.ie9above){
+            if(!browser.ie || browser.ie9above){
                 var sel = this.getNative();
                 return sel.rangeCount
             }else{

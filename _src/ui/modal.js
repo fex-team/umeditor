@@ -57,7 +57,6 @@ UE.ui.define('modal', {
         return me[!me.data("isShown") ? 'show' : 'hide']();
     },
     show: function () {
-        debugger
         var me = this;
 
         me.trigger("beforeshow");
