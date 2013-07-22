@@ -21,7 +21,7 @@
                 "<%if(autoRecord) {%>" +
                 "<%for( var i=0, len = recordStack.length; i<len; i++ ) {%>" +
                 "<%var index = recordStack[i];%>" +
-                "<li class=\"<%=itemClassName%><%if( selected == index ) {%> edui-combobox-checked<%}%>\" data-item-index=\"<%=index%>\">" +
+                "<li class=\"<%=itemClassName%><%if( selected == index ) {%> edui-combobox-checked<%}%>\" data-item-index=\"<%=index%>\" unselectable=\"on\" onmousedown=\"return false\">" +
                 "<span class=\"edui-combobox-icon\"></span>" +
                 "<label class=\"<%=labelClassName%>\" style=\"<%=itemStyles[ index ]%>\"><%=items[index]%></label>" +
                 "</li>" +
@@ -31,9 +31,9 @@
                 "<%}%>" +
                 "<%}%>" +
                 "<%for( var i=0, label; label = items[i]; i++ ) {%>" +
-                "<li class=\"<%=itemClassName%><%if( selected == i ) {%> edui-combobox-checked<%}%> edui-combobox-item-<%=i%>\" data-item-index=\"<%=i%>\">" +
-                "<span class=\"edui-combobox-icon\"></span>" +
-                "<label class=\"<%=labelClassName%>\" style=\"<%=itemStyles[ i ]%>\"><%=label%></label>" +
+                "<li class=\"<%=itemClassName%><%if( selected == i ) {%> edui-combobox-checked<%}%> edui-combobox-item-<%=i%>\" data-item-index=\"<%=i%>\" unselectable=\"on\" onmousedown=\"return false\">" +
+                "<span class=\"edui-combobox-icon\" unselectable=\"on\" onmousedown=\"return false\"></span>" +
+                "<label class=\"<%=labelClassName%>\" style=\"<%=itemStyles[ i ]%>\" unselectable=\"on\" onmousedown=\"return false\"><%=label%></label>" +
                 "</li>" +
                 "<%}%>" +
                 "</ul>",
@@ -55,13 +55,13 @@
 
                 var me = this;
 
-                $.extend( optionAdaptation( options ), createItemMapping( options.recordStack, options.items ), {
+                $.extend( me._optionAdaptation( options ), me._createItemMapping( options.recordStack, options.items ), {
                     itemClassName: itemClassName,
                     iconClass: ICON_CLASS,
                     labelClassName: labelClassName
                 } );
 
-                transStack( options );
+                this._transStack( options );
 
                 me.root( $( $.parseTmpl( me.tpl, options ) ) );
 
@@ -145,7 +145,7 @@
 
                 this.trigger( 'changebefore', items[ index ] );
 
-                update.call( this, index );
+                this._update( index );
 
                 this.trigger( 'changeafter', items[ index ] );
 
@@ -174,149 +174,115 @@
                 } );
 
             },
-            show: function( target ){
+            /**
+             * 转换记录栈
+             */
+            _transStack: function( options ) {
 
-                var me = this,
-                    $target = $(target);
+                var temp = [],
+                    itemIndex = -1,
+                    selected = -1;
 
-                if( !target ) {
-                    return this;
-                }
+                $.each( options.recordStack, function( index, item ){
 
-                if( me.root().parent().length === 0 ) {
-                    me.root().appendTo( $('.edui-dialog-container') );
-                }
+                    itemIndex = options.itemMapping[ item ];
 
-                if( me.trigger('beforeshow') === false ) {
-                    return this;
-                }
+                    if( $.isNumeric( itemIndex ) ) {
 
-                me.root().css({
-                    display: 'block',
-                    top: $target.position().top + 1 + $target.height(),
-                    left: $target.position().left + parseInt( target.css("borderWidth"), 10 ) * 2
-                });
+                        temp.push( itemIndex );
 
-                if( me.trigger('aftershow') === false ) {
-                    return this;
-                }
+                        //selected的合法性检测
+                        if( item == options.selected ) {
+                            selected = itemIndex;
+                        }
 
-            }
-        };
+                    }
 
+                } );
 
-        /* 底层工具类 */
-        function optionAdaptation( options ) {
+                options.recordStack = temp;
+                options.selected = selected;
+                temp = null;
 
-            if( !( 'itemStyles' in options ) ) {
+            },
+            _optionAdaptation: function( options ) {
 
-                options.itemStyles = [];
+                if( !( 'itemStyles' in options ) ) {
 
-                for( var i = 0, len = options.items.length; i < len; i++ ) {
-                    options.itemStyles.push('');
-                }
+                    options.itemStyles = [];
 
-            }
-
-            options.autowidthitem = options.autowidthitem || options.items;
-            options.itemCount = options.items.length;
-
-            return options;
-
-        }
-
-        function createItemMapping( stackItem, items ) {
-
-            var temp = {},
-                result = {
-                    recordStack: [],
-                    mapping: {}
-                };
-
-            $.each( items, function( index, item ){
-                temp[ item ] = index;
-            } );
-
-            result.itemMapping = temp;
-
-            $.each( stackItem, function( index, item ){
-
-                if( temp[ item ] !== undefined ) {
-                    result.recordStack.push( temp[ item ] );
-                    result.mapping[ item ] = temp[ item ];
-                }
-
-            } );
-
-            return result;
-
-        }
-
-        /**
-         * 转换记录栈
-         */
-        function transStack( options ) {
-
-            var temp = [],
-                itemIndex = -1,
-                selected = -1;
-
-            $.each( options.recordStack, function( index, item ){
-
-                itemIndex = options.itemMapping[ item ];
-
-                if( $.isNumeric( itemIndex ) ) {
-
-                    temp.push( itemIndex );
-
-                    //selected的合法性检测
-                    if( item == options.selected ) {
-                        selected = itemIndex;
+                    for( var i = 0, len = options.items.length; i < len; i++ ) {
+                        options.itemStyles.push('');
                     }
 
                 }
 
-            } );
+                options.autowidthitem = options.autowidthitem || options.items;
+                options.itemCount = options.items.length;
 
-            options.recordStack = temp;
-            options.selected = selected;
-            temp = null;
+                return options;
 
-        }
+            },
+            _createItemMapping: function( stackItem, items ){
 
-        function update( index ) {
+                var temp = {},
+                    result = {
+                        recordStack: [],
+                        mapping: {}
+                    };
 
-            var options = this.data("options"),
-                newStack = [],
-                newChilds = null;
+                $.each( items, function( index, item ){
+                    temp[ item ] = index;
+                } );
 
-            $.each( options.recordStack, function( i, item ){
+                result.itemMapping = temp;
 
-                if( item != index ) {
-                    newStack.push( item );
+                $.each( stackItem, function( index, item ){
+
+                    if( temp[ item ] !== undefined ) {
+                        result.recordStack.push( temp[ item ] );
+                        result.mapping[ item ] = temp[ item ];
+                    }
+
+                } );
+
+                return result;
+
+            },
+            _update: function ( index ) {
+
+                var options = this.data("options"),
+                    newStack = [],
+                    newChilds = null;
+
+                $.each( options.recordStack, function( i, item ){
+
+                    if( item != index ) {
+                        newStack.push( item );
+                    }
+
+                } );
+
+                //压入最新的记录
+                newStack.unshift( index );
+
+                if( newStack.length > options.recordCount ) {
+                    newStack.length = options.recordCount;
                 }
 
-            } );
+                options.recordStack = newStack;
+                options.selected = index;
 
-            //压入最新的记录
-            newStack.unshift( index );
+                newChilds = $( $.parseTmpl( this.tpl, options ) );
 
-            if( newStack.length > options.recordCount ) {
-                newStack.length = options.recordCount;
+                //重新渲染
+                this.root().html( newChilds.html() );
+
+                newChilds = null;
+                newStack = null;
+
             }
-
-            options.recordStack = newStack;
-            options.selected = index;
-
-            newChilds = $( $.parseTmpl( this.tpl, options ) );
-
-            //重新渲染
-            this.root().html( newChilds.html() );
-
-            newChilds = null;
-            newStack = null;
-
-        }
+        };
 
     } )(), 'menu' );
 

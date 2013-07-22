@@ -40,7 +40,19 @@ UE.registerUI('fontfamily', function( name ) {
     comboboxWidget = $fontFamilyCombobox.edui();
 
     comboboxWidget.on( 'comboboxselect', function( evt, res ){
-        me.execCommand( name, res.value );
+//        me.execCommand( name, res.value );
+    });
+
+    //扔到容器里
+    comboboxWidget.on("beforeshow", function(){
+        if( this.root().parent().length === 0 ) {
+            this.root().appendTo( $('.edui-dialog-container') );
+        }
+    });
+
+    //注册互斥
+    comboboxWidget.register('click', comboboxWidget.button(), function () {
+        comboboxWidget.hide()
     });
 
     $fontFamilyCombobox.css('zIndex',me.getOpt('zIndex') + 1);
@@ -59,7 +71,6 @@ UE.registerUI('fontfamily', function( name ) {
         comboboxWidget.selectItemByLabel( fontFamily.split(/['|"]?\s*,\s*[\1]?/) );
 
     });
-
 
     return comboboxWidget.button().addClass('edui-combobox');
 
@@ -126,6 +137,16 @@ UE.registerUI('fontsize', function( name ) {
 
         me.execCommand( name, res.value + 'px' );
 
+    });
+
+    $fontSizeCombobox.edui().on("beforeshow", function(){
+        if( this.root().parent().length === 0 ) {
+            this.root().appendTo( $('.edui-dialog-container') );
+        }
+    });
+
+    $fontSizeCombobox.edui().register('click', $btn, function () {
+        $fontSizeCombobox.edui().hide()
     });
 
     $btn.addClass('edui-combobox');
