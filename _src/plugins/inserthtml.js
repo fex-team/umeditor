@@ -33,5 +33,6 @@ UE.commands['inserthtml'] = {
         }else{
             me.document.execCommand('insertHTML',false,html)
         }
+        me.selection.getRange().scrollIntoView();
     }
 };

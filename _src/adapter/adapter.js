@@ -162,11 +162,13 @@
         },
         createUI: function (id, editor) {
             var $editorCont = $(id),
-                $container = $('<div class="edui-container"><div class="edui-editor-body"></div><div class="edui-dialog-container"></div></div>').insertBefore($editorCont);
+                $container = $('<div class="edui-container"><div class="edui-editor-body"></div></div>').insertBefore($editorCont);
             editor.$container = $container;
             editor.container = $container[0];
             editor.$body = $editorCont;
             $container.find('.edui-editor-body').append($editorCont).before(this.createToolbar(editor.options, editor));
+
+            $container.find('.edui-toolbar').append($('<div class="edui-dialog-container"></div>'));
 
             if(editor.options.elementpath || editor.options.wordCount){
                 var $bottombar = $('<div class="edui-bottombar"></div>');
