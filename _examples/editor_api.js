@@ -52,7 +52,6 @@
             'ui/tab.js',
             'ui/separator.js',
             'adapter/adapter.js',
-            'adapter/ready.js',
             'adapter/button.js',
             'adapter/fullscreen.js',
             'adapter/font.js',
