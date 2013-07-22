@@ -14,7 +14,7 @@
 
 }
 
-.edui-combobox-menu li {
+.edui-combobox-menu .edui-combobox-item {
     display: block;
     min-width: 160px;
     border: 1px solid white;
