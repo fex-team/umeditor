@@ -55,13 +55,13 @@
 
                 var me = this;
 
-                $.extend( optionAdaptation( options ), createItemMapping( options.recordStack, options.items ), {
+                $.extend( me._optionAdaptation( options ), me._createItemMapping( options.recordStack, options.items ), {
                     itemClassName: itemClassName,
                     iconClass: ICON_CLASS,
                     labelClassName: labelClassName
                 } );
 
-                transStack( options );
+                this._transStack( options );
 
                 me.root( $( $.parseTmpl( me.tpl, options ) ) );
 
@@ -145,7 +145,7 @@
 
                 this.trigger( 'changebefore', items[ index ] );
 
-                update.call( this, index );
+                this._update( index );
 
                 this.trigger( 'changeafter', items[ index ] );
 
@@ -197,122 +197,116 @@
                     return this;
                 }
 
-            }
-        };
+            },
+            /**
+             * 转换记录栈
+             */
+            _transStack: function( options ) {
 
+                var temp = [],
+                    itemIndex = -1,
+                    selected = -1;
 
-        /* 底层工具类 */
-        function optionAdaptation( options ) {
+                $.each( options.recordStack, function( index, item ){
 
-            if( !( 'itemStyles' in options ) ) {
+                    itemIndex = options.itemMapping[ item ];
 
-                options.itemStyles = [];
+                    if( $.isNumeric( itemIndex ) ) {
 
-                for( var i = 0, len = options.items.length; i < len; i++ ) {
-                    options.itemStyles.push('');
-                }
+                        temp.push( itemIndex );
 
-            }
+                        //selected的合法性检测
+                        if( item == options.selected ) {
+                            selected = itemIndex;
+                        }
 
-            options.autowidthitem = options.autowidthitem || options.items;
-            options.itemCount = options.items.length;
+                    }
 
-            return options;
+                } );
 
-        }
+                options.recordStack = temp;
+                options.selected = selected;
+                temp = null;
 
-        function createItemMapping( stackItem, items ) {
+            },
+            _optionAdaptation: function( options ) {
 
-            var temp = {},
-                result = {
-                    recordStack: [],
-                    mapping: {}
-                };
+                if( !( 'itemStyles' in options ) ) {
 
-            $.each( items, function( index, item ){
-                temp[ item ] = index;
-            } );
+                    options.itemStyles = [];
 
-            result.itemMapping = temp;
-
-            $.each( stackItem, function( index, item ){
-
-                if( temp[ item ] !== undefined ) {
-                    result.recordStack.push( temp[ item ] );
-                    result.mapping[ item ] = temp[ item ];
-                }
-
-            } );
-
-            return result;
-
-        }
-
-        /**
-         * 转换记录栈
-         */
-        function transStack( options ) {
-
-            var temp = [],
-                itemIndex = -1,
-                selected = -1;
-
-            $.each( options.recordStack, function( index, item ){
-
-                itemIndex = options.itemMapping[ item ];
-
-                if( $.isNumeric( itemIndex ) ) {
-
-                    temp.push( itemIndex );
-
-                    //selected的合法性检测
-                    if( item == options.selected ) {
-                        selected = itemIndex;
+                    for( var i = 0, len = options.items.length; i < len; i++ ) {
+                        options.itemStyles.push('');
                     }
 
                 }
 
-            } );
+                options.autowidthitem = options.autowidthitem || options.items;
+                options.itemCount = options.items.length;
 
-            options.recordStack = temp;
-            options.selected = selected;
-            temp = null;
+                return options;
 
-        }
+            },
+            _createItemMapping: function( stackItem, items ){
 
-        function update( index ) {
+                var temp = {},
+                    result = {
+                        recordStack: [],
+                        mapping: {}
+                    };
 
-            var options = this.data("options"),
-                newStack = [],
-                newChilds = null;
+                $.each( items, function( index, item ){
+                    temp[ item ] = index;
+                } );
 
-            $.each( options.recordStack, function( i, item ){
+                result.itemMapping = temp;
 
-                if( item != index ) {
-                    newStack.push( item );
+                $.each( stackItem, function( index, item ){
+
+                    if( temp[ item ] !== undefined ) {
+                        result.recordStack.push( temp[ item ] );
+                        result.mapping[ item ] = temp[ item ];
+                    }
+
+                } );
+
+                return result;
+
+            },
+            _update: function ( index ) {
+
+                var options = this.data("options"),
+                    newStack = [],
+                    newChilds = null;
+
+                $.each( options.recordStack, function( i, item ){
+
+                    if( item != index ) {
+                        newStack.push( item );
+                    }
+
+                } );
+
+                //压入最新的记录
+                newStack.unshift( index );
+
+                if( newStack.length > options.recordCount ) {
+                    newStack.length = options.recordCount;
                 }
 
-            } );
+                options.recordStack = newStack;
+                options.selected = index;
 
-            //压入最新的记录
-            newStack.unshift( index );
+                newChilds = $( $.parseTmpl( this.tpl, options ) );
 
-            if( newStack.length > options.recordCount ) {
-                newStack.length = options.recordCount;
+                //重新渲染
+                this.root().html( newChilds.html() );
+
+                newChilds = null;
+                newStack = null;
+
             }
-
-            options.recordStack = newStack;
-            options.selected = index;
-
-            newChilds = $( $.parseTmpl( this.tpl, options ) );
-
-            //重新渲染
-            this.root().html( newChilds.html() );
-
-            newChilds = null;
-            newStack = null;
-
-        }
+        };
 
     } )(), 'menu' );
 

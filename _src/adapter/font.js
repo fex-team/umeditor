@@ -40,7 +40,7 @@ UE.registerUI('fontfamily', function( name ) {
     comboboxWidget = $fontFamilyCombobox.edui();
 
     comboboxWidget.on( 'comboboxselect', function( evt, res ){
-        me.execCommand( name, res.value );
+//        me.execCommand( name, res.value );
     });
 
     //扔到容器里
