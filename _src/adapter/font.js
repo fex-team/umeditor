@@ -1,8 +1,6 @@
 /**
  * font相关组件
  */
-
-
 UE.registerUI('fontfamily', function( name ) {
 
     var me = this,
@@ -47,7 +45,7 @@ UE.registerUI('fontfamily', function( name ) {
 
     $fontFamilyCombobox.css('zIndex',me.getOpt('zIndex') + 1);
     //querycommand
-    this.addListener('selectionchange',function(){
+    this.addListener('selectionchange',function( evt, isUserTrigger ){
 
         //设置按钮状态
         var state = this.queryCommandState( name );
@@ -70,19 +68,16 @@ UE.registerUI('fontfamily', function( name ) {
      */
     function wordCountAdaptive( word, hasSuffix ) {
 
-        var tmpNode = document.createElement('span');
+        var $tmpNode = $('<span>' ).html( word ).css( {
+                display: 'inline',
+                position: 'absolute',
+                top: -10000000,
+                left: -100000
+            } ).appendTo( document.body),
+            width = $tmpNode.width();
 
-        tmpNode.innerHTML = word;
-
-        tmpNode.style.cssText = 'display: inline; position: absolute; top: -10000000px; left: -100000px;';
-
-        document.body.appendChild( tmpNode );
-
-        var width = tmpNode.offsetWidth;
-
-        document.body.removeChild( tmpNode );
-
-        tmpNode = null;
+        $tmpNode.remove();
+        $tmpNode = null;
 
         if( width < 50 ) {
 
@@ -92,7 +87,7 @@ UE.registerUI('fontfamily', function( name ) {
 
             word = word.slice( 0, hasSuffix ? -4 : -1 );
 
-            if( word.length ===  0 ) {
+            if( !word.length ) {
                 return '...';
             }
 
@@ -113,6 +108,7 @@ UE.registerUI('fontsize', function( name ) {
             label: sizeLabel,
             title: sizeLabel,
             autoRecord: false,
+            comboboxName: 'fontsize',
             items: me.options.fontsize
         },
         $fontSizeCombobox = null,
@@ -125,7 +121,8 @@ UE.registerUI('fontsize', function( name ) {
     $fontSizeCombobox.css('zIndex',me.getOpt('zIndex') + 1);
 
     $btn = $fontSizeCombobox.edui().button();
-    $btn.on( 'comboboxselect', function(evt, res) {
+
+    $fontSizeCombobox.on( 'comboboxselect', function(evt, res) {
 
         me.execCommand( name, res.value + 'px' );
 

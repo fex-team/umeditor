@@ -26,12 +26,13 @@
                     caret: true,
                     title: options.title,
                     mode: options.mode,
-                    text: options.label
+                    text: options.label,
+                    click: function(){
+                        me.show( this.root() );
+                    }
                 });
 
                 me.supper.init.call( me, options );
-
-                me.attachTo( btnWidget );
 
                 //监听change， 改变button显示内容
                 me.on('changebefore', function( e, label ){

@@ -13,71 +13,103 @@
     box-shadow: 2px 2px 5px #d3d6da;
 
 }
-.edui-combobox-menu.divider {
-    height: 1px;
-    margin: 9px 1px;
-    overflow: hidden;
-    background-color: #e5e5e5;
-    border-bottom: 1px solid #ffffff;
-}
-.edui-combobox-menu .edui-common-dis-none {
-    display: none;
+
+.edui-combobox-menu li {
+    display: block;
+    min-width: 160px;
+    border: 1px solid white;
 }
 
-.edui-combobox-menu .edui-combobox-item, .edui-combobox-menu .edui-combobox-stack-item{
-    margin: 3px 0;
-    padding: 1px;
-    border:none;
-    white-space: nowrap;
+.edui-combobox-menu .edui-combobox-item-label {
+    width: 120px;
+    height: 25px;
+    line-height: 25px;
+    display: inline-block;
+    margin-left: 10px;
 }
-.edui-combobox-menu .edui-combobox-item:hover, .edui-combobox-menu .edui-combobox-stack-item:hover {
+
+.edui-combobox-menu .edui-combobox-item:hover, .edui-combobox-menu .edui-combobox-stack-item:hover, .edui-combobox-menu .edui-combobox-item-hover {
     background-color: #d5e1f2;
     padding: 0;
     border: 1px solid #a3bde3;
 }
 
-.edui-combobox-menu .edui-combobox-link{
-    line-height: 1;
-    color:#333;
-    text-decoration: none;
-    display: block;
-    padding: 5px 30px 5px 5px;
+.edui-combobox-menu .edui-combobox-item .edui-combobox-icon {
+    display: inline-block;
+    *zoom: 1;
+    *display: inline;
+    width: 24px;
+    height: 25px;
+    background: red;
+    vertical-align: bottom;
+    background: url(../images/icons-all.gif) no-repeat 1000px 1000px;
 }
 
-.edui-combobox-item {
-    cursor: pointer;
-    background: #fff;
+.edui-combobox-menu .edui-combobox-checked .edui-combobox-icon {
+    background-position: 11px -203px;
 }
 
-.edui-combobox-menu .edui-hover{
-    background-color: #fff5d4;
-    padding: 0;
-    border: 1px solid #dcac6c;
-}
 
-.edui-combobox-menu .edui-combobox-checkbox {
-    float: left;
-    width: 25px;
-    height: 20px;
-}
-
-.edui-combobox-menu .edui-combobox-checkbox .icon-ok {
-    width: 100%;
-    height: 100%;
-    background: url(../images/ok.gif) no-repeat center center transparent;
-    display: none;
-}
-
-.edui-combobox-menu .edui-combobox-checked .icon-ok {
-    display: block;
-}
-
-.edui-combobox-menu .edui-combobox-stack-separator {
+.edui-combobox-menu .edui-combobox-item-separator {
     height: 1px;
-    background: #D3D3D3;
-    margin: 0;
-    padding: 0;
     line-height: 1px;
     overflow: hidden;
-    *margin-bottom: -14px;
+    background: #d3d3d3;
+    margin: 5px 0;
+    *margin-top: -8px;
+}
+
+/* 字体样式校正 */
+
+.edui-combobox-fontsize .edui-combobox-item-0.edui-combobox-checked .edui-combobox-icon {
+    background-position: 11px -203px;
+}
+
+.edui-combobox-fontsize .edui-combobox-item-1.edui-combobox-checked .edui-combobox-icon {
+    background-position: 11px -204px;
+}
+
+.edui-combobox-fontsize .edui-combobox-item-2.edui-combobox-checked .edui-combobox-icon {
+    background-position: 11px -204px;
+}
+
+.edui-combobox-fontsize .edui-combobox-item-3.edui-combobox-checked .edui-combobox-icon {
+    background-position: 11px -204px;
+}
+
+/* 24 */
+
+.edui-combobox-fontsize .edui-combobox-item-4 .edui-combobox-item-label {
+    height: 27px;
+    line-height: 27px;
+}
+
+.edui-combobox-fontsize .edui-combobox-item-4.edui-combobox-checked .edui-combobox-icon {
+    background-position: 11px -205px;
+}
+
+/* 32 */
+.edui-combobox-fontsize .edui-combobox-item-5 .edui-combobox-item-label {
+    height: 31px;
+    line-height: 31px;
+}
+
+.edui-combobox-fontsize .edui-combobox-item-5.edui-combobox-checked .edui-combobox-icon {
+    background-position: 11px -206px;
+}
+
+
+/* 48 */
+.edui-combobox-fontsize .edui-combobox-item-6 .edui-combobox-item-label {
+    height: 47px;
+    line-height: 47px;
+}
+
+.edui-combobox-fontsize .edui-combobox-item-6 .edui-combobox-icon {
+    height: 25px;
+    margin-bottom: 11px;
+}
+
+.edui-combobox-fontsize .edui-combobox-item-6.edui-combobox-checked .edui-combobox-icon {
+    background-position: 11px -203px;
 }
