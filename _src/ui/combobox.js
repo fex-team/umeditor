@@ -19,7 +19,8 @@
         return {
             tpl: "<ul  class=\"dropdown-menu edui-combobox-menu<%if (comboboxName!=='') {%> edui-combobox-<%=comboboxName%><%}%>\" role=\"menu\" aria-labelledby=\"dropdownMenu\">" +
                 "<%if(autoRecord) {%>" +
-                "<%for( var i=0, index; index = recordStack[i]; i++ ) {%>" +
+                "<%for( var i=0, len = recordStack.length; i<len; i++ ) {%>" +
+                "<%var index = recordStack[i];%>" +
                 "<li class=\"<%=itemClassName%><%if( selected == index ) {%> edui-combobox-checked<%}%>\" data-item-index=\"<%=index%>\">" +
                 "<span class=\"edui-combobox-icon\"></span>" +
                 "<label class=\"<%=labelClassName%>\" style=\"<%=itemStyles[ index ]%>\"><%=items[index]%></label>" +

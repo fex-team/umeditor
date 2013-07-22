@@ -45,7 +45,7 @@ UE.registerUI('fontfamily', function( name ) {
 
     $fontFamilyCombobox.css('zIndex',me.getOpt('zIndex') + 1);
     //querycommand
-    this.addListener('selectionchange',function(){
+    this.addListener('selectionchange',function( evt, isUserTrigger ){
 
         //设置按钮状态
         var state = this.queryCommandState( name );
