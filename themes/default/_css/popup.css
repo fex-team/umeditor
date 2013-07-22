@@ -1,5 +1,9 @@
 .edui-popup{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    background-color: #ffffff;
     border: 1px solid #ccc;
-    background-color: #fff;
     box-shadow: 2px 2px 5px #d3d6da;
 }

@@ -7,9 +7,6 @@
     margin:0 2px;
 }
 .edui-splitbutton .edui-btn{
-    border-width: 1px 0 1px 1px;
-    border-style: solid;
-    border-color:#ccc;
     margin: 0;
 }
 .edui-splitbutton .edui-caret{
@@ -23,48 +20,15 @@
     background: url(../images/icons.png) -741px 0;
     _background: url(../images/icons.gif) -741px 0;
 }
-.edui-splitbutton .edui-dropdown-toggle{
-    border:1px solid #ccc;
-}
-.edui-splitbutton .edui-popup{
-    position: absolute;
-    top: 100%;
-    left: 0;
-    display: none;
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-}
 
 
 /*状态反射*/
 .edui-btn-toolbar .edui-splitbutton.hover .edui-btn{
-    padding:1px;
-    border-width: 1px 0 1px 1px;
-    border-color:#a3bde3;
     background-color: #d5e1f2;
-    *border: none;
 }
 
-
-.edui-btn-toolbar .edui-splitbutton.hover .edui-dropdown-toggle{
-    padding:1px;
-    border:1px solid #a3bde3;
-    background-color: #d5e1f2;
-    *border-width: 0 0 0 1px;
-}
 .edui-btn-toolbar .edui-splitbutton.disabled{
     opacity: 0.3;
     filter: alpha(opacity = 30);
 }
 
-/* colorsplitbutton 的color-label样式 */
-.edui-splitbutton-color-label {
-    width: 16px;
-    height: 3px;
-    position: absolute;
-    bottom: 2px;
-    left: 50%;
-    margin-left: -8px;
-    overflow: hidden;
-    line-height: 3px;
-}
