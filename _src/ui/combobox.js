@@ -192,8 +192,8 @@
 
                 me.root().css({
                     display: 'block',
-                    top: $target.offset().top + 1 + $target.height(),
-                    left: $target.offset().left
+                    top: $target.position().top + 1 + $target.height(),
+                    left: $target.position().left + parseInt( target.css("borderWidth"), 10 ) * 2
                 });
 
                 if( me.trigger('aftershow') === false ) {
