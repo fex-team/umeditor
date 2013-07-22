@@ -21,7 +21,7 @@
                 "<%if(autoRecord) {%>" +
                 "<%for( var i=0, len = recordStack.length; i<len; i++ ) {%>" +
                 "<%var index = recordStack[i];%>" +
-                "<li class=\"<%=itemClassName%><%if( selected == index ) {%> edui-combobox-checked<%}%>\" data-item-index=\"<%=index%>\">" +
+                "<li class=\"<%=itemClassName%><%if( selected == index ) {%> edui-combobox-checked<%}%>\" data-item-index=\"<%=index%>\" unselectable=\"on\" onmousedown=\"return false\">" +
                 "<span class=\"edui-combobox-icon\"></span>" +
                 "<label class=\"<%=labelClassName%>\" style=\"<%=itemStyles[ index ]%>\"><%=items[index]%></label>" +
                 "</li>" +
@@ -31,9 +31,9 @@
                 "<%}%>" +
                 "<%}%>" +
                 "<%for( var i=0, label; label = items[i]; i++ ) {%>" +
-                "<li class=\"<%=itemClassName%><%if( selected == i ) {%> edui-combobox-checked<%}%> edui-combobox-item-<%=i%>\" data-item-index=\"<%=i%>\">" +
-                "<span class=\"edui-combobox-icon\"></span>" +
-                "<label class=\"<%=labelClassName%>\" style=\"<%=itemStyles[ i ]%>\"><%=label%></label>" +
+                "<li class=\"<%=itemClassName%><%if( selected == i ) {%> edui-combobox-checked<%}%> edui-combobox-item-<%=i%>\" data-item-index=\"<%=i%>\" unselectable=\"on\" onmousedown=\"return false\">" +
+                "<span class=\"edui-combobox-icon\" unselectable=\"on\" onmousedown=\"return false\"></span>" +
+                "<label class=\"<%=labelClassName%>\" style=\"<%=itemStyles[ i ]%>\" unselectable=\"on\" onmousedown=\"return false\"><%=label%></label>" +
                 "</li>" +
                 "<%}%>" +
                 "</ul>",
@@ -181,10 +181,6 @@
 
                 if( !target ) {
                     return this;
-                }
-
-                if( me.root().parent().length === 0 ) {
-                    me.root().appendTo( $('.edui-dialog-container') );
                 }
 
                 if( me.trigger('beforeshow') === false ) {
