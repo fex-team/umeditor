@@ -40,13 +40,13 @@ UE.registerUI('fontfamily', function( name ) {
     comboboxWidget = $fontFamilyCombobox.edui();
 
     comboboxWidget.on( 'comboboxselect', function( evt, res ){
-//        me.execCommand( name, res.value );
+        me.execCommand( name, res.value );
     });
 
     //扔到容器里
     comboboxWidget.on("beforeshow", function(){
         if( this.root().parent().length === 0 ) {
-            this.root().appendTo( $('.edui-dialog-container') );
+            this.root().appendTo(  me.$container.find('.edui-dialog-container') );
         }
     });
 
@@ -141,7 +141,7 @@ UE.registerUI('fontsize', function( name ) {
 
     $fontSizeCombobox.edui().on("beforeshow", function(){
         if( this.root().parent().length === 0 ) {
-            this.root().appendTo( $('.edui-dialog-container') );
+            this.root().appendTo( me.$container.find('.edui-dialog-container') );
         }
     });
 
