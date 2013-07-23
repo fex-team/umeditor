@@ -192,7 +192,7 @@
                     $(this).toggleClass("hover");
                 });
         }
-    }
+    };
 
     function createImgBase64(img,file){
         if(browser.webkit){
