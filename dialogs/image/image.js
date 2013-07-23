@@ -58,6 +58,32 @@
 
 
             return this;
+        },
+        callback : function(editor, $w, url, state){
+            Upload.toggleMask();
+
+            if (state == "SUCCESS") {
+                $("<img src='" + editor.options.imagePath + url + "' class='edui-image-pic' />").on("load", function () {
+                    Base.scale(this, 120);
+
+                    var $item = $("<div class='edui-image-item'><div class='edui-image-close'></div></div>").append(this);
+
+                    if ($("#edui-image-Jupload2", $w).length < 1) {
+                        $("#edui-image-Jcontent", $w).append($item);
+
+                        Upload.render("#edui-image-Jcontent", 2)
+                            .config("#edui-image-Jupload2")
+                            .submit("#edui-image-Jupload2");
+                    } else {
+                        $("#edui-image-Jupload2", $w).before($item);
+                    }
+
+                    Base.close($(this));
+                });
+
+            } else {
+                throw new Error(state)
+            }
         }
     };
 
@@ -106,7 +132,7 @@
 
             $("input", $(sel, me.dialog)).on("change", function () {
                 $(this).parent().submit();
-                me.toggleMask("图片上传中，别着急哦~~");
+                me.toggleMask("Loading....");
                 callback && callback();
             });
 
@@ -168,6 +194,23 @@
         }
     }
 
+    function createImgBase64(img,file){
+        if(browser.webkit){
+            //Chrome8+
+            img.src = window.webkitURL.createObjectURL(file);
+        }else if(browser.gecko){
+            //FF4+
+            img.src = window.URL.createObjectURL(file);
+        }else{
+            //实例化file reader对象
+            var reader = new FileReader();
+            reader.onload = function(e){
+                img.src = this.result;
+                $(document.body).appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        }
+    }
     var $tab = null;
 
     UE.registerWidget('image', {
@@ -212,6 +255,37 @@
 
             Upload.init(editor, $w);
 
+            //做拽上传的支持
+            if(!browser.ie9below){
+                $w.find('#edui-image-Jcontent').on('drop',function(e){
+
+                    //获取文件列表
+                    var fileList = e.originalEvent.dataTransfer.files;
+                    var img = document.createElement('img');
+
+                    $.each(fileList,function(i,f){
+                        if(/^image/.test(f.type)){
+                            createImgBase64(img,f);
+                            var xhr = new XMLHttpRequest();
+                            xhr.open("post", editor.getOpt('imageUrl'), true);
+                            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                            var fd = new FormData();
+                            fd.append(editor.getOpt('imageFieldName'), f);
+                            fd.append('type','ajax');
+                            xhr.send(fd);
+                            xhr.addEventListener('load',function(e){
+                                Base.callback(editor, $w, e.target.response, "SUCCESS")
+                            });
+                        }
+                    });
+
+                    e.preventDefault();
+                    Upload.toggleMask("Loading....");
+                }).on('dragover',function(e){
+                        e.preventDefault();
+                    });
+            }
+
             NetWork.init(editor, $w);
         },
         buttons: {
@@ -236,30 +310,7 @@
             'cancel': {}
         }
     }, function (editor, $w, url, state) {
-        Upload.toggleMask();
-
-        if (state == "SUCCESS") {
-            $("<img src='" + editor.options.imagePath + url + "' class='edui-image-pic' />").on("load", function () {
-                Base.scale(this, 120);
-
-                var $item = $("<div class='edui-image-item'><div class='edui-image-close'></div></div>").append(this);
-
-                if ($("#edui-image-Jupload2", $w).length < 1) {
-                    $("#edui-image-Jcontent", $w).append($item);
-
-                    Upload.render("#edui-image-Jcontent", 2)
-                        .config("#edui-image-Jupload2")
-                        .submit("#edui-image-Jupload2");
-                } else {
-                    $("#edui-image-Jupload2", $w).before($item);
-                }
-
-                Base.close($(this));
-            });
-
-        } else {
-            alert(state);
-        }
+        Base.callback(editor,$w,url,state)
     })
 })();
 
