@@ -195,7 +195,11 @@
                                 $.eduiseparator && btns.push($.eduiseparator());
                         }else{
                             var ui = me.getUI(editor,name);
-                            ui && btns.push(ui);
+                            if(name=="fullscreen"){
+                                ui&&btns.unshift(ui);
+                            }else{
+                                ui && btns.push(ui);
+                            }
                         }
 
                     });
