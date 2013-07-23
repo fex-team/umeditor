@@ -1,6 +1,7 @@
 <?php
     header("Content-Type:text/html;charset=utf-8");
     error_reporting( E_ERROR | E_WARNING );
+    date_default_timezone_set("Asia/chongqing");
     include "Uploader.class.php";
     //上传配置
     $config = array(
@@ -14,11 +15,17 @@
     //背景保存在临时目录中
     $config[ "savePath" ] = $Path;
     $up = new Uploader( "upfile" , $config );
+    $type = $_POST['type'];
+
     $info = $up->getFileInfo();
     /**
      * 返回数据，调用父页面的ue_callback回调
      */
-    echo "<script>parent.UE.getWidgetCallback('image')('" . $info[ "url" ] . "','" . $info[ "state" ] . "')</script>";
+    if($type == "ajax"){
+        echo $info[ "url" ];
+    }else{
+        echo "<script>parent.UE.getWidgetCallback('image')('" . $info[ "url" ] . "','" . $info[ "state" ] . "')</script>";
+    }
 
 
 
