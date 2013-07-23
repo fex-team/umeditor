@@ -194,7 +194,7 @@
         }
     };
 
-    function createImgBase64(img,file){
+    function createImgBase64(img,file,$w){
         if(browser.webkit){
             //Chrome8+
             img.src = window.webkitURL.createObjectURL(file);
@@ -206,7 +206,7 @@
             var reader = new FileReader();
             reader.onload = function(e){
                 img.src = this.result;
-                $(document.body).appendChild(img);
+                $w.append(img);
             };
             reader.readAsDataURL(file);
         }
@@ -262,10 +262,10 @@
                     //获取文件列表
                     var fileList = e.originalEvent.dataTransfer.files;
                     var img = document.createElement('img');
-
+                    var hasImg = false;
                     $.each(fileList,function(i,f){
                         if(/^image/.test(f.type)){
-                            createImgBase64(img,f);
+                            createImgBase64(img,f,$w);
                             var xhr = new XMLHttpRequest();
                             xhr.open("post", editor.getOpt('imageUrl'), true);
                             xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
@@ -274,13 +274,19 @@
                             fd.append('type','ajax');
                             xhr.send(fd);
                             xhr.addEventListener('load',function(e){
-                                Base.callback(editor, $w, e.target.response, "SUCCESS")
+                                Base.callback(editor, $w, e.target.response, "SUCCESS");
+                                if(i == fileList.length - 1){
+                                    $(img).remove()
+                                }
                             });
+                            hasImg = true;
                         }
                     });
+                    if(hasImg){
+                        e.preventDefault();
+                        Upload.toggleMask("Loading....");
+                    }
 
-                    e.preventDefault();
-                    Upload.toggleMask("Loading....");
                 }).on('dragover',function(e){
                         e.preventDefault();
                     });
