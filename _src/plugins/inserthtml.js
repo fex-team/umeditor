@@ -33,6 +33,11 @@ UE.commands['inserthtml'] = {
         }else{
             me.document.execCommand('insertHTML',false,html)
         }
-        me.selection.getRange().scrollIntoView();
+
+        setTimeout(function(){
+            me.selection.getRange().scrollIntoView();
+            me.fireEvent('afterinserthtml')
+        })
+
     }
 };

@@ -175,7 +175,9 @@
             return ieRange;
         },
         rangeInBody : function(rng){
-            return domUtils.inDoc(browser.ie9below ? rng.parentElement() : rng.startContainer,this.body);
+            var node = browser.ie9below ? rng.parentElement() : rng.startContainer;
+
+            return node === this.body || domUtils.inDoc(node,this.body);
         },
         /**
          * 缓存当前选区的range和选区的开始节点
