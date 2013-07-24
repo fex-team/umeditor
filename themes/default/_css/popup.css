@@ -1,22 +1,17 @@
 .edui-popup{
-    position: absolute;
-    top: 100%;
-    left: 0;
     display: none;
     background-color: #ffffff;
     border: 1px solid #ccc;
     box-shadow: 2px 2px 5px #d3d6da;
 }
-
 .edui-popup .edui-popup-caret{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    margin-left: -5px;
-    border-color: transparent;
-    border-style: solid;
-    border-bottom-color: #ccc;
-    border-width: 0 10px 10px;
+    width: 21px;
+    height: 11px;
 }
+.edui-popup .edui-popup-caret.up{
+    background:url('../images/caret.png') no-repeat 0 0;
+}
+.edui-popup .edui-popup-caret.down{
+    background:url('../images/caret.png') no-repeat 0 0;
+}
+

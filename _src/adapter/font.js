@@ -223,12 +223,14 @@ $.each(['forecolor','backcolor'],function(i,v){
             lang_clearColor: me.getLang('clearColor') || '',
             lang_themeColor: me.getLang('themeColor') || '',
             lang_standardColor: me.getLang('standardColor') || ''
-        }).on('pickcolor', function( evt, color ){
+        })
+            .on('pickcolor', function( evt, color ){
                 window.setTimeout( function(){
                     $colorLabel.css("backgroundColor", color);
                     me.execCommand( name, color );
                 }, 0 );
-            }).on('show',function(){
+            })
+            .on('show',function(){
                 UE.setActiveWidget( colorPickerWidget.root() );
             }).css('zIndex',me.getOpt('zIndex') + 1);
 
@@ -236,7 +238,11 @@ $.each(['forecolor','backcolor'],function(i,v){
             if(!$colorPickerWidget.parent().length){
                 me.$container.find('.edui-dialog-container').append($colorPickerWidget);
             }
-            $colorPickerWidget.edui().show($btn,'left');
+            $colorPickerWidget.edui().show($btn,{
+                caretDir:"down",
+                offsetTop:-8,
+                caretTop:-11
+            });
         }).register('click', $btn, function () {
                 $colorPickerWidget.edui().hide()
             });
