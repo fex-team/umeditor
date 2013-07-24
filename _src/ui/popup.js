@@ -1,6 +1,9 @@
 //popup 类
 UE.ui.define('popup',{
-    tpl:'<div class="edui-dropdown-menu edui-popup" onmousedown="return false"><%=subtpl%></div>',
+    tpl:'<div class="edui-dropdown-menu edui-popup" onmousedown="return false">' +
+        '<div class="edui-popup-body"><%=subtpl%></div>' +
+        '<div class="edui-popup-caret"></div>' +
+        '</div>',
     defaultOpt:{
         subtpl:'',
         width:'',
@@ -29,15 +32,12 @@ UE.ui.define('popup',{
         this.root().css('display','none');
         this.trigger('afterhide')
     },
-    attachTo : function($obj){
+    attachTo : function($obj,dir,fnname,topOffset,leftOffset){
         var me = this
         if(!$obj.data('$mergeObj')){
-            if(!$.contains(document.body,me.root()[0])){
-                me.root().appendTo($obj[0].tagName == 'BUTTON'? $obj.parent():$obj);
-            }
             $obj.data('$mergeObj',me.root());
             $obj.on('wrapclick',function(evt){
-                me.show()
+                me.show($obj,dir,fnname,topOffset,leftOffset)
             });
             me.register('click',$obj,function(evt){
                 me.hide()
@@ -45,15 +45,7 @@ UE.ui.define('popup',{
             me.data('$mergeObj',$obj)
         }
     },
-    body: function ($cont) {
-        if ($cont) {
-            this.root().html('').append($cont);
-            return this
-        } else {
-            return $(this.root().find('.modal-body').html())
-        }
-    },
     getBodyContainer : function(){
-        return this.root();
+        return this.root().find(".edui-popup-body");
     }
 });

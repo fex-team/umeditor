@@ -44,14 +44,6 @@ UE.ui.define('modal', {
             $(this).toggleClass('hover')
         });
     },
-    body: function ($cont) {
-        if ($cont) {
-            this.root().find('.edui-modal-body').html('').append($cont);
-            return this
-        } else {
-            return $(this.root().find('.edui-modal-body').html())
-        }
-    },
     toggle: function () {
         var me = this;
         return me[!me.data("isShown") ? 'show' : 'hide']();
@@ -130,9 +122,7 @@ UE.ui.define('modal', {
     attachTo: function ($obj) {
         var me = this
         if (!$obj.data('$mergeObj')) {
-            if (!$.contains(document.body, me.root()[0])) {
-                me.root().appendTo($obj);
-            }
+
             $obj.data('$mergeObj', me.root());
             $obj.on('click', function () {
                 me.toggle($obj)

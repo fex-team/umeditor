@@ -84,6 +84,6 @@ var dtd = dom.dtd = (function() {
         $tableContent : _({caption:1,col:1,colgroup:1,tbody:1,td:1,tfoot:1,th:1,thead:1,tr:1,table:1}),
         //不转换的标签
         $notTransContent : _({pre:1,script:1,style:1,textarea:1}),
-        p : X(_({'a':1}),L),
+        p : X(_({'a':1}),L)
     });
 })();
