@@ -25,8 +25,28 @@
             "</tr>" +
             "</table>" +
             "<div style=\"width:100%;height:340px;margin:5px auto;border:1px solid gray\" id=\"eduiMapContainer\"></div>" +
-            "</div>",
-
+            "</div>" +
+            "<script class=\"edui-tpl-container\" type=\"text/plain\">" +
+            "<!DOCTYPE html>" +
+            "<html>" +
+            "<head>" +
+            "<title></title>" +
+            "</head>" +
+            "<body>" +
+            "<scr_ipt src=\"http://api.map.baidu.com/api?v=1.1&services=true\"></scr_ipt>" +
+            "<scr_ipt>" +
+            "window.onload = function(){" +
+            "var scripts = document.scripts || document.getElementsByTagName(\"script\")," +
+            "src = [];" +
+            "for( var i = 1, len = scripts.length; i<len; i++ ) {" +
+            "src.push( scripts[i].src );" +
+            "}" +
+            "parent.UE.getWidgetData(\'map\').requestMapApi( src );" +
+            "};" +
+            "</scr_ipt>" +
+            "</body>" +
+            "</html>" +
+            "</script>",
         initContent: function (editor, $widget) {
 
             var me = this,
@@ -55,12 +75,22 @@
          */
         initRequestApi: function () {
 
+            var $ifr = null;
+
             //已经初始化过， 不用再次初始化
             if (window.BMap && window.BMap.Map) {
                 this.initBaiduMap();
             } else {
-                $('<iframe/>').attr('src', UEDITOR_CONFIG.UEDITOR_HOME_URL + '/dialogs/' + widgetName + '/proxy.html')
-                    .hide().appendTo(this.root());
+
+                $ifr = $('<iframe style="display: none;"></iframe>');
+                $ifr.appendTo( this.root() );
+
+                $ifr = $ifr[ 0 ].contentWindow.document;
+
+                $ifr.open();
+                $ifr.write( this.root().find(".edui-tpl-container").html().replace( /scr_ipt/g, 'script' ) );
+                $ifr.close();
+
             }
 
         },
