@@ -7,13 +7,13 @@
  */
 UE.ui.define('colorsplitbutton',{
 
-    tpl : '<div class="edui-splitbutton"  unselectable="on" <%if(title){%>data-original-title="<%=title%>"<%}%>><div class="edui-btn"  unselectable="on" ><%if(icon){%><div  unselectable="on" class="edui-icon-<%=icon%> edui-icon"></div><%}%><div class="edui-splitbutton-color-label" style="background: <%=color%>"></div><%if(text){%><%=text%><%}%></div>'+
+    tpl : '<div class="edui-splitbutton"  unselectable="on" <%if(title){%>data-original-title="<%=title%>"<%}%>><div class="edui-btn"  unselectable="on" ><%if(icon){%><div  unselectable="on" class="edui-icon-<%=icon%> edui-icon"></div><%}%><div class="edui-splitbutton-color-label" <%if (color) {%>style="background: <%=color%>"<%}%>></div><%if(text){%><%=text%><%}%></div>'+
             '<div  unselectable="on" class="edui-btn edui-dropdown-toggle" >'+
             '<div  unselectable="on" class="edui-caret"><\/div>'+
             '</div>'+
             '</div>',
     defaultOpt: {
-        color: '#000000'
+        color: ''
     },
     init: function( options ){
 
