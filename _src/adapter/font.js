@@ -66,7 +66,7 @@ UE.registerUI('fontfamily', function( name ) {
         //设置当前字体
         var fontFamily = this.queryCommandValue( name );
 
-        fontFamily = fontFamily.replace(/^\s*['|"]|['|"]\s*$/g, '');
+        fontFamily = fontFamily.replace(/['"]/g, '').toLowerCase();
 
         comboboxWidget.selectItemByLabel( fontFamily.split(/['|"]?\s*,\s*[\1]?/) );
 
