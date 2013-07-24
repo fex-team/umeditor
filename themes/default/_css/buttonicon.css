@@ -111,6 +111,9 @@
     background-position: -420px -20px;
 }
 
+.edui-btn-toolbar .edui-btn-fullscreen{
+    float:right;
+}
 .edui-btn-toolbar .edui-btn .edui-icon-fullscreen {
     background-position: -100px -20px;
 }
