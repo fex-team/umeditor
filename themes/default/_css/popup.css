@@ -7,3 +7,16 @@
     border: 1px solid #ccc;
     box-shadow: 2px 2px 5px #d3d6da;
 }
+
+.edui-popup .edui-popup-caret{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    margin-left: -5px;
+    border-color: transparent;
+    border-style: solid;
+    border-bottom-color: #ccc;
+    border-width: 0 10px 10px;
+}
