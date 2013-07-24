@@ -36,26 +36,20 @@ UE.registerUI('fontfamily', function( name ) {
     options.items = tempItems;
 
 
-    $fontFamilyCombobox = $.eduibuttoncombobox( options );
-    comboboxWidget = $fontFamilyCombobox.edui();
+    $fontFamilyCombobox =  $.eduibuttoncombobox(options).css('zIndex',me.getOpt('zIndex') + 1);
+    comboboxWidget =  $fontFamilyCombobox.edui();
 
-    comboboxWidget.on( 'comboboxselect', function( evt, res ){
-        me.execCommand( name, res.value );
-    });
+    comboboxWidget
+        .on('comboboxselect', function( evt, res ){
+            me.execCommand( name, res.value );
+        }).on("beforeshow", function(){
+            if( $fontFamilyCombobox.parent().length === 0 ) {
+                $fontFamilyCombobox.appendTo(  me.$container.find('.edui-dialog-container') );
+            }
+        })
 
-    //扔到容器里
-    comboboxWidget.on("beforeshow", function(){
-        if( this.root().parent().length === 0 ) {
-            this.root().appendTo(  me.$container.find('.edui-dialog-container') );
-        }
-    });
 
-    //注册互斥
-    comboboxWidget.register('click', comboboxWidget.button(), function () {
-        comboboxWidget.hide()
-    });
 
-    $fontFamilyCombobox.css('zIndex',me.getOpt('zIndex') + 1);
     //querycommand
     this.addListener('selectionchange',function( evt, isUserTrigger ){
 
@@ -127,9 +121,9 @@ UE.registerUI('fontsize', function( name ) {
 
     options = parseOption( options );
 
-    $fontSizeCombobox = $.eduibuttoncombobox( options );
+    $fontSizeCombobox = $.eduibuttoncombobox( options ).css('zIndex',me.getOpt('zIndex') + 1);
 
-    $fontSizeCombobox.css('zIndex',me.getOpt('zIndex') + 1);
+
 
     $btn = $fontSizeCombobox.edui().button();
 
@@ -145,9 +139,6 @@ UE.registerUI('fontsize', function( name ) {
         }
     });
 
-    $fontSizeCombobox.edui().register('click', $btn, function () {
-        $fontSizeCombobox.edui().hide()
-    });
 
     $btn.addClass('edui-combobox');
 

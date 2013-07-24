@@ -29,15 +29,12 @@ UE.ui.define('popup',{
         this.root().css('display','none');
         this.trigger('afterhide')
     },
-    attachTo : function($obj){
+    attachTo : function($obj,dir,fnname,topOffset,leftOffset){
         var me = this
         if(!$obj.data('$mergeObj')){
-            if(!$.contains(document.body,me.root()[0])){
-                me.root().appendTo($obj[0].tagName == 'BUTTON'? $obj.parent():$obj);
-            }
             $obj.data('$mergeObj',me.root());
             $obj.on('wrapclick',function(evt){
-                me.show()
+                me.show($obj,dir,fnname,topOffset,leftOffset)
             });
             me.register('click',$obj,function(evt){
                 me.hide()
