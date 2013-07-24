@@ -7,22 +7,20 @@
  * Dual licensed under the MIT (MIT-LICENSE.txt)
  * and GPL (GPL-LICENSE.txt) licenses.
  */
-
 (function (window) {
-
     var QUnit = {
 
         // Initialize the configuration options
-        init:function () {
+        init: function () {
             config = {
-                stats:{ all:0, bad:0 },
-                moduleStats:{ all:0, bad:0 },
-                started:+new Date,
-                blocking:false,
-                autorun:false,
-                assertions:[],
-                filters:[],
-                queue:[]
+                stats: { all: 0, bad: 0 },
+                moduleStats: { all: 0, bad: 0 },
+                started: +new Date,
+                blocking: false,
+                autorun: false,
+                assertions: [],
+                filters: [],
+                queue: []
             };
 
             var tests = id("qunit-tests"),
@@ -43,7 +41,7 @@
         },
 
         // call on start of module test to prepend name to all tests
-        module:function (name, testEnvironment) {
+        module: function (name, testEnvironment) {
             config.currentModule = name;
 
             synchronize(function () {
@@ -53,13 +51,13 @@
 
                 config.currentModule = name;
                 config.moduleTestEnvironment = testEnvironment;
-                config.moduleStats = { all:0, bad:0 };
+                config.moduleStats = { all: 0, bad: 0 };
 
                 QUnit.moduleStart(name, testEnvironment);
             });
         },
 
-        asyncTest:function (testName, expected, callback) {
+        asyncTest: function (testName, expected, callback) {
             if (arguments.length === 2) {
                 callback = expected;
                 expected = 0;
@@ -67,13 +65,7 @@
 
             QUnit.test(testName, expected, callback, true);
         },
-//        calltest:function(testEnvironment,callback){
-//            clearInterval(config.timer);
-//            callback.call(testEnvironment);
-//
-//        },
-
-        test:function (testName, expected, callback, async) {
+        test: function (testName, expected, callback, async) {
             var name = testName, testEnvironment, testEnvironmentArg;
 
             if (arguments.length === 2) {
@@ -100,9 +92,9 @@
                     QUnit.testStart(testName);
 
                     testEnvironment = extend({
-                        setup:function () {
+                        setup: function () {
                         },
-                        teardown:function () {
+                        teardown: function () {
                         }
                     }, config.moduleTestEnvironment);
                     if (testEnvironmentArg) {
@@ -129,7 +121,6 @@
                     if (async) {
                         QUnit.stop();
                     }
-
                     try {
                         if (QUnit.readyFlag == 0) {
                             config.timer = setInterval(function () {
@@ -158,6 +149,7 @@
                             start();
                         }
                     }
+
                 }
             )
             ;
@@ -279,7 +271,7 @@
         /**
          * Specify the number of expected assertions to gurantee that failed test (no assertions are run at all) don't slip through.
          */
-        expect:function (asserts) {
+        expect: function (asserts) {
             config.expected = asserts;
         },
 
@@ -287,12 +279,12 @@
          * Asserts true.
          * @example ok( "asdfasdf".length > 5, "There must be at least 5 chars" );
          */
-        ok:function (a, msg) {
+        ok: function (a, msg) {
             detailForArrert += a ? '' : 'massage:' + msg + '\\n';
             QUnit.log(a, msg);
             config.assertions.push({
-                result:!!a,
-                message:msg
+                result: !!a,
+                message: msg
             });
         },
 
@@ -308,31 +300,31 @@
          * @param Object expected
          * @param String message (optional)
          */
-        equal:function (actual, expected, message) {
+        equal: function (actual, expected, message) {
             push(expected == actual, actual, expected, message);
         },
 
-        notEqual:function (actual, expected, message) {
+        notEqual: function (actual, expected, message) {
             push(expected != actual, actual, expected, message);
         },
 
-        deepEqual:function (a, b, message) {
+        deepEqual: function (a, b, message) {
             push(QUnit.equiv(a, b), a, b, message);
         },
 
-        notDeepEqual:function (a, b, message) {
+        notDeepEqual: function (a, b, message) {
             push(!QUnit.equiv(a, b), a, b, message);
         },
 
-        strictEqual:function (actual, expected, message) {
+        strictEqual: function (actual, expected, message) {
             push(expected === actual, actual, expected, message);
         },
 
-        notStrictEqual:function (actual, expected, message) {
+        notStrictEqual: function (actual, expected, message) {
             push(expected !== actual, actual, expected, message);
         },
 
-        start:function () {
+        start: function () {
             QUnit.startCount++;
             QUnit.stopCount--;
             // A slight delay, to avoid any current callbacks
@@ -351,7 +343,7 @@
             }
         },
 
-        stop:function (timeout) {
+        stop: function (timeout) {
             config.blocking = true;
             QUnit.stopCount++;
             if (timeout && window.setTimeout) {
@@ -365,7 +357,7 @@
         /**
          * Resets the test setup. Useful for tests that modify the DOM.
          */
-        reset:function () {
+        reset: function () {
             if (window.jQuery) {
                 jQuery("#main").html(config.fixture);
                 jQuery.event.global = {};
@@ -381,7 +373,7 @@
          * @param DOMElement elem
          * @param String type
          */
-        triggerEvent:function (elem, type, event) {
+        triggerEvent: function (elem, type, event) {
             if (document.createEvent) {
                 event = document.createEvent("MouseEvents");
                 event.initMouseEvent(type, true, true, elem.ownerDocument.defaultView,
@@ -394,22 +386,22 @@
         },
 
         // Safe object type checking
-        is:function (type, obj) {
+        is: function (type, obj) {
             return Object.prototype.toString.call(obj) === "[object " + type + "]";
         },
 
         // Logging callbacks
-        done:function (failures, total, detail) {
+        done: function (failures, total, detail) {
         },
-        log:function (result, message) {
+        log: function (result, message) {
         },
-        testStart:function (name) {
+        testStart: function (name) {
         },
-        testDone:function (name, failures, totalDetail) {
+        testDone: function (name, failures, totalDetail) {
         },
-        moduleStart:function (name, testEnvironment) {
+        moduleStart: function (name, testEnvironment) {
         },
-        moduleDone:function (name, failures, total) {
+        moduleDone: function (name, failures, total) {
         }
     };
 //record detail testName, bad, config.assertions
@@ -429,20 +421,20 @@
 // Maintain internal state
     var config = {
         // The queue of tests to run
-        queue:[],
+        queue: [],
 
         // block until document ready
-        blocking:true,
+        blocking: true,
 
 
-        timer:""
+        timer: ""
     };
 //failed detail for each test done
     var failedDetail = '';
     var detailForArrert = '';
 // Load paramaters
     (function () {
-        var location = window.location || { search:"", protocol:"file:" },
+        var location = window.location || { search: "", protocol: "file:" },
             GETParams = location.search.slice(1).split('&');
 
         for (var i = 0; i < GETParams.length; i++) {
@@ -477,7 +469,6 @@
     if (typeof document === "undefined" || document.readyState === "complete") {
         config.autorun = true;
     }
-
     addEvent(window, "load", function () {
         // Initialize the config, saving the execution queue
         var oldconfig = extend({}, config);
@@ -805,21 +796,21 @@
             }
 
             return {
-                "string":useStrictEquality,
-                "boolean":useStrictEquality,
-                "number":useStrictEquality,
-                "null":useStrictEquality,
-                "undefined":useStrictEquality,
+                "string": useStrictEquality,
+                "boolean": useStrictEquality,
+                "number": useStrictEquality,
+                "null": useStrictEquality,
+                "undefined": useStrictEquality,
 
-                "nan":function (b) {
+                "nan": function (b) {
                     return isNaN(b);
                 },
 
-                "date":function (b, a) {
+                "date": function (b, a) {
                     return hoozit(b) === "date" && a.valueOf() === b.valueOf();
                 },
 
-                "regexp":function (b, a) {
+                "regexp": function (b, a) {
                     return hoozit(b) === "regexp" &&
                         a.source === b.source && // the regex itself
                         a.global === b.global && // and its modifers (gmi) ...
@@ -830,13 +821,13 @@
                 // - skip when the property is a method of an instance (OOP)
                 // - abort otherwise,
                 //   initial === would have catch identical references anyway
-                "function":function () {
+                "function": function () {
                     var caller = callers[callers.length - 1];
                     return caller !== Object &&
                         typeof caller !== "undefined";
                 },
 
-                "array":function (b, a) {
+                "array": function (b, a) {
                     var i;
                     var len;
 
@@ -857,7 +848,7 @@
                     return true;
                 },
 
-                "object":function (b, a) {
+                "object": function (b, a) {
                     var i;
                     var eq = true; // unless we can proove it
                     var aProperties = [], bProperties = []; // collection of strings
@@ -961,7 +952,7 @@
         var reName = /^function (\w+)/;
 
         var jsDump = {
-            parse:function (obj, type) { //type is used mostly internally, you can fix a (custom)type in advance
+            parse: function (obj, type) { //type is used mostly internally, you can fix a (custom)type in advance
                 var parser = this.parsers[ type || this.typeOf(obj) ];
                 type = typeof parser;
 
@@ -969,7 +960,7 @@
                     type == 'string' ? parser :
                         this.parsers.error;
             },
-            typeOf:function (obj) {
+            typeOf: function (obj) {
                 var type;
                 if (obj === null) {
                     type = "null";
@@ -996,10 +987,10 @@
                 }
                 return type;
             },
-            separator:function () {
+            separator: function () {
                 return this.multiline ? this.HTML ? '<br />' : '\n' : this.HTML ? '&nbsp;' : ' ';
             },
-            indent:function (extra) {// extra can be a number, shortcut for increasing-calling-decreasing
+            indent: function (extra) {// extra can be a number, shortcut for increasing-calling-decreasing
                 if (!this.multiline)
                     return '';
                 var chr = this.indentChar;
@@ -1007,30 +998,30 @@
                     chr = chr.replace(/\t/g, '   ').replace(/ /g, '&nbsp;');
                 return Array(this._depth_ + (extra || 0)).join(chr);
             },
-            up:function (a) {
+            up: function (a) {
                 this._depth_ += a || 1;
             },
-            down:function (a) {
+            down: function (a) {
                 this._depth_ -= a || 1;
             },
-            setParser:function (name, parser) {
+            setParser: function (name, parser) {
                 this.parsers[name] = parser;
             },
             // The next 3 are exposed so you can use them
-            quote:quote,
-            literal:literal,
-            join:join,
+            quote: quote,
+            literal: literal,
+            join: join,
             //
-            _depth_:1,
+            _depth_: 1,
             // This is the list of parsers, to modify them, use jsDump.setParser
-            parsers:{
-                window:'[Window]',
-                document:'[Document]',
-                error:'[ERROR]', //when no parser is found, shouldn't happen
-                unknown:'[Unknown]',
-                'null':'null',
-                undefined:'undefined',
-                'function':function (fn) {
+            parsers: {
+                window: '[Window]',
+                document: '[Document]',
+                error: '[ERROR]', //when no parser is found, shouldn't happen
+                unknown: '[Unknown]',
+                'null': 'null',
+                undefined: 'undefined',
+                'function': function (fn) {
                     var ret = 'function',
                         name = 'name' in fn ? fn.name : (reName.exec(fn) || [])[1];//functions never have name in IE
                     if (name)
@@ -1040,10 +1031,10 @@
                     ret = [ ret, this.parse(fn, 'functionArgs'), '){'].join('');
                     return join(ret, this.parse(fn, 'functionCode'), '}');
                 },
-                array:array,
-                nodelist:array,
-                arguments:array,
-                object:function (map) {
+                array: array,
+                nodelist: array,
+                arguments: array,
+                object: function (map) {
                     var ret = [ ];
                     this.up();
                     for (var key in map)
@@ -1051,7 +1042,7 @@
                     this.down();
                     return join('{', ret, '}');
                 },
-                node:function (node) {
+                node: function (node) {
                     var open = this.HTML ? '&lt;' : '<',
                         close = this.HTML ? '&gt;' : '>';
 
@@ -1065,7 +1056,7 @@
                     }
                     return ret + close + open + '/' + tag + close;
                 },
-                functionArgs:function (fn) {//function calls it internally, it's the arguments part of the function
+                functionArgs: function (fn) {//function calls it internally, it's the arguments part of the function
                     var l = fn.length;
                     if (!l) return '';
 
@@ -1074,23 +1065,23 @@
                         args[l] = String.fromCharCode(97 + l);//97 is 'a'
                     return ' ' + args.join(', ') + ' ';
                 },
-                key:quote, //object calls it internally, the key part of an item in a map
-                functionCode:'[code]', //function calls it internally, it's the content of the function
-                attribute:quote, //node calls it internally, it's an html attribute value
-                string:quote,
-                date:quote,
-                regexp:literal, //regex
-                number:literal,
-                'boolean':literal
+                key: quote, //object calls it internally, the key part of an item in a map
+                functionCode: '[code]', //function calls it internally, it's the content of the function
+                attribute: quote, //node calls it internally, it's an html attribute value
+                string: quote,
+                date: quote,
+                regexp: literal, //regex
+                number: literal,
+                'boolean': literal
             },
-            DOMAttrs:{//attributes to dump from nodes, name=>realName
-                id:'id',
-                name:'name',
-                'class':'className'
+            DOMAttrs: {//attributes to dump from nodes, name=>realName
+                id: 'id',
+                name: 'name',
+                'class': 'className'
             },
-            HTML:true, //if true, entities are escaped ( <, >, \t, space and \n )
-            indentChar:'   ', //indentation unit
-            multiline:true //if true, items in a collection, are separated by a \n, else just a space.
+            HTML: true, //if true, entities are escaped ( <, >, \t, space and \n )
+            indentChar: '   ', //indentation unit
+            multiline: true //if true, items in a collection, are separated by a \n, else just a space.
         };
 
         return jsDump;
