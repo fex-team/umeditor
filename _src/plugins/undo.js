@@ -210,7 +210,7 @@ UE.plugins['undo'] = function () {
     //快捷键
     me.addshortcutkey({
         "Undo":"ctrl+90", //undo
-        "Redo":"ctrl+89" //redo
+        "Redo":"ctrl+89,shift+ctrl+z" //redo
 
     });
     var isCollapsed = true;

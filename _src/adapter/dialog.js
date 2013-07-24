@@ -10,6 +10,10 @@ UE.registerUI('link image gmap map insertvideo',function(name){
             url: me.options.UEDITOR_HOME_URL + 'dialogs/' + curDialogUrl + '/' + curDialogUrl + '.js'
         };
 
+    var $btn = $.eduibutton({
+        icon: name,
+        title: this.getLang('labelMap')[name] || ''
+    });
     //加载模版数据
     utils.loadFile(document,{
         src: opt.url,
@@ -53,30 +57,21 @@ UE.registerUI('link image gmap map insertvideo',function(name){
                 rng.select()
             }
         }).on('beforeshow', function () {
+                var $root = this.root();
                 currentRange = me.selection.getRange();
+
+                if (!$root.parent()[0]) {
+                    me.$container.find('.edui-dialog-container').append($root);
+                }
                 UE.setWidgetBody(name,$dialog,me);
         }).on('afterbackdrop',function(){
             this.$backdrop.css('zIndex',me.getOpt('zIndex')+1).appendTo(me.$container.find('.edui-dialog-container'))
             $dialog.css('zIndex',me.getOpt('zIndex')+2)
-        })
-
-
+        }).attachTo($btn)
     });
 
 
-    var $btn = $.eduibutton({
-        icon: name,
-        click: function () {
-            if(!$dialog)
-                return;
-            if (!$dialog.parent()[0]) {
-                me.$container.find('.edui-dialog-container').append($dialog);
-            }
-            $dialog.edui().show();
 
-        },
-        title: this.getLang('labelMap')[name] || ''
-    });
 
     me.addListener('selectionchange', function () {
         var state = this.queryCommandState(name);

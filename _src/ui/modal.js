@@ -122,9 +122,7 @@ UE.ui.define('modal', {
     attachTo: function ($obj) {
         var me = this
         if (!$obj.data('$mergeObj')) {
-            if (!$.contains(document.body, me.root()[0])) {
-                me.root().appendTo($obj);
-            }
+
             $obj.data('$mergeObj', me.root());
             $obj.on('click', function () {
                 me.toggle($obj)
