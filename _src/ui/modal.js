@@ -44,14 +44,6 @@ UE.ui.define('modal', {
             $(this).toggleClass('hover')
         });
     },
-    body: function ($cont) {
-        if ($cont) {
-            this.root().find('.edui-modal-body').html('').append($cont);
-            return this
-        } else {
-            return $(this.root().find('.edui-modal-body').html())
-        }
-    },
     toggle: function () {
         var me = this;
         return me[!me.data("isShown") ? 'show' : 'hide']();

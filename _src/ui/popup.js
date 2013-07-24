@@ -1,6 +1,9 @@
 //popup 类
 UE.ui.define('popup',{
-    tpl:'<div class="edui-dropdown-menu edui-popup" onmousedown="return false"><%=subtpl%></div>',
+    tpl:'<div class="edui-dropdown-menu edui-popup" onmousedown="return false">' +
+        '<div class="edui-popup-body"><%=subtpl%></div>' +
+        '<div class="edui-popup-caret"></div>' +
+        '</div>',
     defaultOpt:{
         subtpl:'',
         width:'',
@@ -45,15 +48,7 @@ UE.ui.define('popup',{
             me.data('$mergeObj',$obj)
         }
     },
-    body: function ($cont) {
-        if ($cont) {
-            this.root().html('').append($cont);
-            return this
-        } else {
-            return $(this.root().find('.modal-body').html())
-        }
-    },
     getBodyContainer : function(){
-        return this.root();
+        return this.root().find(".edui-popup-body");
     }
 });
