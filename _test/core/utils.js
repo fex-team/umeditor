@@ -279,84 +279,14 @@ test( "fixColor", function () {
     var utils = te.obj[0];
     equal( '#953734', utils.fixColor("color", 'rgb(149, 55, 52)' ),'fixColor' );
 } );
-test( "sort", function () {
-    var utils = te.obj[0];
-    same( ["a", "df", "sdf", "asdf"], utils.sort(['a','asdf','df','sdf'], function(a,b){
-        if(a.length> b.length)
-            return 1;
-        else return 0;
-    }),'sort' );
-} );
+
 test( "domReady", function () {
     var utils = te.obj[0];
     expect(1);
     utils.domReady(function(){ok(1,'domReady')});
 } );
-test( '4个padding属性', function () {
-//    var css = 'padding-bottom:0px; margin:0px 0px 20px; padding-left:0px; padding-right:4px; padding-top:0px';
-    /*上下相同，左右相同*/
-    var css = 'padding-bottom:3px;padding-left:2px;padding-right:2px;padding-top:3px';
-    var result = UE.utils.optCss( css );
-    equal(result,'padding:3px 2px;','上下相同，左右相同');
-        /*上下不同，左右相同*/
-    css = 'padding-bottom:2px;padding-left:2px;padding-right:2px;padding-top:3px'  ;
-    result = UE.utils.optCss( css );
-    equal(result,'padding:3px 2px 2px;','上下不同，左右相同');
-    /*只有2个属性*/
-    css = 'padding-bottom:2px;padding-left:2px;'  ;
-    result = UE.utils.optCss( css );
-    equal(result,'padding-bottom:2px;padding-left:2px;','2个属性就不合');
-} );
 
-test( '4个margin属性', function () {
-    /*上下相同，左右相同*/
-    var css = 'margin-bottom:3px;margin-left:2px;margin-right:2px;margin-top:3px';
-    var result = UE.utils.optCss( css );
-    equal(result,'margin:3px 2px;','上下相同，左右相同');
-    css = 'margin-bottom:2px;margin-left:2px;margin-right:2px;margin-top:2px'  ;
-    result = UE.utils.optCss( css );
-    equal(result,'margin:2px;','全相同');
-        /*上下不同，左右相同*/
-    css = 'margin-bottom:2px;margin-left:2px;margin-right:2px;margin-top:3px'  ;
-    result = UE.utils.optCss( css );
-    equal(result,'margin:3px 2px 2px;','上下不同，左右相同');
-    /*只有1个属性*/
-    css = 'margin-top:2px;'  ;
-    result = UE.utils.optCss( css );
-    equal(result,'margin-top:2px;','1个属性就不合');
-} ) ;
 
-test( '合并;的问题', function () {
-    equal(UE.utils.optCss( 'font-size:12px;&quot;;&lt;dssdfs&gt;;;' ),'font-size:12px;&quot;;&lt;dssdfs&gt;;','');
-} ) ;
-//test( '合并border相关属性', function () {
-////    var css = 'border-width:thin medium;' + //只有border-width
-////        'border-top-color:red;border-bottom-color:red;border-left-color:red;' + //3个分属性相同，不应当合
-////        'border-right-style:hidden;border-bottom-style:hidden;border-left-style:hidden;border-top-style:hidden';         //4个分属性相同，应当合
-////    var result = UE.utils.optCss( css );
-////    equal( result, 'border-width:thin medium;border-top-color:red;border-bottom-color:red;border-left-color:red;border-style:hidden' );
-////    /*border属性， border不能分别定义4个边框的宽度,颜色和样式,
-////    只能统一定义,不可以对四个边设置不同的值,和margin与padding是不同的(后两者可以分别定义四个边的值).*/
-////    css = 'border-top:2px hidden red;border-right:2px hidden red';
-////    result = UE.utils.optCss(css );
-////    equal(result,css,'border2个属性不合');
-////    /*4个属性都相同，合*/
-////    css = 'border-top:2px hidden red;border-right:2px hidden red;border-left:2px hidden red;border-bottom:2px hidden red';
-////    result = UE.utils.optCss(css );
-////    equal(result,'border:2px hidden red;','4个属性都相同，合');
-////        /*4个属性不同，不合*/
-////    css = 'border-top:2px hidden red;border-right:3px hidden red;border-left:2px hidden red;border-bottom:2px hidden red';
-////    result = UE.utils.optCss(css );
-////    equal(result,'border:2px hidden red;','4个属性不同，不合');
-//    var css = 'border-image:initial;'
-//} )  ;
-//
-test( 'margin，border，padding属性混杂', function () {
-    var css = 'margin-bottom:3px;margin-left:2px;margin-right:2px;margin-top:3px;padding:4px;border-image:initial;border-top-color:red;';
-    var result = UE.utils.optCss( css );
-    equal(result,'padding:4px;border-top-color:red;margin:3px 2px;','margin，border，padding属性混同');
-
-} ) ;
 
 test( 'each 遍历方法', function () {
    var div =  te.dom[0];

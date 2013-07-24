@@ -202,45 +202,6 @@ test( 'remove-- keep children', function() {
     same( node.id, p.id, 'check removed p' );
 } );
 
-test( 'getNextDomNode--没有filter', function() {
-    var domUtils = te.obj[3];
-    var div = te.dom[2];
-    div.innerHTML = '<p id="p">p_text<span><em>xxxx</em>xxxx</span><img /></p><div>xxxx</div>';
-    var p = div.firstChild;
-    /*直接查找兄弟节点*/
-    same( domUtils.getNextDomNode( p ), div.lastChild, '后兄弟节点' );
-//    same( domUtils.getPreviousDomNode( divChild ), p, '前一个兄弟节点' );
-    /*startFromChild=true，查找孩子结点*/
-    equal( domUtils.getNextDomNode( p, true ).data, 'p_text', 'text node' );
-//    equal( domUtils.getPreviousDomNode( p, true ), p.lastChild, 'text node' );
-} );
-
-
-test( 'getNextDomNode--有filter', function() {
-    var domUtils = te.obj[3];
-    var div = te.dom[2];
-    div.innerHTML = '<div id="p"><span><em>xxxx</em>xxxx</span><p>xx</p><img /></div><div>xxxx</div>';
-    document.body.insertBefore( document.createElement( 'span' ), div );
-    var span = div.firstChild.firstChild;
-    var filter = function( node ) {
-        if ( $( node ).css( 'display' ) == 'block' )
-            return false;
-        return true;
-    };
-    same( domUtils.getNextDomNode( span, false, filter ), div.firstChild.lastChild, '找到第一个不为block元素的兄弟节点' );
-//    same( domUtils.getPreviousDomNode( div, true, filter ), div.previousSibling, '孩子中没有block元素，则找父亲的previousSibling节点' );
-    te.obj.push( div.previousSibling );
-} );
-test( 'getNextDomNode-没有兄弟或孩子', function() {
-    var domUtils = te.obj[3];
-    var div = te.dom[2];
-    div.innerHTML = '<p id="p">p_text<span><em>xxxx</em>xxxx</span><img /></p><div>xxxx</div>';
-    var p = div.firstChild;
-    /*直接查找兄弟节点*/
-//    same( domUtils.getPreviousDomNode( p ), div.previousSibling, '前面木有兄弟' );
-    same( domUtils.getNextDomNode( div.lastChild ), div.nextSibling, '后面木有兄弟' );
-} );
-
 test( 'isBookmarkNode', function() {
     var domUtils = te.obj[3];
     var div = te.dom[2];
@@ -276,45 +237,6 @@ test( 'getWindow--iframe', function() {
 
 } );
 
-test( 'getCommonAncestor--body', function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-    equal( domUtils.getCommonAncestor( div, document.body ).tagName.toLocaleLowerCase(), 'body', '第二个参数是body' );
-    equal( domUtils.getCommonAncestor( document.body, div ).tagName.toLocaleLowerCase(), 'body', '第一个参数是body' );
-} );
-
-test( 'getCommonAncestor--自己', function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-    same( domUtils.getCommonAncestor( div, div ), div, '自己和自己的公共祖先' );
-
-} );
-
-test( 'getCommonAncestor--兄弟节点', function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-    div.innerHTML = '<span>xxxx</span><p><table><tr><td id="td">dddd</td></tr></table></p>';
-    var span_text = div.firstChild.firstChild;
-    var td = document.getElementById( 'td' );
-    same( domUtils.getCommonAncestor( span_text, td ), div, '兄弟节点' );
-} );
-
-test( 'getCommonAncestor--不在一个dom树', function() {
-    stop();
-    expect( 1 );
-    var div = te.dom[2];
-    var f = te.dom[1];
-    setTimeout( function() {
-        var domUtils = te.obj[3];
-        var frame_doc = f.contentWindow.document || f.contentDocument;
-        var frame_div = frame_doc.createElement( 'div' );
-        frame_doc.body.appendChild( frame_div );
-        same( domUtils.getCommonAncestor( frame_div, div ), null, '不在一个dom树' );
-        start();
-    }, 50 );
-
-} );
-
 test( 'isWhitespace', function() {
     var div = te.dom[2];
     var domUtils = te.obj[3];
@@ -322,94 +244,6 @@ test( 'isWhitespace', function() {
     ok( !domUtils.isWhitespace( div.firstChild ), 'not whiteSpace' );
     div.innerHTML = UE.browser.ie && UE.browser.version == '6' ? '\ufeff' : '\u200B' + '\t\t\n\r';
     ok( domUtils.isWhitespace( div.firstChild ), 'is whiteSpace' );
-} );
-
-test( 'isEmptyInlineElement', function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-    div.innerHTML = '<span><b><i><b>\n\r</b>xxxx</i></b><i></i></span>';
-    var b1 = div.firstChild.firstChild;
-    ok( !domUtils.isEmptyInlineElement( b1 ), 'not empty inline' );
-    ok( domUtils.isEmptyInlineElement( b1.firstChild.firstChild ), 'is emtpy inline element' );
-} );
-
-test( 'isEmptyInlineElement-nodeType!=1', function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-    div.innerHTML = '<span><b>\n\r\ufeff\u200B</b>xxxx<i></i></span>';
-    ok( !domUtils.isEmptyInlineElement( div.firstChild.firstChild.firstChild ), 'textNode not inline element' );
-} );
-
-test( 'isEmptyInlineElement-block element', function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-    div.innerHTML = '<span><b><i><b>\n\r</b>xxxx</i></b><i></i></span>';
-    ok( !domUtils.isEmptyInlineElement( div ), 'not inline element' );
-} );
-
-
-test( 'clearEmptySibling', function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-    div.innerHTML = '<p>xxx<span><u><i><b></b></i></u>xxxxx</span><img /></p><table><tr><td><i></i></td></tr></table>';
-    var text = div.firstChild.firstChild;
-    /*没有空sibling*/
-    domUtils.clearEmptySibling( text );
-    equal( ua.getChildHTML( div ), '<p>xxx<span><u><i><b></b></i></u>xxxxx</span><img></p><table><tbody><tr><td><i></i></td></tr></tbody></table>', '没有空sibling' );
-    var span = text.nextSibling;
-    domUtils.clearEmptySibling( span );
-    equal( ua.getChildHTML( div ), '<p>xxx<span><u><i><b></b></i></u>xxxxx</span><img></p><table><tbody><tr><td><i></i></td></tr></tbody></table>' );
-    /*左边有空sibling*/
-    domUtils.clearEmptySibling( span.lastChild );
-    equal( ua.getChildHTML( div ), '<p>xxx<span>xxxxx</span><img></p><table><tbody><tr><td><i></i></td></tr></tbody></table>', '左边有空sibling' );
-    /*左右边有空sibling*/
-    div.innerHTML = '<p><i></i>\n<b>\t<i><u>\n\t\r</u></i></b>xxxx<b></b></p>';
-    domUtils.clearEmptySibling( div.firstChild.lastChild.previousSibling );
-
-    //TODO 有空白文本的时候是否需要删除
-    equal( div.innerHTML.toLocaleLowerCase(), '<p>xxxx</p>', '左右边有空sibling' );
-    /*左右多个连续的空inline sibling*/
-    div.innerHTML = '<span><b></b><i>\t\t</i><div id="div"></div><var></var></span>';
-    var div_new = document.getElementById( 'div' );
-    domUtils.clearEmptySibling( div_new );
-    equal( ua.getChildHTML( div ), '<span><div id="div"></div></span>', '连续空inline sibling' );
-    /*左右边有空块元素*/
-    div.innerHTML = '<div><p></p>xxxx<b></b></div>';
-    domUtils.clearEmptySibling( div.firstChild.firstChild.nextSibling );
-    equal( ua.getChildHTML( div ), '<div><p></p>xxxx</div>', '左右边有空块元素' );
-} );
-
-/*不能误删bookmark*/
-test( 'clearEmptySibling--bookmark', function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-    var r = te.obj[2];
-    div.innerHTML = '<span><a>link</a></span>';
-    var a = div.firstChild.firstChild;
-    var link = a.firstChild;
-    r.selectNode( link );
-    r.createBookmark();
-    /*bookmark节点*/
-    domUtils.clearEmptySibling( link );
-    ok( /_baidu_bookmark_end/.test( link.nextSibling.id ), '右边的bookmark sibling没有删掉' );
-    ok( /_baidu_bookmark_start/.test( link.previousSibling.id ), '左边的bookmark sibling没有删掉' );
-} );
-
-test( 'clearEmptySibling--ignoreNext/ignorePrevious', function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-    /*ignoreNext*/
-    div.innerHTML = '<p><i></i>\n<b>\t<i><u>\n\t\r</u></i></b>xxxx<b></b></p>';
-    domUtils.clearEmptySibling( div.firstChild.lastChild.previousSibling, true );
-    equal( div.innerHTML.toLocaleLowerCase(), '<p>xxxx<b></b></p>', 'ignore next' );
-    /*ignorePrevious*/
-    div.innerHTML = '<p><i></i>\n<b>\t<i><u>\n\t\r</u></i></b>xxxx<b></b></p>';
-    domUtils.clearEmptySibling( div.firstChild.lastChild.previousSibling, false, true );
-    equal( ua.getChildHTML( div ), '<p><i></i><b><i><u></u></i></b>xxxx</p>', 'ignore next' );
-    /*ignorePrevious&&ignoreNext*/
-    div.innerHTML = '<p><i></i>\n<b>\t<i><u>\n\t\r</u></i></b>xxxx<b></b></p>';
-    domUtils.clearEmptySibling( div.firstChild.lastChild.previousSibling, true, true );
-    equal( ua.getChildHTML( div ), '<p><i></i><b><i><u></u></i></b>xxxx<b></b></p>', 'ignore next&&previous' );
 } );
 
 test( 'split--offset正常', function() {
@@ -454,23 +288,23 @@ test( 'split--offset=data.length', function() {
 //
 //} );
 
-
-test( 'on--跨iframe加载', function() {
-    expect( 1 );
-    var domUtils = te.obj[3];
-    var op = {
-        onafterstart : function( f ) {
-            domUtils.on( f, 'load', function() {
-                ok( true, 'on load of iframe success' );
-            } );
-        },
-        ontest : function() {
-            this.finish();
-        }
-    };
-    ua.frameExt( op );
-} );
-
+//
+//test( 'on--跨iframe加载', function() {
+//    expect( 1 );
+//    var domUtils = te.obj[3];
+//    var op = {
+//        onafterstart : function( f ) {
+//            domUtils.on( f, 'load', function() {
+//                ok( true, 'on load of iframe success' );
+//            } );
+//        },
+//        ontest : function() {
+//            this.finish();
+//        }
+//    };
+//    ua.frameExt( op );
+//} );
+//
 
 test( 'on- 给不同的dom元素绑定相同的事件', function() {
     var domUtils = te.obj[3];
@@ -590,162 +424,6 @@ test( "un--同一个事件取消注册三次", function() {
     ua.click( div );
 } );
 
-/** * 跨frame on然后un */
-test( "window resize", function() {
-    expect( 1 );
-    var domUtils = te.obj[3];
-    ua.frameExt( {
-        onafterstart : function( f ) {
-            $( f ).css( 'width', 200 );
-        },
-        ontest : function( w, f ) {
-            var op = this;
-            var fn = function() {
-                ok( true );
-            };
-            domUtils.on( w, 'resize', fn );
-            $( f ).css( 'width', 220 );
-            /* 貌似通过jquery触发窗体变化会存在延时 */
-            setTimeout( function() {
-                domUtils.un( w, 'resize', fn );
-                $( f ).css( 'width', 240 );
-                setTimeout( op.finish, 100 );
-            }, 500 );
-        }    } );
-} );
-
-
-test( 'isSameElement--compare with self', function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-    $( div ).attr( 'name', 'div_name' ).attr( 'class', 'div_class' ).css( 'background-color', 'red' ).css( 'border', '1px' ).css( 'font-size', '12px' ).css( 'height', '12px' ).css( 'width', '20px' );
-    ok( domUtils.isSameElement( div, div ), 'compare with self' );
-} );
-
-test( 'isSameElement--tagName不一样', function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-    div.appendChild( document.createElement( 'span' ) );
-    $( div ).attr( 'name', 'div_name' ).attr( 'class', 'div_class' ).css( 'background-color', 'red' ).css( 'border', '1px' ).css( 'font-size', '12px' ).css( 'height', '12px' ).css( 'width', '20px' );
-    ok( !domUtils.isSameElement( div, div.firstChild ), 'different tagName' );
-} );
-
-//TODO 目前的判断有问题，ie下手动创建的img会自动添加一个complete属性，导致比较结果为false,因此不对img进行比较
-test( 'isSameElement--img的src和宽高比较', function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-    div.innerHTML = '<span src="http://img.baidu.com/hi/jx2/j_0001.gif" width="50" height="51"></span>';
-
-    var span = document.createElement( 'span' );
-    span.setAttribute( 'src', 'http://img.baidu.com/hi/jx2/j_0001.gif' );
-    span.setAttribute( 'height', '51' );
-    span.setAttribute( 'width', '50' );
-    div.appendChild( span );
-    ok( domUtils.isSameElement( div.firstChild, div.lastChild ), '手动创建的img的src和宽高比较' );
-} );
-
-test( 'isSameElement--两种元素的样式通过不同方式设置', function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-    $( div ).attr( 'name', 'div_name' ).attr( 'class', 'div_class' ).css( 'background-color', 'red' ).css( 'border', '1px' ).css( 'font-size', '12px' ).css( 'height', '12px' ).css( 'width', '20px' );
-    var div_new = document.createElement( 'div' );
-    document.body.appendChild( div_new );
-    te.dom.push( div_new );
-    div_new.innerHTML = '<div id="test" class="div_class" name="div_name" style="border:1px;font-size:12px;background-color:red;width:20px;height:12px;"></div>';
-    ok( domUtils.isSameElement( div_new.firstChild, div ), 'is sameElement' );
-    /*防止前后顺序引起的问题*/
-    ok( domUtils.isSameElement( div, div_new.firstChild ), 'is sameElement' );
-} );
-
-test( 'isSameElement--A比B多一个属性', function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-    div.innerHTML = '<span class="div_class" id="span_id1" name="span_name1"></span>';
-    var div_new = document.createElement( 'div' );
-    document.body.appendChild( div_new );
-    te.dom.push( div_new );
-    div_new.innerHTML = '<span class="div_class" id="span_id1"></span>';
-    ok( !domUtils.isSameElement( div_new.firstChild, div ), 'A and B is not sameElement' );
-    ok( ! domUtils.isSameElement( div, div_new.firstChild ), 'B and A is not sameElement' );
-} );
-
-test( 'isSameElement--img的属性比较', function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-//    var editor = new UE.Editor();
-//    editor.render(div);
-    div.innerHTML = '<img  style="width: 200px;height: 200px" src="http://ueditor.baidu.com/img/logo.png">hello';
-    var div1 = document.createElement( 'div' );
-    var html = '<img  src="http://ueditor.baidu.com/img/logo.png" style="width: 200px;height: 200px" >';
-    div1.innerHTML = html;
-    ok( domUtils.isSameElement( div.firstChild, div1.firstChild ), '属性一致' )
-} );
-
-/*暂时不会对颜色不同表达方式做转换*/
-//test( 'isSameElement--style描述方式不同', function() {
-//    var div = te.dom[2];
-//    var domUtils = te.obj[3];
-//    $( div ).attr( 'name', 'div_name' ).attr( 'class', 'div_class' ).css( 'background-color', 'red' ).css( 'border', '1px' ).css( 'font-size', '12px' ).css( 'height', '12px' ).css( 'width', '20px' );
-//    var div_new = document.createElement( 'div' );
-//    document.body.appendChild( div_new );
-//    te.dom.push( div_new );
-//    div_new.innerHTML = '<div id="test" class="div_class" name="div_name" style="border:1px;font-size:12px;background-color:rgb(255,0,0);width:20px;height:12px;"></div>';
-//    ok( domUtils.isSameElement( div_new.firstChild, div ), 'A and B are sameElement' );
-//    div_new.innerHTML = '<div id="test" class="div_class" name="div_name" style="border:1px;font-size:12px;background-color:#ff0000;width:20px;height:12px;"></div>';
-//    ok( domUtils.isSameElement( div, div_new.firstChild ), 'B and A sameElement' );
-//} );
-
-test( 'isSameElement--A比B多一个style属性', function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-    $( div ).attr( 'name', 'div_name' ).attr( 'class', 'div_class' ).css( 'background-color', 'red' ).css( 'border', '1px' ).css( 'font-size', '12px' ).css( 'height', '12px' ).css( 'width', '20px' );
-    var div_new = document.createElement( 'div' );
-    document.body.appendChild( div_new );
-    te.dom.push( div_new );
-    div_new.innerHTML = '<div id="test" class="div_class" name="div_name" style="border:1px;font-size:12px;background-color:rgb(255,0,0);width:20px;height:12px;left:12px"></div>';
-    ok( !domUtils.isSameElement( div_new.firstChild, div ), 'A and B is not sameElement' );
-    ok( ! domUtils.isSameElement( div, div_new.firstChild ), 'B and A is not sameElement' );
-} );
-
-//test( 'isRedundantSpan--非span', function() {
-//    var div = te.dom[2];
-//    var domUtils = te.obj[3];
-//    div.innerHTML = 'text';
-//    ok( !domUtils.isRedundantSpan( div ), 'not span' );
-//    ok( !domUtils.isRedundantSpan( div.firstChild ), 'text node is not span' );
-//} );
-//
-//test( 'isRedundentSpan', function() {
-//    var div = te.dom[2];
-//    var domUtils = te.obj[3];
-//    div.innerHTML = '<span></span><span name="span" style="font-size:12px"></span>';
-//    ok( domUtils.isRedundantSpan( div.firstChild ), 'is redundentSapn' );
-//    ok( !domUtils.isRedundantSpan( div.lastChild ), 'is not redundentSpan' );
-//    var span = document.createElement( 'span' );
-//    div.appendChild( span );
-//    ok( domUtils.isRedundantSpan( span ), 'is redundent span' );
-//} );
-
-/*rd说实际应用情况会按照固定的方式设置样式，因此不考虑兼容rgb(255,0,0),#ff0000,red这三者的差别*/
-test( 'isSameStyle', function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-    /*分号，空格*/
-    div.innerHTML = '<span style="font-size:12px; background-color:rgb(255,0,0);"></span><span name="span" style="font-size:12px;background-color:rgb(255,0,0) "></span>';
-    ok( domUtils.isSameStyle( div.firstChild, div.lastChild ), 'have same style' );
-} );
-
-test( 'isSameStyle--float', function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-    /*分号，空格*/
-    div.innerHTML = '<span style=" float:left;font-size:12px; "></span><span name="span" style="font-size:12px;float:left"></span>';
-    ok( domUtils.isSameStyle( div.firstChild, div.lastChild ), 'have same style' );
-    div.firstChild.style.cssText = "float:left;font-size:12px;background-color:red";
-    ok( ! domUtils.isSameStyle( div.firstChild, div.lastChild ), 'have differtnt style' );
-} );
-
-
 test( 'isBlockElm', function() {
     var div = te.dom[2];
     var domUtils = te.obj[3];
@@ -773,108 +451,6 @@ test( 'isbody', function() {
     ok( domUtils.isBody( document.body ), 'is body' );
 } );
 
-/*parent参数是 node的直接父亲*/
-test( 'breakParent--一级祖先', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '<p><span>xxxx</span><u><i>uitext</i></u><br /></p><div>xxxx</div>';
-    var br = div.firstChild.lastChild;
-    var returnNode = domUtils.breakParent( br, div.firstChild );
-    equal( ua.getChildHTML( div ), '<p><span>xxxx</span><u><i>uitext</i></u></p><br><p></p><div>xxxx</div>' );
-    equal( returnNode.tagName.toLowerCase(), 'br', 'check return value' );
-} );
-
-/*parent参数是 node的祖先节点*/
-test( 'breakParent--二级祖先', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '<p><span>xxxx</span><u><i>uitext</i></u><br /></p><div>xxxx</div>';
-    domUtils.breakParent( div.firstChild.firstChild.firstChild, div.firstChild );
-    equal( ua.getChildHTML( div ), '<p><span></span></p>xxxx<p><span></span><u><i>uitext</i></u><br></p><div>xxxx</div>' );
-} );
-/*bookMark已在clearEmptySibling中验证*/
-test( 'isEmptyInlineElement', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '<p><u><em></em></u><span>xxxx</span><u><i>uitext</i></u><br /></p><div>xxxx</div><div></div>';
-    var p = div.firstChild;
-    /*非空元素*/
-    ok( !domUtils.isEmptyInlineElement( p ), 'is not empty' );
-    /*空inline元素*/
-    ok( domUtils.isEmptyInlineElement( p.firstChild ), 'u is empty' );
-    ok( domUtils.isEmptyInlineElement( p.firstChild.firstChild ), 'em is empty' );
-    /*块元素*/
-    ok( !domUtils.isEmptyInlineElement( p.lastChild ), 'empty div is not inline' );
-} );
-
-test( 'trimWhiteTextNode', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '\n\t    <p><u><em></em></u><span>xxxx</span><u><i>uitext</i></u><br /></p><div>xxxx</div>    ';
-    domUtils.trimWhiteTextNode( div );
-    equal( ua.getChildHTML( div ), '<p><u><em></em></u><span>xxxx</span><u><i>uitext</i></u><br></p><div>xxxx</div>', 'trim white textnode' );
-} );
-
-/*适用于inline节点*/
-test( 'mergeChild--span', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-
-    var div_new = document.createElement( 'div' );
-    div_new.id = 'test';
-    div.innerHTML = '<span style="background-color:blue;"><span style="font-size:12px;color:red">span_1<span style="font-size:12px">span_2</span></span></span>';
-    domUtils.mergeChild( div.firstChild.firstChild );
-    /*span套span则进行合并*/
-    div_new.innerHTML = '<span style="background-color:blue;"><span style="font-size:12px;color:red">span_1</span></span>';
-    div_new.firstChild.firstChild.appendChild( document.createTextNode( 'span_2' ) );
-    ok( ua.haveSameAllChildAttribs( div, div_new ), 'span套span则合并' );
-
-    div.innerHTML = '<p><span style="font-size:12px;color:red">span_1<span style="font-size:12px">span_2</span></span></p>';
-    domUtils.mergeChild( div.firstChild.firstChild );
-    /*父节点style比子节点多，删去子节点*/
-    div_new.innerHTML = '<p><span style="font-size:12px;color:red">span_1</span></p>' || ua.getChildHTML( div ) == '<p><span style="color:red;font-size:12px">span_1span_2</span></p>';
-    div_new.firstChild.firstChild.appendChild( document.createTextNode( 'dpan_2' ) );
-    ok( ua.haveSameAllChildAttribs( div, div_new ), '父节点style比子节点多' );
-    /*子节点style比父节点多，则不作调整*/
-    div.innerHTML = '<p><span style="font-size:12px">span_1<span style="font-size:12px;color:red">span_2</span></span></p>';
-    var span = div.firstChild.firstChild;
-    domUtils.mergeChild( span );
-    /*创建一个div，div的innerHTML与预期的结果相同，比较div_new与div的所有属性，从而判断style为预期结果*/
-    var div_new = document.createElement( 'div' );
-    div_new.id = 'test';
-    div_new.innerHTML = '<p><span style="font-size:12px">span_1<span style="font-size:12px;color:red">span_2</span></span></p>';
-    ok( ua.haveSameAllChildAttribs( div, div_new ), '子节点style比父节点多' );
-
-    /*多个子节点和兄弟节点，有的子节点style比父节点多，有的少，有的不同*/
-    div.innerHTML = '<p><span style="font-size:12px;color:red;left:10px">span_1<span style="font-size:12px">span_2</span><span style="top:10px">span_3</span><span style="color:red;left:10px;right:10px">span_4</span></span><span style="font-size:12px"></span></p>';
-    domUtils.mergeChild( div.firstChild.firstChild );
-    div_new.innerHTML = '<p><span style="font-size:12px;color:red;left:10px">span_2<span style="font-size:12px;color:red;left:10px;top:10px">span_3</span><span style="font-size:12px;color:red;left:10px;right:10px">span_4</span></span><span style="font-size:12px"></span></p>';
-    var span1 = div_new.firstChild.firstChild;
-    span1.insertBefore( document.createTextNode( 'span_1' ), span1.firstChild );
-    ok( ua.haveSameAllChildAttribs( div, div_new ), '多个子节点和兄弟节点，有的子节点style比父节点多，有的少，有的不同' );
-} );
-
-
-test( 'mergeChild--非span', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    /*父节点和子节点属性不同*/
-    div.innerHTML = '<b style="color:red;font-size:12px">b1<b style="font-size:12px;">b2</b></b>';
-    var div_new = document.createElement( 'div' );
-    div_new.id = 'test';
-    div_new.innerHTML = '<b style="color:red;font-size:12px">b1<b style="font-size:12px;">b2</b></b>';
-    domUtils.mergeChild( div.firstChild );
-    ok( ua.haveSameAllChildAttribs( div, div_new ), '父节点和子节点属性不同，则不操作' );
-    /*父节点和子节点属性相同*/
-    div.innerHTML = '<b style="color:red;font-size:12px">b1<b style="font-size:12px;color:red;">b2</b></b>';
-    var div_new = document.createElement( 'div' );
-    div_new.id = 'test';
-    div_new.innerHTML = '<b style="color:red;font-size:12px">b1</b>';
-    domUtils.mergeChild( div.firstChild );
-    div_new.firstChild.appendChild( document.createTextNode( 'b2' ) );
-    ok( ua.haveSameAllChildAttribs( div, div_new ), '父节点和子节点属性相同，则删子节点' );
-} );
-
 test( 'getElementsByTagName', function() {
     var div = te.dom[2];
     var domUtils = UE.dom.domUtils;
@@ -884,83 +460,6 @@ test( 'getElementsByTagName', function() {
     equal( elms[0].innerHTML.toLowerCase(), '<u><em></em></u><span>xxxx</span><u><i>uitext</i></u><br>', 'check first p' );
     equal( elms[1].innerHTML, 'xxxx', 'check second p' );
 } );
-
-test( 'mergeToParent--一个span孩子', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '<span style="color:red;font-size:12px;"><span style="left:10px;right:20px;"></span></span>';
-    domUtils.mergeToParent( div.firstChild.firstChild );
-    var div_new = document.createElement( 'div' );
-    div_new.innerHTML = '<span style=color:red;font-size:12px;left:10px;right:20px;></span>';
-    ok( ua.haveSameAllChildAttribs( div, div_new ), 'mergeTo parent' );
-} );
-
-test( 'mergeToParent--一个span孩子，孩子css样式与父节点相同', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '<span style="color:red;font-size:12px;"><span style="font-size:12px;color:red;">xxxxx</span></span>';
-    domUtils.mergeToParent( div.firstChild.firstChild );
-    var div_new = document.createElement( 'div' );
-    div_new.innerHTML = '<span style="color:red;font-size:12px">xxxxx</span>';
-    ok( ua.haveSameAllChildAttribs( div, div_new ), 'mergeTo parent，删除样式相同的子节点' );
-} );
-
-test( 'mergeToParent--多个span孩子,祖先节点不可被合并', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '<span style="color:red;font-size:12px;"><span style="left:10px;right:20px;"></span><span style="top:10px"></span></span>';
-    domUtils.mergeToParent( div.firstChild.firstChild );
-    var div_new = document.createElement( 'div' );
-    div_new.innerHTML = '<span style="color:red;font-size:12px;"><span style="left:10px;right:20px;color:red;font-size:12px;"></span><span style="top:10px"></span></span>';
-    ok( ua.haveSameAllChildAttribs( div, div_new ), 'mergeTo parent--多个span孩子,' );
-} );
-
-//test( 'mergeToParent--a', function() {
-//    var div = te.dom[2];
-//    var domUtils = UE.dom.domUtils;
-//    div.innerHTML = '<span style="text-decoration: line-through"><a href="http://www.baidu.com/">www.baidu.com</a></span>';
-//
-//
-//} );
-
-
-test( 'mergeToParent--其他inline节点', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '<b>xxx<i>xxx<u>xxxx<em>xxx<i id="secondI"><b>xxxxxx</b></i></em></u></i></b>';
-    var i = document.getElementById( 'secondI' );
-    domUtils.mergeToParent( i.firstChild );
-    ok( ua.getChildHTML( div ), '<b>xxx<i>xxx<u>xxxx<em>xxx<i>xxxxxx</i></em></u></i></b>' );
-    domUtils.mergeToParent( i );
-    ok( ua.getChildHTML( div ), '<b>xxx<i>xxx<u>xxxx<em>xxxxxxxxx</em></u></i></b>' );
-} );
-
-/*合并兄弟节点中有相同属性包括style的节点*/
-test( 'mergeSibling--左边没有兄弟', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '<b>b1</b><b>b2</b><b id="b3">b3</b>';
-    domUtils.mergeSibling( div.firstChild );
-    ok( ua.getChildHTML( div ), '<b>b1b2</b><b id="b3">b3</b>' );
-} );
-
-test( 'mergeSibling--右边没有兄弟', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '<b>b1</b><b>b2</b><b>b3</b>';
-    domUtils.mergeSibling( div.lastChild );
-    ok( ua.getChildHTML( div ), '<b>b1b2</b><b id="b3">b3</b>' );
-} );
-
-
-test( 'mergeSibling--兄弟节点没有孩子', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '<b></b><b>b2</b><b id="b3">b3</b>';
-    domUtils.mergeSibling( div.firstChild.nextSibling );
-    ok( ua.getChildHTML( div ), '<b>b2</b><b id="b3">b3</b>' );
-} );
-
 
 test( 'unselectable--检查赋值是否成功', function() {
     var div = te.dom[2];
@@ -1058,7 +557,7 @@ test( 'getComputedStyle-border', function() {
     div.innerHTML = '<table style="border: 5px solid red"></table>';
     equal( domUtils.getComputedStyle( div.firstChild, 'border-width' ), '5px' );
     equal( domUtils.getComputedStyle( div.lastChild, 'border-style' ), 'solid' );
-    equal( domUtils.getComputedStyle( div.lastChild, 'border-color' ), 'red' );
+    equal( domUtils.getComputedStyle( div.lastChild, 'border-color' ), "#FF0000" );
 } );
 //修复ie下的一个bug，如果在body上强制设了字体大小，h1的字体大小就会继承body的字体，而没有办法取到真是的字体大小
 test( 'getComputedStyle-在body上设置字体大小', function() {
@@ -1073,100 +572,11 @@ test( 'getComputedStyle-在body上设置字体大小', function() {
         var h1 = body.appendChild( editor.document.createElement( 'h1' ) );
 //    editor.body.style['fontSize'] = '10px';
 //   h1的字体大小不是10px
-        //TODO 各个浏览器没有默认的H1的大小，在默认字体大小为16px时，ie下H1的大小为33px，其他为32px
-        var fontSize = (ua.browser.ie && ua.browser.ie < 9) ? '33px' : '32px';
+        var fontSize = '32px';
         equal( domUtils.getComputedStyle( h1, 'font-size' ), fontSize, 'body的fontSize属性不应当覆盖p的fontSize属性' );
 //    editor.setContent( '<h2>这是h2的文本<a>这是一个超链接</a></h2>' );
         start();
     });
-} );
-
-/*不支持一个class的删除，必须为一个数组*/
-//test( 'removeClasses--一个class', function() {
-//    var div = te.dom[2];
-//    var domUtils = UE.dom.domUtils;
-//    div.innerHTML = '<div class="div_class" name="div_name" style="color:red;font-size:12px"></div>';
-//    domUtils.removeClasses( div.firstChild, 'div_class' );
-//    ok( ua.getChildHTML( div ) == '<div name="div_name" style="color:red;font-size:12px"></div>' || ua.getChildHTML( div ) == '<div name="div_name" style="font-size:12px;color:red;"></div>' );
-//} );
-
-test( 'removeClasses--多个class', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '<div class="div_class div_class2 div_class3" name="div_name" style="color:red;font-size:12px"></div>';
-    var divChild = div.firstChild;
-    domUtils.removeClasses( divChild, ['div_class2' ,'div_class3','div_class'] );
-    equal( $.trim( divChild.className ), "", 'check className' );
-    equal( $( divChild ).attr( 'name' ), 'div_name', 'check name' );
-    equal( $( divChild ).css( 'font-size' ), '12px', 'check font-size' );
-    equal( $( divChild ).css( 'font-size' ), '12px', 'check font-size' );
-    equal( divChild.style[ 'color'], 'red', 'check red' );
-} );
-
-test( 'removeClasses--class包含”-“', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '<div class="b-b b-b-a " name="div_name" style="color:red;font-size:12px"></div>';
-    var divChild = div.firstChild;
-    domUtils.removeClasses( divChild, ['b-b'] );
-    equal( $.trim( divChild.className ), "b-b-a", 'check className' );
-    equal( $( divChild ).attr( 'name' ), 'div_name', 'check name' );
-    equal( $( divChild ).css( 'font-size' ), '12px', 'check font-size' );
-    equal( divChild.style[ 'color'], 'red', 'check red' );
-    div.innerHTML = '<div class="b-b b-b-a " name="div_name" style="color:red;font-size:12px"></div>';
-    domUtils.removeClasses( div.firstChild, ' b-b-a  b-b' );
-    equal(div.firstChild.className,'')
-} );
-
-test( 'removeStyle--style不为空', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '<div name="div_name" style="color:red;font-size:12px"></div>';
-    domUtils.removeStyle( div.firstChild, 'font-size' );
-    var div_new = document.createElement( 'div' );
-    div_new.id = 'test';
-    div_new.innerHTML = '<div name="div_name" style="color:red; "></div>';
-    ok( ua.haveSameAllChildAttribs( div, div_new ), 'check removed style' );
-
-} );
-test( 'removeStyle--style不为空', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '<div name="div_name" style="border-left:1px solid #ccc"></div>';
-    domUtils.removeStyle( div.firstChild, 'border-left' );
-    var div_new = document.createElement( 'div' );
-    div_new.id = 'test';
-    div_new.innerHTML = '<div name="div_name" ></div>';
-    ok( ua.haveSameAllChildAttribs( div, div_new ), 'check removed style' );
-
-} );
-test( 'removeStyle--style为空', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '<div name="div_name"></div>';
-    domUtils.removeStyle( div.firstChild, 'color' );
-    equal( ua.getChildHTML( div ), '<div name="div_name"></div>', ' style为空' );
-} );
-
-test( 'hasClass', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '<div class="div_class div_class2 div_class3" name="div_name" style="color:red;font-size:12px"></div>';
-    var divChild = div.firstChild;
-    ok( domUtils.hasClass( divChild, 'div_class3' ), '有这个class' );
-    ok( !domUtils.hasClass( divChild, 'div' ), '木有这个class' );
-    div.firstChild.className = 'a b  c';
-    ok(domUtils.hasClass(div.firstChild,'b c a'))
-} );
-
-test( 'addClass', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '<div class="div_class div_class2 div_class3" name="div_name" style="color:red;font-size:12px"></div>';
-    domUtils.addClass(div.firstChild,'div_class4')
-    equal(div.firstChild.className,'div_class div_class2 div_class3 div_class4','增加class4');
-    domUtils.addClass(div.firstChild,'div_class4');
-    equal(div.firstChild.className,'div_class div_class2 div_class3 div_class4','再增加class4');
 } );
 
 test( "preventDefault", function() {
@@ -1271,35 +681,6 @@ test( 'setStyle', function() {
     equal( $( div.firstChild.lastChild ).css( 'text-indent' ), '10px', '设置了缩进样式' );
 } );
 
-test( 'setStyles', function() {
-    var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
-    div.innerHTML = '<div style="float: left"><p style="background: red"></p></div>';
-    /*修改float值*/
-    domUtils.setStyles( div.firstChild, {'float':'right','text-align':'center'} );
-    equal( $( div.firstChild ).css( 'float' ), 'right', '浮动方式改为了right' );
-    equal( $( div.firstChild.lastChild ).css( 'text-align' ), 'center', '设置了对齐方式样式' );
-} );
-
-//zhuwenxuan add
-//test( 'clearReduent', function() {
-//    var div = te.dom[2];
-//    var domUtils = UE.dom.domUtils;
-//    //没有内容
-//    div.innerHTML = '<div><b><i></i></b></div>';
-//    document.body.appendChild(div);
-//    domUtils.clearReduent(div,["i","b"]);
-//    ok( "<div></div>",div.innerHTML );
-//    //有内容
-//    div.innerHTML = '<div><b><i>ddd</i></b></div>';
-//    domUtils.clearReduent(div,["i","b"]);
-//    ok( "<div><b><i>ddd</i></b></div>",div.innerHTML );
-//    div.innerHTML = '<div><i>ddd</i><b></b></div>';
-//    domUtils.clearReduent(div,["i","b"]);
-//    ok( "<div><i>ddd</i></div>",div.innerHTML );
-//} );
-
-
 //zhuwenxuan add
 test( 'isEmptyNode', function() {
     var div = te.dom[2];
@@ -1309,24 +690,6 @@ test( 'isEmptyNode', function() {
     div.innerHTML = '<div><i></i><b>dasdf</b></div>';
     equal(false,domUtils.isEmptyNode(div));
 } );
-
-//zhuwenxuan add
-test( 'clearSelectedArr', function() {
-    var domUtils = UE.dom.domUtils;
-    var div = te.dom[2];
-    var span = document.createElement("span");
-    div.className = "aaa";
-    span.className = "span";
-    document.body.appendChild(div);
-    document.body.appendChild(span);
-    var arr = [];
-    arr.push(div);
-    arr.push(span);
-    domUtils.clearSelectedArr(arr);
-    equal("",div.className);
-    equal("",span.className);
-} );
-
 
 //zhuwenxuan add
 test( 'isBr', function() {
@@ -1348,19 +711,6 @@ test( 'isFillChar', function() {
 
 
 //zhuwenxuan add
-test( 'isStartInblock', function() {
-    var domUtils = UE.dom.domUtils;
-    var div = te.dom[2];
-    var range = new UE.dom.Range( document );
-    domUtils.fillNode(document,div);
-    range.setStart(div,0);
-    ok(domUtils.isStartInblock(range));
-    div.innerHTML = "asdfasdf";
-    range.setStart(div,2);
-    equal(0,domUtils.isStartInblock(range))
-} );
-
-//zhuwenxuan add
 test( 'isEmptyBlock', function() {
     var domUtils = UE.dom.domUtils;
     var div = te.dom[2];
@@ -1379,253 +729,3 @@ test( 'fillNode', function() {
     domUtils.fillNode(document,div);
     ok(div.innerHTML.length>0);
 } );
-
-//zhuwenxuan add
-test( 'moveChild', function() {
-    var domUtils = UE.dom.domUtils;
-    var div = te.dom[2];
-    div.innerHTML = "div child";
-    var p = document.createElement("p");
-    domUtils.moveChild(div,p);
-    equal("div child",p.innerHTML);
-    p.innerHTML = "";
-    div.innerHTML = "<span>asdf</span>";
-    domUtils.moveChild(div,p);
-    equal("<span>asdf</span>",p.innerHTML.toLowerCase());
-} );
-
-test( 'hasNoAttributes', function() {
-    var domUtils = UE.dom.domUtils;
-    var div = te.dom[2];
-    div.innerHTML = "<span>sdf</span>";
-
-    ok(domUtils.hasNoAttributes(div.firstChild));
-    div.firstChild.style.cssText = 'font-size:12px';
-    ok(!domUtils.hasNoAttributes(div.firstChild));
-    domUtils.removeAttributes(div.firstChild,['style']);
-    ok(domUtils.hasNoAttributes(div.firstChild));
-    div.innerHTML = '<span custorm>sf</span>';
-    ok(!domUtils.hasNoAttributes(div.firstChild));
-
-} );
-test( 'isTagNode', function() {
-    var domUtils = UE.dom.domUtils;
-    var div = te.dom[2];
-    div.innerHTML = "<p><span>sdf</span></p>";
-    ok(domUtils.isTagNode(div.firstChild,"p"));
-    ok(domUtils.isTagNode(div.firstChild.firstChild,"span"));
-} );
-test( 'filterNodelist', function() {
-   var div = te.dom[2];
-    div.innerHTML = '<span></span><span></span><i></i><i></i><i></i>';
-    var arr = domUtils.filterNodeList(div.getElementsByTagName('*'),'i span');
-    equals(arr.tagName,"SPAN");
-    arr = domUtils.filterNodeList(div.getElementsByTagName('*'),'i');
-    equals(arr.tagName,'I');
-    arr = domUtils.filterNodeList(div.getElementsByTagName('*'),function(n){
-        return n.tagName == 'SPAN'
-    });
-    equals(arr.tagName,'SPAN');
-    arr = domUtils.filterNodeList(div.getElementsByTagName('*'),function(n){
-        return n.tagName == 'SPAN'
-    },true);
-    equals(arr.length,2)
-} );
-
-test('inNodeEndBoundary',function(){
-    var div = te.dom[2];
-    div.innerHTML = "<span><b>span</b><a>aa</a></span><b>sp</b>";
-    var range = te.obj[2];
-    range.setStart(div.firstChild.lastChild.firstChild,2).collapse(1).select();
-    range.createBookmark();
-    ok(domUtils.isInNodeEndBoundary(range,div.firstChild),'firstchild.lastchild边界');
-    range.setStart(div.firstChild.firstChild.firstChild,4).collapse(1).select();
-    range.createBookmark();
-    ok(!domUtils.isInNodeEndBoundary(range,div.firstChild),'firstchild.firstchild边界');
-    range.setStart(div.lastChild.firstChild,2).collapse(1).select();
-    range.createBookmark();
-    ok(domUtils.isInNodeEndBoundary(range,div),'lastchild边界');
-});
-
-//test( '闭合选区，标签边界', function() {
-//    var domUtils = UE.dom.domUtils;
-//    var div = te.dom[2];
-//    var editor = new UE.ui.Editor({autoFloatEnabled:true});
-//    editor.render( div );
-//    var range = new UE.dom.Range( editor.document );
-//    editor.setContent( '<a>a_text1</a><a>a_text2</a>' );
-//    var a = editor.body.firstChild.firstChild;
-//    range.setStart( a, 0 ).collapse( 1 ).select();
-//    same( domUtils.findTagNamesInSelection( range, ['h2','a','p'] ), a, '选区位置为(a,0)' );
-//    range.setStart( a, 1 ).collapse( 1 ).select();
-//    same( domUtils.findTagNamesInSelection( range, ['h2','a','p'] ), a, '选区位置为(a,1)' );
-//
-//    range.setStart( a.parentNode, 1 ).collapse( 1 ).select();
-//    same( domUtils.findTagNamesInSelection( range, ['h2','a','p'] ), a.parentNode, '选区位置为(p,1)' );
-//    same( domUtils.findTagNamesInSelection( range, ['h2','a'] ), null, '选区位置为(p,1)，但是不符合查找的条件' );
-//} );
-
-//test( '<strong style="color:red">文本闭合选区</strong>中查找是否包含特定的标签列表', function() {
-//    var domUtils = UE.dom.domUtils;
-//    var editor = new UE.ui.Editor({autoFloatEnabled:true});
-//    var div = te.dom[2];
-//    editor.render( div );
-//    var range = new UE.dom.Range( editor.document );
-//    var body = editor.body;
-//
-//    editor.setContent( '<h2 id="tt-h2">我是测试的header:h2</h2><p id="tt-p"><strong>xx乐乐乐乐x</strong><a id="tt-a">我是标签</a></p>' );
-//    var expectH2 = editor.document.getElementById( 'tt-h2' ),
-//            expectA = editor.document.getElementById( 'tt-a' );
-//
-//    //闭合情况下，文本节点里
-//    var textH2 = body.firstChild.firstChild;
-//    range.setStart( textH2, 2 ).collapse( true ).select();
-//    ok( expectH2 === domUtils.findTagNamesInSelection( range, ['h2', 'a', 'h3'] ), '闭合情况下，cursor在h2中，tag顺序：[h2, a, h3]' );
-//    range.setStart( textH2, 0 ).collapse( true ).select();
-//    ok( expectH2 === domUtils.findTagNamesInSelection( range, ['h2', 'a', 'h3'] ), '闭合情况下，cursor在h2的左边界，tag顺序：[h2, a, h3]' );
-//    range.setStart( textH2, 14 ).collapse( true ).select();
-//    ok( expectH2 === domUtils.findTagNamesInSelection( range, ['h2', 'a', 'h3'] ), '闭合情况下，cursor在h2的右边界，tag顺序：[h2, a, h3]' );
-//
-//    var p = editor.document.getElementsByTagName('p')[0];
-//    var textA = p.lastChild.firstChild;
-//    range.setStart( textA, 2 ).collapse( true ).select();
-//    ok( expectA === domUtils.findTagNamesInSelection( range, ['h2', 'a', 'h3'] ), '闭合情况下，cursor在a中，tag顺序：[h2, a, h3]' );
-//    range.setStart( textA, 0 ).collapse( true ).select();
-//    ok( expectA === domUtils.findTagNamesInSelection( range, ['h2', 'a', 'h3'] ), '闭合情况下，cursor在a的左边界，tag顺序：[h2, a, h3]' );
-//    range.setStart( textA, 4 ).collapse( true ).select();
-//    ok( expectA === domUtils.findTagNamesInSelection( range, ['h2', 'a', 'h3'] ), '闭合情况下，cursor在a的右边界，tag顺序：[h2, a, h3]' );
-//
-//    var textStrong = p.firstChild.firstChild;
-//    range.setStart( textStrong, 2 ).collapse( true ).select();
-//    ok( null == domUtils.findTagNamesInSelection( range, ['h2', 'a', 'h3'] ), '闭合情况下，cursor在p中，tag顺序：[h2, a, h3]' );
-//    range.setStart( textStrong, 0 ).collapse( true ).select();
-//    ok( null == domUtils.findTagNamesInSelection( range, ['h2', 'a', 'h3'] ), '闭合情况下，cursor在p的左边界，tag顺序：[h2, a, h3]' );
-//    range.setStart( textStrong, 7 ).collapse( true ).select();
-//    ok( null == domUtils.findTagNamesInSelection( range, ['h2', 'a', 'h3'] ), '闭合情况下，cursor在p的右边界，tag顺序：[h2, a, h3]' );
-//} );
-
-
-//test( '<strong style="color:red">不闭合选区</strong>中查找，如果包含，则返回第一个dom节点', function() {
-//    var domUtils = UE.dom.domUtils;
-//    var editor = new UE.ui.Editor({autoFloatEnabled:true});
-//    var div = te.dom[2];
-//    editor.render( div );
-//    var range = new UE.dom.Range( editor.document );
-//    var body = editor.body;
-//
-//    editor.setContent( '<h2 id="tt-h2">我是测试的header:h2</h2><p id="tt-p"><strong>xx乐乐乐乐x</strong><a id="tt-a">我是标签</a></p>' );
-//    var expectH2 = editor.document.getElementById( 'tt-h2' ),
-//            expectA = editor.document.getElementById( 'tt-a' );
-//    var textH2 = body.firstChild.firstChild;
-//    range.setStart( textH2, 3 ).setEnd( textH2, 9 ).select();
-//    ok( expectH2 === domUtils.findTagNamesInSelection( range, ['h2', 'a', 'h3'] ), '选中单个节点的一部分：tag顺序：[h2, a, h3]' );
-//    ok( expectH2 === domUtils.findTagNamesInSelection( range, ['a', 'h2', 'h3'] ), '选中单个节点的一部分：tag顺序：[a, h2, h3]' );
-//
-//    range.setStart( textH2, 0 ).setEnd( textH2, 14 ).select();
-//    ok( expectH2 === domUtils.findTagNamesInSelection( range, ['h2', 'a', 'h3'] ), '选中单个节点的全部：tag顺序：[h2, a, h3]' );
-//    ok( expectH2 === domUtils.findTagNamesInSelection( range, ['a', 'h2', 'h3'] ), '选中单个节点的全部：tag顺序：[a, h2, h3]' );
-//
-//        var p = editor.document.getElementsByTagName('p')[0];
-//    range.setStart( textH2, 0 ).setEnd(p.lastChild.firstChild, 3 ).select();
-//    ok( expectH2 === domUtils.findTagNamesInSelection( range, ['h2', 'a', 'h3'] ), '跨节点选中：tag顺序：[h2, a, h3]' );
-//    ok( expectA === domUtils.findTagNamesInSelection( range, ['a', 'h2', 'h3'] ), '跨节点选中：tag顺序：[a, h2, h3]' );
-//} );
-
-//test( '不闭合选区，选区包含<strong style="color:red">前半个</strong>半个标签', function() {
-//    var domUtils = UE.dom.domUtils;
-//    var editor = new UE.ui.Editor({autoFloatEnabled:true});
-//    var div = te.dom[2];
-//    editor.render( div );
-//    var body = editor.body;
-//    var range = new UE.dom.Range( editor.document );
-//    editor.setContent( '<h2>这是h2的文本<a>这是一个超链接</a></h2>' );
-//    var a = body.firstChild.lastChild;
-//    range.setStart( body, 0 ).setEnd( a.firstChild, 3 ).select();
-//    same( domUtils.findTagNamesInSelection( range, ['a','h2','body','p'] ), a, '选择h2和a的前半部分标签，找到第一个为a' );
-//    /*调换查找的数组中元素的顺序*/
-//    same( domUtils.findTagNamesInSelection( range, ['h2','a','body','p'] ), body.firstChild, '选择h2和a的前半部分标签，找到第一个为h2' );
-//} );
-
-//test( '不闭合选区，选区包含<strong style="color:red">后半个</strong>标签', function() {
-//    var domUtils = UE.dom.domUtils;
-//    var editor = new UE.ui.Editor({autoFloatEnabled:true});
-//    var div = te.dom[2];
-//    editor.render( div );
-//    var body = editor.body;
-//    var range = new UE.dom.Range( editor.document );
-//    editor.setContent( '<h2>这是h2的文本<a>这是一个超链接</a></h2>' );
-//    var a = body.firstChild.lastChild;
-//    range.setStart( a.firstChild, 3 ).setEnd( body, 1 ).select();
-//    same( domUtils.findTagNamesInSelection( range, ['a','h2','body','p'] ), a, '选择h2和a的后部分标签，找到第一个为a' );
-//    /*调换查找的数组中元素的顺序*/
-//    same( domUtils.findTagNamesInSelection( range, ['h2','a','body','p'] ), body.firstChild, '选择h2和a的后部分标签，找到第一个为h2' );
-//} );
-
-//test( '不闭合选区，选区包含2个相同的标签', function() {
-//    var domUtils = UE.dom.domUtils;
-//    var editor = new UE.ui.Editor({autoFloatEnabled:true});
-//    var div = te.dom[2];
-//    editor.render( div );
-//    var body = editor.body;
-//    var range = new UE.dom.Range( editor.document );
-//    editor.setContent( '<p><a>a_text1</a><a>a_tex2</a></p>' );
-//    var a = body.firstChild.firstChild;
-//    range.setStart( body.firstChild, 0 ).setEnd( body.firstChild, 2 ).select();
-//    same( domUtils.findTagNamesInSelection( range, ['a'] ), a, '选区包含2个完整的a,选择第一个a' );
-//
-//    range.setStart( body.firstChild, 0 ).setEnd( body.firstChild, 2 ).select();
-//    same( domUtils.findTagNamesInSelection( range, ['p','a'] ), body.firstChild, '选区包含2个完整的a,选择p' );
-//
-//    range.setStart( a, 0 ).setEnd( a.nextSibling, 1 ).select();
-//    same( domUtils.findTagNamesInSelection( range, ['a'] ), a, '选区包含2个不完整的a,选择第一个a' );
-//} );
-
-//test( '不闭合选区，选区紧挨着标签边界', function() {
-//    var domUtils = UE.dom.domUtils;
-//    var editor = new UE.ui.Editor({autoFloatEnabled:true});
-//    var div = te.dom[2];
-//    editor.render( div );
-//    var body = editor.body;
-//    var range = new UE.dom.Range( editor.document );
-//    editor.setContent( '<p><a>a_text1</a>a_text3<a>a_tex2</a></p>' );
-//    range.selectNode( body.firstChild.childNodes[1] ).select();
-//    same( domUtils.findTagNamesInSelection( range, ['a'] ), null, '选区紧挨着a边缘,找a返回null' );
-//
-//    same( domUtils.findTagNamesInSelection( range, ['a','p'] ), body.firstChild, '选区紧挨着a边缘,找p返回p' );
-//} );
-
-//test( '不闭合选区，多节点，压力测试', function() {
-//    var domUtils = UE.dom.domUtils;
-//    var editor = new UE.ui.Editor({autoFloatEnabled:true});
-//    var div = te.dom[2];
-//    editor.render( div );
-//    var body = editor.body;
-//    var range = new UE.dom.Range( editor.document );
-//    editor.setContent( '<p><strong><em>我是p里的文本<span style="color:red">textTD2</span></em></strong></p><table><tbody><tr><td>textTD1</td><td><ol><li><p>我是列表1</p><p><strong><em>我是p里的文本<span style="color:red">textTD2</span></em></strong></p></li><li><strong><em>我是li 2里的文本<span style="color:red">textTD2</span></em></strong><p><strong><em>TextEM1<span id="spanID" style="color:red">我是列表2里的文本</span></em></strong></p></li></ol></td></tr></tbody></table>' );
-//    var span = editor.document.getElementById( 'spanID' );
-//    range.selectNode( span.firstChild ).select();
-//    same(domUtils.findTagNamesInSelection(range,['div','pre','a','h1','h2','h3','h4','h5','h6','h7','table']),body.getElementsByTagName('table')[0],'深节点');
-//} );
-
-//test( '<strong style="color:red">control range</strong>中查找是否包含特定的标签列表', function() {
-//    var domUtils = UE.dom.domUtils;
-//    var editor = new UE.ui.Editor({autoFloatEnabled:true});
-//    var div = te.dom[2];
-//    editor.render( div );
-//    var range = new UE.dom.Range( editor.document );
-//
-//    editor.setContent( '<span id="tt-span">test_</span><img id="tt-h2" src="http://www.baidu.com/img/baidu_sylogo1.gif"/><p id="tt-p"><strong>xx乐乐乐乐x</strong><a id="tt-a">我是标签</a></p>' );
-//    var expectH2 = editor.document.getElementById( 'tt-h2' ),
-//         expectA = editor.document.getElementById( 'tt-a' ),
-//         expectSpan = editor.document.getElementById( 'tt-span' );
-//
-//
-//    range.setStart(expectH2, 0).setEnd(expectA, 0).select();
-//    ok( expectA === domUtils.findTagNamesInSelection( range, ['a', 'img', 'h3'] ), 'tag顺序：[a, img, h3]' );
-//    ok( expectH2 === domUtils.findTagNamesInSelection( range, ['img', 'a', 'h3'] ), 'tag顺序：[img, a, h3]' );
-//
-//
-//    range.setStart(expectSpan, 0).setEnd(expectH2, 1).select();
-//    ok( expectH2 === domUtils.findTagNamesInSelection( range, ['a', 'img', 'h3'] ), 'tag顺序：[a, img, h3]' );
-//    ok( expectH2 === domUtils.findTagNamesInSelection( range, ['img', 'a', 'h3'] ), 'tag顺序：[img, a, h3]' );
-//} );

@@ -21,7 +21,7 @@
 		stop();
 		/* 为批量执行等待import.php正确返回 */
 		var h = setInterval(function() {
-			if (window && window['baidu']) {
+			if (window && window['UE']) {
 				clearInterval(h);
 				ms.apply(this, arguments);
 				start();
