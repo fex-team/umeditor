@@ -265,13 +265,18 @@
                     var hasImg = false;
                     $.each(fileList,function(i,f){
                         if(/^image/.test(f.type)){
+                            //创建图片的base64
                             createImgBase64(img,f,$w);
+
                             var xhr = new XMLHttpRequest();
                             xhr.open("post", editor.getOpt('imageUrl'), true);
                             xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+
+                            //模拟数据
                             var fd = new FormData();
                             fd.append(editor.getOpt('imageFieldName'), f);
                             fd.append('type','ajax');
+
                             xhr.send(fd);
                             xhr.addEventListener('load',function(e){
                                 Base.callback(editor, $w, e.target.response, "SUCCESS");

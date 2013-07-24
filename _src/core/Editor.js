@@ -175,8 +175,8 @@
                 textarea.style.display = ''
             }
 
-            textarea.style.width = me.iframe.offsetWidth + 'px';
-            textarea.style.height = me.iframe.offsetHeight + 'px';
+            textarea.style.width = me.body.offsetWidth + 'px';
+            textarea.style.height = me.body.offsetHeight + 'px';
             textarea.value = me.getContent();
             textarea.id = me.key;
             container.innerHTML = '';
@@ -298,7 +298,7 @@
             }
             this._initEvents();
             //为form提交提供一个隐藏的textarea
-            for (var form = cont.parentNode; !domUtils.isBody(form); form = form.parentNode) {
+            for (var form = cont.parentNode; form && !domUtils.isBody(form); form = form.parentNode) {
                 if (form.tagName == 'FORM') {
                     me.form = form;
                     if(me.options.autoSyncData){

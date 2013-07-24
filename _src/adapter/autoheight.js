@@ -26,6 +26,7 @@ UE.ready(function () {
         clearTimeout(timer);
         if (isFullscreen)return;
         timer = setTimeout(function () {
+
             if (!me.queryCommandState || me.queryCommandState && me.queryCommandState('source') != 1) {
                 if (!span) {
                     span = me.document.createElement('span');

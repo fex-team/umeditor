@@ -23,14 +23,29 @@
             "</table>" +
             "<div id=\"eduiGMapContainer\" style=\"width: 100%; height: 340px;margin: 5px auto; border: 1px solid gray;\"></div>" +
             "</div>" +
-            "<iframe style=\"display: none;\" src=\"<%=gmap_home_url%>/proxy.html\"></iframe>",
+            "<script class=\"edui-tpl-container\" type=\"text/plain\">" +
+            "<!DOCTYPE html>" +
+            "<html>" +
+            "<head>" +
+            "<title></title>" +
+            "</head>" +
+            "<body>" +
+            "<scr_ipt src=\"http://maps.google.com/maps/api/js?sensor=false\"></scr_ipt>" +
+            "<scr_ipt>" +
+            "window.onload = function(){" +
+            "parent.UE.getWidgetData(\'gmap\').initGMap( window.google );" +
+            "};" +
+            "</scr_ipt>" +
+            "</body>" +
+            "</html>" +
+            "</script>",
+//        "<iframe style=\"display: none;\" src=\"<%=gmap_home_url%>/proxy.html\"></iframe>",
         initContent:function( editor, $widget ){
 
             var me = this,
                 lang = editor.getLang( widgetName ),
                 options = $.extend( {}, lang['static'], {
-                    theme_url: editor.options.themePath + editor.options.theme,
-                    gmap_home_url: UEDITOR_CONFIG.UEDITOR_HOME_URL + '/dialogs/gmap/'
+                    theme_url: editor.options.themePath + editor.options.theme
                 } );
 
             if( me.inited ) {
@@ -44,6 +59,22 @@
             me.lang = lang;
             me.editor = editor;
             me.root().html( $.parseTmpl( me.tpl, options ) );
+
+            me.initApi();
+
+        },
+        initApi: function () {
+
+            var $ifr = $('<iframe style="display: none;"></iframe>');
+                ifrdoc = null;
+
+            $ifr.appendTo( this.root() );
+
+            ifrdoc = $ifr[0].contentWindow.document;
+
+            ifrdoc.open();
+            ifrdoc.write( this.root().find( '.edui-tpl-container' ).html().replace(/scr_ipt/g, "script") );
+            ifrdoc.close();
 
         },
         initGMap: function( google ){

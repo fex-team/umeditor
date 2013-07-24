@@ -30,7 +30,8 @@ UE.plugins['font'] = function () {
             { name: 'arialBlack', val: 'arial black,avant garde'},
             { name: 'comicSansMs', val: 'comic sans ms'},
             { name: 'impact', val: 'impact,chicago'},
-            { name: 'timesNewRoman', val: 'times new roman'}
+            { name: 'timesNewRoman', val: 'times new roman'},
+            { name: 'sans-serif',val:'sans-serif'}
         ],
         'fontsize': [10, 12,  16, 18,24, 32,48]
     });
@@ -86,14 +87,19 @@ UE.plugins['font'] = function () {
                     return this.document.execCommand(fonts[cmdName],false, value)
                 },
                 queryCommandValue: function (cmdName) {
-                    var val = this.document.queryCommandValue(fonts[cmdName]);
-                    if(cmdName == 'fontsize'){
-                        $.each(fontsize,function(k,v){
-                            if(v == val){
-                                val = k;
-                                return false;
-                            }
-                        })
+                    if(cmdName == 'fontfamily'){
+                        var startNode = this.selection.getStart();
+                        var val = $(startNode).css('fontFamily');
+                    }else{
+                        var val = this.document.queryCommandValue(fonts[cmdName]);
+                        if(cmdName == 'fontsize'){
+                            $.each(fontsize,function(k,v){
+                                if(v == val){
+                                    val = k;
+                                    return false;
+                                }
+                            })
+                        }
                     }
                     return val;
                 },
