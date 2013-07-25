@@ -132,6 +132,7 @@ UE.ui.define('modal', {
     },
     ok: function () {
         var me = this;
+        me.trigger('beforeok');
         if (me.trigger("ok", me) === false) {
             return;
         }

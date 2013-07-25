@@ -23,9 +23,7 @@ UE.plugins['link'] = function(){
 
     UE.commands['link'] = {
         execCommand : function( cmdName, opt ) {
-            var me = this,
-                rng = me.selection.getRange();
-            rng.select();
+            var me = this;
             me.document.execCommand('createlink',false,'_ueditor_link');
             utils.each(domUtils.getElementsByTagName(me.body,'a',function(n){
                 return n.getAttribute('href') == '_ueditor_link'

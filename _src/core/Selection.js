@@ -117,13 +117,14 @@
         var me = this;
         me.document = doc;
         me.body = body;
-        if ( ie ) {
+        if ( browser.ie9below ) {
             domUtils.on( body, 'beforedeactivate', function () {
                 me._bakIERange = me.getIERange();
             } );
             domUtils.on( body, 'activate', function () {
                 try {
-                    if ( !_getIERange( me ) && me._bakIERange ) {
+                    var ieNativRng =  _getIERange( me );
+                    if ( (!ieNativRng || !me.rangeInBody(ieNativRng)) && me._bakIERange ) {
                         me._bakIERange.select();
                     }
                 } catch ( ex ) {
@@ -294,10 +295,10 @@
             if ( this._cachedStartElement ) {
                 return this._cachedStartElement;
             }
-            var range = ie ? this.getIERange() : this.getRange(),
+            var range = browser.ie9below ? this.getIERange() : this.getRange(),
                 tmpRange,
                 start, tmp, parent;
-            if ( ie ) {
+            if ( browser.ie9below ) {
                 if ( !range ) {
                     //todo 给第一个值可能会有问题
                     return this.document.body.firstChild;
@@ -339,8 +340,8 @@
         getText:function () {
             var nativeSel, nativeRange;
             if ( this.isFocus() && (nativeSel = this.getNative()) ) {
-                nativeRange = browser.ie ? nativeSel.createRange() : nativeSel.getRangeAt( 0 );
-                return browser.ie ? nativeRange.text : nativeRange.toString();
+                nativeRange = browser.ie9below ? nativeSel.createRange() : nativeSel.getRangeAt( 0 );
+                return browser.ie9below ? nativeRange.text : nativeRange.toString();
             }
             return '';
         }

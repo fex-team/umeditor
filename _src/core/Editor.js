@@ -248,13 +248,12 @@
                 if(options.initialFrameHeight){
                     options.minFrameHeight = options.initialFrameHeight
                 }else{
+
                     options.initialFrameHeight = options.minFrameHeight = container.offsetHeight;
                 }
 
-                container.style.width = /%$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth-
-                    getStyleValue("padding-left")- getStyleValue("padding-right") - getStyleValue('border-width') +'px';
-                container.style.height = /%$/.test(options.initialFrameHeight) ?  '100%' : options.initialFrameHeight -
-                    getStyleValue("padding-top")- getStyleValue("padding-bottom") - getStyleValue('border-width') +'px';
+                container.style.width = /%$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth - getStyleValue("padding-left")- getStyleValue("padding-right") - getStyleValue('border-width') +'px';
+                container.style.height = /%$/.test(options.initialFrameHeight) ?  '100%' : (options.initialFrameHeight - getStyleValue("padding-top")- getStyleValue("padding-bottom") - getStyleValue('border-width')) +'px';
 
                 container.style.zIndex = options.zIndex;
 
