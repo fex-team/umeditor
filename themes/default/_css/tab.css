@@ -15,6 +15,7 @@
     border: 1px solid transparent;
     color: #0088cc;
     text-decoration: none;
+    outline: 0;
 }
 .edui-tab-nav .edui-tab-item.active  .edui-tab-text{
     border: 1px solid #ddd;
@@ -24,10 +25,8 @@
     color: #555555;
     cursor: default;
 }
-.edui-tab-content {
-    overflow: auto;
-}
 .edui-tab-content .edui-tab-pane{
+    position: relative;
     display: none;
 }
 .edui-tab-content .edui-tab-pane.active{
