@@ -8,7 +8,7 @@
     var sourceEditors = {
         textarea: function (editor, holder){
             var textarea = holder.ownerDocument.createElement('textarea');
-            textarea.style.cssText = 'position:absolute;resize:none;width:100%;height:100%;border:0;padding:0;margin:0;overflow-y:auto;outline:0';
+            textarea.style.cssText = 'resize:none;border:0;padding:0 5px;margin:0;overflow-y:auto;outline:0';
             // todo: IE下只有onresize属性可用... 很纠结
             if (browser.ie && browser.version < 8) {
                 textarea.style.width = holder.offsetWidth + 'px';
@@ -20,6 +20,7 @@
             }
             holder.appendChild(textarea);
             return {
+                container : textarea,
                 setContent: function (content){
                     textarea.value = content;
                 },
@@ -81,7 +82,7 @@
                     }
 
                     bakCssText = me.body.style.cssText;
-                    me.body.style.cssText += 'position:absolute;left:-32768px;top:-32768px;';
+                    me.body.style.cssText += ';position:absolute;left:-32768px;top:-32768px;';
 
 
                     me.fireEvent('beforegetcontent');
@@ -113,6 +114,8 @@
                     sourceEditor = createSourceEditor(me.body.parentNode);
 
                     sourceEditor.setContent(content);
+
+                    $(sourceEditor.container).width($(me.body).width()).height($(me.body).height());
                     setTimeout(function (){
                         sourceEditor.select();
                     });
