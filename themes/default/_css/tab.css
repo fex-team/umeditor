@@ -15,6 +15,7 @@
     border: 1px solid transparent;
     color: #0088cc;
     text-decoration: none;
+    outline: 0;
 }
 .edui-tab-nav .edui-tab-item.active  .edui-tab-text{
     border: 1px solid #ddd;
