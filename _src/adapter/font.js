@@ -240,8 +240,10 @@ $.each(['forecolor','backcolor'],function(i,v){
             }
             $colorPickerWidget.edui().show($btn,{
                 caretDir:"down",
-                offsetTop:-8,
-                caretTop:-11
+                offsetTop:-5,
+                offsetLeft:8,
+                caretLeft:11,
+                caretTop:-8
             });
         }).register('click', $btn, function () {
                 $colorPickerWidget.edui().hide()
