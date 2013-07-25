@@ -6,43 +6,23 @@ UE.ready(function () {
         return;
     }
 
-    function getPosY(body,ele) {
-        var y = 0;
-        while (ele.offsetParent) {
-            y += ele.offsetTop;
-            ele = ele.offsetParent;
-            if (ele===body) {
-                break;
-            }
-        }
-        return y;
-    }
-
     function adjustHeight() {
         var me = this,
             options = me.options,
-            span, node, currentHeight;
+            $span = $('<span style="display:block;width:0;margin:0;padding:0;border:0;clear:both;">.</span>'),
+            $node, currentHeight;
 
         clearTimeout(timer);
         if (isFullscreen)return;
         timer = setTimeout(function () {
-
             if (!me.queryCommandState || me.queryCommandState && me.queryCommandState('source') != 1) {
-                if (!span) {
-                    span = me.document.createElement('span');
-                    span.style.cssText = 'display:block;width:0;margin:0;padding:0;border:0;clear:both;';
-                    span.innerHTML = '.';
-                }
-                node = span.cloneNode(true);
-                me.body.appendChild(node);
-                currentHeight = Math.max(getPosY(me.body,node) + node.offsetHeight, Math.max(options.minFrameHeight, options.initialFrameHeight));
+                $node = $span.clone().appendTo(me.body);
+                currentHeight = Math.max($node.position().top + $node.height(), options.initialFrameHeight);
+                $node.remove();
                 if (currentHeight != lastHeight) {
-                    me.setHeight(currentHeight);
-
+                    me.setHeight(currentHeight,true);
                     lastHeight = currentHeight;
                 }
-                domUtils.remove(node);
-
             }
         });
     }
@@ -73,10 +53,7 @@ UE.ready(function () {
     me.disableAutoHeight = function () {
 
         me.body.style.overflowY = bakOverflow || '';
-
-        me.removeListener('contentchange', adjustHeight);
-        me.removeListener('keyup', adjustHeight);
-        me.removeListener('mouseup', adjustHeight);
+        me.removeListener('contentchange afterinserthtml keyup mouseup', adjustHeight);
         me.autoHeightEnabled = false;
         me.fireEvent('autoheightchanged', me.autoHeightEnabled);
     };

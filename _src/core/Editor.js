@@ -290,6 +290,11 @@
             me.document = document;
             me.window = document.defaultView || document.parentWindow;
             me.body = cont;
+
+            //扩展isBody方法
+            domUtils.isBody = function (node) {
+                return  node === cont;
+            };
             me.selection = new dom.Selection(document,me.body);
             //gecko初始化就能得到range,无法判断isFocus了
             var geckoSel;
@@ -390,11 +395,8 @@
          * @name setHeight
          * @grammar editor.setHeight(number);  //纯数值，不带单位
          */
-        setHeight: function (height) {
-            if (height !== parseInt(this.body.parentNode.style.height)) {
-                this.body.parentNode.style.height = height + 'px';
-            }
-            this.options.minFrameHeight = this.options.initialFrameHeight = height;
+        setHeight: function (height,notSetHeight) {
+            !notSetHeight && (this.options.initialFrameHeight = height);
 
             this.body.style.height = height + 'px';
         },

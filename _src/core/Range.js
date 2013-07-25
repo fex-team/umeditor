@@ -66,7 +66,7 @@
      * - ***document*** 跟range关联的document对象
      * - ***collapsed*** 是否是闭合状态
      */
-    var Range = dom.Range = function (document) {
+    var Range = dom.Range = function (document,body) {
         var me = this;
         me.startContainer =
             me.startOffset =
@@ -74,6 +74,7 @@
                     me.endOffset = null;
         me.document = document;
         me.collapsed = true;
+        me.body = body;
     };
 
     /**
@@ -119,7 +120,15 @@
     }
 
     Range.prototype = {
-
+        inFillChar : function(){
+            var start = this.startContainer;
+            if(this.collapsed && start.nodeType == 3
+                && start.nodeValue.replace(new RegExp('^' + domUtils.fillChar),'').length + 1 == start.nodeValue.length
+                ){
+                return true;
+            }
+            return false;
+        },
         /**
          * @name  setStart
          * @grammar range.setStart(node,offset)  => Range
@@ -761,7 +770,7 @@
         moveToAddress : function(addr,ignoreEnd){
             var me = this;
             function getNode(address,isStart){
-                var tmpNode = me.document.body,
+                var tmpNode = me.body,
                     parentNode,offset;
                 for(var i= 0,ci,l=address.length;i<l;i++){
                     ci = address[i];

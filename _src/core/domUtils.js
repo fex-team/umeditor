@@ -368,14 +368,6 @@ var domUtils = dom.domUtils = {
     isBlockElm:function (node) {
         return node.nodeType == 1 && (dtd.$block[node.tagName] || styleBlock[domUtils.getComputedStyle(node, 'display')]) && !dtd.$nonChild[node.tagName];
     },
-    /**
-     * 检测node节点是否为body节点
-     * @name isBody
-     * @grammar UE.dom.domUtils.isBody(node)   => true|false
-     */
-    isBody:function (node) {
-        return  node && node.nodeType == 1 && node.tagName.toLowerCase() == 'body';
-    },
 
 
 
@@ -631,6 +623,20 @@ var domUtils = dom.domUtils = {
         var tmpNode = browser.ie ? doc.createTextNode(domUtils.fillChar) : doc.createElement('br');
         node.innerHTML = '';
         node.appendChild(tmpNode);
+    },
+    isBoundaryNode : function (node,dir){
+        var tmp;
+        while(!domUtils.isBody(node)){
+            tmp = node;
+            node = node.parentNode;
+            if(tmp !== node[dir]){
+                return false;
+            }
+        }
+        return true;
+    },
+    isFillChar:function (node,isInStart) {
+        return node.nodeType == 3 && !node.nodeValue.replace(new RegExp((isInStart ? '^' : '' ) + domUtils.fillChar), '').length
     }
 };
 var fillCharReg = new RegExp(domUtils.fillChar, 'g');

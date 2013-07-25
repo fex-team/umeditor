@@ -175,7 +175,7 @@
             return ieRange;
         },
         rangeInBody : function(rng){
-            var node = browser.ie9below ? rng.parentElement() : rng.startContainer;
+            var node = browser.ie9below ? rng.item ? rng.item() : rng.parentElement() : rng.startContainer;
 
             return node === this.body || domUtils.inDoc(node,this.body);
         },
