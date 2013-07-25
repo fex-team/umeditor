@@ -137,11 +137,7 @@
                 }else{
                     options.minFrameWidth = options.initialFrameWidth = editor.$body.width();
                 }
-                if(options.initialFrameHeight){
-                    options.minFrameHeight = options.initialFrameHeight
-                }else{
-                    options.initialFrameHeight = options.minFrameHeight = editor.$body.height();
-                }
+
                 $container.css({
                     width: options.initialFrameWidth,
                     zIndex:editor.getOpt('zIndex')
