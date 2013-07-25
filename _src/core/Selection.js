@@ -123,7 +123,8 @@
             } );
             domUtils.on( body, 'activate', function () {
                 try {
-                    if ( !_getIERange( me ) && me._bakIERange ) {
+                    var ieNativRng =  _getIERange( me );
+                    if ( (!ieNativRng || !me.rangeInBody(ieNativRng)) && me._bakIERange ) {
                         me._bakIERange.select();
                     }
                 } catch ( ex ) {

@@ -59,7 +59,6 @@ UE.registerUI('link image gmap map insertvideo',function(name){
         }).on('beforeshow', function () {
                 var $root = this.root();
                 currentRange = me.selection.getRange();
-
                 if (!$root.parent()[0]) {
                     me.$container.find('.edui-dialog-container').append($root);
                 }
@@ -67,6 +66,10 @@ UE.registerUI('link image gmap map insertvideo',function(name){
         }).on('afterbackdrop',function(){
             this.$backdrop.css('zIndex',me.getOpt('zIndex')+1).appendTo(me.$container.find('.edui-dialog-container'))
             $dialog.css('zIndex',me.getOpt('zIndex')+2)
+        }).on('beforeok',function(){
+            try{
+                currentRange.select()
+            }catch(e){}
         }).attachTo($btn)
     });
 
