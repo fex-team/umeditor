@@ -17,6 +17,8 @@ UE.ui.define('popup', {
         return $.parseTmpl(this.tpl, {subtpl: data});
     },
     show: function ($obj, posObj) {
+        if (!posObj) posObj = {};
+
         var fnname = posObj.fnname || 'position';
         if (this.trigger('beforeshow') === false) {
             return;
@@ -28,10 +30,10 @@ UE.ui.define('popup', {
             } : {}))
 
             this.root().find('.edui-popup-caret').css({
-                top: posObj.caretTop||0,
-                left: posObj.caretLeft||0,
+                top: posObj.caretTop || 0,
+                left: posObj.caretLeft || 0,
                 position: 'absolute'
-            }).addClass(posObj.caretDir||"up")
+            }).addClass(posObj.caretDir || "up")
 
         }
     },
@@ -44,7 +46,7 @@ UE.ui.define('popup', {
         if (!$obj.data('$mergeObj')) {
             $obj.data('$mergeObj', me.root());
             $obj.on('wrapclick', function (evt) {
-                me.show($obj, posObj||{})
+                me.show($obj, posObj)
             });
             me.register('click', $obj, function (evt) {
                 me.hide()
