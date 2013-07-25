@@ -18,12 +18,22 @@ public class  imageUp: IHttpHandler
             int size = 2;                     //文件大小限制,单位mb                                                                                   //文件大小限制，单位KB
             string[] filetype = { ".gif", ".png", ".jpg", ".jpeg", ".bmp" };                    //文件允许格式
 
+            string type = context.Request["type"];
+        
             //上传图片
             Hashtable info = new Hashtable();
             Uploader up = new Uploader();
             info = up.upFile(context, pathbase, filetype, size); //获取上传状态
 
-            HttpContext.Current.Response.Write("<script>parent.UE.getWidgetCallback('image')('" + info["url"] + "','" + info["state"] + "')</script>");//回调函数
+            if (type == "ajax")
+            {
+                HttpContext.Current.Response.Write(info["url"]);
+            }
+            else
+            {
+                HttpContext.Current.Response.Write("<script>parent.UE.getWidgetCallback('image')('" + info["url"] + "','" + info["state"] + "')</script>");//回调函数
+                
+            }
     }
 
     public bool IsReusable
