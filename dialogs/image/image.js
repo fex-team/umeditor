@@ -59,7 +59,24 @@
 
             return this;
         },
-        callback : function(editor, $w, url, state){
+        createImgBase64: function (img, file, $w) {
+            if (browser.webkit) {
+                //Chrome8+
+                img.src = window.webkitURL.createObjectURL(file);
+            } else if (browser.gecko) {
+                //FF4+
+                img.src = window.URL.createObjectURL(file);
+            } else {
+                //实例化file reader对象
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    img.src = this.result;
+                    $w.append(img);
+                };
+                reader.readAsDataURL(file);
+            }
+        },
+        callback: function (editor, $w, url, state) {
             Upload.toggleMask();
 
             if (state == "SUCCESS") {
@@ -109,8 +126,10 @@
             me.submit("#edui-image-Jupload1", function () {
                 $("#edui-image-Jupload1").css("display", "none");
             });
-            $("#edui-image-Jupload1").hover(function(){
-                $(".edui-image-icon",this).toggleClass("hover");
+            me.drag();
+
+            $("#edui-image-Jupload1").hover(function () {
+                $(".edui-image-icon", this).toggleClass("hover");
             });
             return me;
         },
@@ -137,6 +156,50 @@
             });
 
             return me;
+        },
+        drag: function () {
+            var me = this;
+            //做拽上传的支持
+            if (!browser.ie9below) {
+                me.dialog.find('#edui-image-Jcontent').on('drop',function (e) {
+
+                    //获取文件列表
+                    var fileList = e.originalEvent.dataTransfer.files;
+                    var img = document.createElement('img');
+                    var hasImg = false;
+                    $.each(fileList, function (i, f) {
+                        if (/^image/.test(f.type)) {
+                            //创建图片的base64
+                            Base.createImgBase64(img, f, me.dialog);
+
+                            var xhr = new XMLHttpRequest();
+                            xhr.open("post", me.editor.getOpt('imageUrl'), true);
+                            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+
+                            //模拟数据
+                            var fd = new FormData();
+                            fd.append(me.editor.getOpt('imageFieldName'), f);
+                            fd.append('type', 'ajax');
+
+                            xhr.send(fd);
+                            xhr.addEventListener('load', function (e) {
+                                Base.callback(me.editor, me.dialog, e.target.response, "SUCCESS");
+                                if (i == fileList.length - 1) {
+                                    $(img).remove()
+                                }
+                            });
+                            hasImg = true;
+                        }
+                    });
+                    if (hasImg) {
+                        e.preventDefault();
+                        me.toggleMask("Loading....");
+                    }
+
+                }).on('dragover', function (e) {
+                        e.preventDefault();
+                    });
+            }
         },
         toggleMask: function (html) {
             var me = this;
@@ -188,29 +251,12 @@
                     });
                 }
             })
-                .hover(function(){
+                .hover(function () {
                     $(this).toggleClass("hover");
                 });
         }
     };
 
-    function createImgBase64(img,file,$w){
-        if(browser.webkit){
-            //Chrome8+
-            img.src = window.webkitURL.createObjectURL(file);
-        }else if(browser.gecko){
-            //FF4+
-            img.src = window.URL.createObjectURL(file);
-        }else{
-            //实例化file reader对象
-            var reader = new FileReader();
-            reader.onload = function(e){
-                img.src = this.result;
-                $w.append(img);
-            };
-            reader.readAsDataURL(file);
-        }
-    }
     var $tab = null;
 
     UE.registerWidget('image', {
@@ -228,7 +274,7 @@
             "<div id=\"edui-image-JimgSearch\" class=\"edui-tab-pane\">" +
             "<div class=\"edui-image-searchBar\">" +
             "<input class=\"edui-image-searchTxt\" id=\"edui-image-JsearchTxt\" type=\"text\">" +
-            "<div class=\"edui-image-searchAdd\" id=\"edui-image-JsearchAdd\"><%=lang_btn_add%></div>"+
+            "<div class=\"edui-image-searchAdd\" id=\"edui-image-JsearchAdd\"><%=lang_btn_add%></div>" +
             "</div>" +
             "<div class=\"edui-image-searchRes\" id=\"edui-image-JsearchRes\"></div>" +
             "</div>" +
@@ -248,54 +294,12 @@
 
         },
         initEvent: function (editor, $w) {
-            $tab=$.eduitab({selector: "#edui-image-Jwrapper"})
+            $tab = $.eduitab({selector: "#edui-image-Jwrapper"})
                 .edui().on("beforeshow", function (e) {
                     e.stopPropagation();
                 });
 
             Upload.init(editor, $w);
-
-            //做拽上传的支持
-            if(!browser.ie9below){
-                $w.find('#edui-image-Jcontent').on('drop',function(e){
-
-                    //获取文件列表
-                    var fileList = e.originalEvent.dataTransfer.files;
-                    var img = document.createElement('img');
-                    var hasImg = false;
-                    $.each(fileList,function(i,f){
-                        if(/^image/.test(f.type)){
-                            //创建图片的base64
-                            createImgBase64(img,f,$w);
-
-                            var xhr = new XMLHttpRequest();
-                            xhr.open("post", editor.getOpt('imageUrl'), true);
-                            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-
-                            //模拟数据
-                            var fd = new FormData();
-                            fd.append(editor.getOpt('imageFieldName'), f);
-                            fd.append('type','ajax');
-
-                            xhr.send(fd);
-                            xhr.addEventListener('load',function(e){
-                                Base.callback(editor, $w, e.target.response, "SUCCESS");
-                                if(i == fileList.length - 1){
-                                    $(img).remove()
-                                }
-                            });
-                            hasImg = true;
-                        }
-                    });
-                    if(hasImg){
-                        e.preventDefault();
-                        Upload.toggleMask("Loading....");
-                    }
-
-                }).on('dragover',function(e){
-                        e.preventDefault();
-                    });
-            }
 
             NetWork.init(editor, $w);
         },
@@ -321,7 +325,7 @@
             'cancel': {}
         }
     }, function (editor, $w, url, state) {
-        Base.callback(editor,$w,url,state)
+        Base.callback(editor, $w, url, state)
     })
 })();
 
