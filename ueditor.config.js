@@ -359,6 +359,132 @@
         //,indentValue:'2em'
 
         //填写过滤规则
-        //filterRules : {}
+        ,filterRules: (function () {
+            return{
+                span:function(node){
+                    if(/Wingdings|Symbol/.test(node.getStyle('font-family'))){
+                        return true;
+                    }else{
+                        if(node.getAttr("class")=="fontborder" || node.getAttr("class")=="fontstrikethrough"){
+                            return true;
+                        }
+
+                        if( (/1px/.test(node.getStyle("border")) && /solid/.test(node.getStyle("border")))
+                            || /line-through/.test(node.getStyle("text-decoration"))){
+                            return true;
+                        }
+                        node.parentNode.removeChild(node,true)
+                    }
+                },
+                p: function(node){
+                    var listTag;
+                    if(node.getAttr('class') == 'MsoListParagraph'){
+                        listTag = 'MsoListParagraph'
+                    }
+                    node.setAttr();
+                    if(listTag){
+                        node.setAttr('class','MsoListParagraph')
+                    }
+                    if(!node.firstChild()){
+                        node.innerHTML(UE.browser.ie ? '&nbsp;' : '<br>')
+                    }
+                },
+                div: function (node) {
+                    var tmpNode, p = UE.uNode.createElement('p');
+                    while (tmpNode = node.firstChild()) {
+                        if (tmpNode.type == 'text' || !UE.dom.dtd.$block[tmpNode.tagName]) {
+                            p.appendChild(tmpNode);
+                        } else {
+                            if (p.firstChild()) {
+                                node.parentNode.insertBefore(p, node);
+                                p = UE.uNode.createElement('p');
+                            } else {
+                                node.parentNode.insertBefore(tmpNode, node);
+                            }
+                        }
+                    }
+                    if (p.firstChild()) {
+                        node.parentNode.insertBefore(p, node);
+                    }
+                    node.parentNode.removeChild(node);
+                },
+                br: {$: {}},
+                a: function (node) {
+                    if(!node.firstChild()){
+                        node.parentNode.removeChild(node);
+                        return;
+                    }
+                    node.setAttr();
+                    node.setAttr('href', '#')
+                },
+                strong: {$: {}},
+                b:function(node){
+                    node.tagName = 'strong'
+                },
+                i:function(node){
+                    node.tagName = 'em'
+                },
+                em: {$: {}},
+
+                dl:function(node){
+                    node.tagName = 'ul';
+                    node.setAttr()
+                },
+                dt:function(node){
+                    node.tagName = 'li';
+                    node.setAttr()
+                },
+                dd:function(node){
+                    node.tagName = 'li';
+                    node.setAttr()
+                },
+                li: function (node) {
+                    var className = node.getAttr('class');
+                    if (!className || !/list\-/.test(className)) {
+                        node.setAttr()
+                    }
+                    var tmpNodes = node.getNodesByTagName('ol ul');
+                    UE.utils.each(tmpNodes,function(n){
+                        node.parentNode.insertAfter(n,node);
+
+                    })
+
+                },
+                table: function (node) {
+                    UE.utils.each(node.getNodesByTagName('table'), function (t) {
+                        UE.utils.each(t.getNodesByTagName('tr'), function (tr) {
+                            var p = UE.uNode.createElement('p'), child, html = [];
+                            while (child = tr.firstChild()) {
+                                html.push(child.innerHTML());
+                                tr.removeChild(child);
+                            }
+                            p.innerHTML(html.join('&nbsp;&nbsp;'));
+                            t.parentNode.insertBefore(p, t);
+                        })
+                        t.parentNode.removeChild(t)
+                    });
+                    var val = node.getAttr('width');
+                    node.setAttr();
+                    if (val) {
+                        node.setAttr('width', val);
+                    }
+                },
+                pre:function(node){
+                    if(!node.getAttr("data-lang")){
+                        var textNode=UE.uNode.createText(node.innerText());
+                        node.parentNode.replaceChild(textNode,node);
+                    }
+                },
+                tbody: {$: {}},
+                caption: {$: {}},
+                th: {$: {}},
+                td: {$: {valign: 1, align: 1,rowspan:1,colspan:1,width:1,height:1}},
+                tr: {$: {}},
+                h3: {$: {}},
+                h2: {$: {}},
+                sub:{$:{}},
+                '-': 'script style meta iframe'
+            };
+        })()
     };
 })();
