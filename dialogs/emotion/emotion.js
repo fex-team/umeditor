@@ -182,25 +182,25 @@
                 index = +contentBoxId.replace( /[a-zA-Z-]+/, '' );
             switch ( index ) {
                 case 0:
-                    panel.style.height = "387px";
+                    panel.style.height = "400px";
                     break;
                 case 1:
-                    panel.style.height = "235px";
+                    panel.style.height = "248px";
                     break;
                 case 2:
-                    panel.style.height = "275px";
+                    panel.style.height = "286px";
                     break;
                 case 3:
-                    panel.style.height = "310px";
+                    panel.style.height = "324px";
                     break;
                 case 4:
-                    panel.style.height = "160px";
+                    panel.style.height = "172px";
                     break;
                 case 5:
-                    panel.style.height = "225px";
+                    panel.style.height = "236px";
                     break;
                 case 6:
-                    panel.style.height = "235px";
+                    panel.style.height = "248px";
                     break;
                 default:
 
@@ -290,7 +290,7 @@
             return arr;
         },
         width:603,
-        height:387
+        height:400
     });
 
 })();

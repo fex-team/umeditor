@@ -31,8 +31,12 @@ UE.registerUI( 'emotion', function( name ){
                     me.$container.find('.edui-dialog-container').append($root);
                 }
                 UE.setWidgetBody(name,$root,me);
-            })
-            .attachTo($btn);
+            }).attachTo($btn,{
+                offsetTop:-5,
+                offsetLeft:10,
+                caretLeft:11,
+                caretTop:-8
+            });
     });
     return $btn;
 
