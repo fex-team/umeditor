@@ -197,7 +197,7 @@
                     panel.style.height = "172px";
                     break;
                 case 5:
-                    panel.style.height = "237px";
+                    panel.style.height = "236px";
                     break;
                 case 6:
                     panel.style.height = "248px";
