@@ -35,6 +35,8 @@
             'plugins/video.js',
             'plugins/selectall.js',
             'plugins/removeformat.js',
+            'plugins/keystrokes.js',
+            'plugins/fiximgclick.js',
             'ui/widget.js',
             'ui/button.js',
             'ui/toolbar.js',

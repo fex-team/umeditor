@@ -90,7 +90,7 @@ UE.plugins['undo'] = function () {
             }
 
             try{
-                var rng = new dom.Range(me.document).moveToAddress(scene.address);
+                var rng = new dom.Range(me.document,me.body).moveToAddress(scene.address);
                 rng.select(noNeedFillCharTags[rng.startContainer.nodeName.toLowerCase()]);
             }catch(e){}
 
