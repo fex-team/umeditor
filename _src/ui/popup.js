@@ -25,7 +25,7 @@ UE.ui.define('popup', {
                 top: $obj[fnname]().top + ( posObj.dir == 'right' ? 0 : $obj.outerHeight()) - (posObj.offsetTop || 0),
                 left: $obj[fnname]().left + (posObj.dir == 'right' ? $obj.outerWidth() : 0) - (posObj.offsetLeft || 0),
                 position: 'absolute'
-            } : {}))
+            } : {}));
 
             this.root().find('.edui-popup-caret').css({
                 top: posObj.caretTop||0,
