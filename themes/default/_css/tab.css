@@ -25,10 +25,8 @@
     color: #555555;
     cursor: default;
 }
-.edui-tab-content {
-    overflow: auto;
-}
 .edui-tab-content .edui-tab-pane{
+    position: relative;
     display: none;
 }
 .edui-tab-content .edui-tab-pane.active{
