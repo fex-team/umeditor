@@ -11,7 +11,7 @@
 .edui-image-upload1 .edui-image-icon.hover{background-position: -50px 0;}
 .edui-image-upload2 .edui-image-icon{display: inline-block;width:120px;height:120px;background-image: url('images/upload2.png')}
 
-.edui-image-content{height:330px;overflow:auto;width:100%;}
+.edui-image-content{height:330px;width:100%;}
 
 .edui-image-mask{display: none;position: absolute;top:0;left:0;width: 100%; height: 100%;background-color:#fff;
     text-align: center;line-height:300px;color:#000;font-size:14px;font-weight:bold;opacity: 0.6;filter: alpha(opacity=60);}
