@@ -80,21 +80,21 @@
             Upload.toggleMask();
 
             if (state == "SUCCESS") {
-                $("<img src='" + editor.options.imagePath + url + "' class='edui-image-pic' />").on("load", function () {
+                var $img = $("<img src='" + editor.options.imagePath + url + "' class='edui-image-pic' />"),
+                    $item = $("<div class='edui-image-item'><div class='edui-image-close'></div></div>").append($img);
+
+                if ($("#edui-image-Jupload2", $w).length < 1) {
+                    $("#edui-image-Jcontent", $w).append($item);
+
+                    Upload.render("#edui-image-Jcontent", 2)
+                        .config("#edui-image-Jupload2")
+                        .submit("#edui-image-Jupload2");
+                } else {
+                    $("#edui-image-Jupload2", $w).before($item);
+                }
+                
+                $img.on("load", function () {
                     Base.scale(this, 120);
-
-                    var $item = $("<div class='edui-image-item'><div class='edui-image-close'></div></div>").append(this);
-
-                    if ($("#edui-image-Jupload2", $w).length < 1) {
-                        $("#edui-image-Jcontent", $w).append($item);
-
-                        Upload.render("#edui-image-Jcontent", 2)
-                            .config("#edui-image-Jupload2")
-                            .submit("#edui-image-Jupload2");
-                    } else {
-                        $("#edui-image-Jupload2", $w).before($item);
-                    }
-
                     Base.close($(this));
                 });
 
@@ -150,6 +150,7 @@
             var me = this;
 
             $("input", $(sel, me.dialog)).on("change", function () {
+
                 $(this).parent().submit();
                 me.toggleMask("Loading....");
                 callback && callback();
