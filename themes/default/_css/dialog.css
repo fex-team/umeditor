@@ -1,5 +1,6 @@
 .edui-modal {
     position: fixed;
+    _position: absolute;
     top: 10%;
     left: 50%;
     width: auto;
@@ -7,6 +8,7 @@
     box-shadow: 2px 2px 5px #d3d6da;
     background-color: #ffffff;
     outline: 0;
+    _margin-left: 0!important;
 }
 .edui-modal-header {
     padding: 5px 10px;
