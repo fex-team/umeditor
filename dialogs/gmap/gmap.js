@@ -30,16 +30,21 @@
             "<title></title>" +
             "</head>" +
             "<body>" +
-            "<scr_ipt src=\"http://maps.google.com/maps/api/js?sensor=false\"></scr_ipt>" +
             "<scr_ipt>" +
             "window.onload = function(){" +
+            "if ( window.google && window.google.maps && window.google.maps.Map ) {" +
             "parent.UE.getWidgetData(\'gmap\').initGMap( window.google );" +
-            "};" +
+            "}};" +
+            "function mapReadyStateChange ( state ) { " +
+            " if ( state === 'complete' || state === 'loaded' ) {" +
+            " document.close(); " +
+            " } }" +
             "</scr_ipt>" +
+            "<scr_ipt onreadystatechange='mapReadyStateChange(this.readyState);' src=\"http://maps.google.com/maps/api/js?sensor=false\"></scr_ipt>" +
+            "<scr_ipt>if (!!+'\v1'){ document.close(); }</scr_ipt>"+
             "</body>" +
             "</html>" +
             "</script>",
-//        "<iframe style=\"display: none;\" src=\"<%=gmap_home_url%>/proxy.html\"></iframe>",
         initContent:function( editor, $widget ){
 
             var me = this,
@@ -74,7 +79,6 @@
 
             ifrdoc.open();
             ifrdoc.write( this.root().find( '.edui-tpl-container' ).html().replace(/scr_ipt/g, "script") );
-            ifrdoc.close();
 
         },
         initGMap: function( google ){
@@ -184,7 +188,7 @@
                         point = widget.marker.getPosition(),
                         url = "http://maps.google.com/maps/api/staticmap?center=" + center.lat() + ',' + center.lng() + "&zoom=" + widget.map.zoom + "&size=520x340&maptype=" + widget.map.getMapTypeId() + "&markers=" + point.lat() + ',' + point.lng() + "&sensor=false";
 
-                    editor.execCommand('inserthtml', '<img width="520" height="340" src="' + url + '"' + (widget.imgcss ? ' style="' + widget.imgcss + '"' :'') + '/>');
+                    editor.execCommand('inserthtml', '<img width="520" height="340" src="' + url + '"' + (widget.imgcss ? ' style="' + widget.imgcss + '"' :'') + '/>', true);
                 }
             },
             cancel: {

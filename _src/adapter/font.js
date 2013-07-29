@@ -53,6 +53,10 @@ UE.registerUI('fontfamily', function( name ) {
     //querycommand
     this.addListener('selectionchange',function( evt, isUserTrigger ){
 
+        if ( !isUserTrigger ) {
+            return;
+        }
+
         //设置按钮状态
         var state = this.queryCommandState( name );
         comboboxWidget.button().edui().disabled( state == -1 ).active( state == 1 );

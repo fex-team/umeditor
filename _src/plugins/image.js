@@ -45,6 +45,6 @@ UE.commands['insertimage'] = {
             }
         }
 
-        me.execCommand('insertHtml', html.join(''));
+        me.execCommand('insertHtml', html.join(''), true);
     }
 };
