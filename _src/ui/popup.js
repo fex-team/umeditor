@@ -36,6 +36,7 @@ UE.ui.define('popup', {
             }).addClass(posObj.caretDir || "up")
 
         }
+        this.trigger("aftershow");
     },
     hide: function () {
         this.root().css('display', 'none');
