@@ -45,6 +45,7 @@
 
 .edui-emotion-wrapper .edui-tab-nav{
     height: auto;
+    *height: 31px;
 }
 .edui-emotion-wrapper .edui-emotion-tabs{
     clear: both;
