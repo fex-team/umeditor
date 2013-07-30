@@ -32,16 +32,17 @@
             "<body>" +
             "<scr_ipt>" +
             "window.onload = function(){" +
-            "if ( window.google && window.google.maps && window.google.maps.Map ) {" +
+            "if ( window.google && window.google.maps && window.google.maps.Map && !this.loaded ) {" +
+            "this.loaded = true;" +
             "parent.UE.getWidgetData(\'gmap\').initGMap( window.google );" +
             "}};" +
             "function mapReadyStateChange ( state ) { " +
-            " if ( state === 'complete' || state === 'loaded' ) {" +
-            " document.close(); " +
+            " if ( ( state === 'complete' || state === 'loaded' ) ) {" +
+            "document.close();" +
             " } }" +
             "</scr_ipt>" +
-            "<scr_ipt onreadystatechange='mapReadyStateChange(this.readyState);' src=\"http://maps.google.com/maps/api/js?sensor=false\"></scr_ipt>" +
-            "<scr_ipt>if (!!+'\v1'){ document.close(); }</scr_ipt>"+
+            "<scr_ipt onreadystatechange='mapReadyStateChange(this.readyState);' src=\"https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false\"></scr_ipt>" +
+            "<scr_ipt>if (!!+'\v1'){ document.close(); }</scr_ipt>" +
             "</body>" +
             "</html>" +
             "</script>",
@@ -83,10 +84,12 @@
         },
         initGMap: function( google ){
 
-            var map = new google.maps.Map( $("#eduiGMapContainer")[0], {
+            var googleMap = google.maps.Map,
+                map = new googleMap( $("#eduiGMapContainer")[0], {
                 zoom: 3,
                 streetViewControl: false,
                 scaleControl: true,
+                zoomControl: true,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             }),
             me = this,
@@ -159,6 +162,7 @@
                 me.map.setCenter(me._center);
                 me.marker.setPosition( me._center );
                 me.map.panTo( me._center );
+                me.map.setZoom(3);
             }
         },
         initEvent:function(){

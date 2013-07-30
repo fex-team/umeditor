@@ -9,6 +9,7 @@
     border-bottom: 1px solid #e1e1e1;
     box-shadow: 2px 2px 5px #d3d6da;
     background-color: #fafafa;
+    z-index: 99999;
 }
 .edui-toolbar .edui-btn-toolbar{
     position: relative;

@@ -22,8 +22,8 @@
                 "<%for( var i=0, len = recordStack.length; i<len; i++ ) {%>" +
                 "<%var index = recordStack[i];%>" +
                 "<li class=\"<%=itemClassName%><%if( selected == index ) {%> edui-combobox-checked<%}%>\" data-item-index=\"<%=index%>\" unselectable=\"on\" onmousedown=\"return false\">" +
-                "<span class=\"edui-combobox-icon\"></span>" +
-                "<label class=\"<%=labelClassName%>\" style=\"<%=itemStyles[ index ]%>\"><%=items[index]%></label>" +
+                "<span class=\"edui-combobox-icon\" unselectable=\"on\" onmousedown=\"return false\"></span>" +
+                "<label class=\"<%=labelClassName%>\" style=\"<%=itemStyles[ index ]%>\" unselectable=\"on\" onmousedown=\"return false\"><%=items[index]%></label>" +
                 "</li>" +
                 "<%}%>" +
                 "<%if( i ) {%>" +

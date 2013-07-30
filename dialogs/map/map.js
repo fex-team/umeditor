@@ -33,7 +33,6 @@
             "<title></title>" +
             "</head>" +
             "<body>" +
-            "<scr_ipt src=\"http://api.map.baidu.com/api?v=1.1&services=true\"></scr_ipt>" +
             "<scr_ipt>" +
             "window.onload = function(){" +
             "var scripts = document.scripts || document.getElementsByTagName(\"script\")," +
@@ -43,7 +42,12 @@
             "}" +
             "parent.UE.getWidgetData(\'map\').requestMapApi( src );" +
             "};" +
+            "function mapReadyStateChange ( state ) { " +
+            " if ( state === 'complete' || state === 'loaded' ) {" +
+            " document.close(); " +
+            " } }" +
             "</scr_ipt>" +
+            "<scr_ipt onreadystatechange='mapReadyStateChange(this.readyState);' onload='mapReadyStateChange(\"loaded\");' src=\"http://api.map.baidu.com/api?v=1.1&services=true\"></scr_ipt>" +
             "</body>" +
             "</html>" +
             "</script>",
@@ -89,7 +93,6 @@
 
                 $ifr.open();
                 $ifr.write( this.root().find(".edui-tpl-container").html().replace( /scr_ipt/g, 'script' ) );
-                $ifr.close();
 
             }
 
@@ -190,7 +193,7 @@
             return reg.exec(str)[1];
         },
         reset: function(){
-            this.map.reset();
+            this.map && this.map.reset();
         },
         initEvent: function () {
             var me = this;

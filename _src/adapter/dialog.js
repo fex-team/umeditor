@@ -57,10 +57,29 @@ UE.registerUI('link image gmap map insertvideo',function(name){
                 rng.select()
             }
         }).on('beforeshow', function () {
-                var $root = this.root();
+                var $root = this.root(),
+                    win = null,
+                    offset = null;
                 currentRange = me.selection.getRange();
                 if (!$root.parent()[0]) {
                     me.$container.find('.edui-dialog-container').append($root);
+                }
+
+                //IE6下 特殊处理, 通过计算进行定位
+                if( $.IE6 ) {
+
+                    win = {
+                        width: $( window ).width(),
+                        height: $( window ).height()
+                    };
+                    offset = $root.parents(".edui-toolbar").offset();
+                    $root.css({
+                        position: 'absolute',
+                        margin: 0,
+                        left: ( win.width - $root.width() ) / 2 - offset.left,
+                        top: 100
+                    });
+
                 }
                 UE.setWidgetBody(name,$dialog,me);
         }).on('afterbackdrop',function(){
