@@ -162,7 +162,7 @@
                 me.map.setCenter(me._center);
                 me.marker.setPosition( me._center );
                 me.map.panTo( me._center );
-                me.map.setZoom(3);
+                me.map.setZoom(8);
             }
         },
         initEvent:function(){
