@@ -59,6 +59,7 @@
             'adapter/font.js',
             'adapter/dialog.js',
             'adapter/popup.js',
+            'adapter/scale.js',
             'adapter/autoheight.js'
 //            'adapter/autofloat.js'
         ],
