@@ -11,20 +11,21 @@
     border: 1px solid #ccc;
     font-size: 12px;
     box-shadow: 2px 2px 5px #d3d6da;
-
+    min-width: 160px;
+    _width: 160px;
 }
 
 .edui-combobox-menu .edui-combobox-item {
     display: block;
-    min-width: 160px;
     border: 1px solid white;
 }
 
 .edui-combobox-menu .edui-combobox-item-label {
-    width: 120px;
     height: 25px;
     line-height: 25px;
     display: inline-block;
+    _display: inline;
+    _zoom: 1;
     margin-left: 10px;
 }
 
@@ -79,7 +80,6 @@
 }
 
 /* 24 */
-
 .edui-combobox-fontsize .edui-combobox-item-4 .edui-combobox-item-label {
     height: 27px;
     line-height: 27px;
