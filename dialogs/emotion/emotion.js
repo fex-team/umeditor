@@ -7,13 +7,13 @@
         tpl: "<link type=\"text/css\" rel=\"stylesheet\" href=\"<%=emotion_url%>emotion.css\">" +
             "<div id=\"edui-emotion-tab-Jpanel\" class=\"edui-emotion-wrapper\">" +
             "<ul id=\"edui-emotion-Jtabnav\" class=\"edui-tab-nav\">" +
-            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab0\" class=\"edui-tab-text\"><%=lang_input_choice%></a></li>" +
-            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab1\" class=\"edui-tab-text\"><%=lang_input_Tuzki%></a></li>" +
-            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab2\" class=\"edui-tab-text\"><%=lang_input_lvdouwa%></a></li>" +
-            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab3\" class=\"edui-tab-text\"><%=lang_input_BOBO%></a></li>" +
-            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab4\" class=\"edui-tab-text\"><%=lang_input_babyCat%></a></li>" +
-            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab5\" class=\"edui-tab-text\"><%=lang_input_bubble%></a></li>" +
-            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab6\" class=\"edui-tab-text\"><%=lang_input_youa%></a></li>" +
+            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab0\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_choice%></a></li>" +
+            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab1\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_Tuzki%></a></li>" +
+            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab2\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_lvdouwa%></a></li>" +
+            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab3\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_BOBO%></a></li>" +
+            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab4\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_babyCat%></a></li>" +
+            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab5\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_bubble%></a></li>" +
+            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab6\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_youa%></a></li>" +
             "<li class=\"edui-emotion-tabs\"></li>" +
             "</ul>" +
             "<div id=\"edui-emotion-JtabBodys\" class=\"edui-tab-content\">" +

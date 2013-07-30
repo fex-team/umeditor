@@ -49,6 +49,7 @@ UE.ui.define('modal', {
         return me[!me.data("isShown") ? 'show' : 'hide']();
     },
     show: function () {
+
         var me = this;
 
         me.trigger("beforeshow");
@@ -68,7 +69,8 @@ UE.ui.define('modal', {
         })
     },
     autoCenter: function () {
-        this.root().css("margin-left", -(this.root().width() / 2));
+        //ie6下不用处理了
+        !$.IE6 && this.root().css("margin-left", -(this.root().width() / 2));
     },
     hide: function () {
         var me = this;

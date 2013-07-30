@@ -54,7 +54,7 @@
             }
 
             pro.width &&  $widget.width(pro.width);
-            pro.height  &&  $widget.height(pro.height)
+            pro.height  &&  $widget.height( pro.height + $widget.find(".edui-modal-header").height() + $widget.find(".edui-modal-footer").height() );
 
             //为回调进行参数绑定
             var cb = _widgetCallBack[name];
