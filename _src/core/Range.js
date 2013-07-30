@@ -814,7 +814,7 @@
             this.cloneRange().insertNode($span.get(0));
             var winScrollTop = $(window).scrollTop(),
                 winHeight = $(window).height(),
-                spanTop = $span.position().top;
+                spanTop = $span.offset().top;
             if(spanTop < winScrollTop || spanTop > winScrollTop + winHeight ){
                 window.scrollTo(0,spanTop)
             }
