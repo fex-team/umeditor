@@ -2,20 +2,24 @@
     position: absolute;
     padding: 5px 0;
     display: none;
-    opacity: 0.8;
-    filter: alpha(opacity=80);
+    /*opacity: 0.8;*/
+    /*filter: alpha(opacity=80);*/
+    z-index: 99999;
 }
 .edui-tooltip .edui-tooltip-arrow{
     position: absolute;
     top: 0;
+    _top: -19px;
     left: 50%;
     width: 0;
     height: 0;
+    padding: 0;
     margin-left: -5px;
     border-color: transparent;
-    border-style: solid;
+    border-style: dashed dashed solid dashed;
     border-bottom-color: #000000;
     border-width: 0 5px 5px;
+    background: transparent;
 }
 .edui-tooltip .edui-tooltip-inner{
     padding: 6px;
