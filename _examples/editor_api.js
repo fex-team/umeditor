@@ -36,7 +36,6 @@
             'plugins/selectall.js',
             'plugins/removeformat.js',
             'plugins/keystrokes.js',
-//            'plugins/fiximgclick.js',
             'ui/widget.js',
             'ui/button.js',
             'ui/toolbar.js',
@@ -60,7 +59,7 @@
             'adapter/font.js',
             'adapter/dialog.js',
             'adapter/popup.js',
-//            'adapter/scale.js',
+            'adapter/scale.js',
             'adapter/autoheight.js',
             'adapter/autofloat.js'
         ],
