@@ -13,12 +13,23 @@
             }
             return url;
         },
-        getAllPic: function (sel, $w) {
-            var arr = [],
+        getAllPic: function (sel, $w, editor) {
+            var me = this,
+                arr = [],
                 $imgs = $(sel, $w);
 
             $.each($imgs, function (index, node) {
+                $(node).removeAttr("width").removeAttr("height");
+
+                if (node.width > editor.options.initialFrameWidth) {
+                    me.scale(node, editor.options.initialFrameWidth -
+                        parseInt($(editor.body).css("padding-left"))  -
+                        parseInt($(editor.body).css("padding-right")));
+                }
+
                 return arr.push({
+                    width: node.width,
+                    height: node.height,
                     _src: node.src,
                     src: node.src
                 });
@@ -92,7 +103,7 @@
                 } else {
                     $("#edui-image-Jupload2", $w).before($item);
                 }
-                
+
                 $img.on("load", function () {
                     Base.scale(this, 120);
                     Base.close($(this));
@@ -124,13 +135,20 @@
             me.render("#edui-image-Jlocal", 1);
             me.config("#edui-image-Jupload1");
             me.submit("#edui-image-Jupload1", function () {
-                $("#edui-image-Jupload1").css("display", "none");
+                $("#edui-image-JdragTip", me.dialog).css("display", "none");
+                $("#edui-image-Jupload1", me.dialog).css("display", "none");
             });
             me.drag();
 
             $("#edui-image-Jupload1").hover(function () {
                 $(".edui-image-icon", this).toggleClass("hover");
             });
+
+            if (!(UE.browser.ie && UE.browser.version <= 8)) {
+                $("#edui-image-JdragTip", me.dialog).css("display", "block");
+            }
+
+
             return me;
         },
         render: function (sel, t) {
@@ -271,6 +289,7 @@
             "<div id=\"edui-image-Jlocal\" class=\"edui-tab-pane active\">" +
             "<div class=\"edui-image-content\" id=\"edui-image-Jcontent\"></div>" +
             "<div class=\"edui-image-mask\" id=\"edui-image-Jmask\"></div>" +
+            "<div id=\"edui-image-JdragTip\" class=\"edui-image-dragTip\"><%=lang_input_dragTip%></div>" +
             "</div>" +
             "<div id=\"edui-image-JimgSearch\" class=\"edui-tab-pane\">" +
             "<div class=\"edui-image-searchBar\">" +
@@ -316,7 +335,7 @@
                         sel = "#edui-image-JsearchRes .edui-image-pic";
                     }
 
-                    var list = Base.getAllPic(sel, $w);
+                    var list = Base.getAllPic(sel, $w, editor);
 
                     if (index != -1) {
                         editor.execCommand('insertimage', list);

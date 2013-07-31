@@ -816,7 +816,12 @@
                 winHeight = $(window).height(),
                 spanTop = $span.offset().top;
             if(spanTop < winScrollTop || spanTop > winScrollTop + winHeight ){
-                window.scrollTo(0,spanTop)
+                if(spanTop > winScrollTop + winHeight){
+                    window.scrollTo(0,spanTop - winHeight + $span.height())
+                }else{
+                    window.scrollTo(0,winScrollTop - spanTop - $span.height())
+                }
+
             }
             $span.remove();
         }
