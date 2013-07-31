@@ -1,6 +1,6 @@
 //scale 类
 UE.ui.define('scale', {
-    tpl: '<div class="edui-scale">' +
+    tpl: '<div class="edui-scale" unselectable="on" onselectstart="return false;">' +
         '<span class="edui-scale-hand0"></span>' +
         '<span class="edui-scale-hand1"></span>' +
         '<span class="edui-scale-hand2"></span>' +
@@ -19,7 +19,7 @@ UE.ui.define('scale', {
         return this;
     },
     initStyle: function () {
-        utils.cssRule('scale', '.edui-scale{position:absolute;border:1px solid #38B2CE;}' +
+        utils.cssRule('scale', '.edui-scale{diaplsy:none;position:absolute;border:1px solid #38B2CE;}' +
             '.edui-scale span{position:absolute;left:0;top:0;width:6px;height:6px;overflow:hidden;font-size:0px;display:block;background-color:#3C9DD0;}'
             + '.edui-scale .edui-scale-hand0{cursor:nw-resize;top:0;margin-top:-7px;left:0;margin-left:-7px;}'
             + '.edui-scale .edui-scale-hand1{cursor:n-resize;top:0;margin-top:-7px;left:50%;margin-left:-3px;}'
@@ -55,6 +55,8 @@ UE.ui.define('scale', {
             if (me.dragId != -1) {
                 me.dragId = -1;
                 me.updateTargetElement();
+                var target = me.data('$scaleTarget');
+                if (target.parentNode) me.attachTo(me.data('$scaleTarget'));
             }
             $(document).unbind('mousemove', _mouseMoveHandler);
         };
@@ -121,8 +123,8 @@ UE.ui.define('scale', {
                 return value <= 0 ? 1 : (value + ele.offsetTop) > wrap.clientHeight ? wrap.clientHeight - ele.offsetTop : value;
         }
     },
-    show: function ($obj, posObj) {
-        if ($obj && posObj) this.attachTo($obj, posObj);
+    show: function ($obj) {
+        if ($obj) this.attachTo($obj);
         this.root().show();
         this.trigger("aftershow");
     },
@@ -130,9 +132,10 @@ UE.ui.define('scale', {
         this.root().hide();
         this.trigger('afterhide')
     },
-    attachTo: function ($obj, posObj) {
+    attachTo: function ($obj) {
         var me = this,
-            imgPos = $obj.offset();
+            imgPos = $obj.offset(),
+            posObj = $(document.body).offset();
 
         me.data('$scaleTarget', $obj);
         me.root().css({
