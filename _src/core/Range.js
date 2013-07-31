@@ -817,7 +817,7 @@
                 spanTop = $span.offset().top;
             if(spanTop < winScrollTop || spanTop > winScrollTop + winHeight ){
                 if(spanTop > winScrollTop + winHeight){
-                    window.scrollTo(0,spanTop - winHeight)
+                    window.scrollTo(0,spanTop - winHeight + $span.height())
                 }else{
                     window.scrollTo(0,winScrollTop - spanTop)
                 }
