@@ -21,6 +21,10 @@
     _background: url(../images/icons.gif) -741px 0;
 }
 
+.edui-btn-toolbar .edui-splitbutton,
+.edui-btn-toolbar .edui-splitbutton{
+    _border: none;
+}
 
 /*状态反射*/
 .edui-btn-toolbar .edui-splitbutton.hover .edui-btn{
