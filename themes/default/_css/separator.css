@@ -1,9 +1,9 @@
 .edui-toolbar .edui-separator{
     width: 2px;
     height: 20px;
-    margin: 2px 4px 2px 3px;
-    background: url(../images/icons.png) -180px 0;
-    background: url(../images/icons.gif) -180px 0 \9;
+    padding: 1px 2px;
+    background: url(../images/icons.png) -179px 1px;
+    background: url(../images/icons.gif) -179px 1px \9;
     display: inline-block !important;
     vertical-align: top;
     *display: inline !important;

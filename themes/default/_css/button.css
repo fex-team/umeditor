@@ -27,6 +27,7 @@
     background-color: #d5e1f2;
     padding: 0;
     border: 1px solid #a3bde3;
+    _z-index: 1;
 }
 .edui-btn-toolbar .edui-btn.disabled{
     opacity: 0.3;

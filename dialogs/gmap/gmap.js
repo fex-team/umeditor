@@ -34,14 +34,16 @@
             "window.onload = function(){" +
             "if ( window.google && window.google.maps && window.google.maps.Map && !this.loaded ) {" +
             "this.loaded = true;" +
-            "parent.UE.getWidgetData(\'gmap\').initGMap( window.google );" +
+            "parent.google = window.google;" +
+            "parent.des = parent.des;" +
+            "parent.UE.getWidgetData(\'gmap\').initGMap();" +
             "}};" +
             "function mapReadyStateChange ( state ) { " +
             " if ( ( state === 'complete' || state === 'loaded' ) ) {" +
             "document.close();" +
             " } }" +
             "</scr_ipt>" +
-            "<scr_ipt onreadystatechange='mapReadyStateChange(this.readyState);' src=\"https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false\"></scr_ipt>" +
+            "<scr_ipt onreadystatechange='mapReadyStateChange(this.readyState);' src=\"http://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false\"></scr_ipt>" +
             "<scr_ipt>if (!!+'\v1'){ document.close(); }</scr_ipt>" +
             "</body>" +
             "</html>" +
@@ -82,7 +84,7 @@
             ifrdoc.write( this.root().find( '.edui-tpl-container' ).html().replace(/scr_ipt/g, "script") );
 
         },
-        initGMap: function( google ){
+        initGMap: function(){
 
             var googleMap = google.maps.Map,
                 map = new googleMap( $("#eduiGMapContainer")[0], {
@@ -180,6 +182,10 @@
                 me.doSearch();
             });
 
+            me.root().on( "mousewheel DOMMouseScroll", function ( e ) {
+                return false;
+            } );
+
         },
         buttons: {
             ok: {
@@ -198,7 +204,9 @@
                     UE.getWidgetData(widgetName).reset();
                 }
             }
-        }
+        },
+        width: 580,
+        height: 408
     });
 
 })();
