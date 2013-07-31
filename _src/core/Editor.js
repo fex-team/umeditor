@@ -253,12 +253,20 @@
                 }
 
                 container.style.width = /%$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth - getStyleValue("padding-left")- getStyleValue("padding-right") - getStyleValue('border-width') +'px';
-                container.style.height = /%$/.test(options.initialFrameHeight) ?  '100%' : (options.initialFrameHeight - getStyleValue("padding-top")- getStyleValue("padding-bottom") - getStyleValue('border-width')) +'px';
-
+                var height = /%$/.test(options.initialFrameHeight) ?  '100%' : (options.initialFrameHeight - getStyleValue("padding-top")- getStyleValue("padding-bottom") - getStyleValue('border-width'));
+                container.style.minHeight = height +'px';
+                container.style.height = '';
                 container.style.zIndex = options.zIndex;
 
+                if(browser.ie && browser.version <= 6){
+                    container.style.height = height ;
+                    container.style.setExpression('height', 'this.scrollHeight <= ' + height + ' ? "' + height + 'px" : "auto"');
+                }
+
+
+
                 this._setup(container);
-                container.style.overflow = 'hidden';
+//                container.style.overflow = 'hidden';
                 //解决如果是给定的百分比，会导致高度算不对的问题
                 setTimeout(function(){
                     if( /%$/.test(options.initialFrameWidth)){
