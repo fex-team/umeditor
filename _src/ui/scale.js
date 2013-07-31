@@ -11,15 +11,17 @@ UE.ui.define('scale', {
         '<span class="edui-scale-hand7"></span>' +
         '</div>',
     defaultOpt: {
+        doc: document
     },
     init: function (options) {
         this.root($($.parseTmpl(this.tpl, options)));
         this.initStyle();
-        this.initEvents();
+        this.startPos = this.prePos = {x: 0, y: 0};
+        this.dragId = -1;
         return this;
     },
     initStyle: function () {
-        utils.cssRule('scale', '.edui-scale{diaplsy:none;position:absolute;border:1px solid #38B2CE;}' +
+        utils.cssRule('scale', '.edui-scale{display:none;position:absolute;border:1px solid #38B2CE;}' +
             '.edui-scale span{position:absolute;left:0;top:0;width:6px;height:6px;overflow:hidden;font-size:0px;display:block;background-color:#3C9DD0;}'
             + '.edui-scale .edui-scale-hand0{cursor:nw-resize;top:0;margin-top:-7px;left:0;margin-left:-7px;}'
             + '.edui-scale .edui-scale-hand1{cursor:n-resize;top:0;margin-top:-7px;left:50%;margin-left:-3px;}'
@@ -30,45 +32,39 @@ UE.ui.define('scale', {
             + '.edui-scale .edui-scale-hand6{cursor:s-resize;top:100%;margin-top:1px;left:50%;margin-left:-3px;}'
             + '.edui-scale .edui-scale-hand7{cursor:se-resize;top:100%;margin-top:1px;left:100%;margin-left:1px;}');
     },
-    initEvents: function () {
-        var me = this;
-
-        me.startPos = me.prePos = {x: 0, y: 0};
-        me.dragId = -1;
-
-        var _mouseMoveHandler = function (e) {
-            if (me.dragId != -1) {
-                me.updateContainerStyle(me.dragId, {x: e.clientX - me.prePos.x, y: e.clientY - me.prePos.y});
-                me.prePos.x = e.clientX;
-                me.prePos.y = e.clientY;
-                me.updateTargetElement();
-            }
-        }, _mouseDownHandler = function (e) {
-            var hand = e.target || e.srcElement, hand;
-            if (hand.className.indexOf('edui-scale-hand') != -1) {
-                me.dragId = hand.className.slice(-1);
-                me.startPos.x = me.prePos.x = e.clientX;
-                me.startPos.y = me.prePos.y = e.clientY;
-                $(document).bind('mousemove', _mouseMoveHandler);
-            }
-        }, _mouseUpHandler = function (e) {
-            if (me.dragId != -1) {
-                me.dragId = -1;
-                me.updateTargetElement();
-                var target = me.data('$scaleTarget');
-                if (target.parentNode) me.attachTo(me.data('$scaleTarget'));
-            }
-            $(document).unbind('mousemove', _mouseMoveHandler);
-        };
-
-        me.on('aftershow', function () {
-            me.root().bind('mousedown', _mouseDownHandler);
-            $(document).bind('mouseup', _mouseUpHandler);
-        });
-        me.on('afterhide', function () {
-            me.root().unbind('mousedown', _mouseDownHandler);
-            $(document).unbind('mouseup', _mouseUpHandler);
-        });
+    _eventHandler: function (e) {
+        var me = this,
+            doc = me.defaultOpt.doc;
+        switch (e.type) {
+            case 'mousedown':
+                var hand = e.target || e.srcElement, hand;
+                if (hand.className.indexOf('edui-scale-hand') != -1) {
+                    me.dragId = hand.className.slice(-1);
+                    me.startPos.x = me.prePos.x = e.clientX;
+                    me.startPos.y = me.prePos.y = e.clientY;
+                    $(doc).bind('mousemove', $.proxy(me._eventHandler, me));
+                }
+                break;
+            case 'mousemove':
+                if (me.dragId != -1) {
+                    me.updateContainerStyle(me.dragId, {x: e.clientX - me.prePos.x, y: e.clientY - me.prePos.y});
+                    me.prePos.x = e.clientX;
+                    me.prePos.y = e.clientY;
+                    me.updateTargetElement();
+                }
+                break;
+            case 'mouseup':
+                if (me.dragId != -1) {
+                    me.dragId = -1;
+                    me.updateTargetElement();
+                    var target = me.data('$scaleTarget');
+                    if (target.parentNode) me.attachTo(me.data('$scaleTarget'));
+                }
+                $(doc).unbind('mousemove', $.proxy(me._eventHandler, me));
+                break;
+            default:
+                break;
+        }
     },
     updateTargetElement: function () {
         var $root = this.root();
@@ -108,34 +104,43 @@ UE.ui.define('scale', {
         }
     },
     _validScaledProp: function (prop, value) {
-        var ele = this.root()[0],
-            wrap = document;
+        var $ele = this.root(),
+            $wrap = $(this.defaultOpt.doc),
+            calc = function(val, a, b){
+                return (val + a) > b ? b - a : value;
+            };
 
         value = isNaN(value) ? 0 : value;
         switch (prop) {
             case 'left':
-                return value < 0 ? 0 : (value + ele.clientWidth) > wrap.clientWidth ? wrap.clientWidth - ele.clientWidth : value;
+                return value < 0 ? 0 : calc(value, $ele.width(), $wrap.width());
             case 'top':
-                return value < 0 ? 0 : (value + ele.clientHeight) > wrap.clientHeight ? wrap.clientHeight - ele.clientHeight : value;
+                return value < 0 ? 0 : calc(value, $ele.height(),$wrap.height());
             case 'width':
-                return value <= 0 ? 1 : (value + ele.offsetLeft) > wrap.clientWidth ? wrap.clientWidth - ele.offsetLeft : value;
+                return value <= 0 ? 1 : calc(value, $ele.offset().left, $wrap.width());
             case 'height':
-                return value <= 0 ? 1 : (value + ele.offsetTop) > wrap.clientHeight ? wrap.clientHeight - ele.offsetTop : value;
+                return value <= 0 ? 1 : calc(value, $ele.offset().top, $wrap.height());
         }
     },
     show: function ($obj) {
-        if ($obj) this.attachTo($obj);
-        this.root().show();
-        this.trigger("aftershow");
+        var me = this;
+        if ($obj) me.attachTo($obj);
+        me.root().bind('mousedown', $.proxy(me._eventHandler, me));
+        $(me.defaultOpt.doc).bind('mouseup', $.proxy(me._eventHandler, me));
+        me.root().show();
+        me.trigger("aftershow");
     },
     hide: function () {
-        this.root().hide();
-        this.trigger('afterhide')
+        var me = this;
+        me.root().unbind('mousedown', $.proxy(me._eventHandler, me));
+        $(me.defaultOpt.doc).unbind('mouseup', $.proxy(me._eventHandler, me));
+        me.root().hide();
+        me.trigger('afterhide')
     },
     attachTo: function ($obj) {
         var me = this,
-            imgPos = $obj.offset(),
-            posObj = $(document.body).offset();
+        imgPos = $obj.offset(),
+            posObj = $(me.defaultOpt.doc.body).offset();
 
         me.data('$scaleTarget', $obj);
         me.root().css({
