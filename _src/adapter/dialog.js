@@ -72,12 +72,12 @@ UE.registerUI('link image gmap map insertvideo',function(name){
                         width: $( window ).width(),
                         height: $( window ).height()
                     };
-                    offset = $root.parents(".edui-toolbar").offset();
+                    offset = $root.parents(".edui-toolbar")[0].getBoundingClientRect();
                     $root.css({
                         position: 'absolute',
                         margin: 0,
                         left: ( win.width - $root.width() ) / 2 - offset.left,
-                        top: 100
+                        top: 100 - offset.top
                     });
 
                 }

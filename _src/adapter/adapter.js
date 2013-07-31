@@ -53,6 +53,7 @@
                 pro.initEvent(editor,$widget);
             }
 
+            pro.width &&  $widget.width(pro.width);
 
             //为回调进行参数绑定
             var cb = _widgetCallBack[name];

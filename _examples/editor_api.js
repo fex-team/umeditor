@@ -36,7 +36,7 @@
             'plugins/selectall.js',
             'plugins/removeformat.js',
             'plugins/keystrokes.js',
-            'plugins/fiximgclick.js',
+//            'plugins/fiximgclick.js',
             'ui/widget.js',
             'ui/button.js',
             'ui/toolbar.js',
@@ -45,6 +45,7 @@
             'ui/splitbutton.js',
             'ui/colorsplitbutton.js',
             'ui/popup.js',
+            'ui/scale.js',
             'ui/colorpicker.js',
             'ui/tablepicker.js',
             'ui/combobox.js',
@@ -60,8 +61,8 @@
             'adapter/dialog.js',
             'adapter/popup.js',
             'adapter/scale.js',
-            'adapter/autoheight.js',
-            'adapter/autofloat.js'
+            'adapter/autoheight.js'
+//            'adapter/autofloat.js'
         ],
         baseURL = '../_src/';
     for (var i=0,pi;pi = paths[i++];) {
