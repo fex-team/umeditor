@@ -56,7 +56,11 @@ UE.ready(function() {
             return rect;
         },
         flag =true;   //ie7模式下需要偏移
+    var isFullScreening = false;
     function setFloating(){
+        if(isFullScreening){
+            return;
+        }
         var toobarBoxPos = domUtils.getXY(toolbarBox),
             origalFloat = domUtils.getComputedStyle(toolbarBox,'position'),
             origalLeft = domUtils.getComputedStyle(toolbarBox,'left');
@@ -82,6 +86,7 @@ UE.ready(function() {
     }
     function unsetFloating(){
         flag = true;
+
         if(placeHolder.parentNode){
             placeHolder.parentNode.removeChild(placeHolder);
         }
@@ -120,12 +125,14 @@ UE.ready(function() {
             me.addListener('beforefullscreenchange', function (t, enabled){
                 if (enabled) {
                     unsetFloating();
+                    isFullScreening = enabled;
                 }
             });
             me.addListener('fullscreenchanged', function (t, enabled){
                 if (!enabled) {
                     updateFloating();
                 }
+                isFullScreening = enabled;
             });
             me.addListener('sourcemodechanged', function (t, enabled){
                 setTimeout(function (){
