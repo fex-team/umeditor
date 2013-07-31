@@ -128,6 +128,12 @@
          */
         revert: function(){
 
+            //还原CSS表达式
+            var options = this.editor.options,
+                height = /%$/.test(options.initialFrameHeight) ?  '100%' : (options.initialFrameHeight - this.getStyleValue("padding-top")- this.getStyleValue("padding-bottom") - this.getStyleValue('border-width'));
+
+            this.getEditorHolder().style.setExpression('height', 'this.scrollHeight <= ' + height + ' ? "' + height + 'px" : "auto"');
+
             //还原容器状态
             this.revertContainerStatus();
 
@@ -168,6 +174,9 @@
             borderWidth = parseInt( domUtils.getComputedStyle( editorBody, 'border-width' ), 10 ) || 0;
             //容器border宽度
             borderWidth += parseInt( domUtils.getComputedStyle( editor.container, 'border-width' ), 10 ) || 0;
+
+            //干掉css表达式
+            editorBody.style.setExpression( 'height', null );
 
             $( editor.container ).css( {
                 width: width + 'px',
@@ -305,8 +314,6 @@
         getTop: function () {
             var top = 0;
             if ( $.IE6 ) {
-//                alert($( this.editor.container ).position().top)
-//                alert($( this.editor.container ).offset().top);
 //                top = -( $( this.editor.container ).offset().top );
             }
             return top;
@@ -317,8 +324,10 @@
 //                left = -( $( this.editor.container ).offset().left );
             }
             return left;
+        },
+        getStyleValue: function (attr) {
+            return parseInt(domUtils.getComputedStyle( this.getEditorHolder() ,attr));
         }
-
     };
 
 
