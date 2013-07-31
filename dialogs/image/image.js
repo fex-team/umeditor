@@ -92,7 +92,7 @@
                 } else {
                     $("#edui-image-Jupload2", $w).before($item);
                 }
-                
+
                 $img.on("load", function () {
                     Base.scale(this, 120);
                     Base.close($(this));
@@ -131,6 +131,12 @@
             $("#edui-image-Jupload1").hover(function () {
                 $(".edui-image-icon", this).toggleClass("hover");
             });
+
+            if (!(UE.browser.ie && UE.browser.version <= 8)) {
+                $("#edui-image-JdragTip", me.dialog).css("display","block");
+            }
+
+
             return me;
         },
         render: function (sel, t) {
@@ -271,6 +277,7 @@
             "<div id=\"edui-image-Jlocal\" class=\"edui-tab-pane active\">" +
             "<div class=\"edui-image-content\" id=\"edui-image-Jcontent\"></div>" +
             "<div class=\"edui-image-mask\" id=\"edui-image-Jmask\"></div>" +
+            "<div id=\"edui-image-JdragTip\" class=\"edui-image-dragTip\"><%=lang_input_dragTip%></div>"+
             "</div>" +
             "<div id=\"edui-image-JimgSearch\" class=\"edui-tab-pane\">" +
             "<div class=\"edui-image-searchBar\">" +

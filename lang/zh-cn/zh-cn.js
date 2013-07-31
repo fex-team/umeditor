@@ -148,6 +148,7 @@ UE.I18N['zh-cn'] = {
         'static':{
             lang_tab_local:"本地上传",
             lang_tab_imgSearch:"网络图片",
+            lang_input_dragTip:"支持图片拖拽上传",
             lang_btn_add:"添加"
         }
     },

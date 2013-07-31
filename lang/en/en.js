@@ -166,6 +166,7 @@ UE.I18N['en'] = {
         'static':{
             lang_tab_local:"Local Upload",
             lang_tab_imgSearch:"Network Pictures",
+            lang_input_dragTip:"Support drag upload",
             lang_btn_add:"Add"
         }
     },
