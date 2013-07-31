@@ -29,6 +29,7 @@
     cursor: default;
 }
 .edui-tab-content .edui-tab-pane{
+    padding: 1px;
     position: relative;
     display: none;
 }
