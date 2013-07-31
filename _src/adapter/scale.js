@@ -9,7 +9,7 @@ UE.ready(function () {
             if (img && img.tagName == 'IMG') {
                 if (!$scale) {
                     $scale = $.eduiscale().css('zIndex', me.options.zIndex);
-                    me.$container.find('.edui-dialog-container').append($scale);
+                    me.$container.append($scale);
 
                     var _keyDownHandler = function () {
                         $scale.edui().hide();
@@ -31,13 +31,13 @@ UE.ready(function () {
                             $(document).bind('mousedown', _mouseDownHandler);
                         })
                         .on('afterhide', function () {
-                            $(document).bind('keydown', _keyDownHandler);
-                            $(document).bind('mousedown', _mouseDownHandler);
+                            $(document).unbind('keydown', _keyDownHandler);
+                            $(document).unbind('mousedown', _mouseDownHandler);
                         });
                 }
-                $scale.edui().show($(img), $(document.body).offset());
+                $scale.edui().show($(img));
             } else {
-                if ($scale) $scale.edui().hide();
+                if ($scale && $scale.css('display') != 'none') $scale.edui().hide();
             }
         });
         me.addListener('click', function (type, e) {
