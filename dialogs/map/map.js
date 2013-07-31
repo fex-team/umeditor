@@ -214,7 +214,7 @@
 
         },
         width: 580,
-        height: 498,
+        height: 408,
         buttons: {
             ok: {
                 exec: function (editor) {

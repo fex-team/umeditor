@@ -144,7 +144,7 @@
             var me = this,
                 google = me.google;
 
-            if( !me._center ) {
+            if( google && !me._center ) {
 
                 new google.maps.Geocoder().geocode( { 'address': me._defaultCity }, function (results, status) {
                     if (status == google.maps.GeocoderStatus.OK) {
@@ -181,8 +181,6 @@
             });
 
         },
-        width:580,
-        height:498,
         buttons: {
             ok: {
                 exec: function( editor ){
