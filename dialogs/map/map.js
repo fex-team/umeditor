@@ -212,6 +212,10 @@
 
             $("#eduiMapAddress").focus();
 
+            me.root().on( "mousewheel DOMMouseScroll", function ( e ) {
+                return false;
+            } );
+
         },
         width: 580,
         height: 408,
