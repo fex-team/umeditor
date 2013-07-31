@@ -36,7 +36,6 @@
             'plugins/selectall.js',
             'plugins/removeformat.js',
             'plugins/keystrokes.js',
-//            'plugins/fiximgclick.js',
             'ui/widget.js',
             'ui/button.js',
             'ui/toolbar.js',
@@ -61,8 +60,8 @@
             'adapter/dialog.js',
             'adapter/popup.js',
             'adapter/scale.js',
-            'adapter/autoheight.js'
-//            'adapter/autofloat.js'
+            'adapter/autoheight.js',
+            'adapter/autofloat.js'
         ],
         baseURL = '../_src/';
     for (var i=0,pi;pi = paths[i++];) {
