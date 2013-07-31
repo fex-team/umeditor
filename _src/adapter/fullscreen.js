@@ -132,7 +132,7 @@
             var options = this.editor.options,
                 height = /%$/.test(options.initialFrameHeight) ?  '100%' : (options.initialFrameHeight - this.getStyleValue("padding-top")- this.getStyleValue("padding-bottom") - this.getStyleValue('border-width'));
 
-            this.getEditorHolder().style.setExpression('height', 'this.scrollHeight <= ' + height + ' ? "' + height + 'px" : "auto"');
+            $.IE6 && this.getEditorHolder().style.setExpression('height', 'this.scrollHeight <= ' + height + ' ? "' + height + 'px" : "auto"');
 
             //还原容器状态
             this.revertContainerStatus();
@@ -158,6 +158,7 @@
                 height = 0,
                 width = 0,
                 borderWidth = 0,
+                paddingWidth = 0,
                 editor = this.editor,
                 me = this,
                 editorBody = null;
@@ -174,9 +175,11 @@
             borderWidth = parseInt( domUtils.getComputedStyle( editorBody, 'border-width' ), 10 ) || 0;
             //容器border宽度
             borderWidth += parseInt( domUtils.getComputedStyle( editor.container, 'border-width' ), 10 ) || 0;
+            //容器padding
+            paddingWidth += parseInt( domUtils.getComputedStyle( editorBody, 'padding-left' ), 10 ) + parseInt( domUtils.getComputedStyle( editorBody, 'padding-right' ), 10 ) || 0;
 
             //干掉css表达式
-            editorBody.style.setExpression( 'height', null );
+            $.IE6 && editorBody.style.setExpression( 'height', null );
 
             $( editor.container ).css( {
                 width: width + 'px',
@@ -188,9 +191,8 @@
                 padding: 0
             } );
 
-
             $( editorBody ).css({
-                width: width - 2*borderWidth - 10 + 'px',
+                width: width - 2*borderWidth - paddingWidth + 'px',
                 height: height - 2*borderWidth - $( '.edui-toolbar', editor.container ).outerHeight() - $( '.edui-bottombar', editor.container).outerHeight() + 'px',
                 overflowY: 'auto'
             });
