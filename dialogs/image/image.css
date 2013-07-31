@@ -37,7 +37,7 @@
 
 /*common*/
 .edui-image-item{position:relative;float:left;width:120px;height:120px;border: 1px solid #CCC;cursor: default;margin: 5px 0 0 5px;}
-.edui-image-item .edui-image-pic{position: absolute;}
+.edui-image-item .edui-image-pic{position: absolute;left:-9999px;}
 .edui-image-item .edui-image-close{position:absolute;right:0;background: url('images/close.png');width:17px;height:17px;
     display: none;cursor:pointer;}
 .edui-image-item.hover .edui-image-close{display: block;}

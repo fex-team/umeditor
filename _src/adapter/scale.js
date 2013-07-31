@@ -1,19 +1,19 @@
 UE.ready(function () {
     var me = this,
-        $scale;
+        $imagescale;
     if (browser.webkit) {
         me.addListener('click', function (type, e) {
             var range = me.selection.getRange(),
                 img = range.getClosedNode();
 
             if (img && img.tagName == 'IMG') {
-                if (!$scale) {
-                    $scale = $.eduiscale().css('zIndex', me.options.zIndex);
-                    me.$container.append($scale);
+                if (!$imagescale) {
+                    $imagescale = $.eduiscale().css('zIndex', me.options.zIndex);
+                    me.$container.append($imagescale);
 
                     var _keyDownHandler = function () {
-                        $scale.edui().hide();
-                        var target = $scale.edui().getScaleTarget();
+                        $imagescale.edui().hide();
+                        var target = $imagescale.edui().getScaleTarget();
                         if (target.parentNode) {
                             var range = me.selection.getRange();
                             range.selectNode(target).select();
@@ -25,7 +25,7 @@ UE.ready(function () {
                             _keyDownHandler();
                         }
                     }
-                    $scale.edui()
+                    $imagescale.edui()
                         .on('aftershow', function () {
                             $(document).bind('keydown', _keyDownHandler);
                             $(document).bind('mousedown', _mouseDownHandler);
@@ -35,9 +35,9 @@ UE.ready(function () {
                             $(document).unbind('mousedown', _mouseDownHandler);
                         });
                 }
-                $scale.edui().show($(img));
+                $imagescale.edui().show($(img));
             } else {
-                if ($scale && $scale.css('display') != 'none') $scale.edui().hide();
+                if ($imagescale && $imagescale.css('display') != 'none') $imagescale.edui().hide();
             }
         });
         me.addListener('click', function (type, e) {
@@ -48,6 +48,4 @@ UE.ready(function () {
             }
         });
     }
-
-    return $scale;
 });
