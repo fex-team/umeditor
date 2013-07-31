@@ -32,9 +32,22 @@
         //附加一个按钮
         fullscreenHandler.attachButton( $button );
 
+        me.addListener( "selectionchange", function () {
+
+            var state = this.queryCommandState( name );
+            $button.edui().disabled( state == -1 ).active( state == 1 );
+
+        } );
+
         return $button;
 
     });
+
+    UE.commands['fullscreen'] = {
+        queryCommandState: function () {
+            return this._edui_fullscreen_status;
+        }
+    };
 
 
     function Fullscreen( editor ) {
@@ -91,6 +104,8 @@
                 editor.fireEvent( 'fullscreenchanged', !_edui_fullscreen_status );
             }
 
+            editor.fireEvent( 'selectionchange' );
+
         },
         //附加一个按钮
         attachButton: function( $btn ){
@@ -131,7 +146,7 @@
             //切换按钮状态
             for( var i = 0, btn; btn = this.buttons[ i ]; i++ ) {
 
-                $(btn)[ isFull ? 'addClass' : 'removeClass' ]('active');
+//                $(btn)[ isFull ? 'addClass' : 'removeClass' ]('active');
 
             }
 
@@ -146,6 +161,7 @@
                 width = 0,
                 borderWidth = 0,
                 editor = this.editor,
+                me = this,
                 editorBody = null;
 
             if( !this.isFullState() ) {
@@ -166,8 +182,8 @@
                 height: height + 'px',
                 position: 'fixed',
                 _position: 'absolute',
-                top: 0,
-                left: 0,
+                top: me.getTop(),
+                left: me.getLeft(),
                 margin: 0,
                 padding: 0
             } );
@@ -289,6 +305,20 @@
                 'body': DOCUMENT_STATUS[ this.editor.uid ],
                 'html': DOCUMENT_ELEMENT_STATUS[ this.editor.uid ]
             };
+        },
+        getTop: function () {
+            var top = 0;
+            if ( $.IE6 ) {
+//                top = -( $( this.editor.container ).position().top );
+            }
+            return top;
+        },
+        getLeft: function () {
+            var left = 0;
+            if ( $.IE6 ) {
+//                left = -( $( this.editor.container ).position().left );
+            }
+            return left;
         }
 
     };
