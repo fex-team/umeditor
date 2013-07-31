@@ -142,14 +142,6 @@
          */
         update: function( isFull ) {
             this.editor._edui_fullscreen_status = isFull;
-
-            //切换按钮状态
-            for( var i = 0, btn; btn = this.buttons[ i ]; i++ ) {
-
-//                $(btn)[ isFull ? 'addClass' : 'removeClass' ]('active');
-
-            }
-
         },
         /**
          * 调整当前编辑器的大小, 如果当前编辑器不处于全屏状态， 则不做调整
@@ -180,8 +172,7 @@
             $( editor.container ).css( {
                 width: width + 'px',
                 height: height + 'px',
-                position: 'fixed',
-                _position: 'absolute',
+                position: !$.IE6 ? 'fixed' : 'absolute',
                 top: me.getTop(),
                 left: me.getLeft(),
                 margin: 0,
@@ -190,8 +181,9 @@
 
 
             $( editorBody ).css({
-                width: width - 2*borderWidth + 'px',
-                height: height - 2*borderWidth - $( '.edui-toolbar', editor.container ).outerHeight() - $( '.edui-bottombar', editor.container).outerHeight() + 'px'
+                width: width - 2*borderWidth - 10 + 'px',
+                height: height - 2*borderWidth - $( '.edui-toolbar', editor.container ).outerHeight() - $( '.edui-bottombar', editor.container).outerHeight() + 'px',
+                overflowY: 'auto'
             });
 
         },
@@ -225,6 +217,10 @@
                 width: style.width,
                 height: style.height
             };
+
+            if( style.overflowY ) {
+                CONTENT_AREA_STATUS[ this.editor.uid ][ 'overflowY' ] = style.overflowY;
+            }
 
         },
         /**
@@ -309,14 +305,16 @@
         getTop: function () {
             var top = 0;
             if ( $.IE6 ) {
-//                top = -( $( this.editor.container ).position().top );
+//                alert($( this.editor.container ).position().top)
+//                alert($( this.editor.container ).offset().top);
+//                top = -( $( this.editor.container ).offset().top );
             }
             return top;
         },
         getLeft: function () {
             var left = 0;
             if ( $.IE6 ) {
-//                left = -( $( this.editor.container ).position().left );
+//                left = -( $( this.editor.container ).offset().left );
             }
             return left;
         }
