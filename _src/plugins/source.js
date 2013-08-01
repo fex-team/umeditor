@@ -183,6 +183,7 @@
         };
         var oldQueryCommandState = me.queryCommandState;
 
+
         me.queryCommandState = function (cmdName){
             cmdName = cmdName.toLowerCase();
             if (sourceMode) {
