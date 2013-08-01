@@ -160,20 +160,22 @@
                 $container = $('<div class="edui-container"><div class="edui-editor-body"></div></div>').insertBefore($editorCont);
             editor.$container = $container;
             editor.container = $container[0];
+
             editor.$body = $editorCont;
+
+            //修正在ie9+以上的版本中，自动长高收起时的，残影问题
+            if(browser.ie && browser.ie9above){
+                var $span = $('<span style="padding:0;margin:0;height:0;width:0"></span>');
+                $span.insertAfter($container);
+            }
+
+
+
+
             $container.find('.edui-editor-body').append($editorCont).before(this.createToolbar(editor.options, editor));
 
             $container.find('.edui-toolbar').append($('<div class="edui-dialog-container"></div>'));
 
-            if(editor.options.elementpath || editor.options.wordCount){
-                var $bottombar = $('<div class="edui-bottombar"></div>');
-                $container.append($bottombar);
-                $bottombar.insertBefore($('.edui-dialog-container',$container));
-
-            }
-            if(editor.options.elementpath){
-                $bottombar.append(this.getUI(editor,'elementpath'));
-            }
 
             return $container;
         },
