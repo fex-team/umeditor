@@ -44,7 +44,7 @@
             'ui/splitbutton.js',
             'ui/colorsplitbutton.js',
             'ui/popup.js',
-            'ui/imagescale.js',
+            'ui/scale.js',
             'ui/colorpicker.js',
             'ui/tablepicker.js',
             'ui/combobox.js',
