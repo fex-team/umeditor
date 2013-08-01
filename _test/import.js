@@ -27,7 +27,7 @@
 ///import plugins/cleardoc;
 ///import plugins/preview;
 ///import plugins/print;
-
+///import plugins/fiximgclick;
 ///import plugins/basestyle;
 
 ///import plugins/undo;
