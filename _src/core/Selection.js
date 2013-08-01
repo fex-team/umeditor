@@ -98,11 +98,11 @@
      * @param {Selection} sel    Selection对象
      * @return {ieRange}    得到ieRange
      */
-    function _getIERange( sel ) {
+    function _getIERange( sel,txtRange ) {
         var ieRange;
         //ie下有可能报错
         try {
-            ieRange = sel.getNative().createRange();
+            ieRange = sel.getNative(txtRange).createRange();
         } catch ( e ) {
             return null;
         }
@@ -151,10 +151,10 @@
          * @name    UE.dom.Selection.getNative
          * @return {Selection}    获得selection对象
          */
-        getNative:function () {
+        getNative:function (txtRange) {
             var doc = this.document;
             try {
-                return !doc ? null : browser.ie9below ? doc.selection : domUtils.getWindow( doc ).getSelection();
+                return !doc ? null : browser.ie9below || txtRange? doc.selection : domUtils.getWindow( doc ).getSelection();
             } catch ( e ) {
                 return null;
             }
@@ -166,17 +166,17 @@
          * @name    UE.dom.Selection.getIERange
          * @return {ieRange}    返回ie原生的Range
          */
-        getIERange:function () {
-            var ieRange = _getIERange( this );
-            if ( !ieRange  || !this.rangeInBody(ieRange)) {
+        getIERange:function (txtRange) {
+            var ieRange = _getIERange( this,txtRange );
+            if ( !ieRange  || !this.rangeInBody(ieRange,txtRange)) {
                 if ( this._bakIERange ) {
                     return this._bakIERange;
                 }
             }
             return ieRange;
         },
-        rangeInBody : function(rng){
-            var node = browser.ie9below ? rng.item ? rng.item() : rng.parentElement() : rng.startContainer;
+        rangeInBody : function(rng,txtRange){
+            var node = browser.ie9below || txtRange ? rng.item ? rng.item() : rng.parentElement() : rng.startContainer;
 
             return node === this.body || domUtils.inDoc(node,this.body);
         },
