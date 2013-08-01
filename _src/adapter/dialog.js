@@ -1,4 +1,4 @@
-UE.registerUI('link image gmap map insertvideo',function(name){
+UE.registerUI('link image map insertvideo',function(name){
 
     var me = this, currentRange, $dialog,
         dialogUrl = {
