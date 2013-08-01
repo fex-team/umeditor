@@ -53,13 +53,14 @@
             'ui/tooltip.js',
             'ui/tab.js',
             'ui/separator.js',
+            'ui/scale.js',
             'adapter/adapter.js',
             'adapter/button.js',
             'adapter/fullscreen.js',
             'adapter/font.js',
             'adapter/dialog.js',
             'adapter/popup.js',
-            'adapter/scale.js',
+            'adapter/imagescale.js',
             'adapter/autofloat.js'
         ],
         baseURL = '../_src/';
