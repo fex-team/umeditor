@@ -1,6 +1,6 @@
 //scale 类
 UE.ui.define('scale', {
-    tpl: '<div class="edui-scale" unselectable="on" onselectstart="return false;">' +
+    tpl: '<div class="edui-scale" unselectable="on">' +
         '<span class="edui-scale-hand0"></span>' +
         '<span class="edui-scale-hand1"></span>' +
         '<span class="edui-scale-hand2"></span>' +
