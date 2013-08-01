@@ -27,9 +27,15 @@ UE.commands['inserthtml'] = {
         }
         var rng = me.selection.getRange();
         rng.select();
-        if(browser.ie){
-            var nRng = me.selection.getIERange();
+        if(browser.ie ){
+            debugger
+            var nRng = me.selection.getIERange(true);
+            html += '<span id="_ue_tmp_cursor_node">&nbsp;</span>';
             nRng.pasteHTML(html);
+            var $tmp = $('#_ue_tmp_cursor_node',me.body);
+            new dom.Range(document,me.body).setStartBefore($tmp[0]).collapse(true).select();
+            $tmp.remove()
+
         }else{
             me.document.execCommand('insertHTML',false,html)
         }
