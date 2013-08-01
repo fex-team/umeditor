@@ -7,7 +7,7 @@
         //状态缓存
     var STATUS_CACHE = {},
         //状态值列表
-        STATUS_LIST = [ 'width', 'height', 'position', 'top', 'left', 'margin', 'padding' ],
+        STATUS_LIST = [ 'width', 'height', 'position', 'top', 'left', 'margin', 'padding', 'overflowX', 'overflowY' ],
         CONTENT_AREA_STATUS = {},
         //页面状态
         DOCUMENT_STATUS = {},
@@ -161,6 +161,7 @@
                 paddingWidth = 0,
                 editor = this.editor,
                 me = this,
+                bound = null,
                 editorBody = null;
 
             if( !this.isFullState() ) {
@@ -181,19 +182,24 @@
             //干掉css表达式
             $.IE6 && editorBody.style.setExpression( 'height', null );
 
+            bound = this.getBound();
+
             $( editor.container ).css( {
                 width: width + 'px',
                 height: height + 'px',
                 position: !$.IE6 ? 'fixed' : 'absolute',
-                top: me.getTop(),
-                left: me.getLeft(),
+                top: bound.top,
+                left: bound.left,
                 margin: 0,
-                padding: 0
+                padding: 0,
+                overflowX: 'hidden',
+                overflowY: 'hidden'
             } );
 
             $( editorBody ).css({
                 width: width - 2*borderWidth - paddingWidth + 'px',
                 height: height - 2*borderWidth - $( '.edui-toolbar', editor.container ).outerHeight() - $( '.edui-bottombar', editor.container).outerHeight() + 'px',
+                overflowX: 'hidden',
                 overflowY: 'auto'
             });
 
@@ -222,16 +228,14 @@
         },
         saveContentAreaStatus: function(){
 
-            var style = this.getEditorHolder().style;
+            var $holder = $(this.getEditorHolder());
 
             CONTENT_AREA_STATUS[ this.editor.uid ] = {
-                width: style.width,
-                height: style.height
+                width: $holder.css("width"),
+                height: $holder.css("height"),
+                overflowX: $holder.css("overflowX"),
+                overflowY: $holder.css("overflowY")
             };
-
-            if( style.overflowY ) {
-                CONTENT_AREA_STATUS[ this.editor.uid ][ 'overflowY' ] = style.overflowY;
-            }
 
         },
         /**
@@ -242,10 +246,13 @@
             var $doc = $( this.getEditorDocumentBody() );
 
             DOCUMENT_STATUS[ this.editor.uid ] = {
-                overflow: $doc.css( 'overflow' )
+                overflowX: $doc.css( 'overflowX' ),
+                overflowY: $doc.css( 'overflowY' )
             };
+//            alert(this.getEditorDocumentElement().tagName)
             DOCUMENT_ELEMENT_STATUS[ this.editor.uid ] = {
-                overflow: $( this.getEditorDocumentElement() ).css( 'overflow' )
+                overflowX: $( this.getEditorDocumentElement() ).css( 'overflowX'),
+                overflowY: $( this.getEditorDocumentElement() ).css( 'overflowY' )
             };
 
         },
@@ -267,13 +274,19 @@
         revertDocumentStatus: function() {
 
             var status = this.getDocumentStatus();
-            $( this.getEditorDocumentBody() ).css( 'overflow', status.body.overflow );
-            $( this.getEditorDocumentElement() ).css( 'overflow', status.html.overflow );
+            $( this.getEditorDocumentBody() ).css( 'overflowX', status.body.overflowX );
+            $( this.getEditorDocumentElement() ).css( 'overflowY', status.html.overflowY );
 
         },
         setDocumentStatus: function(){
-            this.getEditorDocumentBody().style.overflow = 'hidden';
-            this.getEditorDocumentElement().style.overflow = 'hidden';
+            $(this.getEditorDocumentBody()).css( {
+                overflowX: 'hidden',
+                overflowY: 'hidden'
+            } );
+            $(this.getEditorDocumentElement()).css( {
+                overflowX: 'hidden',
+                overflowY: 'hidden'
+            } );
         },
         /**
          * 检测当前编辑器是否处于全屏状态全屏状态
@@ -313,19 +326,32 @@
                 'html': DOCUMENT_ELEMENT_STATUS[ this.editor.uid ]
             };
         },
-        getTop: function () {
-            var top = 0;
-            if ( $.IE6 ) {
-//                top = -( $( this.editor.container ).offset().top );
+        getBound: function () {
+
+            var tags = {
+                html: true,
+                body: true
+            },
+            result = {
+                top: 0,
+                left: 0
+            },
+            offsetParent = null;
+
+            if ( !$.IE6 ) {
+                return result;
             }
-            return top;
-        },
-        getLeft: function () {
-            var left = 0;
-            if ( $.IE6 ) {
-//                left = -( $( this.editor.container ).offset().left );
+
+            offsetParent = this.editor.container.offsetParent;
+
+            if( offsetParent && !tags[ offsetParent.nodeName.toLowerCase() ] ) {
+                tags = offsetParent.getBoundingClientRect();
+                result.top = -tags.top;
+                result.left = -tags.left;
             }
-            return left;
+
+            return result;
+
         },
         getStyleValue: function (attr) {
             return parseInt(domUtils.getComputedStyle( this.getEditorHolder() ,attr));
