@@ -228,7 +228,7 @@
             var me = this,
                 options = me.options,
                 getStyleValue=function(attr){
-                    return parseInt(domUtils.getComputedStyle(container,attr));
+                    return parseInt($(container).css(attr));
                 };
 
             if (utils.isString(container)) {
@@ -252,8 +252,8 @@
                     options.initialFrameHeight = options.minFrameHeight = container.offsetHeight;
                 }
 
-                container.style.width = /%$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth - getStyleValue("padding-left")- getStyleValue("padding-right") - getStyleValue('border-width') +'px';
-                var height = /%$/.test(options.initialFrameHeight) ?  '100%' : (options.initialFrameHeight - getStyleValue("padding-top")- getStyleValue("padding-bottom") - getStyleValue('border-width'));
+                container.style.width = /%$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth - getStyleValue("padding-left")- getStyleValue("padding-right")   +'px';
+                var height = /%$/.test(options.initialFrameHeight) ?  '100%' : (options.initialFrameHeight - getStyleValue("padding-top")- getStyleValue("padding-bottom") );
                 container.style.minHeight = height +'px';
                 container.style.height = '';
                 container.style.zIndex = options.zIndex;
@@ -266,18 +266,7 @@
 
 
                 this._setup(container);
-//                container.style.overflow = 'hidden';
-                //解决如果是给定的百分比，会导致高度算不对的问题
-                setTimeout(function(){
-                    if( /%$/.test(options.initialFrameWidth)){
-                        options.minFrameWidth = options.initialFrameWidth = container.offsetWidth;
-                        container.style.width = options.initialFrameWidth  + 'px';
-                    }
-                    if(/%$/.test(options.initialFrameHeight)){
-                        options.minFrameHeight = options.initialFrameHeight = container.offsetHeight;
-                        container.style.height = options.initialFrameHeight + 'px';
-                    }
-                })
+
             }
         },
         /**
@@ -287,7 +276,6 @@
          * @param {Element} doc 编辑器Iframe中的文档对象
          */
         _setup: function (cont) {
-
             var me = this,
                 options = me.options;
 
@@ -297,7 +285,7 @@
             me.document = document;
             me.window = document.defaultView || document.parentWindow;
             me.body = cont;
-
+            me.$body = $(cont);
             //扩展isBody方法
             domUtils.isBody = function (node) {
                 return  node === cont;
