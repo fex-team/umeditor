@@ -1,16 +1,26 @@
 .edui-container{
-    border: 1px solid #e1e1e1;
+    position: relative;
+    border: 1px solid #d4d4d4;
+    box-shadow: 2px 2px 5px #d3d6da;
+    background-color: #fff;
 }
 .edui-container .edui-toolbar{
-    border-bottom: 1px solid #e1e1e1;
-    background-color: #fff;
     position: relative;
+    width:auto;
+    border-bottom: 1px solid #e1e1e1;
+    box-shadow: 2px 2px 5px #d3d6da;
+    background-color: #fafafa;
+    z-index: 99999;
 }
 .edui-toolbar .edui-btn-toolbar{
     position: relative;
     padding: 5px;
 }
 .edui-editor-body{
+    position: relative;
+    background-color: #fff;
+}
+.edui-body-container{
     position: relative;
 }
 /*普通按钮*/
@@ -42,6 +52,7 @@
     background-color: #d5e1f2;
     padding: 0;
     border: 1px solid #a3bde3;
+    _z-index: 1;
 }
 .edui-btn-toolbar .edui-btn.disabled{
     opacity: 0.3;
@@ -160,6 +171,9 @@
     background-position: -420px -20px;
 }
 
+.edui-btn-toolbar .edui-btn-fullscreen{
+    float:right;
+}
 .edui-btn-toolbar .edui-btn .edui-icon-fullscreen {
     background-position: -100px -20px;
 }
@@ -177,9 +191,6 @@
     margin:0 2px;
 }
 .edui-splitbutton .edui-btn{
-    border-width: 1px 0 1px 1px;
-    border-style: solid;
-    border-color:#ccc;
     margin: 0;
 }
 .edui-splitbutton .edui-caret{
@@ -193,51 +204,23 @@
     background: url(../images/icons.png) -741px 0;
     _background: url(../images/icons.gif) -741px 0;
 }
-.edui-splitbutton .edui-dropdown-toggle{
-    border:1px solid #ccc;
-}
-.edui-splitbutton .edui-popup{
-    position: absolute;
-    top: 100%;
-    left: 0;
-    display: none;
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-}
 
+.edui-btn-toolbar .edui-splitbutton,
+.edui-btn-toolbar .edui-splitbutton{
+    _border: none;
+}
 
 /*状态反射*/
 .edui-btn-toolbar .edui-splitbutton.hover .edui-btn{
-    padding:1px;
-    border-width: 1px 0 1px 1px;
-    border-color:#a3bde3;
     background-color: #d5e1f2;
-    *border: none;
 }
 
-
-.edui-btn-toolbar .edui-splitbutton.hover .edui-dropdown-toggle{
-    padding:1px;
-    border:1px solid #a3bde3;
-    background-color: #d5e1f2;
-    *border-width: 0 0 0 1px;
-}
 .edui-btn-toolbar .edui-splitbutton.disabled{
     opacity: 0.3;
     filter: alpha(opacity = 30);
 }
 
-/* colorsplitbutton 的color-label样式 */
-.edui-splitbutton-color-label {
-    width: 16px;
-    height: 3px;
-    position: absolute;
-    bottom: 2px;
-    left: 50%;
-    margin-left: -8px;
-    overflow: hidden;
-    line-height: 3px;
-}
+
 .edui-btn-toolbar .edui-combobox{
     border: 1px solid #CCC;
     padding:0;
@@ -250,12 +233,14 @@
     vertical-align: top;
     *display: inline !important;
     *zoom:1;
-    width:40px;
+    width:60px;
     height:20px;
-    padding: 0;
+    line-height: 20px;
+    padding: 2px;
     margin: 0;
     font-size: 12px;
     text-align: center;
+    cursor: default;
 }
 .edui-combobox  .edui-button-spacing{
     position: relative;
@@ -297,81 +282,115 @@
     background-color: #ffffff;
     border: 1px solid #ccc;
     font-size: 12px;
-}
-.edui-combobox-menu.divider {
-    height: 1px;
-    margin: 9px 1px;
-    overflow: hidden;
-    background-color: #e5e5e5;
-    border-bottom: 1px solid #ffffff;
-}
-.edui-combobox-menu .edui-common-dis-none {
-    display: none;
+    box-shadow: 2px 2px 5px #d3d6da;
+    min-width: 160px;
+    _width: 160px;
 }
 
-.edui-combobox-menu .edui-combobox-item, .edui-combobox-menu .edui-combobox-stack-item{
-    margin: 3px 0;
-    padding: 1px;
-    border:none;
-    white-space: nowrap;
+.edui-combobox-menu .edui-combobox-item {
+    display: block;
+    border: 1px solid white;
 }
-.edui-combobox-menu .edui-combobox-item:hover, .edui-combobox-menu .edui-combobox-stack-item:hover {
+
+.edui-combobox-menu .edui-combobox-item-label {
+    height: 25px;
+    line-height: 25px;
+    display: inline-block;
+    _display: inline;
+    _zoom: 1;
+    margin-left: 10px;
+}
+
+.edui-combobox-menu .edui-combobox-item:hover, .edui-combobox-menu .edui-combobox-stack-item:hover, .edui-combobox-menu .edui-combobox-item-hover {
     background-color: #d5e1f2;
     padding: 0;
     border: 1px solid #a3bde3;
 }
 
-.edui-combobox-menu .edui-combobox-link{
-    line-height: 20px;
-    color:#333;
-    text-decoration: none;
-    display: block;
-    padding: 5px 30px 5px 5px;
+.edui-combobox-menu .edui-combobox-item .edui-combobox-icon {
+    display: inline-block;
+    *zoom: 1;
+    *display: inline;
+    width: 24px;
+    height: 25px;
+    background: red;
+    vertical-align: bottom;
+    background: url(../images/ok.gif) no-repeat 1000px 1000px;
 }
 
-.edui-combobox-item {
-    cursor: pointer;
-    background: #fff;
+.edui-combobox-menu .edui-combobox-checked .edui-combobox-icon {
+    background-position: 10px 7px;
 }
 
-.edui-combobox-menu .edui-hover{
-    background-color: #fff5d4;
-    padding: 0;
-    border: 1px solid #dcac6c;
-}
 
-.edui-combobox-menu .edui-combobox-checkbox {
-    float: left;
-    width: 25px;
-    height: 20px;
-}
-
-.edui-combobox-menu .edui-combobox-checkbox .icon-ok {
-    width: 100%;
-    height: 100%;
-    background: url(../images/icons-all.gif) no-repeat 6px -205px transparent;
-    display: none;
-}
-
-.edui-combobox-menu .edui-combobox-checked .icon-ok {
-    display: block;
-}
-
-.edui-combobox-menu .edui-combobox-stack-separator {
+.edui-combobox-menu .edui-combobox-item-separator {
+    min-width: 160px;
     height: 1px;
-    background: #D3D3D3;
-    margin: 0;
-    padding: 0;
     line-height: 1px;
     overflow: hidden;
-    *margin-bottom: -14px;
+    background: #d3d3d3;
+    margin: 5px 0;
+    *margin-top: -8px;
+}
+
+/* 字体样式校正 */
+
+.edui-combobox-fontsize .edui-combobox-item-0.edui-combobox-checked .edui-combobox-icon {
+    background-position: 10px 7px;
+}
+
+.edui-combobox-fontsize .edui-combobox-item-1.edui-combobox-checked .edui-combobox-icon {
+    background-position: 10px 7px;
+}
+
+.edui-combobox-fontsize .edui-combobox-item-2.edui-combobox-checked .edui-combobox-icon {
+    background-position: 10px 7px;
+}
+
+.edui-combobox-fontsize .edui-combobox-item-3.edui-combobox-checked .edui-combobox-icon {
+    background-position: 10px 7px;
+}
+
+/* 24 */
+.edui-combobox-fontsize .edui-combobox-item-4 .edui-combobox-item-label {
+    height: 27px;
+    line-height: 27px;
+}
+
+.edui-combobox-fontsize .edui-combobox-item-4.edui-combobox-checked .edui-combobox-icon {
+    background-position: 10px 5px;
+}
+
+/* 32 */
+.edui-combobox-fontsize .edui-combobox-item-5 .edui-combobox-item-label {
+    height: 31px;
+    line-height: 31px;
+}
+
+.edui-combobox-fontsize .edui-combobox-item-5.edui-combobox-checked .edui-combobox-icon {
+    background-position: 10px 4px;
+}
+
+
+/* 48 */
+.edui-combobox-fontsize .edui-combobox-item-6 .edui-combobox-item-label {
+    height: 47px;
+    line-height: 47px;
+}
+
+.edui-combobox-fontsize .edui-combobox-item-6 .edui-combobox-icon {
+    height: 25px;
+    margin-bottom: 11px;
+}
+
+.edui-combobox-fontsize .edui-combobox-item-6.edui-combobox-checked .edui-combobox-icon {
+    background-position: 10px 7px;
 }
 .edui-modal {
     position: fixed;
+    _position: absolute;
     top: 10%;
     left: 50%;
-    width: auto;
-    margin-left: -280px;
     border: 1px solid #acacac;
     box-shadow: 2px 2px 5px #d3d6da;
     background-color: #ffffff;
@@ -423,7 +442,7 @@
     font-size: 12px;
     line-height: 24px;
     text-align: center;
-    cursor: default;
+    cursor: pointer;
 }
 .edui-modal-footer .edui-btn.hover{
     background-color: #d5e1f2;
@@ -457,7 +476,7 @@
 
 /*百度地图*/
 .edui-dialog-map-body{
-    width:550px;
+    width:580px;
     height: 400px;
 }
 
@@ -467,9 +486,26 @@
     height:200px;
 }
 .edui-popup{
-    border: 1px solid #ccc;
+    display: none;
+    background: url('../images/pop-bg.png') repeat #fff;
+    padding: 2px;
+}
+.edui-popup .edui-popup-body{
+    border: 1px solid #bfbfbf;
     background-color: #fff;
 }
+.edui-popup .edui-popup-caret{
+    width: 21px;
+    height: 11px;
+}
+.edui-popup .edui-popup-caret.up{
+    background:url('../images/caret.png') no-repeat 0 0;
+}
+.edui-popup .edui-popup-caret.down{
+    background:url('../images/caret.png') no-repeat 0 0;
+}
+
+
 .edui-tab-nav {
     margin: 0;
     padding:0;
@@ -482,25 +518,27 @@
     margin-bottom: -1px;
 }
 .edui-tab-nav .edui-tab-item .edui-tab-text{
-    display: inline-block !important;
-    vertical-align: top;
-    *display: inline !important;
-    *zoom:1;
+    display: block;
     padding:8px 12px;
-    background-color: #ffffff;
+    border: 1px solid transparent;
     color: #0088cc;
     text-decoration: none;
+    outline: 0;
+}
+.edui-tab-nav .edui-tab-item .edui-tab-text:FOCUS {
+    outline: none;
 }
 .edui-tab-nav .edui-tab-item.active  .edui-tab-text{
     border: 1px solid #ddd;
     border-bottom-color: transparent;
+    background-color: #fff;
+    padding:8px 12px;
     color: #555555;
     cursor: default;
 }
-.edui-tab-content {
-    overflow: auto;
-}
 .edui-tab-content .edui-tab-pane{
+    padding: 1px;
+    position: relative;
     display: none;
 }
 .edui-tab-content .edui-tab-pane.active{
@@ -512,20 +550,24 @@
     position: absolute;
     padding: 5px 0;
     display: none;
-    opacity: 0.8;
-    filter: alpha(opacity=80);
+    /*opacity: 0.8;*/
+    /*filter: alpha(opacity=80);*/
+    z-index: 99999;
 }
 .edui-tooltip .edui-tooltip-arrow{
     position: absolute;
     top: 0;
+    _top: -19px;
     left: 50%;
     width: 0;
     height: 0;
+    padding: 0;
     margin-left: -5px;
     border-color: transparent;
-    border-style: solid;
+    border-style: dashed dashed solid dashed;
     border-bottom-color: #000000;
     border-width: 0 5px 5px;
+    background: transparent;
 }
 .edui-tooltip .edui-tooltip-inner{
     padding: 6px;
@@ -535,6 +577,16 @@
     font-size: 10px;
     background-color: #000000;
     white-space: nowrap;
+}
+.edui-splitbutton-color-label {
+    width: 16px;
+    height: 3px;
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    margin-left: -8px;
+    overflow: hidden;
+    line-height: 3px;
 }
 .edui-popup .edui-colorpicker {
     margin: 10px;
@@ -584,9 +636,9 @@
 .edui-toolbar .edui-separator{
     width: 2px;
     height: 20px;
-    margin: 2px 4px 2px 3px;
-    background: url(../images/icons.png) -180px 0;
-    background: url(../images/icons.gif) -180px 0 \9;
+    padding: 1px 2px;
+    background: url(../images/icons.png) -179px 1px;
+    background: url(../images/icons.gif) -179px 1px \9;
     display: inline-block !important;
     vertical-align: top;
     *display: inline !important;
