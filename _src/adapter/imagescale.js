@@ -11,7 +11,7 @@ UE.ready(function () {
             if (img && img.tagName == 'IMG') {
 
                 if (!$imagescale) {
-                    $imagescale = $.eduiscale().css('zIndex', me.options.zIndex+10000);
+                    $imagescale = $.eduiscale().css('zIndex', me.options.zIndex);
                     me.$container.append($imagescale);
 
                     var _keyDownHandler = function (e) {
@@ -38,6 +38,7 @@ UE.ready(function () {
                             }
                         })
                         .on('mousedown', function (e) {
+                            me.selection.getNative().removeAllRanges();
                             var ele = e.target || e.srcElement;
                             if (ele && ele.className.indexOf('edui-scale-hand') == -1) {
                                 timer = setTimeout(function() {

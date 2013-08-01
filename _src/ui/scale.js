@@ -21,16 +21,16 @@ UE.ui.define('scale', {
         return this;
     },
     initStyle: function () {
-        utils.cssRule('scale', '.edui-scale{display:none;position:absolute;border:1px solid #38B2CE;}' +
-            '.edui-scale span{position:absolute;left:0;top:0;width:6px;height:6px;overflow:hidden;font-size:0px;display:block;background-color:#3C9DD0;}'
-            + '.edui-scale .edui-scale-hand0{cursor:nw-resize;top:0;margin-top:-7px;left:0;margin-left:-7px;}'
-            + '.edui-scale .edui-scale-hand1{cursor:n-resize;top:0;margin-top:-7px;left:50%;margin-left:-3px;}'
-            + '.edui-scale .edui-scale-hand2{cursor:ne-resize;top:0;margin-top:-7px;left:100%;margin-left:1px;}'
-            + '.edui-scale .edui-scale-hand3{cursor:w-resize;top:50%;margin-top:-3px;left:0;margin-left:-7px;}'
-            + '.edui-scale .edui-scale-hand4{cursor:e-resize;top:50%;margin-top:-3px;left:100%;margin-left:1px;}'
-            + '.edui-scale .edui-scale-hand5{cursor:sw-resize;top:100%;margin-top:1px;left:0;margin-left:-7px;}'
-            + '.edui-scale .edui-scale-hand6{cursor:s-resize;top:100%;margin-top:1px;left:50%;margin-left:-3px;}'
-            + '.edui-scale .edui-scale-hand7{cursor:se-resize;top:100%;margin-top:1px;left:100%;margin-left:1px;}');
+        utils.cssRule('scale', '.edui-scale{display:none;position:absolute;border:1px solid #38B2CE;cursor:hand;}' +
+            '.edui-scale span{position:absolute;left:0;top:0;width:7px;height:7px;overflow:hidden;font-size:0px;display:block;background-color:#3C9DD0;}'
+            + '.edui-scale .edui-scale-hand0{cursor:nw-resize;top:0;margin-top:-4px;left:0;margin-left:-4px;}'
+            + '.edui-scale .edui-scale-hand1{cursor:n-resize;top:0;margin-top:-4px;left:50%;margin-left:-4px;}'
+            + '.edui-scale .edui-scale-hand2{cursor:ne-resize;top:0;margin-top:-4px;left:100%;margin-left:-3px;}'
+            + '.edui-scale .edui-scale-hand3{cursor:w-resize;top:50%;margin-top:-4px;left:0;margin-left:-4px;}'
+            + '.edui-scale .edui-scale-hand4{cursor:e-resize;top:50%;margin-top:-4px;left:100%;margin-left:-3px;}'
+            + '.edui-scale .edui-scale-hand5{cursor:sw-resize;top:100%;margin-top:-3px;left:0;margin-left:-4px;}'
+            + '.edui-scale .edui-scale-hand6{cursor:s-resize;top:100%;margin-top:-3px;left:50%;margin-left:-4px;}'
+            + '.edui-scale .edui-scale-hand7{cursor:se-resize;top:100%;margin-top:-3px;left:100%;margin-left:-3px;}');
     },
     _eventHandler: function (e) {
         var me = this,
