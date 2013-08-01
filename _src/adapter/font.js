@@ -51,11 +51,7 @@ UE.registerUI('fontfamily', function( name ) {
 
 
     //querycommand
-    this.addListener('selectionchange',function( evt, isUserTrigger ){
-
-        if ( !isUserTrigger ) {
-            return;
-        }
+    this.addListener('selectionchange',function( evt ){
 
         //设置按钮状态
         var state = this.queryCommandState( name );

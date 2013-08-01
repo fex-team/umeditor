@@ -37,6 +37,10 @@ UE.registerUI( 'emotion', function( name ){
                 caretLeft:11,
                 caretTop:-8
             });
+        me.addListener('selectionchange', function () {
+            var state = this.queryCommandState('emotion');
+            $btn.edui().disabled(state == -1).active(state == 1);
+        });
     });
     return $btn;
 
