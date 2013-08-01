@@ -183,6 +183,7 @@
         };
         var oldQueryCommandState = me.queryCommandState;
 
+
         me.queryCommandState = function (cmdName){
             cmdName = cmdName.toLowerCase();
             if (sourceMode) {
@@ -190,7 +191,7 @@
                 return cmdName in {
                     'source' : 1,
                     'fullscreen' : 1
-                } ? 1 : -1
+                } ? oldQueryCommandState.apply(this, arguments)  : -1
             }
             return oldQueryCommandState.apply(this, arguments);
         };
