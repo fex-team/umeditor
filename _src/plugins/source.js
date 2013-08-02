@@ -81,7 +81,7 @@
                         me.body.contentEditable = false;
                     }
 
-                    bakCssText = me.body.style.cssText;
+//                    bakCssText = me.body.style.cssText;
                     me.body.style.cssText += ';position:absolute;left:-32768px;top:-32768px;';
 
 
@@ -124,7 +124,12 @@
                         return sourceEditor.getContent() || '<p>' + (browser.ie ? '' : '<br/>')+'</p>';
                     };
                 } else {
-                    me.body.style.cssText = bakCssText;
+                    me.$body.css({
+                        'position':'',
+                        'left':'',
+                        'top':''
+                    });
+//                    me.body.style.cssText = bakCssText;
                     var cont = sourceEditor.getContent() || '<p>' + (browser.ie ? '' : '<br/>')+'</p>';
                     //处理掉block节点前后的空格,有可能会误命中，暂时不考虑
                     cont = cont.replace(new RegExp('[\\r\\t\\n ]*<\/?(\\w+)\\s*(?:[^>]*)>','g'), function(a,b){
@@ -183,6 +188,7 @@
         };
         var oldQueryCommandState = me.queryCommandState;
 
+
         me.queryCommandState = function (cmdName){
             cmdName = cmdName.toLowerCase();
             if (sourceMode) {
@@ -190,7 +196,7 @@
                 return cmdName in {
                     'source' : 1,
                     'fullscreen' : 1
-                } ? 1 : -1
+                } ? oldQueryCommandState.apply(this, arguments)  : -1
             }
             return oldQueryCommandState.apply(this, arguments);
         };

@@ -23,8 +23,8 @@
 
                 if (node.width > editor.options.initialFrameWidth) {
                     me.scale(node, editor.options.initialFrameWidth -
-                        parseInt($(editor.body).css("padding-left"))  -
-                        parseInt($(editor.body).css("padding-right")));
+                        parseInt($(editor.body).parent().css("padding-left"))  -
+                        parseInt($(editor.body).parent().css("padding-right")));
                 }
 
                 return arr.push({
@@ -179,7 +179,7 @@
         drag: function () {
             var me = this;
             //做拽上传的支持
-            if (!browser.ie9below) {
+            if (!UE.browser.ie9below) {
                 me.dialog.find('#edui-image-Jcontent').on('drop',function (e) {
 
                     //获取文件列表
