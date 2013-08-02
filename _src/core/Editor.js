@@ -80,7 +80,7 @@
             isShow: true,
             initialContent: '',
             initialStyle:'.edui-editor-body .edui-body-container p{margin:5px 0;} ' +
-                '.edui-editor-body .edui-body-container{border:0;outline:none;cursor:text;word-wrap:break-word;font-size:16px;font-family:sans-serif;}' +
+                '.edui-editor-body .edui-body-container{border:0;outline:none;cursor:text;padding:0 5px 0;word-wrap:break-word;font-size:16px;font-family:sans-serif;}' +
                 '.edui-editor-body.focus{border:1px solid #5c9dff}',
             autoClearinitialContent: false,
             iframeCssUrl: me.options.UEDITOR_HOME_URL + 'themes/iframe.css',
