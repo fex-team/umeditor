@@ -164,23 +164,7 @@ test("setDisabled,setEnabled", function () {
     });
     stop();
 });
-test("render-- element", function () {
-    var editor = new UE.Editor({'UEDITOR_HOME_URL': '../../../', 'autoFloatEnabled': false});
-    var div = document.body.appendChild(document.createElement('div'));
-    equal(div.innerHTML, "", "before render");
-    editor.render(div);
-    equal(div.firstChild.tagName.toLocaleLowerCase(), 'iframe', 'check iframe');
-    ok(/ueditor_/.test(div.firstChild.id), 'check iframe id');
-    te.dom.push(div);
-});
 
-test("render-- elementid", function () {
-    var editor = te.obj[1];
-    var div = te.dom[0];
-    editor.render(div.id);
-    equal(div.firstChild.tagName.toLocaleLowerCase(), 'iframe', 'check iframe');
-    ok(/ueditor_/.test(div.firstChild.id), 'check iframe id');
-});
 
 test("render-- options", function () {
     var options = {'initialContent': '<span class="span">xxx</span><div>xxx<p></p></div>', 'UEDITOR_HOME_URL': '../../../', autoClearinitialContent: false, 'autoFloatEnabled': false};
@@ -293,7 +277,9 @@ test("setContent", function () {
 });
 
 test("setContent 追加", function () {
-    var editor = UE.getEditor('test1');
+    var div = document.body.appendChild(document.createElement('div'));
+    div.id = 'ue_setContent';
+    var editor = UE.getEditor('ue_setContent');
     stop();
     editor.ready(function () {
         editor.focus();
@@ -312,13 +298,15 @@ test("setContent 追加", function () {
         div2.innerHTML = editor.body.innerHTML;
         ua.haveSameAllChildAttribs(div2, div_new, 'check contents');
         te.dom.push(editor.container);
-        document.getElementById('test1') && te.dom.push(document.getElementById('test1'));
+        document.getElementById('ue_setContent') && te.dom.push(document.getElementById('ue_setContent'));
         start();
-    }, 50);
+    });
 });
 
 test("focus(false)", function () {
-    var editor = UE.getEditor('test1');
+    var div = document.body.appendChild(document.createElement('div'));
+    div.id = 'ue_focus_false';
+    var editor = UE.getEditor('ue_focus_false');
     stop();
     editor.ready(function () {
         var range = new UE.dom.Range(editor.document);
@@ -335,7 +323,7 @@ test("focus(false)", function () {
         equal(editor.selection.getRange().startOffset, 0, "focus(false)焦点在最前面");
         equal(editor.selection.getRange().endOffset, 0, "focus(false)焦点在最前面");
         te.dom.push(editor.container);
-        document.getElementById('test1') && te.dom.push(document.getElementById('test1'));
+        document.getElementById('ue_focus_false') && te.dom.push(document.getElementById('ue_focus_false'));
         start();
     });
 });
@@ -513,15 +501,15 @@ test('getContentTxt--文本前后的空格,&nbs p转成空格', function () {
 test('getAllHtml', function () {
 
     var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    div.id = 'ue_getAllHtml';
+    var editor = UE.getEditor('ue_getAllHtml');
     stop();
     editor.ready(function () {
         editor.focus();
         var html = editor.getAllHtml();
-        ok(/iframe.css/.test(html), '引入样式');
+        ok(/ueditor.css/.test(html), '引入样式');
         te.dom.push(editor.container);
-        document.getElementById('ue') && te.dom.push(document.getElementById('ue'));
+        document.getElementById('ue_getAllHtml') && te.dom.push(document.getElementById('ue_getAllHtml'));
         start();
     });
 });
@@ -580,7 +568,8 @@ test('绑定事件', function () {
     };
     var editor = new UE.Editor({'autoFloatEnabled':false});
     var div = document.body.appendChild(document.createElement('div'));
-    editor.render(div);
+    div.id = 'event';
+    editor.render('event');
     expect(5);
     editor.ready(function () {
         setTimeout(function () {
@@ -591,7 +580,7 @@ test('绑定事件', function () {
             ua.keydown(document.body, {'keyCode':13});
             ua.keyup(document.body, {'keyCode':13});
             setTimeout(function () {
-                document.getElementById('div') && te.dom.push(document.getElementById('div'));
+                document.getElementById('event') && te.dom.push(document.getElementById('event'));
                 start();
             }, 1000);
         }, 50);
@@ -601,8 +590,8 @@ test('绑定事件', function () {
 
 test("_initEvents,_proxyDomEvent--click", function () {
     var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    div.id = 'ue_initEvents';
+    var editor = UE.getEditor('ue_initEvents');
     stop();
     editor.ready(function () {
         editor.focus();
@@ -610,10 +599,11 @@ test("_initEvents,_proxyDomEvent--click", function () {
         stop();
         editor.addListener('click', function () {
             ok(true, 'click event dispatched');
+            te.dom.push(editor.container);
+            document.getElementById('ue_initEvents') && te.dom.push(document.getElementById('ue_initEvents'));
             start();
         });
         ua.click(editor.document);
-        te.dom.push(editor.container);
-        document.getElementById('ue') && te.dom.push(document.getElementById('ue'));
+
     });
 });
