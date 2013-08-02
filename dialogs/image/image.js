@@ -23,8 +23,8 @@
 
                 if (node.width > editor.options.initialFrameWidth) {
                     me.scale(node, editor.options.initialFrameWidth -
-                        parseInt($(editor.body).parent().css("padding-left"))  -
-                        parseInt($(editor.body).parent().css("padding-right")));
+                        parseInt($(editor.body).css("padding-left"))  -
+                        parseInt($(editor.body).css("padding-right")));
                 }
 
                 return arr.push({
