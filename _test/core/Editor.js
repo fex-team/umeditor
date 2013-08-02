@@ -6,18 +6,13 @@ module("core.Editor");
 test("autoSyncData:true,textarea容器(由setcontent触发的)", function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.innerHTML = '<form id="form" method="post" target="_blank"><textarea id="myEditor" name="myEditor">这里的内容将会和html，body等标签一块提交</textarea></form>';
-    equal(document.getElementById('form').childNodes.length, 1, 'form里只有一个子节点');
     var editor_a = UE.getEditor('myEditor');
     stop();
     editor_a.ready(function () {
-        equal(document.getElementById('form').childNodes.length, 2, 'form里有2个子节点');
         editor_a.setContent('<p>设置内容autoSyncData 1<br/></p>');
         setTimeout(function () {
-            var form = document.getElementById('form');
-            equal(form.childNodes.length, 2, '失去焦点,form里多了textarea');
-            equal(form.lastChild.tagName.toLowerCase(), 'textarea', '失去焦点,form里多了textarea');
-            equal(form.lastChild.value, '<p>设置内容autoSyncData 1<br/></p>', 'textarea内容正确');
-
+            var textarea = document.getElementById('myEditor');
+            equal(textarea.value, '<p>设置内容autoSyncData 1<br/></p>', 'textarea内容正确');
             te.dom.push(editor_a.container);
             document.getElementById('form').parentNode.removeChild(document.getElementById('form'));
             document.getElementById('test1') && te.dom.push(document.getElementById('test1'));
@@ -32,8 +27,8 @@ test("autoSyncData:true（由blur触发的）", function () {
     //todo ie8里事件触发有问题，暂用手动测
     if (ua.browser.ie > 8 || !ua.browser.ie) {
         var div = document.body.appendChild(document.createElement('div'));
-        div.innerHTML = '<form id="form" method="post" ><script type="text/plain" id="myEditor" name="myEditor"></script></form>';
-        var editor_a = UE.getEditor('myEditor');
+        div.innerHTML = '<form id="form" method="post" ><script type="text/plain" id="myEditor_autoSyncData_blur" name="myEditor"></script></form>';
+        var editor_a = UE.getEditor('myEditor_autoSyncData_blur');
         stop();
         editor_a.ready(function () {
             editor_a.body.innerHTML = '<p>设置内容autoSyncData 2<br/></p>';
@@ -42,10 +37,15 @@ test("autoSyncData:true（由blur触发的）", function () {
             stop();
             setTimeout(function () {
                 var form = document.getElementById('form');
-                equal(form.childNodes.length, 2, '失去焦点,form里多了textarea');
-                equal(form.lastChild.tagName.toLowerCase(), 'textarea', '失去焦点,form里多了textarea');
-                equal(form.lastChild.value, '<p>设置内容autoSyncData 2<br/></p>', 'textarea内容正确');
+                var textarea = form.lastChild;
+                if(textarea.tagName.toLowerCase()=='textarea'){
+                    equal(textarea.value, '<p>设置内容autoSyncData 2<br/></p>', 'textarea内容正确');
+                }
+                else{
+                    ok(false,'没有textarea');
+                }
                 te.dom.push(editor_a.container);
+
                 form && form.parentNode.removeChild(form);
                 start();
 
@@ -55,16 +55,15 @@ test("autoSyncData:true（由blur触发的）", function () {
 });
 test("sync", function () {
     var div = document.body.appendChild(document.createElement('div'));
-    div.innerHTML = '<form id="form" method="post" target="_blank"><textarea id="myEditor" name="myEditor">这里的内容将会和html，body等标签一块提交</textarea></form>';
-    var editor_a = UE.getEditor('myEditor');
+    div.innerHTML = '<form id="form" method="post" target="_blank"><textarea id="myEditor_sync" name="myEditor">这里的内容将会和html，body等标签一块提交</textarea></form>';
+    var editor_a = UE.getEditor('myEditor_sync');
     stop();
     editor_a.ready(function () {
         editor_a.body.innerHTML = '<p>hello</p>';
         editor_a.sync("form");
         setTimeout(function () {
-            var form = document.getElementById('form');
-            equal(form.lastChild.value, '<p>hello</p>', '同步内容正确');
-            div = form.parentNode;
+            var textarea = document.getElementById('myEditor_sync');
+            equal(textarea.value, '<p>hello</p>', '同步内容正确');
             te.dom.push(editor_a.container);
             start();
 
@@ -73,8 +72,8 @@ test("sync", function () {
 });
 test("hide,show", function () {
     var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue';
-    var editor = UE.getEditor(div);
+    div.id = 'ue_hide_show';
+    var editor = UE.getEditor('ue_hide_show');
     editor.ready(function () {
         equal(editor.body.getElementsByTagName('span').length, 0, '初始没有书签');
         editor.hide();
@@ -98,8 +97,8 @@ test("hide,show", function () {
 
 test("_setDefaultContent--focus", function () {
     var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue';
-    var editor = UE.getEditor(div);
+    div.id = 'ue_setDefaultContent_focus';
+    var editor = UE.getEditor('ue_setDefaultContent_focus');
     editor.ready(function () {
         editor._setDefaultContent('hello');
         editor.fireEvent('focus');
@@ -114,8 +113,8 @@ test("_setDefaultContent--focus", function () {
 
 test("_setDefaultContent--firstBeforeExecCommand", function () {
     var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue';
-    var editor = UE.getEditor(div);
+    div.id = 'ue_setDefaultContent_firstBef';
+    var editor = UE.getEditor('ue_setDefaultContent_firstBef');
     editor.ready(function () {
         editor._setDefaultContent('hello');
         editor.fireEvent('firstBeforeExecCommand');
@@ -129,8 +128,8 @@ test("_setDefaultContent--firstBeforeExecCommand", function () {
 });
 test("setDisabled,setEnabled", function () {
     var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    div.id = 'ue_setDisabled';
+    var editor = UE.getEditor('ue_setDisabled');
     editor.ready(function () {
         editor.setContent('<p>欢迎使用ueditor!</p>');
         editor.focus();
@@ -343,8 +342,8 @@ test("focus(false)", function () {
 
 test("focus(true)", function () {
     var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    div.id = 'ue_focus_true';
+    var editor = UE.getEditor('ue_focus_true');
     stop();
     editor.ready(function () {
         var range = new UE.dom.Range(editor.document);
@@ -363,7 +362,7 @@ test("focus(true)", function () {
             equal(editor.selection.getRange().endOffset, editor.body.lastChild.lastChild.length, "focus( true)焦点在最后面");
         }
         te.dom.push(editor.container);
-        document.getElementById('ue') && te.dom.push(document.getElementById('ue'));
+        document.getElementById('ue_focus_true') && te.dom.push(document.getElementById('ue_focus_true'));
         start();
     });
 });
@@ -372,8 +371,8 @@ test("focus(true)", function () {
 /*按钮高亮、正常和灰色*/
 test("queryCommandState", function () {
     var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    div.id = 'ue_queryCommandState';
+    var editor = UE.getEditor('ue_queryCommandState');
     stop();
     editor.ready(function () {
         editor.focus();
@@ -385,14 +384,14 @@ test("queryCommandState", function () {
         r.setStart(p, 1).setEnd(p, 2).select();
         equal(editor.queryCommandState('bold'), 0, '加粗状态为0');
         te.dom.push(editor.container);
-        document.getElementById('ue') && te.dom.push(document.getElementById('ue'));
+        document.getElementById('ue_queryCommandState') && te.dom.push(document.getElementById('ue_queryCommandState'));
         start();
     });
 });
 test("queryCommandValue", function () {
     var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    div.id = 'ue_queryCommandValue';
+    var editor = UE.getEditor('ue_queryCommandValue');
     stop();
     editor.ready(function () {
         editor.focus();
@@ -402,7 +401,7 @@ test("queryCommandValue", function () {
         range.selectNode(p).select();
         equal(editor.queryCommandValue('justify'), 'left', 'text align is left');
         te.dom.push(editor.container);
-        document.getElementById('ue') && te.dom.push(document.getElementById('ue'));
+        document.getElementById('ue_queryCommandValue') && te.dom.push(document.getElementById('ue_queryCommandValue'));
         start();
     });
 });
