@@ -5572,7 +5572,7 @@ UE.plugins['list'] = function () {
                         me.body.contentEditable = false;
                     }
 
-                    bakCssText = me.body.style.cssText;
+//                    bakCssText = me.body.style.cssText;
                     me.body.style.cssText += ';position:absolute;left:-32768px;top:-32768px;';
 
 
@@ -5615,7 +5615,12 @@ UE.plugins['list'] = function () {
                         return sourceEditor.getContent() || '<p>' + (browser.ie ? '' : '<br/>')+'</p>';
                     };
                 } else {
-                    me.body.style.cssText = bakCssText;
+                    me.$body.css({
+                        'position':'',
+                        'left':'',
+                        'top':''
+                    });
+//                    me.body.style.cssText = bakCssText;
                     var cont = sourceEditor.getContent() || '<p>' + (browser.ie ? '' : '<br/>')+'</p>';
                     //处理掉block节点前后的空格,有可能会误命中，暂时不考虑
                     cont = cont.replace(new RegExp('[\\r\\t\\n ]*<\/?(\\w+)\\s*(?:[^>]*)>','g'), function(a,b){
@@ -5674,6 +5679,7 @@ UE.plugins['list'] = function () {
         };
         var oldQueryCommandState = me.queryCommandState;
 
+
         me.queryCommandState = function (cmdName){
             cmdName = cmdName.toLowerCase();
             if (sourceMode) {
@@ -5681,7 +5687,7 @@ UE.plugins['list'] = function () {
                 return cmdName in {
                     'source' : 1,
                     'fullscreen' : 1
-                } ? 1 : -1
+                } ? oldQueryCommandState.apply(this, arguments)  : -1
             }
             return oldQueryCommandState.apply(this, arguments);
         };
@@ -8464,9 +8470,9 @@ UE.registerUI('bold italic redo undo source underline strikethrough superscript 
 
             CONTENT_AREA_STATUS[ this.editor.uid ] = {
                 width: $holder.css("width"),
-                height: $holder.css("height"),
                 overflowX: $holder.css("overflowX"),
-                overflowY: $holder.css("overflowY")
+                overflowY: $holder.css("overflowY"),
+                height: $holder.css("height")
             };
 
         },
@@ -8481,7 +8487,6 @@ UE.registerUI('bold italic redo undo source underline strikethrough superscript 
                 overflowX: $doc.css( 'overflowX' ),
                 overflowY: $doc.css( 'overflowY' )
             };
-//            alert(this.getEditorDocumentElement().tagName)
             DOCUMENT_ELEMENT_STATUS[ this.editor.uid ] = {
                 overflowX: $( this.getEditorDocumentElement() ).css( 'overflowX'),
                 overflowY: $( this.getEditorDocumentElement() ).css( 'overflowY' )
@@ -8498,7 +8503,15 @@ UE.registerUI('bold italic redo undo source underline strikethrough superscript 
          * 恢复编辑区状态
          */
         revertContentAreaStatus: function(){
-            $( this.getEditorHolder() ).css( this.getContentAreaStatus() );
+            var holder = this.getEditorHolder(),
+                state = this.getContentAreaStatus();
+
+            if ( this.supportMin() ) {
+                delete state.height;
+                holder.style.height = null;
+            }
+
+            $( holder ).css( state );
         },
         /**
          * 恢复页面状态
@@ -8557,6 +8570,23 @@ UE.registerUI('bold italic redo undo source underline strikethrough superscript 
                 'body': DOCUMENT_STATUS[ this.editor.uid ],
                 'html': DOCUMENT_ELEMENT_STATUS[ this.editor.uid ]
             };
+        },
+        supportMin: function () {
+
+            var node = null;
+
+            if ( !this._support ) {
+
+                node = document.createElement("div");
+
+                this._support = "minWidth" in node.style;
+
+                node = null;
+
+            }
+
+            return this._support;
+
         },
         getBound: function () {
 
@@ -9258,4 +9288,11 @@ UE.ready(function() {
             })
         }
 });
-})();
+
+UE.ready(function(){
+    var me = this;
+    me.addListener('fullscreenchanged',function(){
+        me.$container.find('textarea').width(me.$body.width() - 10).height(me.$body.height())
+
+    })
+});})();
