@@ -243,13 +243,13 @@
                 if(options.initialFrameWidth){
                     options.minFrameWidth = options.initialFrameWidth
                 }else{
-                    options.minFrameWidth = options.initialFrameWidth = container.offsetWidth;
+                    options.minFrameWidth = options.initialFrameWidth = $(container).width();
                 }
                 if(options.initialFrameHeight){
                     options.minFrameHeight = options.initialFrameHeight
                 }else{
 
-                    options.initialFrameHeight = options.minFrameHeight = container.offsetHeight;
+                    options.initialFrameHeight = options.minFrameHeight = $(container).height();
                 }
 
                 container.style.width = /%$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth - getStyleValue("padding-left")- getStyleValue("padding-right")   +'px';
@@ -973,19 +973,27 @@
             }
             return count;
         },
-        addInputRule: function (rule) {
+        addInputRule: function (rule,ignoreUndo) {
+            rule.ignoreUndo = ignoreUndo;
             this.inputRules.push(rule);
         },
-        filterInputRule: function (root) {
+        filterInputRule: function (root,isUndoLoad) {
             for (var i = 0, ci; ci = this.inputRules[i++];) {
+                if(isUndoLoad && ci.ignoreUndo){
+                    continue;
+                }
                 ci.call(this, root)
             }
         },
-        addOutputRule: function (rule) {
+        addOutputRule: function (rule,ignoreUndo) {
+            rule.ignoreUndo = ignoreUndo;
             this.outputRules.push(rule)
         },
-        filterOutputRule: function (root) {
+        filterOutputRule: function (root,isUndoLoad) {
             for (var i = 0, ci; ci = this.outputRules[i++];) {
+                if(isUndoLoad && ci.ignoreUndo){
+                    continue;
+                }
                 ci.call(this, root)
             }
         }
