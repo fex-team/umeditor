@@ -27,7 +27,6 @@
 ///import plugins/cleardoc;
 ///import plugins/preview;
 ///import plugins/print;
-///import plugins/fiximgclick;
 ///import plugins/basestyle;
 
 ///import plugins/undo;
@@ -45,6 +44,7 @@
 ///import adapter/font;
 ///import adapter/fullscreen;
 ///import adapter/popup;
+///import adapter/imagescale;
 
 ///import ui/widget;
 ///import ui/button;
@@ -53,6 +53,7 @@
 ///import ui/splitbutton;
 ///import ui/colorsplitbutton;
 ///import ui/popup;
+///import ui/scale;
 ///import ui/colorpicker;
 ///import ui/combobox;
 ///import ui/buttoncombobox;
