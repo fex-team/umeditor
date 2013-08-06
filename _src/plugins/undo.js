@@ -74,7 +74,7 @@ UE.plugins['undo'] = function () {
             var scene = this.list[this.index];
             var root = UE.htmlparser(scene.content.replace(fillchar, ''));
             me.options.autoClearEmptyNode = false;
-            me.filterInputRule(root);
+            me.filterInputRule(root,true);
             me.options.autoClearEmptyNode = orgState;
             //trace:873
             //去掉展位符
@@ -108,7 +108,7 @@ UE.plugins['undo'] = function () {
             me.fireEvent('beforegetscene');
             var root = UE.htmlparser(me.body.innerHTML,true);
             me.options.autoClearEmptyNode = false;
-            me.filterOutputRule(root);
+            me.filterOutputRule(root,true);
             me.options.autoClearEmptyNode = orgState;
             var cont = root.toHtml();
             browser.ie && (cont = cont.replace(/>&nbsp;</g, '><').replace(/\s*</g, '<').replace(/>\s*/g, '>'));

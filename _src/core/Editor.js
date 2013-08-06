@@ -973,19 +973,27 @@
             }
             return count;
         },
-        addInputRule: function (rule) {
+        addInputRule: function (rule,ignoreUndo) {
+            rule.ignoreUndo = ignoreUndo;
             this.inputRules.push(rule);
         },
-        filterInputRule: function (root) {
+        filterInputRule: function (root,isUndoLoad) {
             for (var i = 0, ci; ci = this.inputRules[i++];) {
+                if(isUndoLoad && ci.ignoreUndo){
+                    continue;
+                }
                 ci.call(this, root)
             }
         },
-        addOutputRule: function (rule) {
+        addOutputRule: function (rule,ignoreUndo) {
+            rule.ignoreUndo = ignoreUndo;
             this.outputRules.push(rule)
         },
-        filterOutputRule: function (root) {
+        filterOutputRule: function (root,isUndoLoad) {
             for (var i = 0, ci; ci = this.outputRules[i++];) {
+                if(isUndoLoad && ci.ignoreUndo){
+                    continue;
+                }
                 ci.call(this, root)
             }
         }
