@@ -1,10 +1,12 @@
 //popup 类
 UE.ui.define('popup', {
-    tpl: '<div class="edui-dropdown-menu edui-popup" onmousedown="return false">' +
-        '<div class="edui-popup-body"><%=subtpl%></div>' +
+    tpl: '<div class="edui-dropdown-menu edui-popup"'+
+        '<%if(!stoppropagation){%>onmousedown="return false"<%}%>'+
+        '><div class="edui-popup-body"><%=subtpl%></div>' +
         '<div class="edui-popup-caret"></div>' +
         '</div>',
     defaultOpt: {
+        stoppropagation:false,
         subtpl: '',
         width: '',
         height: ''
