@@ -16,12 +16,14 @@
     position: relative;
     padding: 5px;
 }
-.edui-editor-body{
+.edui-container .edui-editor-body{
     position: relative;
     background-color: #fff;
+
 }
-.edui-body-container{
+.edui-editor-body .edui-body-container{
     position: relative;
+
 }
 /*普通按钮*/
 .edui-btn-toolbar .edui-btn{

@@ -11,7 +11,7 @@ UE.ready(function () {
             if (img && img.tagName == 'IMG') {
 
                 if (!$imagescale) {
-                    $imagescale = $.eduiscale().css('zIndex', me.options.zIndex);
+                    $imagescale = $.eduiscale({'$wrap':me.$container}).css('zIndex', me.options.zIndex);
                     me.$container.append($imagescale);
 
                     var _keyDownHandler = function (e) {
