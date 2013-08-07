@@ -50,7 +50,7 @@ UE.ui.define('tab', {
             })
         });
     },
-    active: function (element, container, callback) {
+    activate: function (element, container, callback) {
         if (element === undefined) {
             return $(".edui-tab-item.active",this.root()).index();
         }
