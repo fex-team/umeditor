@@ -62,7 +62,8 @@
             'adapter/popup.js',
             'adapter/imagescale.js',
             'adapter/autofloat.js',
-            'adapter/source.js'
+            'adapter/source.js',
+            'adapter/paragraph.js'
         ],
         baseURL = '../_src/';
     for (var i=0,pi;pi = paths[i++];) {
