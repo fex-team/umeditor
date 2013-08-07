@@ -116,7 +116,7 @@
         delEditor: function (id) {
             var editor;
             if (editor = _editors[id]) {
-                editor.key && editor.destroy();
+                editor.destroy();
                 delete  _editors[id]
             }
         },
