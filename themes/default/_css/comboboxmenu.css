@@ -106,11 +106,81 @@
     line-height: 47px;
 }
 
-.edui-combobox-fontsize .edui-combobox-item-6 .edui-combobox-icon {
-    height: 25px;
-    margin-bottom: 11px;
+/*.edui-combobox-fontsize .edui-combobox-item-6 .edui-combobox-icon {*/
+    /*height: 25px;*/
+    /*margin-bottom: 11px;*/
+/*}*/
+
+/*.edui-combobox-fontsize .edui-combobox-item-6.edui-combobox-checked .edui-combobox-icon {*/
+    /*background-position: 10px 7px;*/
+/*}*/
+
+
+/* 段落样式校正 */
+/* h1 */
+.edui-combobox-paragraph .edui-combobox-item-1 .edui-combobox-item-label {
+    font-size: 32px;
+    height: 36px;
+    line-height: 36px;
 }
 
-.edui-combobox-fontsize .edui-combobox-item-6.edui-combobox-checked .edui-combobox-icon {
+.edui-combobox-paragraph .edui-combobox-item-1 .edui-combobox-icon {
+    height: 25px;
+    margin-bottom: 5px;
+}
+
+.edui-combobox-paragraph .edui-combobox-item-1.edui-combobox-checked .edui-combobox-icon {
     background-position: 10px 7px;
+}
+
+/* h2 */
+.edui-combobox-paragraph .edui-combobox-item-2 .edui-combobox-item-label {
+    font-size: 28px;
+    height: 27px;
+    line-height: 27px;
+}
+
+.edui-combobox-paragraph .edui-combobox-item-2 .edui-combobox-icon {
+    margin-bottom: 5px;
+}
+
+.edui-combobox-paragraph .edui-combobox-item-2.edui-combobox-checked .edui-combobox-icon {
+    background-position: 10px 10px;
+}
+
+/* h3 */
+.edui-combobox-paragraph .edui-combobox-item-3 .edui-combobox-item-label {
+    font-size: 24px;
+    height: 25px;
+    line-height: 25px;
+}
+
+.edui-combobox-paragraph .edui-combobox-item-3 .edui-combobox-icon {
+    height: 25px;
+    margin-bottom: 5px;
+}
+
+.edui-combobox-paragraph .edui-combobox-item-3.edui-combobox-checked .edui-combobox-icon {
+    background-position: 10px 11px;
+}
+
+/* h4 */
+.edui-combobox-paragraph .edui-combobox-item-4 .edui-combobox-item-label {
+    font-size: 18px;
+    height: 25px;
+    line-height: 25px;
+}
+
+.edui-combobox-paragraph .edui-combobox-item-4.edui-combobox-checked .edui-combobox-icon {
+    background-position: 10px 6px;
+}
+
+/* h5 */
+.edui-combobox-paragraph .edui-combobox-item-5 .edui-combobox-item-label {
+    font-size: 16px;
+}
+
+/* h6 */
+.edui-combobox-paragraph .edui-combobox-item-6 .edui-combobox-item-label {
+    font-size: 12px;
 }
