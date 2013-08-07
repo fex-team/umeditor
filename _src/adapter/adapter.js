@@ -113,6 +113,13 @@
             return _editors[id] || (_editors[id] = this.createEditor(id, options));
 
         },
+        delEditor: function (id) {
+            var editor;
+            if (editor = _editors[id]) {
+                editor.key && editor.destroy();
+                delete  _editors[id]
+            }
+        },
         ready: function( fn ){
             _readyFn.push( fn );
         },
