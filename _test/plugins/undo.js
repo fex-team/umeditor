@@ -1,8 +1,11 @@
 module("plugins.undo");
-
+function getDiv(){
+    var div = document.body.appendChild(document.createElement('div'));
+    return div.appendChild(document.createElement('div'));
+}
 /*trace 856*/
 test('trace 856 输入文本后撤销按钮不亮', function () {
-    var div = document.body.appendChild(document.createElement('div'));
+    var div = getDiv();
     div.id = 'ue';
     var editor = UE.getEditor('ue');
     editor.ready(function () {
@@ -15,6 +18,7 @@ test('trace 856 输入文本后撤销按钮不亮', function () {
         setTimeout(function () {
             equal(editor.queryCommandState('undo'), 0, '模拟输入文本后撤销按钮应当高亮');
             UE.delEditor('ue');
+            div&&te.dom.push(div);
             start();
         }, 500);
     });
@@ -23,7 +27,7 @@ test('trace 856 输入文本后撤销按钮不亮', function () {
 
 /*trace 617*/
 test('trace 617 插入文本、分割线、文本,撤销2次，撤销掉分割线', function () {
-    var div = document.body.appendChild(document.createElement('div'));
+    var div = getDiv();
     div.id = 'ue';
     var editor = UE.getEditor('ue');
     editor.ready(function () {
@@ -53,6 +57,7 @@ test('trace 617 插入文本、分割线、文本,撤销2次，撤销掉分割�
         equal(editor.body.getElementsByTagName('hr').length, 0, '分割线已删除');
         setTimeout(function () {
             UE.delEditor('ue');
+            div&&te.dom.push(div);
             start()
         }, 500);
     });
@@ -63,7 +68,7 @@ test('undo--redo', function () {
    //todo 分别插入文本,img,list,link,再undo,redo
 });
 test('ctrl+z/y', function () {
-    var div = document.body.appendChild(document.createElement('div'));
+    var div = getDiv();
     div.id = 'ue';
     var editor = UE.getEditor('ue');
     editor.ready(function () {
@@ -76,7 +81,7 @@ test('ctrl+z/y', function () {
         setTimeout(function () {
             ua.keydown(editor.body, {'keyCode':66, 'ctrlKey':true});
             setTimeout(function () {
-                equal(ua.getChildHTML(p), '<strong>没有加粗的文本</strong>');
+                equal(ua.getChildHTML(p), '<b>没有加粗的文本</b>');
                 ua.keydown(editor.body, {'keyCode':90, 'ctrlKey':true});
                 setTimeout(function () {
                     editor.focus();
@@ -86,6 +91,7 @@ test('ctrl+z/y', function () {
                     setTimeout(function () {
                         equal(ua.getChildHTML(body.firstChild), '<strong>没有加粗的文本</strong>');
                         UE.delEditor('ue');
+                        div&&te.dom.push(div);
                         start();
                     },500);
                 }, 100);
