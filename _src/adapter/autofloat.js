@@ -27,8 +27,7 @@ UE.ready(function() {
         docStyle.backgroundImage = 'url("about:blank")';
         docStyle.backgroundAttachment = 'fixed';
     }
-    var	bakCssText,
-        placeHolder = document.createElement('div'),
+    var	placeHolder = document.createElement('div'),
         toolbarBox,orgTop,
         getPosition=function(element){
             var bcr;
@@ -90,7 +89,6 @@ UE.ready(function() {
         if(placeHolder.parentNode){
             placeHolder.parentNode.removeChild(placeHolder);
         }
-        toolbarBox.style.cssText = bakCssText;
     }
 
     function updateFloating(){
@@ -114,7 +112,6 @@ UE.ready(function() {
     if(checkHasUI(me)){
             toolbarBox = $('.edui-toolbar',me.container)[0];
             orgTop = getPosition(toolbarBox).top;
-            bakCssText = toolbarBox.style.cssText;
             placeHolder.style.height = toolbarBox.offsetHeight + 'px';
             if(LteIE6){
                 fixIE6FixedPos();
