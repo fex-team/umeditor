@@ -82,7 +82,7 @@ UE.plugins['font'] = function () {
             UE.commands[cmd] = {
                 execCommand: function (cmdName,value) {
                     if(cmdName == 'fontsize'){
-                        value  = fontsize[value.replace(/px/,'')]
+                        value  = fontsize[(value+"").replace(/px/,'')]
                     }
                     return this.document.execCommand(fonts[cmdName],false, value)
                 },

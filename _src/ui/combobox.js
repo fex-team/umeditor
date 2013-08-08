@@ -125,6 +125,10 @@
                 var itemCount = this.data('options').itemCount,
                     items = this.data('options').autowidthitem;
 
+                if ( items && !items.length ) {
+                    items = this.data('options').items;
+                }
+
                 if( itemCount == 0 ) {
                     return null;
                 }

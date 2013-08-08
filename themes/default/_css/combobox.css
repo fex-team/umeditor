@@ -6,9 +6,9 @@
 }
 .edui-combobox .edui-button-label{
     position: relative;
-    display: inline-block !important;
+    display: inline-block;
     vertical-align: top;
-    *display: inline !important;
+    *display: inline ;
     *zoom:1;
     width:60px;
     height:20px;
@@ -21,9 +21,9 @@
 }
 .edui-combobox  .edui-button-spacing{
     position: relative;
-    display: inline-block !important;
+    display: inline-block ;
     vertical-align: top;
-    *display: inline !important;
+    *display: inline ;
     *zoom:1;
     height:20px;
     margin: 0;
@@ -31,9 +31,9 @@
 }
 .edui-combobox .edui-caret{
     position: relative;
-    display: inline-block !important;
+    display: inline-block ;
     vertical-align: top;
-    *display: inline !important;
+    *display: inline ;
     *zoom:1;
     height:20px;
     width: 12px;
