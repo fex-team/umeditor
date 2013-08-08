@@ -113,11 +113,15 @@
             return _editors[id] || (_editors[id] = this.createEditor(id, options));
 
         },
+        clearCache : function(id){
+            if ( _editors[id]) {
+                delete  _editors[id]
+            }
+        },
         delEditor: function (id) {
             var editor;
             if (editor = _editors[id]) {
                 editor.destroy();
-                delete  _editors[id]
             }
         },
         ready: function( fn ){
