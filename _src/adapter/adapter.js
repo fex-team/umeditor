@@ -148,6 +148,10 @@
                     width: options.initialFrameWidth,
                     zIndex:editor.getOpt('zIndex')
                 });
+
+                //ie6下缓存图片
+                UE.browser.ie && UE.browser.version === 6 && $container[0].ownerDocument.execCommand("BackgroundImageCache", false, true);
+
                 editor.render(id);
 
 
