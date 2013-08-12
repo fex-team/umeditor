@@ -16,19 +16,18 @@ UE.plugins['font'] = function () {
             'backcolor': 'backcolor',
             'fontsize': 'fontsize',
             'fontfamily': 'fontname'
+        },
+        cmdNameToStyle = {
+            'forecolor': 'color',
+            'backcolor': 'background-color',
+            'fontsize': 'font-size',
+            'fontfamily': 'font-family'
+        },
+        cmdNameToAttr = {
+            'forecolor': 'color',
+            'fontsize': 'size',
+            'fontfamily': 'face'
         };
-    cmdNameToStyle = {
-        'forecolor': 'color',
-        'backcolor': 'background-color',
-        'fontsize': 'font-size',
-        'fontfamily': 'font-family'
-    };
-    cmdNameToAttr = {
-        'forecolor': 'color',
-        'backcolor': 'backgroundColor',
-        'fontsize': 'size',
-        'fontfamily': 'face'
-    }
     me.setOpt({
         'fontfamily': [
             { name: 'songti', val: '宋体,SimSun'},
@@ -46,15 +45,7 @@ UE.plugins['font'] = function () {
         ],
         'fontsize': [10, 12,  16, 18,24, 32,48]
     });
-    var fontsize ={
-        '1':'10',
-        '2':'12',
-        '3':'16',
-        '4':'18',
-        '5':'24',
-        '6':'32',
-        '7':'48'
-    };
+
     me.addOutputRule(function (root) {
         utils.each(root.getNodesByTagName('font'), function (node) {
             if (node.tagName == 'font') {
@@ -63,7 +54,15 @@ UE.plugins['font'] = function () {
                     switch (p) {
                         case 'size':
                             var val =  node.attrs[p];
-                            $.each(fontsize,function(k,v){
+                            $.each({
+                                '10':'1',
+                                '12':'2',
+                                '16':'3',
+                                '18':'4',
+                                '24':'5',
+                                '32':'6',
+                                '48':'7'
+                            },function(k,v){
                                 if(v == val){
                                     val = k;
                                     return false;
