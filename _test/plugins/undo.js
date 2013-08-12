@@ -17,7 +17,7 @@ test('trace 856 输入文本后撤销按钮不亮', function () {
         ua.keydown(editor.body);
         setTimeout(function () {
             equal(editor.queryCommandState('undo'), 0, '模拟输入文本后撤销按钮应当高亮');
-            UE.delEditor('ue');
+            UE.clearCache('ue');
             div&&te.dom.push(div);
             start();
         }, 500);
@@ -56,7 +56,7 @@ test('trace 617 插入文本、分割线、文本,撤销2次，撤销掉分割�
         editor.execCommand('Undo');
         equal(editor.body.getElementsByTagName('hr').length, 0, '分割线已删除');
         setTimeout(function () {
-            UE.delEditor('ue');
+            UE.clearCache('ue');
             div&&te.dom.push(div);
             start()
         }, 500);
@@ -90,7 +90,7 @@ test('ctrl+z/y', function () {
                     editor.focus();
                     setTimeout(function () {
                         equal(ua.getChildHTML(body.firstChild), '<strong>没有加粗的文本</strong>');
-                        UE.delEditor('ue');
+                        UE.clearCache('ue');
                         div&&te.dom.push(div);
                         start();
                     },500);

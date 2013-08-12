@@ -39,8 +39,7 @@ test( '鼠标在八个角上拖拽改变图片大小', function() {
 
             $scale.edui().hide();
             ok($scale.css('display')=='none', "检查八个角是否已消失");
-
-            domUtils.remove(sc);
+            domUtils.remove(editor.container);
             start();
         });
         stop();

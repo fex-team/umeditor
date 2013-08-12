@@ -16,8 +16,18 @@ UE.plugins['font'] = function () {
             'backcolor': 'backcolor',
             'fontsize': 'fontsize',
             'fontfamily': 'fontname'
+        },
+        cmdNameToStyle = {
+            'forecolor': 'color',
+            'backcolor': 'background-color',
+            'fontsize': 'font-size',
+            'fontfamily': 'font-family'
+        },
+        cmdNameToAttr = {
+            'forecolor': 'color',
+            'fontsize': 'size',
+            'fontfamily': 'face'
         };
-
     me.setOpt({
         'fontfamily': [
             { name: 'songti', val: '宋体,SimSun'},
@@ -35,15 +45,7 @@ UE.plugins['font'] = function () {
         ],
         'fontsize': [10, 12,  16, 18,24, 32,48]
     });
-    var fontsize ={
-        '10':'1',
-        '12':'2',
-        '16':'3',
-        '18':'4',
-        '24':'5',
-        '32':'6',
-        '48':'7'
-    };
+
     me.addOutputRule(function (root) {
         utils.each(root.getNodesByTagName('font'), function (node) {
             if (node.tagName == 'font') {
@@ -52,7 +54,15 @@ UE.plugins['font'] = function () {
                     switch (p) {
                         case 'size':
                             var val =  node.attrs[p];
-                            $.each(fontsize,function(k,v){
+                            $.each({
+                                '10':'1',
+                                '12':'2',
+                                '16':'3',
+                                '18':'4',
+                                '24':'5',
+                                '32':'6',
+                                '48':'7'
+                            },function(k,v){
                                 if(v == val){
                                     val = k;
                                     return false;
@@ -81,30 +91,37 @@ UE.plugins['font'] = function () {
         (function (cmd) {
             UE.commands[cmd] = {
                 execCommand: function (cmdName,value) {
-                    if(cmdName == 'fontsize'){
-                        value  = fontsize[(value+"").replace(/px/,'')]
+
+                    var rng = this.selection.getRange();
+                    if(rng.collapsed){
+                        var span = $('<span></span>').css(cmdNameToStyle[cmdName],value)[0];
+                        rng.insertNode(span).setStart(span,0).setCursor();
+                    }else{
+                        if(cmdName == 'fontsize'){
+                            value  = {
+                                '10':'1',
+                                '12':'2',
+                                '16':'3',
+                                '18':'4',
+                                '24':'5',
+                                '32':'6',
+                                '48':'7'
+                            }[(value+"").replace(/px/,'')]
+                        }
+                        return this.document.execCommand(fonts[cmdName],false, value)
                     }
-                    return this.document.execCommand(fonts[cmdName],false, value)
+
                 },
                 queryCommandValue: function (cmdName) {
-                    if(cmdName == 'fontfamily'){
-                        var startNode = this.selection.getStart();
-                        var val = $(startNode).css('fontFamily');
-                    }else{
-                        var val = this.document.queryCommandValue(fonts[cmdName]);
-                        if(cmdName == 'fontsize'){
-                            $.each(fontsize,function(k,v){
-                                if(v == val){
-                                    val = k;
-                                    return false;
-                                }
-                            })
-                        }
+                    var start = me.selection.getStart();
+                    var val = $(start).css(cmdNameToStyle[cmdName]);
+                    if(val === undefined){
+                        val = $(start).attr(cmdNameToAttr[cmdName])
                     }
-                    return val;
+                    return val ? utils.fixColor(cmdName,val).replace(/px/,'') : '';
                 },
                 queryCommandState: function (cmdName) {
-                    return this.document.queryCommandState(fonts[cmdName]);
+                    return this.queryCommandValue(cmdName)
                 }
             };
         })(p);

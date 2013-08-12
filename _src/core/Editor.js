@@ -167,6 +167,9 @@
             var me = this;
             me.fireEvent('destroy');
             var container = me.container.parentNode;
+            if(container === document.body){
+                container = me.container;
+            }
             var textarea = me.textarea;
             if (!textarea) {
                 textarea = document.createElement('textarea');
@@ -188,7 +191,7 @@
                     delete this[p];
                 }
             }
-            UE.delEditor(key);
+            UE.clearCache(key)
         },
         initialCont : function(holder){
 
@@ -771,7 +774,7 @@
         hasContents: function (tags) {
             if (tags) {
                 for (var i = 0, ci; ci = tags[i++];) {
-                    if (this.document.getElementsByTagName(ci).length > 0) {
+                    if (this.body.getElementsByTagName(ci).length > 0) {
                         return true;
                     }
                 }
@@ -782,7 +785,7 @@
             //随时添加,定义的特殊标签如果存在，不能认为是空
             tags = ['div'];
             for (i = 0; ci = tags[i++];) {
-                var nodes = domUtils.getElementsByTagName(this.document, ci);
+                var nodes = domUtils.getElementsByTagName(this.body, ci);
                 for (var n = 0, cn; cn = nodes[n++];) {
                     if (domUtils.isCustomeNode(cn)) {
                         return true;
