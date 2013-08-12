@@ -184,16 +184,14 @@ test("render-- options", function () {
 });
 
 test('destroy', function () {
-//    var editor = new UE.Editor( {'autoFloatEnabled':false} );
-    var editor = new UE.ui.Editor({'autoFloatEnabled': false});
-    editor.key = 'ed';
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'edu';
-    editor.render(div);
+    var editor = UE.getEditor('edu');
     editor.ready(function () {
         editor.destroy();
-        equal(document.getElementById('ed').tagName.toLowerCase(), 'textarea', '容器被删掉了');
-        document.getElementById('ed') && te.dom.push(document.getElementById('ed'));
+        equal(document.getElementById('edu').tagName.toLowerCase(), 'textarea', '容器被删掉了');
+        UE.clearCache('edu');
+        document.getElementById('edu') && te.dom.push(document.getElementById('ed'));
     });
 });
 
@@ -267,6 +265,7 @@ test("setContent", function () {
         div2.innerHTML = editor.body.innerHTML;
         ua.haveSameAllChildAttribs(div2, div_new, 'check contents');
         setTimeout(function () {
+            UE.clearCache('test1');
             te.dom.push(editor.container);
             document.getElementById('test1') && te.dom.push(document.getElementById('test1'));
             setTimeout(function () {
@@ -371,6 +370,7 @@ test("queryCommandState", function () {
         equal(editor.queryCommandState('bold'), 1, '加粗状态为1');
         r.setStart(p, 1).setEnd(p, 2).select();
         equal(editor.queryCommandState('bold'), 0, '加粗状态为0');
+        UE.clearCache(div.id);
         te.dom.push(editor.container);
         document.getElementById('ue_queryCommandState') && te.dom.push(document.getElementById('ue_queryCommandState'));
         start();
@@ -387,7 +387,8 @@ test("queryCommandValue", function () {
         var range = new UE.dom.Range(editor.document);
         var p = editor.document.getElementsByTagName("p")[0];
         range.selectNode(p).select();
-        equal(editor.queryCommandValue('justify'), 'left', 'text align is left');
+        equal(editor.queryCommandValue('justifyleft'), 'left', 'text align is left');
+        UE.clearCache(div.id);
         te.dom.push(editor.container);
         document.getElementById('ue_queryCommandValue') && te.dom.push(document.getElementById('ue_queryCommandValue'));
         start();
@@ -405,21 +406,19 @@ test("execCommand", function () {
         var range = new UE.dom.Range(doc);
         var p = doc.getElementsByTagName('p')[1];
         range.setStart(p, 0).setEnd(p, 1).select();
-        editor.execCommand('justify', 'right');
+        editor.execCommand('justifyright');
         equal($(p).css('text-align'), 'right', 'execCommand align');
-        /*给span加style不会重复添加span*/
         range.selectNode(p).select();
         editor.execCommand("forecolor", "red");
-        /*span发生了变化，需要重新获取*/
-
-        var span = doc.getElementsByTagName('span')[0];
-        equal(span.style['color'], 'red', 'check execCommand color');
+        var font = doc.getElementsByTagName('font')[0];
+        equal(ua.formatColor(font.color), "#ff0000", 'check execCommand color');
         var div_new = document.createElement('div');
         div_new.innerHTML = '<p><span style="color: red; ">xx</span></p><p style="text-align: right; ">xxx</p>';
 
         var div1 = document.createElement('div');
         div1.innerHTML = editor.body.innerHTML;
         ok(ua.haveSameAllChildAttribs(div_new, div1), 'check style');
+        UE.clearCache(div.id);
         te.dom.push(editor.container);
         document.getElementById('ue') && te.dom.push(document.getElementById('ue'));
         start();
@@ -439,6 +438,7 @@ test("hasContents", function () {
         ok(editor.hasContents(), "has contents");
         editor.setContent('<p><br/></p>');
         ok(!editor.hasContents(), '空p认为是空');
+        UE.clearCache(div.id);
         te.dom.push(editor.container);
         document.getElementById('ue') && te.dom.push(document.getElementById('ue'));
         start();
@@ -460,6 +460,7 @@ test("hasContents--有参数", function () {
         editor.setContent('<p><br></p>');
         ok(!editor.hasContents(['']), "为空");
         ok(editor.hasContents(['br']), "不为空");
+        UE.clearCache(div.id);
         te.dom.push(editor.container);
         document.getElementById('ue') && te.dom.push(document.getElementById('ue'));
         start();
@@ -532,7 +533,6 @@ test('2个实例采用2个配置文件', function () {
         editor1.ready(function(){
             var editor2 = UE.getEditor('div2',UEDITOR_CONFIG2);
             editor2.ready(function () {
-                //1.2.6 高度是iframe容器的高度
                 equal(editor1.container.style.height, '200px', '编辑器高度为200px');
                 equal(editor2.container.style.height, '400px', '自定义div高度为400px');
                 var html = UEDITOR_CONFIG2.initialContent;
@@ -549,6 +549,24 @@ test('2个实例采用2个配置文件', function () {
             });
         });
     }, 100);
+});
+test("_initEvents,_proxyDomEvent--click", function () {
+    var div = document.body.appendChild(document.createElement('div'));
+    div.id = 'ue_initEvents';
+    var editor = UE.getEditor('ue_initEvents');
+    stop();
+    editor.ready(function () {
+        editor.focus();
+        expect(1);
+        stop();
+        editor.addListener('click', function () {
+            ok(true, 'click event dispatched');
+            te.dom.push(editor.container);
+            document.getElementById('ue_initEvents') && te.dom.push(document.getElementById('ue_initEvents'));
+            start();
+        });
+        ua.click(editor.body);
+    });
 });
 test('绑定事件', function () {
     document.onmouseup = function (event) {
@@ -588,22 +606,3 @@ test('绑定事件', function () {
     stop();
 });
 
-test("_initEvents,_proxyDomEvent--click", function () {
-    var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue_initEvents';
-    var editor = UE.getEditor('ue_initEvents');
-    stop();
-    editor.ready(function () {
-        editor.focus();
-        expect(1);
-        stop();
-        editor.addListener('click', function () {
-            ok(true, 'click event dispatched');
-            te.dom.push(editor.container);
-            document.getElementById('ue_initEvents') && te.dom.push(document.getElementById('ue_initEvents'));
-            start();
-        });
-        ua.click(editor.document);
-
-    });
-});
