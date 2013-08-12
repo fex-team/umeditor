@@ -10,7 +10,24 @@
  */
 UE.commands['print'] = {
     execCommand : function(){
-        this.window.print();
+        var iframe = document.createElement('iframe'),
+            id = 'editor-print-' + +new Date();
+
+        iframe.id = id;
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+
+        var w = window.open('', id, ''),
+        d = w.document;
+
+        d.open();
+        d.write('<html><head><script>' +
+            "setTimeout(function(){" +
+            "window.print();" +
+            "window.parent.$('#"+id+"').remove();" +
+            "},300);" +
+            '</script></head><body><div>'+this.getContent(null,null,true)+'</div></body></html>');
+        d.close();
     },
     notNeedUndo : 1
 };
