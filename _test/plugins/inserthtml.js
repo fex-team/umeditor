@@ -7,7 +7,7 @@ test( 'trace 3301：闭合方式插入文本', function() {
     editor.setContent( '<p><br></p>' );
     range.setStart( body.firstChild, 0 ).collapse( 1 ).select();
     editor.execCommand( 'inserthtml', 'hello2' );
-    equal( ua.getChildHTML( body ), '<p>hello2</p>', '插入文本节点' );
+    equal( ua.getChildHTML( body ), '<p>hello2<br></p>', '插入文本节点' );
 } );
 
 //刘表中插入img
