@@ -36,7 +36,17 @@ UE.commands['inserthtml'] = {
             $tmp.remove()
 
         }else{
-            me.document.execCommand('insertHTML',false,html)
+            var nativeSel = me.selection.getNative();
+            var nativeRange = nativeSel.getRangeAt(0);
+            nativeRange.deleteContents();
+            var frag = me.document.createDocumentFragment();
+            $(html).each(function(i,n){
+                frag.appendChild(n);
+            });
+            nativeRange.insertNode(frag);
+            nativeRange.collapse(false);
+            nativeSel.removeAllRanges();
+            nativeSel.addRange(nativeRange);
         }
 
         setTimeout(function(){
