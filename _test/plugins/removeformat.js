@@ -34,9 +34,8 @@ test( 'trace 800:清除超链接的颜色', function () {
         }
         editor.execCommand( 'removeformat' );
         var cl = ua.browser.ie && ua.browser.ie == 8 ? 'class=\"\"' : "";
-        html = '<a href="http://www.baidu.com/" _href=\"http://www.baidu.com/\">baidu</a>';
-        if(!ua.browser.ie)//TODO 1.2.6
-            ua.checkHTMLSameStyle( html, editor.document, editor.body.firstChild, '查看清除样式后超链接的样式' );
+        html = '<p><a href="http://www.baidu.com/">baidu</a></p>';
+        equal(ua.getChildHTML(editor.body),html,'查看清除样式后超链接的样式');
         div.parentNode.removeChild(div);
         start();
     },500);
@@ -56,18 +55,7 @@ test( '清除颜色的区域有多个inline元素嵌套', function () {
         equal( ua.getChildHTML( body ), '<p><em><strong>he</strong></em>llo1</p><p>hel<strong><em>lo2</em></strong></p>' );
 } );
 
-//test( '指定删除某一个style', function () {//mini下是没有的 而且和下面的用例  重复了
-//    var editor = te.obj[0];
-//    var range = te.obj[1];
-//    var body = editor.body;
-//    editor.setContent( '<p><span style="color:red;font-size: 18px"><em><strong>hello1</strong></em></span></p><p><strong><span style="color:red;font-size: 18px">hello2</span></strong></p>' );
-//    var strs = body.getElementsByTagName( 'strong' );
-//    range.setStart( strs[0].firstChild, 2 ).setEnd( strs[1].firstChild.firstChild, 3 ).select();
-//    /*只删除span的color style*/
-//    editor.execCommand( 'removeformat', 'span', 'color' );
-//    var html = '<p><span style="color:red;font-size: 18px"><em><strong>he</strong></em></span><span style="font-size: 18px"><em><strong>llo1</strong></em></span></p><p><strong><span style="font-size: 18px">hel</span></strong><strong><span style="color:red;font-size: 18px">lo2</span></strong></p>';
-//    ua.checkHTMLSameStyle( html, editor.document, body, '检查去除特定标签的样式的结果' );
-//} );
+
 
 //test( '指定删除某一个span', function () {//不闭合选择chrome下可以，ff下是清除了所有样式，但是手动操作，ff无反应，ie下是样式完全不改变
 //    var editor = te.obj[0];
