@@ -342,6 +342,6 @@
         //,indentValue:'2em'
 
         //填写过滤规则
-//        ,filterRules: {     }
+//        ,filterRules: {}
     };
 })();
