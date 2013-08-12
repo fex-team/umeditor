@@ -13,7 +13,6 @@ UE.plugins['justify']=function(){
     $.each('justifyleft justifyright justifycenter justifyfull'.split(' '),function(i,cmdName){
         UE.commands[cmdName] = {
             execCommand:function (cmdName) {
-                debugger
                 return this.document.execCommand(cmdName);
             },
             queryCommandValue: function (cmdName) {
