@@ -774,7 +774,7 @@
         hasContents: function (tags) {
             if (tags) {
                 for (var i = 0, ci; ci = tags[i++];) {
-                    if (this.document.getElementsByTagName(ci).length > 0) {
+                    if (this.body.getElementsByTagName(ci).length > 0) {
                         return true;
                     }
                 }
@@ -785,7 +785,7 @@
             //随时添加,定义的特殊标签如果存在，不能认为是空
             tags = ['div'];
             for (i = 0; ci = tags[i++];) {
-                var nodes = domUtils.getElementsByTagName(this.document, ci);
+                var nodes = domUtils.getElementsByTagName(this.body, ci);
                 for (var n = 0, cn; cn = nodes[n++];) {
                     if (domUtils.isCustomeNode(cn)) {
                         return true;
