@@ -58,34 +58,55 @@ test( 'br做回车,选区非闭合', function () {
     });
 } );
 
-test( 'br做回车，选区闭合', function () {
-    te.dom[0].parentNode.removeChild(te.dom[0]);
-    var div2 = document.body.appendChild( document.createElement( 'div' ) );
-    $( div2 ).css( 'width', '500px' ).css( 'height', '500px' ).css( 'border', '1px solid #ccc' );
-    te.dom.push(div2);
-    UE.plugins.table = function(){};
-    var editor = new UE.Editor({'initialContent':'<p>欢迎使用ueditor</p>','autoFloatEnabled':false,'enterTag':'br'});
-    te.obj.push(editor);
-    editor.render(div2);
-    stop();
-    editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
-        te.obj.push(range);
-        editor.setContent('<p>hello</p>');
+//test( 'br做回车，选区闭合', function () {
+//    te.dom[0].parentNode.removeChild(te.dom[0]);
+//    var div2 = document.body.appendChild( document.createElement( 'div' ) );
+//    $( div2 ).css( 'width', '500px' ).css( 'height', '500px' ).css( 'border', '1px solid #ccc' );
+//    te.dom.push(div2);
+//    UE.plugins.table = function(){};
+//    var editor = new UE.Editor({'initialContent':'<p>欢迎使用ueditor</p>','autoFloatEnabled':false,'enterTag':'br'});
+//    te.obj.push(editor);
+//    editor.render(div2);
+//    stop();
+//    editor.ready(function () {
+//        var range = new UE.dom.Range(editor.document);
+//        te.obj.push(range);
+//        editor.setContent('<p>hello</p>');
+//
+//        setTimeout(function () {
+//            te.obj[4].setStart(editor.body.firstChild.firstChild, 1).collapse(true).select();
+//            ua.keydown(editor.body, {'keyCode':13});
+//            setTimeout(function () {
+//                ua.manualDeleteFillData(te.obj[3].body);
+//                var html = 'h<br>ello';
+//                equal(ua.getChildHTML(te.obj[3].body.firstChild), html, '<br>做回车，选区闭合');
+//                te.dom[1].parentNode.removeChild(te.dom[1]);
+//                start();
+//            }, 50);
+//        }, 50);
+//    });
+//} );
 
-        setTimeout(function () {
-            te.obj[4].setStart(editor.body.firstChild.firstChild, 1).collapse(true).select();
-            ua.keydown(editor.body, {'keyCode':13});
-            setTimeout(function () {
-                ua.manualDeleteFillData(te.obj[3].body);
-                var html = 'h<br>ello';
-                equal(ua.getChildHTML(te.obj[3].body.firstChild), html, '<br>做回车，选区闭合');
-                te.dom[1].parentNode.removeChild(te.dom[1]);
-                start();
-            }, 50);
-        }, 50);
-    });
-} );
+
+test('br做回车，选区闭合',function(){
+    var editor = te.obj[0];
+    var range = te.obj[1];
+    editor.setContent( '<p>hello</p>' );
+    stop();
+    setTimeout(function(){
+        range.setStart(editor.body.firstChild.firstChild,1).setEnd(editor.body.firstChild.firstChild,3).select();//有错误 可能是出在这句话的问题上
+        ua.keydown(editor.body,{'keyCode':13});
+        setTimeout(function(){
+            debugger
+            ua.manualDeleteFillData(editor.body);
+            var html = 'h<br>ello';
+            equal(ua.getChildHTML(editor.body.firstChild),html,'<br>做回车，选区闭合');
+            equal(editor.getContent(editor.body),html,'try');
+            start();
+        },50);
+    },50);
+});
+
 
 test( 'br做回车，选区闭合,在节点尾部输入回车，要插入2个br', function () {
     te.dom[0].parentNode.removeChild(te.dom[0]);

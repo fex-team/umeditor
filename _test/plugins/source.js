@@ -74,7 +74,7 @@ test('设置源码内容没有p标签，切换源码后会自动添加', functio
     stop();
 });
 
-test('切换源码去掉空的span', function () {
+test('切换源码不会去掉空的span', function () {
     var editor = te.obj[0];
     editor.setContent('<p>切换源码<span>去掉空的span</span></p>');
     setTimeout(function () {
@@ -85,7 +85,7 @@ test('切换源码去掉空的span', function () {
         }, 100);
     }, 100);
     stop();
-    equal(editor.getContent(), '<p>切换源码去掉空的span</p>');
+    equal(editor.getContent(), '<p>切换源码<span>去掉空的span</span></p>');
 });
 
 test('b,i标签，切换源码后自动转换成strong和em', function () {
@@ -120,7 +120,7 @@ test('trace 1734 range的更新/特殊符号的转换', function () {
                 if (ua.browser.ie && ua.browser.ie > 8)//todo ie9,10改range
                     equal(editor.selection.getRange().startContainer.parentNode.tagName.toLowerCase(), label, 'range的更新');
                 else
-                    equal(editor.selection.getRange().startContainer.parentNode.parentNode.tagName.toLowerCase(), label, 'range的更新');
+                    equal(editor.selection.getRange().startContainer.parentNode.parentNode.parentNode.tagName.toLowerCase(), label, 'range的更新');
                 editor.execCommand('source');
                 setTimeout(function () {
                     editor.execCommand('source');
@@ -138,37 +138,6 @@ test('默认插入的占位符', function () {
     var editor = te.obj[0];
     editor.setContent('');
     equal(editor.getContent(), '');
-});
-
-test('插入分页符,源码中显示：_baidu_page_break_tag_', function () {
-    var div = document.body.appendChild(document.createElement('div'));
-    var editor = te.obj[0];
-    editor.render(div);
-    setTimeout(function () {
-        var range = new UE.dom.Range(editor.document);
-        var body = editor.body;
-        editor.setContent('<p><br></p>');
-        setTimeout(function () {
-            range.setStart(body.firstChild, 0).collapse(1).select();
-            editor.execCommand('pagebreak');
-            ua.manualDeleteFillData(editor.body);
-            var pagebreak = body.getElementsByTagName('hr')[0];
-
-            if (typeof pagebreak.attributes['class'] == "undefined") {
-                equal(pagebreak.getAttribute('class'), 'pagebreak', 'pagebreak');
-            }
-            else {//适用于ie6,7
-                equal(pagebreak.attributes['class'].nodeValue, 'pagebreak', 'pagebreak');
-            }
-            ua.manualDeleteFillData(editor.body);
-//        var br = UE.browser.ie ? '&nbsp;' : '<br />';
-            ok(editor.getContent().indexOf('_ueditor_page_break_tag_') >= 0, 'pagebreak被解析');
-//        equal( editor.getContent(), '<p>' + br + '</p>_baidu_page_break_tag_<p>' + br + '</p>' );
-            document.body.removeChild(div);
-            start();
-        }, 50);
-    }, 50);
-    stop();
 });
 
 test('不以http://开头的超链接绝对路径网址', function () {
@@ -193,14 +162,15 @@ test('trace 1727:插入超链接后再插入空格，空格不能被删除', fun
         editor.execCommand('source');
         setTimeout(function () {
             editor.execCommand('source');
-            equal(editor.body.innerHTML.toLowerCase(), '<p><a href="http://www.baidu.com/" _href=\"http://www.baidu.com/\">绝对路径网址</a> &nbsp;ddd</p>', '查看空格是否被删除');
+            //equal(editor.body.innerHTML.toLowerCase(), '<p><a href="http://www.baidu.com/" _href=\"http://www.baidu.com/\">绝对路径网址</a> &nbsp;ddd</p>', '查看空格是否被删除');
+            equal(editor.body.firstChild.innerHTML.toLowerCase(),'<a href="http://www.baidu.com/">绝对路径网址</a> &nbsp;ddd','空格仍然存在');
             start();
         }, 100);
     }, 100);
     stop();
 });
 
-
+//自动转换标签
 test('在font,b,i标签中输入，会自动转换标签 ', function () {
 //    if(!ua.browser.gecko){
     var editor = te.obj[0];
@@ -211,10 +181,10 @@ test('在font,b,i标签中输入，会自动转换标签 ', function () {
             editor.execCommand('source');
             equal(editor.body.firstChild.firstChild.tagName.toLowerCase(), 'span', 'font转换成span');
             if (ua.browser.gecko || ua.browser.ie)
-                equal($(editor.body.firstChild.firstChild).css('font-size'), '3px', '检查style');
+                equal($(editor.body.firstChild.firstChild).css('font-size'), '16px', '检查style');
             else
-                equal($(editor.body.firstChild.firstChild).css('font-size'), '12px', '检查style');
-            var EMstyle = $(editor.body.firstChild.firstChild).css('color');
+                equal($(editor.body.firstChild.firstChild).css('font-size'), '16px', '检查style');
+            var EMstyle = $(editor.body.firstChild.firstChild).css('color');  //dollar符号的使用
             ok(EMstyle == 'rgb(255, 0, 0)' || EMstyle == 'red' || EMstyle == '#ff0000', '检查style');
             equal(ua.getChildHTML(editor.body.firstChild.firstChild), '<strong><em>x</em></strong>', 'b转成strong,i转成em ');
             start();
@@ -234,8 +204,9 @@ test('trace 3334:img和a之间不会产生多余空格', function () {
             setTimeout(function () {
                 editor.execCommand('source');
                 ua.manualDeleteFillData(editor.body);
-                var html = '<p><img src="http://img.baidu.com/hi/jx2/j_0001.gif" _src=\"http://img.baidu.com/hi/jx2/j_0001.gif\"><a href=\"http://www.baidu.com\" _href=\"http://www.baidu.com\">http://www.baidu.com</a></p>';
-                ua.checkSameHtml(editor.body.innerHTML.toLowerCase(), html, '查看img和a之间是否会产生多余空格');
+//                var html = '<p><img src="http://img.baidu.com/hi/jx2/j_0001.gif" _src=\"http://img.baidu.com/hi/jx2/j_0001.gif\"><a href=\"http://www.baidu.com\" _href=\"http://www.baidu.com\">http://www.baidu.com</a></p>';
+//                ua.checkSameHtml(editor.body.innerHTML.toLowerCase(), html, '查看img和a之间是否会产生多余空格');
+                ua.checkSameHtml(editor.body.firstChild.innerHTML.toLowerCase(),'<img src="http://img.baidu.com/hi/jx2/j_0001.gif"/><a href="http://www.baidu.com">http://www.baidu.com</a>','img和a之间不会产生多余空格');
                 start();
             }, 20);
         }, 20);
@@ -250,7 +221,7 @@ test('trace 3349：带颜色的span切到源码再切回，不会丢失span', fu
         editor.execCommand('source');
         setTimeout(function () {
             editor.execCommand('source');
-            ua.checkSameHtml(editor.body.innerHTML, '<p><span style="color: rgb(255, 0, 0);"></span><br></p>');
+            ua.checkSameHtml(editor.body.innerHTML, '<p><span style="color: rgb(255, 0, 0);"></span><br></p>','span不丢失');
             start();
         }, 20);
     }, 20);
