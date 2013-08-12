@@ -24,8 +24,11 @@ test( 'webkit下图片可以被选中并出现八个角', function() {
             var scale = editor.$container.find('.edui-scale')[0];
             ok(scale && scale.style.display!='none', "检查八个角是否已出现");
             ok($(img).width() == $(scale).width() && $(img).height() == $(scale).height(), "检查八个角和图片宽高度是否相等");
-            domUtils.remove(sc);
-            start();
+            setTimeout(function(){
+                UE.clearCache(sc.id);
+                domUtils.remove(editor.container);
+                    start();
+            },100);
         });
         stop();
     }
@@ -47,8 +50,11 @@ test( '鼠标点击图片外的其他区域时，八个角消失', function() {
             ok(scale && scale.style.display!='none', "检查八个角是否已出现");
             ua.mousedown( editor.$container[0], {clientX: 100, clientY: 100} );
             ok(scale && scale.style.display=='none', "检查八个角是否已消失");
-            domUtils.remove(sc);
-            start();
+            setTimeout(function(){
+                UE.clearCache(sc.id);
+                domUtils.remove(editor.container);
+                start();
+            },100);
         });
         stop();
     }
@@ -70,8 +76,11 @@ test( '键盘有操作时，八个角消失', function() {
             ok(scale && scale.style.display!='none', "检查八个角是否已出现");
             ua.keydown( editor.$container[0] );
             ok(scale && scale.style.display=='none', "检查八个角是否已消失");
-            domUtils.remove(sc);
-            start();
+            setTimeout(function(){
+                UE.clearCache(sc.id);
+                domUtils.remove(editor.container);
+                start();
+            },100);
         });
         stop();
     }
@@ -97,8 +106,11 @@ test( '八个角显示时，鼠标快速按下然、放开，八个角不消失'
             },10);
             setTimeout(function(){
                 ok(scale && scale.style.display!='none', "检查八个角是否正常显示");
-                domUtils.remove(sc);
-                start();
+                setTimeout(function(){
+                    UE.clearCache(sc.id);
+                    domUtils.remove(editor.container);
+                    start();
+                },100);
             },400);
 
         });
@@ -126,10 +138,12 @@ test( '八个角显示时，鼠标快速按下然、放开，八个角不消失'
             },400);
             setTimeout(function(){
                 ok(scale && scale.style.display=='none', "检查八个角是否消失");
-                domUtils.remove(sc);
-                start();
+                setTimeout(function(){
+                    UE.clearCache(sc.id);
+                    domUtils.remove(editor.container);
+                    start();
+                },100);
             },500);
-
         });
         stop();
     }
