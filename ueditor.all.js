@@ -920,7 +920,7 @@ var dtd = dom.dtd = (function() {
         $tableContent : _({caption:1,col:1,colgroup:1,tbody:1,td:1,tfoot:1,th:1,thead:1,tr:1,table:1}),
         //不转换的标签
         $notTransContent : _({pre:1,script:1,style:1,textarea:1}),
-        p : X(_({'a':1}),L),
+        p : X(_({'a':1}),L)
     });
 })();
 
@@ -1294,14 +1294,6 @@ var domUtils = dom.domUtils = {
     isBlockElm:function (node) {
         return node.nodeType == 1 && (dtd.$block[node.tagName] || styleBlock[domUtils.getComputedStyle(node, 'display')]) && !dtd.$nonChild[node.tagName];
     },
-    /**
-     * 检测node节点是否为body节点
-     * @name isBody
-     * @grammar UE.dom.domUtils.isBody(node)   => true|false
-     */
-    isBody:function (node) {
-        return  node && node.nodeType == 1 && node.tagName.toLowerCase() == 'body';
-    },
 
 
 
@@ -1447,37 +1439,7 @@ var domUtils = dom.domUtils = {
      * getComputedStyle(form,"color")  =>  "#ffccdd"
      */
     getComputedStyle:function (element, styleName) {
-        //一下的属性单独处理
-        var pros = 'width height top left';
-
-        if(pros.indexOf(styleName) > -1){
-            return element['offset' + styleName.replace(/^\w/,function(s){return s.toUpperCase()})] + 'px';
-        }
-        //忽略文本节点
-        if (element.nodeType == 3) {
-            element = element.parentNode;
-        }
-        //ie下font-size若body下定义了font-size，则从currentStyle里会取到这个font-size. 取不到实际值，故此修改.
-        if (browser.ie && browser.version < 9 && styleName == 'font-size' && !element.style.fontSize &&
-            !dtd.$empty[element.tagName] && !dtd.$nonChild[element.tagName]) {
-            var span = element.ownerDocument.createElement('span');
-            span.style.cssText = 'padding:0;border:0;font-family:simsun;';
-            span.innerHTML = '.';
-            element.appendChild(span);
-            var result = span.offsetHeight;
-            element.removeChild(span);
-            span = null;
-            return result + 'px';
-        }
-        try {
-            var value = domUtils.getStyle(element, styleName) ||
-                (window.getComputedStyle ? domUtils.getWindow(element).getComputedStyle(element, '').getPropertyValue(styleName) :
-                    ( element.currentStyle || element.style )[utils.cssStyleToDomStyle(styleName)]);
-
-        } catch (e) {
-            return "";
-        }
-        return utils.transUnitToPx(utils.fixColor(styleName, value));
+        return utils.transUnitToPx(utils.fixColor(styleName, $(element).css(styleName)));
     },
 
     /**
@@ -1587,6 +1549,20 @@ var domUtils = dom.domUtils = {
         var tmpNode = browser.ie ? doc.createTextNode(domUtils.fillChar) : doc.createElement('br');
         node.innerHTML = '';
         node.appendChild(tmpNode);
+    },
+    isBoundaryNode : function (node,dir){
+        var tmp;
+        while(!domUtils.isBody(node)){
+            tmp = node;
+            node = node.parentNode;
+            if(tmp !== node[dir]){
+                return false;
+            }
+        }
+        return true;
+    },
+    isFillChar:function (node,isInStart) {
+        return node.nodeType == 3 && !node.nodeValue.replace(new RegExp((isInStart ? '^' : '' ) + domUtils.fillChar), '').length
     }
 };
 var fillCharReg = new RegExp(domUtils.fillChar, 'g');
@@ -1658,7 +1634,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
      * - ***document*** 跟range关联的document对象
      * - ***collapsed*** 是否是闭合状态
      */
-    var Range = dom.Range = function (document) {
+    var Range = dom.Range = function (document,body) {
         var me = this;
         me.startContainer =
             me.startOffset =
@@ -1666,6 +1642,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
                     me.endOffset = null;
         me.document = document;
         me.collapsed = true;
+        me.body = body;
     };
 
     /**
@@ -1711,7 +1688,15 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
     }
 
     Range.prototype = {
-
+        inFillChar : function(){
+            var start = this.startContainer;
+            if(this.collapsed && start.nodeType == 3
+                && start.nodeValue.replace(new RegExp('^' + domUtils.fillChar),'').length + 1 == start.nodeValue.length
+                ){
+                return true;
+            }
+            return false;
+        },
         /**
          * @name  setStart
          * @grammar range.setStart(node,offset)  => Range
@@ -2353,7 +2338,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
         moveToAddress : function(addr,ignoreEnd){
             var me = this;
             function getNode(address,isStart){
-                var tmpNode = me.document.body,
+                var tmpNode = me.body,
                     parentNode,offset;
                 for(var i= 0,ci,l=address.length;i<l;i++){
                     ci = address[i];
@@ -2391,6 +2376,22 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
             }
             return true;
 
+        },
+        scrollIntoView : function(){
+            var $span = $('<span style="padding:0;margin:0;display:block;border:0">&nbsp;</span>');
+            this.cloneRange().insertNode($span.get(0));
+            var winScrollTop = $(window).scrollTop(),
+                winHeight = $(window).height(),
+                spanTop = $span.offset().top;
+            if(spanTop < winScrollTop || spanTop > winScrollTop + winHeight ){
+                if(spanTop > winScrollTop + winHeight){
+                    window.scrollTo(0,spanTop - winHeight + $span.height())
+                }else{
+                    window.scrollTo(0,winScrollTop - spanTop)
+                }
+
+            }
+            $span.remove();
         }
     };
 })();
@@ -2494,11 +2495,11 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
      * @param {Selection} sel    Selection对象
      * @return {ieRange}    得到ieRange
      */
-    function _getIERange( sel ) {
+    function _getIERange( sel,txtRange ) {
         var ieRange;
         //ie下有可能报错
         try {
-            ieRange = sel.getNative().createRange();
+            ieRange = sel.getNative(txtRange).createRange();
         } catch ( e ) {
             return null;
         }
@@ -2513,13 +2514,14 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
         var me = this;
         me.document = doc;
         me.body = body;
-        if ( ie ) {
+        if ( browser.ie9below ) {
             domUtils.on( body, 'beforedeactivate', function () {
                 me._bakIERange = me.getIERange();
             } );
             domUtils.on( body, 'activate', function () {
                 try {
-                    if ( !_getIERange( me ) && me._bakIERange ) {
+                    var ieNativRng =  _getIERange( me );
+                    if ( (!ieNativRng || !me.rangeInBody(ieNativRng)) && me._bakIERange ) {
                         me._bakIERange.select();
                     }
                 } catch ( ex ) {
@@ -2530,6 +2532,15 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
     };
 
     Selection.prototype = {
+        hasNativeRange : function(){
+            if(!browser.ie || browser.ie9above){
+                var sel = this.getNative();
+                return sel.rangeCount
+            }else{
+                var ieRange = _getIERange( this );
+                return  ieRange && this.rangeInBody(ieRange)
+            }
+        },
         /**
          * 获取原生seleciton对象
          * @public
@@ -2537,10 +2548,10 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
          * @name    UE.dom.Selection.getNative
          * @return {Selection}    获得selection对象
          */
-        getNative:function () {
+        getNative:function (txtRange) {
             var doc = this.document;
             try {
-                return !doc ? null : browser.ie9below ? doc.selection : domUtils.getWindow( doc ).getSelection();
+                return !doc ? null : browser.ie9below || txtRange? doc.selection : domUtils.getWindow( doc ).getSelection();
             } catch ( e ) {
                 return null;
             }
@@ -2552,17 +2563,19 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
          * @name    UE.dom.Selection.getIERange
          * @return {ieRange}    返回ie原生的Range
          */
-        getIERange:function () {
-            var ieRange = _getIERange( this );
-            if ( !ieRange  || !this.rangeInBody(ieRange)) {
+        getIERange:function (txtRange) {
+            var ieRange = _getIERange( this,txtRange );
+            if ( !ieRange  || !this.rangeInBody(ieRange,txtRange)) {
                 if ( this._bakIERange ) {
                     return this._bakIERange;
                 }
             }
             return ieRange;
         },
-        rangeInBody : function(rng){
-            return domUtils.inDoc(browser.ie9below ? rng.parentElement() : rng.startContainer,this.body);
+        rangeInBody : function(rng,txtRange){
+            var node = browser.ie9below || txtRange ? rng.item ? rng.item() : rng.parentElement() : rng.startContainer;
+
+            return node === this.body || domUtils.inDoc(node,this.body);
         },
         /**
          * 缓存当前选区的range和选区的开始节点
@@ -2679,10 +2692,10 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
             if ( this._cachedStartElement ) {
                 return this._cachedStartElement;
             }
-            var range = ie ? this.getIERange() : this.getRange(),
+            var range = browser.ie9below ? this.getIERange() : this.getRange(),
                 tmpRange,
                 start, tmp, parent;
-            if ( ie ) {
+            if ( browser.ie9below ) {
                 if ( !range ) {
                     //todo 给第一个值可能会有问题
                     return this.document.body.firstChild;
@@ -2724,8 +2737,8 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
         getText:function () {
             var nativeSel, nativeRange;
             if ( this.isFocus() && (nativeSel = this.getNative()) ) {
-                nativeRange = browser.ie ? nativeSel.createRange() : nativeSel.getRangeAt( 0 );
-                return browser.ie ? nativeRange.text : nativeRange.toString();
+                nativeRange = browser.ie9below ? nativeSel.createRange() : nativeSel.getRangeAt( 0 );
+                return browser.ie9below ? nativeRange.text : nativeRange.toString();
             }
             return '';
         }
@@ -2813,7 +2826,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
             isShow: true,
             initialContent: '',
             initialStyle:'.edui-editor-body .edui-body-container p{margin:5px 0;} ' +
-                '.edui-editor-body .edui-body-container{border:0;outline:none;cursor:text;padding:0 5px 0;word-wrap;break-word;font-size:16px;font-family:sans-serif;}' +
+                '.edui-editor-body .edui-body-container{border:0;outline:none;cursor:text;padding:0 5px 0;word-wrap:break-word;font-size:16px;font-family:sans-serif;}' +
                 '.edui-editor-body.focus{border:1px solid #5c9dff}',
             autoClearinitialContent: false,
             iframeCssUrl: me.options.UEDITOR_HOME_URL + 'themes/iframe.css',
@@ -2908,8 +2921,8 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
                 textarea.style.display = ''
             }
 
-            textarea.style.width = me.iframe.offsetWidth + 'px';
-            textarea.style.height = me.iframe.offsetHeight + 'px';
+            textarea.style.width = me.body.offsetWidth + 'px';
+            textarea.style.height = me.body.offsetHeight + 'px';
             textarea.value = me.getContent();
             textarea.id = me.key;
             container.innerHTML = '';
@@ -2961,7 +2974,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
             var me = this,
                 options = me.options,
                 getStyleValue=function(attr){
-                    return parseInt(domUtils.getComputedStyle(container,attr));
+                    return parseInt($(container).css(attr));
                 };
 
             if (utils.isString(container)) {
@@ -2981,29 +2994,25 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
                 if(options.initialFrameHeight){
                     options.minFrameHeight = options.initialFrameHeight
                 }else{
+
                     options.initialFrameHeight = options.minFrameHeight = container.offsetHeight;
                 }
 
-                container.style.width = /%$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth-
-                    getStyleValue("padding-left")- getStyleValue("padding-right") - getStyleValue('border-width') +'px';
-                container.style.height = /%$/.test(options.initialFrameHeight) ?  '100%' : options.initialFrameHeight -
-                    getStyleValue("padding-top")- getStyleValue("padding-bottom") - getStyleValue('border-width') +'px';
-
+                container.style.width = /%$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth - getStyleValue("padding-left")- getStyleValue("padding-right")   +'px';
+                var height = /%$/.test(options.initialFrameHeight) ?  '100%' : (options.initialFrameHeight - getStyleValue("padding-top")- getStyleValue("padding-bottom") );
+                container.style.minHeight = height +'px';
+                container.style.height = '';
                 container.style.zIndex = options.zIndex;
 
+                if(browser.ie && browser.version <= 6){
+                    container.style.height = height ;
+                    container.style.setExpression('height', 'this.scrollHeight <= ' + height + ' ? "' + height + 'px" : "auto"');
+                }
+
+
+
                 this._setup(container);
-                container.style.overflow = 'hidden';
-                //解决如果是给定的百分比，会导致高度算不对的问题
-                setTimeout(function(){
-                    if( /%$/.test(options.initialFrameWidth)){
-                        options.minFrameWidth = options.initialFrameWidth = container.offsetWidth;
-                        container.style.width = options.initialFrameWidth  + 'px';
-                    }
-                    if(/%$/.test(options.initialFrameHeight)){
-                        options.minFrameHeight = options.initialFrameHeight = container.offsetHeight;
-                        container.style.height = options.initialFrameHeight + 'px';
-                    }
-                })
+
             }
         },
         /**
@@ -3013,7 +3022,6 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
          * @param {Element} doc 编辑器Iframe中的文档对象
          */
         _setup: function (cont) {
-
             var me = this,
                 options = me.options;
 
@@ -3023,6 +3031,11 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
             me.document = document;
             me.window = document.defaultView || document.parentWindow;
             me.body = cont;
+            me.$body = $(cont);
+            //扩展isBody方法
+            domUtils.isBody = function (node) {
+                return  node === cont;
+            };
             me.selection = new dom.Selection(document,me.body);
             //gecko初始化就能得到range,无法判断isFocus了
             var geckoSel;
@@ -3031,7 +3044,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
             }
             this._initEvents();
             //为form提交提供一个隐藏的textarea
-            for (var form = cont.parentNode; !domUtils.isBody(form); form = form.parentNode) {
+            for (var form = cont.parentNode; form && !domUtils.isBody(form); form = form.parentNode) {
                 if (form.tagName == 'FORM') {
                     me.form = form;
                     if(me.options.autoSyncData){
@@ -3123,11 +3136,8 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
          * @name setHeight
          * @grammar editor.setHeight(number);  //纯数值，不带单位
          */
-        setHeight: function (height) {
-            if (height !== parseInt(this.body.parentNode.style.height)) {
-                this.body.parentNode.style.height = height + 'px';
-            }
-            this.options.minFrameHeight = this.options.initialFrameHeight = height;
+        setHeight: function (height,notSetHeight) {
+            !notSetHeight && (this.options.initialFrameHeight = height);
 
             this.body.style.height = height + 'px';
         },
@@ -3446,6 +3456,9 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
          * @grammar editor.execCommand(cmdName)   => {*}
          */
         execCommand: function (cmdName) {
+            if(!this.selection.hasNativeRange()){
+                this.focus(true)
+            }
             cmdName = cmdName.toLowerCase();
             var me = this,
                 result,
@@ -4634,12 +4647,26 @@ UE.commands['inserthtml'] = {
         }
         var rng = me.selection.getRange();
         rng.select();
-        if(browser.ie){
-            var nRng = me.selection.getIERange();
+        if(browser.ie ){
+            var nRng = me.selection.getIERange(true);
+            html += '<span id="_ue_tmp_cursor_node">&nbsp;</span>';
             nRng.pasteHTML(html);
+            var $tmp = $('#_ue_tmp_cursor_node',me.body);
+            new dom.Range(document,me.body).setStartBefore($tmp[0]).collapse(true).select();
+            $tmp.remove()
+
         }else{
             me.document.execCommand('insertHTML',false,html)
         }
+
+        setTimeout(function(){
+
+            me.fireEvent('afterinserthtml');
+            setTimeout(function(){
+                me.selection.getRange().scrollIntoView();
+            },50)
+        },50)
+
     }
 };
 
@@ -4690,7 +4717,7 @@ UE.commands['insertimage'] = {
             }
         }
 
-        me.execCommand('insertHtml', html.join(''));
+        me.execCommand('insertHtml', html.join(''), true);
     }
 };
 ///import core
@@ -4752,7 +4779,8 @@ UE.plugins['font'] = function () {
             { name: 'arialBlack', val: 'arial black,avant garde'},
             { name: 'comicSansMs', val: 'comic sans ms'},
             { name: 'impact', val: 'impact,chicago'},
-            { name: 'timesNewRoman', val: 'times new roman'}
+            { name: 'timesNewRoman', val: 'times new roman'},
+            { name: 'sans-serif',val:'sans-serif'}
         ],
         'fontsize': [10, 12,  16, 18,24, 32,48]
     });
@@ -4808,14 +4836,19 @@ UE.plugins['font'] = function () {
                     return this.document.execCommand(fonts[cmdName],false, value)
                 },
                 queryCommandValue: function (cmdName) {
-                    var val = this.document.queryCommandValue(fonts[cmdName]);
-                    if(cmdName == 'fontsize'){
-                        $.each(fontsize,function(k,v){
-                            if(v == val){
-                                val = k;
-                                return false;
-                            }
-                        })
+                    if(cmdName == 'fontfamily'){
+                        var startNode = this.selection.getStart();
+                        var val = $(startNode).css('fontFamily');
+                    }else{
+                        var val = this.document.queryCommandValue(fonts[cmdName]);
+                        if(cmdName == 'fontsize'){
+                            $.each(fontsize,function(k,v){
+                                if(v == val){
+                                    val = k;
+                                    return false;
+                                }
+                            })
+                        }
                     }
                     return val;
                 },
@@ -4851,9 +4884,7 @@ UE.plugins['link'] = function(){
 
     UE.commands['link'] = {
         execCommand : function( cmdName, opt ) {
-            var me = this,
-                rng = me.selection.getRange();
-            rng.select();
+            var me = this;
             me.document.execCommand('createlink',false,'_ueditor_link');
             utils.each(domUtils.getElementsByTagName(me.body,'a',function(n){
                 return n.getAttribute('href') == '_ueditor_link'
@@ -5052,7 +5083,7 @@ UE.plugins['undo'] = function () {
             }
 
             try{
-                var rng = new dom.Range(me.document).moveToAddress(scene.address);
+                var rng = new dom.Range(me.document,me.body).moveToAddress(scene.address);
                 rng.select(noNeedFillCharTags[rng.startContainer.nodeName.toLowerCase()]);
             }catch(e){}
 
@@ -5172,7 +5203,7 @@ UE.plugins['undo'] = function () {
     //快捷键
     me.addshortcutkey({
         "Undo":"ctrl+90", //undo
-        "Redo":"ctrl+89" //redo
+        "Redo":"ctrl+89,shift+ctrl+z" //redo
 
     });
     var isCollapsed = true;
@@ -5468,7 +5499,7 @@ UE.plugins['list'] = function () {
     var sourceEditors = {
         textarea: function (editor, holder){
             var textarea = holder.ownerDocument.createElement('textarea');
-            textarea.style.cssText = 'position:absolute;resize:none;width:100%;height:100%;border:0;padding:0;margin:0;overflow-y:auto;outline:0';
+            textarea.style.cssText = 'resize:none;border:0;padding:0 5px;margin:0;overflow-y:auto;outline:0';
             // todo: IE下只有onresize属性可用... 很纠结
             if (browser.ie && browser.version < 8) {
                 textarea.style.width = holder.offsetWidth + 'px';
@@ -5480,6 +5511,7 @@ UE.plugins['list'] = function () {
             }
             holder.appendChild(textarea);
             return {
+                container : textarea,
                 setContent: function (content){
                     textarea.value = content;
                 },
@@ -5540,8 +5572,8 @@ UE.plugins['list'] = function () {
                         me.body.contentEditable = false;
                     }
 
-                    bakCssText = me.body.style.cssText;
-                    me.body.style.cssText += 'position:absolute;left:-32768px;top:-32768px;';
+//                    bakCssText = me.body.style.cssText;
+                    me.body.style.cssText += ';position:absolute;left:-32768px;top:-32768px;';
 
 
                     me.fireEvent('beforegetcontent');
@@ -5573,6 +5605,8 @@ UE.plugins['list'] = function () {
                     sourceEditor = createSourceEditor(me.body.parentNode);
 
                     sourceEditor.setContent(content);
+
+                    $(sourceEditor.container).width($(me.body).width()).height($(me.body).height());
                     setTimeout(function (){
                         sourceEditor.select();
                     });
@@ -5581,7 +5615,12 @@ UE.plugins['list'] = function () {
                         return sourceEditor.getContent() || '<p>' + (browser.ie ? '' : '<br/>')+'</p>';
                     };
                 } else {
-                    me.body.style.cssText = bakCssText;
+                    me.$body.css({
+                        'position':'',
+                        'left':'',
+                        'top':''
+                    });
+//                    me.body.style.cssText = bakCssText;
                     var cont = sourceEditor.getContent() || '<p>' + (browser.ie ? '' : '<br/>')+'</p>';
                     //处理掉block节点前后的空格,有可能会误命中，暂时不考虑
                     cont = cont.replace(new RegExp('[\\r\\t\\n ]*<\/?(\\w+)\\s*(?:[^>]*)>','g'), function(a,b){
@@ -5640,6 +5679,7 @@ UE.plugins['list'] = function () {
         };
         var oldQueryCommandState = me.queryCommandState;
 
+
         me.queryCommandState = function (cmdName){
             cmdName = cmdName.toLowerCase();
             if (sourceMode) {
@@ -5647,7 +5687,7 @@ UE.plugins['list'] = function () {
                 return cmdName in {
                     'source' : 1,
                     'fullscreen' : 1
-                } ? 1 : -1
+                } ? oldQueryCommandState.apply(this, arguments)  : -1
             }
             return oldQueryCommandState.apply(this, arguments);
         };
@@ -5971,6 +6011,220 @@ UE.plugins['removeformat'] = function(){
 };
 
 
+/*
+ *   处理特殊键的兼容性问题
+ */
+UE.plugins['keystrokes'] = function() {
+    var me = this;
+    var collapsed = true;
+    me.addListener('keydown', function(type, evt) {
+        var keyCode = evt.keyCode || evt.which,
+            rng = me.selection.getRange();
+
+        //处理全选的情况
+        if(!rng.collapsed && !(evt.ctrlKey || evt.shiftKey || evt.altKey || evt.metaKey) && (keyCode >= 65 && keyCode <=90
+            || keyCode >= 48 && keyCode <= 57 ||
+            keyCode >= 96 && keyCode <= 111 || {
+            13:1,
+            8:1,
+            46:1
+        }[keyCode])
+            ){
+
+            var tmpNode = rng.startContainer;
+            if(domUtils.isFillChar(tmpNode)){
+                rng.setStartBefore(tmpNode)
+            }
+            tmpNode = rng.endContainer;
+            if(domUtils.isFillChar(tmpNode)){
+                rng.setEndAfter(tmpNode)
+            }
+            rng.txtToElmBoundary();
+            //结束边界可能放到了br的前边，要把br包含进来
+            // x[xxx]<br/>
+            if(rng.endContainer && rng.endContainer.nodeType == 1){
+                tmpNode = rng.endContainer.childNodes[rng.endOffset];
+                if(tmpNode && domUtils.isBr(tmpNode)){
+                    rng.setEndAfter(tmpNode);
+                }
+            }
+            if(rng.startOffset == 0){
+                tmpNode = rng.startContainer;
+                if(domUtils.isBoundaryNode(tmpNode,'firstChild') ){
+                    tmpNode = rng.endContainer;
+                    if(rng.endOffset == (tmpNode.nodeType == 3 ? tmpNode.nodeValue.length : tmpNode.childNodes.length) && domUtils.isBoundaryNode(tmpNode,'lastChild')){
+                        me.fireEvent('saveScene');
+                        me.body.innerHTML = '<p>'+(browser.ie ? '' : '<br/>')+'</p>';
+                        rng.setStart(me.body.firstChild,0).setCursor(false,true);
+                        me._selectionChange();
+                        return;
+                    }
+                }
+            }
+        }
+
+        //处理backspace
+        if (keyCode == 8) {
+            rng = me.selection.getRange();
+            collapsed = rng.collapsed;
+            if(me.fireEvent('delkeydown',evt)){
+                return;
+            }
+            var start,end;
+            //避免按两次删除才能生效的问题
+            if(rng.collapsed && rng.inFillChar()){
+                start = rng.startContainer;
+
+                if(domUtils.isFillChar(start)){
+                    rng.setStartBefore(start).shrinkBoundary(true).collapse(true);
+                    domUtils.remove(start)
+                }else{
+                    start.nodeValue = start.nodeValue.replace(new RegExp('^' + domUtils.fillChar ),'');
+                    rng.startOffset--;
+                    rng.collapse(true).select(true)
+                }
+            }
+            //解决选中control元素不能删除的问题
+            if (start = rng.getClosedNode()) {
+                me.fireEvent('saveScene');
+                rng.setStartBefore(start);
+                domUtils.remove(start);
+                rng.setCursor();
+                me.fireEvent('saveScene');
+                domUtils.preventDefault(evt);
+                return;
+            }
+            //阻止在table上的删除
+            if (!browser.ie) {
+                start = domUtils.findParentByTagName(rng.startContainer, 'table', true);
+                end = domUtils.findParentByTagName(rng.endContainer, 'table', true);
+                if (start && !end || !start && end || start !== end) {
+                    evt.preventDefault();
+                    return;
+                }
+            }
+
+        }
+        //处理tab键的逻辑
+        if (keyCode == 9) {
+            //不处理以下标签
+            var excludeTagNameForTabKey = {
+                'ol' : 1,
+                'ul' : 1,
+                'table':1
+            };
+            //处理组件里的tab按下事件
+            if(me.fireEvent('tabkeydown',evt)){
+                domUtils.preventDefault(evt);
+                return;
+            }
+            var range = me.selection.getRange();
+            me.fireEvent('saveScene');
+            for (var i = 0,txt = '',tabSize = me.options.tabSize|| 4,tabNode =  me.options.tabNode || '&nbsp;'; i < tabSize; i++) {
+                txt += tabNode;
+            }
+            var span = me.document.createElement('span');
+            span.innerHTML = txt + domUtils.fillChar;
+            if (range.collapsed) {
+                range.insertNode(span.cloneNode(true).firstChild).setCursor(true);
+            } else {
+                //普通的情况
+                start = domUtils.findParent(range.startContainer, filterFn);
+                end = domUtils.findParent(range.endContainer, filterFn);
+                if (start && end && start === end) {
+                    range.deleteContents();
+                    range.insertNode(span.cloneNode(true).firstChild).setCursor(true);
+                } else {
+                    var bookmark = range.createBookmark(),
+                        filterFn = function(node) {
+                            return domUtils.isBlockElm(node) && !excludeTagNameForTabKey[node.tagName.toLowerCase()]
+
+                        };
+                    range.enlarge(true);
+                    var bookmark2 = range.createBookmark(),
+                        current = domUtils.getNextDomNode(bookmark2.start, false, filterFn);
+                    while (current && !(domUtils.getPosition(current, bookmark2.end) & domUtils.POSITION_FOLLOWING)) {
+                        current.insertBefore(span.cloneNode(true).firstChild, current.firstChild);
+                        current = domUtils.getNextDomNode(current, false, filterFn);
+                    }
+                    range.moveToBookmark(bookmark2).moveToBookmark(bookmark).select();
+                }
+            }
+            domUtils.preventDefault(evt)
+        }
+        //trace:1634
+        //ff的del键在容器空的时候，也会删除
+        if(browser.gecko && keyCode == 46){
+            range = me.selection.getRange();
+            if(range.collapsed){
+                start = range.startContainer;
+                if(domUtils.isEmptyBlock(start)){
+                    var parent = start.parentNode;
+                    while(domUtils.getChildCount(parent) == 1 && !domUtils.isBody(parent)){
+                        start = parent;
+                        parent = parent.parentNode;
+                    }
+                    if(start === parent.lastChild)
+                        evt.preventDefault();
+                    return;
+                }
+            }
+        }
+    });
+    me.addListener('keyup', function(type, evt) {
+        var keyCode = evt.keyCode || evt.which,
+            rng,me = this;
+        if(keyCode == 8){
+            if(me.fireEvent('delkeyup')){
+                return;
+            }
+            rng = me.selection.getRange();
+            if(rng.collapsed){
+                var tmpNode,
+                    autoClearTagName = ['h1','h2','h3','h4','h5','h6'];
+                if(tmpNode = domUtils.findParentByTagName(rng.startContainer,autoClearTagName,true)){
+                    if(domUtils.isEmptyBlock(tmpNode)){
+                        var pre = tmpNode.previousSibling;
+                        if(pre && pre.nodeName != 'TABLE'){
+                            domUtils.remove(tmpNode);
+                            rng.setStartAtLast(pre).setCursor(false,true);
+                            return;
+                        }else{
+                            var next = tmpNode.nextSibling;
+                            if(next && next.nodeName != 'TABLE'){
+                                domUtils.remove(tmpNode);
+                                rng.setStartAtFirst(next).setCursor(false,true);
+                                return;
+                            }
+                        }
+                    }
+                }
+                //处理当删除到body时，要重新给p标签展位
+                if(domUtils.isBody(rng.startContainer)){
+                    var tmpNode = domUtils.createElement(me.document,'p',{
+                        'innerHTML' : browser.ie ? domUtils.fillChar : '<br/>'
+                    });
+                    rng.insertNode(tmpNode).setStart(tmpNode,0).setCursor(false,true);
+                }
+            }
+
+
+            //chrome下如果删除了inline标签，浏览器会有记忆，在输入文字还是会套上刚才删除的标签，所以这里再选一次就不会了
+            if( !collapsed && (rng.startContainer.nodeType == 3 || rng.startContainer.nodeType == 1 && domUtils.isEmptyBlock(rng.startContainer))){
+                if(browser.ie){
+                    var span = rng.document.createElement('span');
+                    rng.insertNode(span).setStartBefore(span).collapse(true);
+                    rng.select();
+                    domUtils.remove(span)
+                }else{
+                    rng.select()
+                }
+
+            }
+        }
+
+    })
+};
 (function ($) {
     //对jquery的扩展
     $.parseTmpl = function parse(str, data) {
@@ -6148,7 +6402,7 @@ UE.plugins['removeformat'] = function(){
 })(jQuery);
 //button 类
 UE.ui.define('button', {
-    tpl: '<<%if(!texttype){%>div class="edui-btn" unselectable="on" onmousedown="return false" <%}else{%>a class="edui-text-btn"<%}%><% if(title) {%> data-original-title="<%=title%>" <%};%>> ' +
+    tpl: '<<%if(!texttype){%>div class="edui-btn edui-btn-<%=icon%>" unselectable="on" onmousedown="return false" <%}else{%>a class="edui-text-btn"<%}%><% if(title) {%> data-original-title="<%=title%>" <%};%>> ' +
         '<% if(icon) {%><div unselectable="on" class="edui-icon-<%=icon%> edui-icon"></div><% }; %><%if(text) {%><span unselectable="on" onmousedown="return false" class="edui-button-label"><%=text%></span><%}%>' +
         '<%if(caret && text){%><span class="edui-button-spacing"></span><%}%>' +
         '<% if(caret) {%><span unselectable="on" onmousedown="return false" class="edui-caret"></span><% };%></<%if(!texttype){%>div<%}else{%>a<%}%>>',
@@ -6226,7 +6480,7 @@ UE.ui.define('button', {
 //toolbar 类
 (function () {
     UE.ui.define('toolbar', {
-        tpl: '<div class="edui-toolbar" style="width:auto" onmousedown="return false"  ><div class="edui-btn-toolbar" unselectable="on"></div></div>'
+        tpl: '<div class="edui-toolbar"  ><div class="edui-btn-toolbar" unselectable="on" onmousedown="return false"  ></div></div>'
           ,
         init: function () {
             var $root = this.root($(this.tpl));
@@ -6276,10 +6530,6 @@ UE.ui.define('menu',{
         if(!$obj.data('$mergeObj')){
             $obj.data('$mergeObj',me.root());
             $obj.on('wrapclick',function(evt){
-
-                if(!$.contains(document,me.root()[0])){
-                    me.root().appendTo($obj)
-                }
                 me.show()
             });
             me.register('click',$obj,function(evt){
@@ -6365,91 +6615,6 @@ UE.ui.define('dropmenu',{
         });
     }
 },'menu');
-//dropmenu 类
-UE.ui.define('contextmenu',{
-    tmpl:'<a tabindex="-1" href="#"><em class="edui-contextmenu-icon"><%if(icon){%><i class="edui-icon icon-<%=icon%>"></i><%}%></em><span class="edui-item-label"><%=label%></span><%if(shortkey){%><span class="muted edui-item-back"><%=shortkey%></span><span class="muted edui-item-right"><%=shortkey%><%}%></span></a>',
-    defaultItem:{
-        icon:'',
-        label:'',
-        shortkey:''
-    },
-    init : function(data){
-        var emptyFn = function(){return 0};
-        var me = this;
-        var $root = this.root($('<ul class="dropdown-menu edui-contextmenu"></ul>'));
-        $.each(data,function(i,v){
-            if(v.divider){
-                $root.append($('<li class="divider"></li>'));
-            }else{
-                if(v.data){
-                    $('<li class="dropdown-submenu edui-contextsubmenu"><em class="edui-contextmenu-icon"></em><a tabindex="-1" href="#"><em class="edui-contextmenu-icon"></em>'+ v.label+'</a></li>').appendTo($root).data('submenu-data', v.data);
-                }else {
-                    var $li = $('<li '+( 'data-value="'+ (v.value|| v.label)+'" ')+'>'+ $.parseTmpl(me.tmpl, $.extend2(v,me.defaultItem,true)) +'</li>').appendTo($root).data('exec', v.exec||emptyFn).data('query', v.query||emptyFn);
-                    if(v.widget){
-                        $li.data('widget', v.widget)
-                    }
-                }
-
-            }
-        });
-        $root.children('li').mouseover(function( evt ){
-            var $this = $(this),widget,$submenu;
-            if($this.hasClass('dropdown-submenu') || (widget = $this.data('widget'))){
-                if(widget[0]){
-                    if(!$.contains(this,widget[0])){
-                        widget.appendTo($this)
-                    }
-                    $submenu = widget;
-                }else{
-                    var subdata = $this.data('submenu-data');
-
-                    if(subdata){
-                        $this.data('submenu-data','').data('submenu',$.eduicontextmenu(subdata).appendTo($root))
-                    }
-                    $submenu = $this.data('submenu');
-                    $submenu.data('parentmenu',$this.parent());
-                }
-                if(!$this.hasClass('disabled')){
-
-                    if( !$.contains( this, evt.fromElement ) ) {
-
-                        $submenu.edui().show($this,'right','position',5,2);
-                        $root.data('activesubmenu',$submenu);
-
-                    }
-
-                }
-
-            }else{
-                var sub = $root.data('activesubmenu');
-                if(sub)
-                    sub.edui().hide();
-            }
-        });
-        me.register('mouseover',$root,function(){
-//            var sub = $root.data('activesubmenu');
-//            if(sub){
-//                sub.edui().hide()
-//            }
-        });
-
-        $root.children('li[class!="disabled divider dropdown-submenu"]').click(function(){
-            me.hide(true);
-            var $this = $(this);
-            //增加一个参数， 传递当前的item dom对象
-            $this.data('exec')($this.data('value'), this);
-
-        });
-
-        this.on('beforeshow',function(){
-            this.root().children('li[class!="divider dropdown-submenu"]').each(function(i,li){
-                var query = $(li).data('query');
-                $(li)[query && query($(li).data('value')) == -1 ?'addClass':'removeClass']('disabled');
-            })
-        });
-
-    }
-},'menu');
 //splitbutton 类
 ///import button
 UE.ui.define('splitbutton',{
@@ -6471,7 +6636,11 @@ UE.ui.define('splitbutton',{
                 $.proxy(options.click,me)();
             }
         });
-
+        me.root().find('.edui-dropdown-toggle').click(function(){
+            if(!me.disabled()){
+                me.trigger('arrowclick')
+            }
+        });
         me.root().hover(function () {
             if(!me.root().hasClass("disabled")){
                 me.root().toggleClass('hover')
@@ -6526,13 +6695,13 @@ UE.ui.define('splitbutton',{
  */
 UE.ui.define('colorsplitbutton',{
 
-    tpl : '<div class="edui-splitbutton"  unselectable="on" <%if(title){%>data-original-title="<%=title%>"<%}%>><div class="edui-btn"  unselectable="on" ><%if(icon){%><div  unselectable="on" class="edui-icon-<%=icon%> edui-icon"></div><%}%><div class="edui-splitbutton-color-label" style="background: <%=color%>"></div><%if(text){%><%=text%><%}%></div>'+
+    tpl : '<div class="edui-splitbutton"  unselectable="on" <%if(title){%>data-original-title="<%=title%>"<%}%>><div class="edui-btn"  unselectable="on" ><%if(icon){%><div  unselectable="on" class="edui-icon-<%=icon%> edui-icon"></div><%}%><div class="edui-splitbutton-color-label" <%if (color) {%>style="background: <%=color%>"<%}%>></div><%if(text){%><%=text%><%}%></div>'+
             '<div  unselectable="on" class="edui-btn edui-dropdown-toggle" >'+
             '<div  unselectable="on" class="edui-caret"><\/div>'+
             '</div>'+
             '</div>',
     defaultOpt: {
-        color: '#000000'
+        color: ''
     },
     init: function( options ){
 
@@ -6547,62 +6716,221 @@ UE.ui.define('colorsplitbutton',{
 
 }, 'splitbutton');
 //popup 类
-UE.ui.define('popup',{
-    tpl:'<div class="edui-dropdown-menu edui-popup" onmousedown="return false"><%=subtpl%></div>',
-    defaultOpt:{
-        subtpl:'',
-        width:'',
-        height:''
+UE.ui.define('popup', {
+    tpl: '<div class="edui-dropdown-menu edui-popup" onmousedown="return false">' +
+        '<div class="edui-popup-body"><%=subtpl%></div>' +
+        '<div class="edui-popup-caret"></div>' +
+        '</div>',
+    defaultOpt: {
+        subtpl: '',
+        width: '',
+        height: ''
     },
-    init : function(options){
-        this.root($($.parseTmpl(this.tpl,options)));
+    init: function (options) {
+        this.root($($.parseTmpl(this.tpl, options)));
         return this;
     },
-    mergeTpl:function(data){
-        return $.parseTmpl(this.tpl,{subtpl:data});
+    mergeTpl: function (data) {
+        return $.parseTmpl(this.tpl, {subtpl: data});
     },
-    show : function($obj,dir,fnname,topOffset,leftOffset){
-        fnname = fnname || 'position';
-        if(this.trigger('beforeshow') === false){
+    show: function ($obj, posObj) {
+        if (!posObj) posObj = {};
+
+        var fnname = posObj.fnname || 'position';
+        if (this.trigger('beforeshow') === false) {
             return;
-        }else{
-            this.root().css($.extend({display:'block'},$obj ? {
-                top : $obj[fnname]().top + ( dir == 'right' ? 0 : $obj.outerHeight()) - (topOffset || 0),
-                left : $obj[fnname]().left + (dir == 'right' ?  $obj.outerWidth() : 0) -  (leftOffset || 0),
-                position:'absolute'
-            }:{}))
+        } else {
+            this.root().css($.extend({display: 'block'}, $obj ? {
+                top: $obj[fnname]().top + ( posObj.dir == 'right' ? 0 : $obj.outerHeight()) - (posObj.offsetTop || 0),
+                left: $obj[fnname]().left + (posObj.dir == 'right' ? $obj.outerWidth() : 0) - (posObj.offsetLeft || 0),
+                position: 'absolute'
+            } : {}));
+
+            this.root().find('.edui-popup-caret').css({
+                top: posObj.caretTop || 0,
+                left: posObj.caretLeft || 0,
+                position: 'absolute'
+            }).addClass(posObj.caretDir || "up")
+
         }
+        this.trigger("aftershow");
     },
-    hide : function(){
-        this.root().css('display','none');
+    hide: function () {
+        this.root().css('display', 'none');
         this.trigger('afterhide')
     },
-    attachTo : function($obj){
+    attachTo: function ($obj, posObj) {
         var me = this
-        if(!$obj.data('$mergeObj')){
-            if(!$.contains(document.body,me.root()[0])){
-                me.root().appendTo($obj[0].tagName == 'BUTTON'? $obj.parent():$obj);
-            }
-            $obj.data('$mergeObj',me.root());
-            $obj.on('wrapclick',function(evt){
-                me.show()
+        if (!$obj.data('$mergeObj')) {
+            $obj.data('$mergeObj', me.root());
+            $obj.on('wrapclick', function (evt) {
+                me.show($obj, posObj)
             });
-            me.register('click',$obj,function(evt){
+            me.register('click', $obj, function (evt) {
                 me.hide()
             });
-            me.data('$mergeObj',$obj)
+            me.data('$mergeObj', $obj)
         }
     },
-    body: function ($cont) {
-        if ($cont) {
-            this.root().html('').append($cont);
-            return this
-        } else {
-            return $(this.root().find('.modal-body').html())
+    getBodyContainer: function () {
+        return this.root().find(".edui-popup-body");
+    }
+});
+//scale 类
+UE.ui.define('scale', {
+    tpl: '<div class="edui-scale" unselectable="on">' +
+        '<span class="edui-scale-hand0"></span>' +
+        '<span class="edui-scale-hand1"></span>' +
+        '<span class="edui-scale-hand2"></span>' +
+        '<span class="edui-scale-hand3"></span>' +
+        '<span class="edui-scale-hand4"></span>' +
+        '<span class="edui-scale-hand5"></span>' +
+        '<span class="edui-scale-hand6"></span>' +
+        '<span class="edui-scale-hand7"></span>' +
+        '</div>',
+    defaultOpt: {
+        doc: document
+    },
+    init: function (options) {
+        this.root($($.parseTmpl(this.tpl, options)));
+        this.initStyle();
+        this.startPos = this.prePos = {x: 0, y: 0};
+        this.dragId = -1;
+        return this;
+    },
+    initStyle: function () {
+        utils.cssRule('scale', '.edui-scale{display:none;position:absolute;border:1px solid #38B2CE;cursor:hand;}' +
+            '.edui-scale span{position:absolute;left:0;top:0;width:7px;height:7px;overflow:hidden;font-size:0px;display:block;background-color:#3C9DD0;}'
+            + '.edui-scale .edui-scale-hand0{cursor:nw-resize;top:0;margin-top:-4px;left:0;margin-left:-4px;}'
+            + '.edui-scale .edui-scale-hand1{cursor:n-resize;top:0;margin-top:-4px;left:50%;margin-left:-4px;}'
+            + '.edui-scale .edui-scale-hand2{cursor:ne-resize;top:0;margin-top:-4px;left:100%;margin-left:-3px;}'
+            + '.edui-scale .edui-scale-hand3{cursor:w-resize;top:50%;margin-top:-4px;left:0;margin-left:-4px;}'
+            + '.edui-scale .edui-scale-hand4{cursor:e-resize;top:50%;margin-top:-4px;left:100%;margin-left:-3px;}'
+            + '.edui-scale .edui-scale-hand5{cursor:sw-resize;top:100%;margin-top:-3px;left:0;margin-left:-4px;}'
+            + '.edui-scale .edui-scale-hand6{cursor:s-resize;top:100%;margin-top:-3px;left:50%;margin-left:-4px;}'
+            + '.edui-scale .edui-scale-hand7{cursor:se-resize;top:100%;margin-top:-3px;left:100%;margin-left:-3px;}');
+    },
+    _eventHandler: function (e) {
+        var me = this,
+            doc = me.defaultOpt.doc;
+        switch (e.type) {
+            case 'mousedown':
+                var hand = e.target || e.srcElement, hand;
+                if (hand.className.indexOf('edui-scale-hand') != -1) {
+                    me.dragId = hand.className.slice(-1);
+                    me.startPos.x = me.prePos.x = e.clientX;
+                    me.startPos.y = me.prePos.y = e.clientY;
+                    $(doc).bind('mousemove', $.proxy(me._eventHandler, me));
+                }
+                break;
+            case 'mousemove':
+                if (me.dragId != -1) {
+                    me.updateContainerStyle(me.dragId, {x: e.clientX - me.prePos.x, y: e.clientY - me.prePos.y});
+                    me.prePos.x = e.clientX;
+                    me.prePos.y = e.clientY;
+                    me.updateTargetElement();
+                }
+                break;
+            case 'mouseup':
+                if (me.dragId != -1) {
+                    me.dragId = -1;
+                    me.updateTargetElement();
+                    var target = me.data('$scaleTarget');
+                    if (target.parentNode) me.attachTo(me.data('$scaleTarget'));
+                }
+                $(doc).unbind('mousemove', $.proxy(me._eventHandler, me));
+                break;
+            default:
+                break;
         }
     },
-    getBodyContainer : function(){
-        return this.root();
+    updateTargetElement: function () {
+        var $root = this.root();
+        this.data('$scaleTarget').css({width: $root.width(), height: $root.height()});
+    },
+    updateContainerStyle: function (dir, offset) {
+        var me = this,
+            $dom = me.root(),
+            tmp,
+            rect = [
+                //[left, top, width, height]
+                [0, 0, -1, -1],
+                [0, 0, 0, -1],
+                [0, 0, 1, -1],
+                [0, 0, -1, 0],
+                [0, 0, 1, 0],
+                [0, 0, -1, 1],
+                [0, 0, 0, 1],
+                [0, 0, 1, 1]
+            ];
+
+        if (rect[dir][0] != 0) {
+            tmp = parseInt($dom.offset().left) + offset.x;
+            $dom.css('left', me._validScaledProp('left', tmp));
+        }
+        if (rect[dir][1] != 0) {
+            tmp = parseInt($dom.offset().top) + offset.y;
+            $dom.css('top', me._validScaledProp('top', tmp));
+        }
+        if (rect[dir][2] != 0) {
+            tmp = $dom.width() + rect[dir][2] * offset.x;
+            $dom.css('width', me._validScaledProp('width', tmp));
+        }
+        if (rect[dir][3] != 0) {
+            tmp = $dom.height() + rect[dir][3] * offset.y;
+            $dom.css('height', me._validScaledProp('height', tmp));
+        }
+    },
+    _validScaledProp: function (prop, value) {
+        var $ele = this.root(),
+            $wrap = $(this.defaultOpt.doc),
+            calc = function(val, a, b){
+                return (val + a) > b ? b - a : value;
+            };
+
+        value = isNaN(value) ? 0 : value;
+        switch (prop) {
+            case 'left':
+                return value < 0 ? 0 : calc(value, $ele.width(), $wrap.width());
+            case 'top':
+                return value < 0 ? 0 : calc(value, $ele.height(),$wrap.height());
+            case 'width':
+                return value <= 0 ? 1 : calc(value, $ele.offset().left, $wrap.width());
+            case 'height':
+                return value <= 0 ? 1 : calc(value, $ele.offset().top, $wrap.height());
+        }
+    },
+    show: function ($obj) {
+        var me = this;
+        if ($obj) me.attachTo($obj);
+        me.root().bind('mousedown', $.proxy(me._eventHandler, me));
+        $(me.defaultOpt.doc).bind('mouseup', $.proxy(me._eventHandler, me));
+        me.root().show();
+        me.trigger("aftershow");
+    },
+    hide: function () {
+        var me = this;
+        me.root().unbind('mousedown', $.proxy(me._eventHandler, me));
+        $(me.defaultOpt.doc).unbind('mouseup', $.proxy(me._eventHandler, me));
+        me.root().hide();
+        me.trigger('afterhide')
+    },
+    attachTo: function ($obj) {
+        var me = this,
+        imgPos = $obj.offset(),
+            posObj = $(me.defaultOpt.doc.body).offset();
+
+        me.data('$scaleTarget', $obj);
+        me.root().css({
+            position: 'absolute',
+            width: $obj.width(),
+            height: $obj.height(),
+            left: imgPos.left - posObj.left - 2,
+            top: imgPos.top - posObj.top - 2
+        });
+    },
+    getScaleTarget: function () {
+        return this.data('$scaleTarget')[0];
     }
 });
 //colorpicker 类
@@ -6891,36 +7219,42 @@ UE.ui.define('colorpicker', {
 
     var widgetName = 'combobox',
         itemClassName = 'edui-combobox-item',
-        stackItemClassName = 'edui-combobox-stack-item';
+        HOVER_CLASS = 'edui-combobox-item-hover',
+        ICON_CLASS = 'edui-combobox-checked-icon',
+        labelClassName = 'edui-combobox-item-label';
 
     UE.ui.define( widgetName, ( function(){
 
         return {
-            tpl: function( options ){
-
-                return  '<ul class="dropdown-menu edui-combobox-menu" role="menu" aria-labelledby="dropdownMenu">' +
-                        '<%for( var i=0, len=recordStack.length; i<len; i++ ){%>' +
-                        '<li class="' + stackItemClassName + '" data-stack-item-index="<%=mapping[recordStack[i]]%>"><a href="#" class="edui-combobox-link"><em class="edui-combobox-checkbox"><i class="icon-ok"></i></em><span class="edui-combobox-label" style="<%=itemStyles[i]%>"><%=recordStack[i]%></span></a></li>' +
-                        '<%}%>' +
-                        '<%if(recordStack.length){%>' +
-                        '<li class="divider edui-combobox-stack-separator"></li>' +
-                        '<%} else {%>' +
-                        '<li class="divider edui-combobox-stack-separator edui-common-dis-none"></li>' +
-                        '<%}%>' +
-                        '<%for( var i=0, len=items.length; i<len; i++){%>' +
-                        '<li class="' + itemClassName + '" data-item-index="<%=i%>"><a href="#" class="edui-combobox-link"><em class="edui-combobox-checkbox"><i class="icon-ok"></i></em><span class="edui-combobox-label" style="<%=itemStyles[i]%>"><%=items[i]%></span></a></li>' +
-                        '<%}%>' +
-                        '</ul>';
-
-            },
+            tpl: "<ul class=\"dropdown-menu edui-combobox-menu<%if (comboboxName!=='') {%> edui-combobox-<%=comboboxName%><%}%>\" role=\"menu\" aria-labelledby=\"dropdownMenu\">" +
+                "<%if(autoRecord) {%>" +
+                "<%for( var i=0, len = recordStack.length; i<len; i++ ) {%>" +
+                "<%var index = recordStack[i];%>" +
+                "<li class=\"<%=itemClassName%><%if( selected == index ) {%> edui-combobox-checked<%}%>\" data-item-index=\"<%=index%>\" unselectable=\"on\" onmousedown=\"return false\">" +
+                "<span class=\"edui-combobox-icon\" unselectable=\"on\" onmousedown=\"return false\"></span>" +
+                "<label class=\"<%=labelClassName%>\" style=\"<%=itemStyles[ index ]%>\" unselectable=\"on\" onmousedown=\"return false\"><%=items[index]%></label>" +
+                "</li>" +
+                "<%}%>" +
+                "<%if( i ) {%>" +
+                "<li class=\"edui-combobox-item-separator\"></li>" +
+                "<%}%>" +
+                "<%}%>" +
+                "<%for( var i=0, label; label = items[i]; i++ ) {%>" +
+                "<li class=\"<%=itemClassName%><%if( selected == i ) {%> edui-combobox-checked<%}%> edui-combobox-item-<%=i%>\" data-item-index=\"<%=i%>\" unselectable=\"on\" onmousedown=\"return false\">" +
+                "<span class=\"edui-combobox-icon\" unselectable=\"on\" onmousedown=\"return false\"></span>" +
+                "<label class=\"<%=labelClassName%>\" style=\"<%=itemStyles[ i ]%>\" unselectable=\"on\" onmousedown=\"return false\"><%=label%></label>" +
+                "</li>" +
+                "<%}%>" +
+                "</ul>",
             defaultOpt: {
                 //记录栈初始列表
                 recordStack: [],
                 //可用项列表
                 items: [],
-                itemCount: 0,
 		        //item对应的值列表
                 value: [],
+                comboboxName: '',
+                selected: '',
                 //自动记录
                 autoRecord: true,
                 //最多记录条数
@@ -6930,73 +7264,75 @@ UE.ui.define('colorpicker', {
 
                 var me = this;
 
-                //参数适配转换一下
-                optionAdaptation( options );
+                $.extend( me._optionAdaptation( options ), me._createItemMapping( options.recordStack, options.items ), {
+                    itemClassName: itemClassName,
+                    iconClass: ICON_CLASS,
+                    labelClassName: labelClassName
+                } );
 
-                options.itemCount = options.items.length;
+                this._transStack( options );
 
-                $.extend( options, createItemMapping( options.recordStack, options.items ) );
+                me.root( $( $.parseTmpl( me.tpl, options ) ) );
 
-                me.root( $( $.parseTmpl( me.tpl(options), options ) ) );
-
-                this.data( 'options', options );
-
-                this.initEvent();
+                this.data( 'options', options ).initEvent();
 
             },
             initEvent: function(){
 
                 var me = this;
 
-                me.root().delegate('li', 'click', function(){
+                me.initSelectItem();
+
+                this.initItemActive();
+
+            },
+            /**
+             * 初始化选择项
+             */
+            initSelectItem: function(){
+
+                var me = this,
+                    labelClass = "."+labelClassName;
+
+                me.root().delegate('.' + itemClassName, 'click', function(){
 
                     var $li = $(this),
-                        index = $li.hasClass( itemClassName ) ? $li.attr('data-item-index') : $li.attr('data-stack-item-index');
+                        index = $li.attr('data-item-index');
 
                     me.trigger('comboboxselect', {
                         index: index,
-                        label: $li.find(".edui-combobox-label").text(),
+                        label: $li.find(labelClass).text(),
                         value: me.data('options').value[ index ]
-                    } );
+                    }).select( index );
 
-                    me.selectItem( index );
                     me.hide();
 
                     return false;
 
                 });
 
-                me.root().on('aftershow', function(){
-                    var width = this.offsetWidth;
-                    if( width ) {
-                        if( !window.XMLHttpRequest ) {
-                            width += 25;
-                        }
-                        me.root().off('aftershow');
-                        this.style.width = width + 'px';
-                    }
-                });
-
-                me.root().on( 'mousedown', function(){
-                    return false;
-                } );
-
-                //处理ie6以下不支持:hover伪类
+            },
+            initItemActive: function(){
+                var fn = {
+                    mouseenter: 'addClass',
+                    mouseleave: 'removeClass'
+                };
                 if ($.IE6) {
-                    this.root().delegate( '.'+stackItemClassName + ',.'+itemClassName,  'mouseenter mouseleave', function( evt ){
-                        var $this = $(this);
-                        $this[ evt.type === 'mouseleave' ? 'removeClass' : 'addClass' ]( 'edui-hover' );
+                    this.root().delegate( '.'+itemClassName,  'mouseenter mouseleave', function( evt ){
+                        $(this)[ fn[ evt.type ] ]( HOVER_CLASS );
+                    }).one('afterhide', function(){
                     });
                 }
-
-
             },
-            selectItem: function( index ){
+            /**
+             * 选择给定索引的项
+             * @param index 项索引
+             * @returns {*} 如果存在对应索引的项，则返回该项；否则返回null
+             */
+            select: function( index ){
 
                 var itemCount = this.data('options').itemCount,
-                    items = this.data('options').autowidthitem,
-                    currentItem = null,
-                    selector = null;
+                    items = this.data('options').autowidthitem;
 
                 if( itemCount == 0 ) {
                     return null;
@@ -7012,19 +7348,11 @@ UE.ui.define('colorpicker', {
 
                 }
 
-                selector = '.'+itemClassName+':eq('+ index +')';
+                this.trigger( 'changebefore', items[ index ] );
 
-                currentItem = this.root().find( selector );
+                this._update( index );
 
-                if( currentItem.length ) {
-
-                    this.trigger( 'changebefore', items[ index ] );
-                    this.selectByItemNode( currentItem[0] );
-                    this.trigger( 'changeafter', items[ index ] );
-
-                    return currentItem[0];
-
-                }
+                this.trigger( 'changeafter', items[ index ] );
 
                 return null;
 
@@ -7032,186 +7360,134 @@ UE.ui.define('colorpicker', {
             selectItemByLabel: function( label ){
 
                 var itemMapping = this.data('options').itemMapping,
+                    me = this,
                     index = null;
 
-                label = $.isArray( label ) ? label : [ label ];
+                !$.isArray( label ) && ( label = [ label ] );
 
-                for( var i = 0, len = label.length; i<len; i++ ) {
+                $.each( label, function( i, item ){
 
-                    index = itemMapping[ label[i] ];
+                    index = itemMapping[ item ];
 
                     if( index !== undefined ) {
 
-                        this.selectItem( index );
-                        break;
+                        me.select( index );
+                        return false;
 
+                    }
+
+                } );
+
+            },
+            /**
+             * 转换记录栈
+             */
+            _transStack: function( options ) {
+
+                var temp = [],
+                    itemIndex = -1,
+                    selected = -1;
+
+                $.each( options.recordStack, function( index, item ){
+
+                    itemIndex = options.itemMapping[ item ];
+
+                    if( $.isNumeric( itemIndex ) ) {
+
+                        temp.push( itemIndex );
+
+                        //selected的合法性检测
+                        if( item == options.selected ) {
+                            selected = itemIndex;
+                        }
+
+                    }
+
+                } );
+
+                options.recordStack = temp;
+                options.selected = selected;
+                temp = null;
+
+            },
+            _optionAdaptation: function( options ) {
+
+                if( !( 'itemStyles' in options ) ) {
+
+                    options.itemStyles = [];
+
+                    for( var i = 0, len = options.items.length; i < len; i++ ) {
+                        options.itemStyles.push('');
                     }
 
                 }
 
-            },
-            selectByItemNode: function( itemNode ){
+                options.autowidthitem = options.autowidthitem || options.items;
+                options.itemCount = options.items.length;
 
-                if( !itemNode ) {
-                    return null;
-                }
-
-                var $itemNode = $(itemNode);
-
-                this.root().find('.edui-combobox-checked').removeClass('edui-combobox-checked');
-                $itemNode.find('.edui-combobox-checkbox').addClass('edui-combobox-checked');
-
-                if( this.data('options').autoRecord ) {
-                    selectRecordItem.call( this, itemNode );
-                }
-
-                return itemNode;
+                return options;
 
             },
-            //更新记录区域
-            updaterecordArea: function(){
+            _createItemMapping: function( stackItem, items ){
 
-                var $recordItems = this.root().find('.'+stackItemClassName);
+                var temp = {},
+                    result = {
+                        recordStack: [],
+                        mapping: {}
+                    };
 
-                if( $recordItems.length > this.data('options').recordCount ) {
+                $.each( items, function( index, item ){
+                    temp[ item ] = index;
+                } );
 
-                    for( var i = $recordItems.length - 1, len = this.data('options').recordCount; i >= len; i-- ) {
-                        $( $recordItems.get( i ) ).remove();
+                result.itemMapping = temp;
+
+                $.each( stackItem, function( index, item ){
+
+                    if( temp[ item ] !== undefined ) {
+                        result.recordStack.push( temp[ item ] );
+                        result.mapping[ item ] = temp[ item ];
                     }
 
+                } );
+
+                return result;
+
+            },
+            _update: function ( index ) {
+
+                var options = this.data("options"),
+                    newStack = [],
+                    newChilds = null;
+
+                $.each( options.recordStack, function( i, item ){
+
+                    if( item != index ) {
+                        newStack.push( item );
+                    }
+
+                } );
+
+                //压入最新的记录
+                newStack.unshift( index );
+
+                if( newStack.length > options.recordCount ) {
+                    newStack.length = options.recordCount;
                 }
+
+                options.recordStack = newStack;
+                options.selected = index;
+
+                newChilds = $( $.parseTmpl( this.tpl, options ) );
+
+                //重新渲染
+                this.root().html( newChilds.html() );
+
+                newChilds = null;
+                newStack = null;
 
             }
         };
-
-        function optionAdaptation( options ) {
-
-            if( !( 'itemStyles' in options ) ) {
-
-                options.itemStyles = [];
-
-                for( var i = 0, len = options.items.length; i < len; i++ ) {
-                    options.itemStyles.push('');
-                }
-
-            }
-
-            options.autowidthitem = options.autowidthitem || options.items;
-
-            return options;
-
-        }
-
-        /**
-         * 执行宽度自适应
-         */
-        function wordCountAdaptive( word, hasSuffix ) {
-
-            var tmpNode = document.createElement('span');
-
-            tmpNode.innerHTML = word;
-
-            tmpNode.style.cssText = 'display: inline; position: absolute; top: -10000000px; left: -100000px;';
-
-            document.body.appendChild( tmpNode );
-
-            var width = tmpNode.offsetWidth;
-
-            document.body.removeChild( tmpNode );
-
-            tmpNode = null;
-
-            if( width < 50 ) {
-
-                return word;
-
-            } else {
-
-                word = word.slice( 0, hasSuffix ? -4 : -1 );
-
-                if( word.length ===  0 ) {
-                    return '...';
-                }
-
-                return wordCountAdaptive( word + '...', true );
-
-            }
-
-        }
-
-        function createItemMapping( stackItem, items ) {
-
-            var temp = {},
-                result = {
-                    recordStack: [],
-                    mapping: {}
-                };
-
-            $.each( items, function( index, item ){
-                temp[ item ] = index;
-            } );
-
-            result.itemMapping = temp;
-
-            $.each( stackItem, function( index, item ){
-
-                if( temp[ item ] !== undefined ) {
-                    result.recordStack.push( item );
-                    result.mapping[ item ] = temp[ item ];
-                }
-
-            } );
-
-            return result;
-
-        }
-
-        function showStackSeparator() {
-
-            this.root().find(".edui-combobox-stack-separator").removeClass("edui-common-dis-none");
-
-        }
-
-        function selectRecordItem( itemNode ) {
-
-            var index = $(itemNode).attr('data-item-index'),
-                me = this,
-                $stackItem = null,
-                selector = null;
-
-            if( !$.isNumeric( index ) ) {
-                return null;
-            }
-
-            showStackSeparator.call( this );
-
-            selector = '.' + stackItemClassName + '[data-stack-item-index="'+ index +'"]';
-
-            $stackItem = this.root().find( selector );
-
-            if( $stackItem.length ) {
-
-                $stackItem.insertBefore( $stackItem.parent().children()[0] );
-                $stackItem.find('.edui-combobox-checkbox').addClass('edui-combobox-checked');
-
-            } else {
-
-                var stackItemTpl = '<li class="' + stackItemClassName + '" data-stack-item-index="<%=recordStackIndex%>"><a href="#" class="edui-combobox-link"><em class="edui-combobox-checkbox edui-combobox-checked"><i class="icon-ok"></i></em><span class="edui-combobox-label" style="<%=style%>"><%=recordStackLabel%></span></a></li>';
-                    $newStackItem = $( $.parseTmpl( stackItemTpl , {
-                        recordStackIndex: index,
-                        recordStackLabel: me.data('options').items[ index ],
-                        style: me.data('options').itemStyles[index]
-                    } ) );
-
-                $newStackItem.insertBefore( this.root().children().first() );
-
-                this.updaterecordArea();
-
-            }
-
-            return null;
-
-        }
 
     } )(), 'menu' );
 
@@ -7245,12 +7521,13 @@ UE.ui.define('colorpicker', {
                     caret: true,
                     title: options.title,
                     mode: options.mode,
-                    text: options.label
+                    text: options.label,
+                    click: function(){
+                        me.show( this.root() );
+                    }
                 });
 
                 me.supper.init.call( me, options );
-
-                me.attachTo( btnWidget );
 
                 //监听change， 改变button显示内容
                 me.on('changebefore', function( e, label ){
@@ -7258,6 +7535,8 @@ UE.ui.define('colorpicker', {
                 });
 
                 me.data( 'button', btnWidget );
+
+                me.attachTo(btnWidget)
 
             },
             button: function(){
@@ -7315,19 +7594,12 @@ UE.ui.define('modal', {
             $(this).toggleClass('hover')
         });
     },
-    body: function ($cont) {
-        if ($cont) {
-            this.root().find('.edui-modal-body').html('').append($cont);
-            return this
-        } else {
-            return $(this.root().find('.edui-modal-body').html())
-        }
-    },
     toggle: function () {
         var me = this;
         return me[!me.data("isShown") ? 'show' : 'hide']();
     },
     show: function () {
+
         var me = this;
 
         me.trigger("beforeshow");
@@ -7347,7 +7619,8 @@ UE.ui.define('modal', {
         })
     },
     autoCenter: function () {
-        this.root().css("margin-left", -(this.root().width() / 2));
+        //ie6下不用处理了
+        !$.IE6 && this.root().css("margin-left", -(this.root().width() / 2));
     },
     hide: function () {
         var me = this;
@@ -7388,24 +7661,20 @@ UE.ui.define('modal', {
     backdrop: function (callback) {
         var me = this;
         if (me.data("isShown") && me.data("options").backdrop) {
-            me.$backdrop = $('<div class="edui-modal-backdrop" />').appendTo(document.body);
-
-            me.$backdrop.click(
+            me.$backdrop = $('<div class="edui-modal-backdrop" />').click(
                 me.data("options").backdrop == 'static' ?
                     $.proxy(me.root()[0].focus, me.root()[0])
                     : $.proxy(me.hide, me)
             )
         }
-
+        me.trigger('afterbackdrop');
         callback && callback();
 
     },
     attachTo: function ($obj) {
         var me = this
         if (!$obj.data('$mergeObj')) {
-            if (!$.contains(document.body, me.root()[0])) {
-                me.root().appendTo($obj);
-            }
+
             $obj.data('$mergeObj', me.root());
             $obj.on('click', function () {
                 me.toggle($obj)
@@ -7415,6 +7684,7 @@ UE.ui.define('modal', {
     },
     ok: function () {
         var me = this;
+        me.trigger('beforeok');
         if (me.trigger("ok", me) === false) {
             return;
         }
@@ -7428,7 +7698,7 @@ UE.ui.define('modal', {
 
 /*tooltip 类*/
 UE.ui.define('tooltip', {
-    tpl: '<div class="edui-tooltip"><div class="edui-tooltip-arrow"></div><div class="edui-tooltip-inner"></div></div>',
+    tpl: '<div class="edui-tooltip" unselectable="on" onmousedown="return false"><div class="edui-tooltip-arrow" unselectable="on" onmousedown="return false"></div><div class="edui-tooltip-inner" unselectable="on" onmousedown="return false"></div></div>',
     init: function (options) {
         var me = this;
         me.root($($.parseTmpl(me.tpl, options || {})));
@@ -7571,6 +7841,163 @@ UE.ui.define('separator', {
         return me;
     }
 });
+//scale 类
+UE.ui.define('scale', {
+    tpl: '<div class="edui-scale" unselectable="on">' +
+        '<span class="edui-scale-hand0"></span>' +
+        '<span class="edui-scale-hand1"></span>' +
+        '<span class="edui-scale-hand2"></span>' +
+        '<span class="edui-scale-hand3"></span>' +
+        '<span class="edui-scale-hand4"></span>' +
+        '<span class="edui-scale-hand5"></span>' +
+        '<span class="edui-scale-hand6"></span>' +
+        '<span class="edui-scale-hand7"></span>' +
+        '</div>',
+    defaultOpt: {
+        doc: document
+    },
+    init: function (options) {
+        this.root($($.parseTmpl(this.tpl, options)));
+        this.initStyle();
+        this.startPos = this.prePos = {x: 0, y: 0};
+        this.dragId = -1;
+        return this;
+    },
+    initStyle: function () {
+        utils.cssRule('scale', '.edui-scale{display:none;position:absolute;border:1px solid #38B2CE;cursor:hand;}' +
+            '.edui-scale span{position:absolute;left:0;top:0;width:7px;height:7px;overflow:hidden;font-size:0px;display:block;background-color:#3C9DD0;}'
+            + '.edui-scale .edui-scale-hand0{cursor:nw-resize;top:0;margin-top:-4px;left:0;margin-left:-4px;}'
+            + '.edui-scale .edui-scale-hand1{cursor:n-resize;top:0;margin-top:-4px;left:50%;margin-left:-4px;}'
+            + '.edui-scale .edui-scale-hand2{cursor:ne-resize;top:0;margin-top:-4px;left:100%;margin-left:-3px;}'
+            + '.edui-scale .edui-scale-hand3{cursor:w-resize;top:50%;margin-top:-4px;left:0;margin-left:-4px;}'
+            + '.edui-scale .edui-scale-hand4{cursor:e-resize;top:50%;margin-top:-4px;left:100%;margin-left:-3px;}'
+            + '.edui-scale .edui-scale-hand5{cursor:sw-resize;top:100%;margin-top:-3px;left:0;margin-left:-4px;}'
+            + '.edui-scale .edui-scale-hand6{cursor:s-resize;top:100%;margin-top:-3px;left:50%;margin-left:-4px;}'
+            + '.edui-scale .edui-scale-hand7{cursor:se-resize;top:100%;margin-top:-3px;left:100%;margin-left:-3px;}');
+    },
+    _eventHandler: function (e) {
+        var me = this,
+            doc = me.defaultOpt.doc;
+        switch (e.type) {
+            case 'mousedown':
+                var hand = e.target || e.srcElement, hand;
+                if (hand.className.indexOf('edui-scale-hand') != -1) {
+                    me.dragId = hand.className.slice(-1);
+                    me.startPos.x = me.prePos.x = e.clientX;
+                    me.startPos.y = me.prePos.y = e.clientY;
+                    $(doc).bind('mousemove', $.proxy(me._eventHandler, me));
+                }
+                break;
+            case 'mousemove':
+                if (me.dragId != -1) {
+                    me.updateContainerStyle(me.dragId, {x: e.clientX - me.prePos.x, y: e.clientY - me.prePos.y});
+                    me.prePos.x = e.clientX;
+                    me.prePos.y = e.clientY;
+                    me.updateTargetElement();
+                }
+                break;
+            case 'mouseup':
+                if (me.dragId != -1) {
+                    me.dragId = -1;
+                    me.updateTargetElement();
+                    var target = me.data('$scaleTarget');
+                    if (target.parentNode) me.attachTo(me.data('$scaleTarget'));
+                }
+                $(doc).unbind('mousemove', $.proxy(me._eventHandler, me));
+                break;
+            default:
+                break;
+        }
+    },
+    updateTargetElement: function () {
+        var $root = this.root();
+        this.data('$scaleTarget').css({width: $root.width(), height: $root.height()});
+    },
+    updateContainerStyle: function (dir, offset) {
+        var me = this,
+            $dom = me.root(),
+            tmp,
+            rect = [
+                //[left, top, width, height]
+                [0, 0, -1, -1],
+                [0, 0, 0, -1],
+                [0, 0, 1, -1],
+                [0, 0, -1, 0],
+                [0, 0, 1, 0],
+                [0, 0, -1, 1],
+                [0, 0, 0, 1],
+                [0, 0, 1, 1]
+            ];
+
+        if (rect[dir][0] != 0) {
+            tmp = parseInt($dom.offset().left) + offset.x;
+            $dom.css('left', me._validScaledProp('left', tmp));
+        }
+        if (rect[dir][1] != 0) {
+            tmp = parseInt($dom.offset().top) + offset.y;
+            $dom.css('top', me._validScaledProp('top', tmp));
+        }
+        if (rect[dir][2] != 0) {
+            tmp = $dom.width() + rect[dir][2] * offset.x;
+            $dom.css('width', me._validScaledProp('width', tmp));
+        }
+        if (rect[dir][3] != 0) {
+            tmp = $dom.height() + rect[dir][3] * offset.y;
+            $dom.css('height', me._validScaledProp('height', tmp));
+        }
+    },
+    _validScaledProp: function (prop, value) {
+        var $ele = this.root(),
+            $wrap = $(this.defaultOpt.doc),
+            calc = function(val, a, b){
+                return (val + a) > b ? b - a : value;
+            };
+
+        value = isNaN(value) ? 0 : value;
+        switch (prop) {
+            case 'left':
+                return value < 0 ? 0 : calc(value, $ele.width(), $wrap.width());
+            case 'top':
+                return value < 0 ? 0 : calc(value, $ele.height(),$wrap.height());
+            case 'width':
+                return value <= 0 ? 1 : calc(value, $ele.offset().left, $wrap.width());
+            case 'height':
+                return value <= 0 ? 1 : calc(value, $ele.offset().top, $wrap.height());
+        }
+    },
+    show: function ($obj) {
+        var me = this;
+        if ($obj) me.attachTo($obj);
+        me.root().bind('mousedown', $.proxy(me._eventHandler, me));
+        $(me.defaultOpt.doc).bind('mouseup', $.proxy(me._eventHandler, me));
+        me.root().show();
+        me.trigger("aftershow");
+    },
+    hide: function () {
+        var me = this;
+        me.root().unbind('mousedown', $.proxy(me._eventHandler, me));
+        $(me.defaultOpt.doc).unbind('mouseup', $.proxy(me._eventHandler, me));
+        me.root().hide();
+        me.trigger('afterhide')
+    },
+    attachTo: function ($obj) {
+        var me = this,
+        imgPos = $obj.offset(),
+            posObj = $(me.defaultOpt.doc.body).offset();
+
+        me.data('$scaleTarget', $obj);
+        me.root().css({
+            position: 'absolute',
+            width: $obj.width(),
+            height: $obj.height(),
+            left: imgPos.left - posObj.left - 2,
+            top: imgPos.top - posObj.top - 2
+        });
+    },
+    getScaleTarget: function () {
+        return this.data('$scaleTarget')[0];
+    }
+});
 /**
  * @file adapter.js
  * @desc adapt ui to editor
@@ -7627,7 +8054,6 @@ UE.ui.define('separator', {
             }
 
             pro.width &&  $widget.width(pro.width);
-            pro.height  &&  $widget.height(pro.height)
 
             //为回调进行参数绑定
             var cb = _widgetCallBack[name];
@@ -7693,69 +8119,63 @@ UE.ui.define('separator', {
         createEditor: function (id, opt) {
             var editor = new UE.Editor(opt);
             var T = this;
-            utils.loadFile(document,{
-                href: editor.options.themePath +editor.options.theme+ "/_css/ueditor.css",
-                tag:"link",
-                type:"text/css",
-                rel:"stylesheet"
-            },function(){
-                editor.langIsReady ? $.proxy(renderUI,T)() : editor.addListener("langReady", $.proxy(renderUI,T));
-                function renderUI(){
+
+            editor.langIsReady ? $.proxy(renderUI,T)() : editor.addListener("langReady", $.proxy(renderUI,T));
+            function renderUI(){
 
 
-                    var $container = this.createUI('#' + id, editor);
-                    editor.ready(function(){
-                        $.each( _readyFn, function( index, fn ){
-                            $.proxy( fn, editor )();
-                        } );
-                    });
-                    var options = editor.options;
-                    if(options.initialFrameWidth){
-                        options.minFrameWidth = options.initialFrameWidth
-                    }else{
-                        options.minFrameWidth = options.initialFrameWidth = editor.$body.width();
-                    }
-                    if(options.initialFrameHeight){
-                        options.minFrameHeight = options.initialFrameHeight
-                    }else{
-                        options.initialFrameHeight = options.minFrameHeight = editor.$body.height();
-                    }
-                    $container.css({
-                        width: options.initialFrameWidth,
-                        zIndex:editor.getOpt('zIndex')
-                    });
-                    editor.render(id);
-
-
-                    //添加tooltip;
-                    $.eduitooltip('attachTo').css('z-index',editor.getOpt('zIndex')+1);
-                    $container.find('a').click(function(evt){
-                        evt.preventDefault()
-                    })
+                var $container = this.createUI('#' + id, editor);
+                editor.ready(function(){
+                    $.each( _readyFn, function( index, fn ){
+                        $.proxy( fn, editor )();
+                    } );
+                });
+                var options = editor.options;
+                if(options.initialFrameWidth){
+                    options.minFrameWidth = options.initialFrameWidth
+                }else{
+                    options.minFrameWidth = options.initialFrameWidth = editor.$body.width();
                 }
-            });
 
+                $container.css({
+                    width: options.initialFrameWidth,
+                    zIndex:editor.getOpt('zIndex')
+                });
+                editor.render(id);
+
+
+                //添加tooltip;
+                $.eduitooltip && $.eduitooltip('attachTo').css('z-index',editor.getOpt('zIndex')+1);
+
+                $container.find('a').click(function(evt){
+                    evt.preventDefault()
+                })
+            }
 
             return editor;
 
         },
         createUI: function (id, editor) {
             var $editorCont = $(id),
-                $container = $('<div class="edui-container"><div class="edui-editor-body"></div><div class="edui-dialog-container"></div></div>').insertBefore($editorCont);
+                $container = $('<div class="edui-container"><div class="edui-editor-body"></div></div>').insertBefore($editorCont);
             editor.$container = $container;
             editor.container = $container[0];
+
             editor.$body = $editorCont;
+
+            //修正在ie9+以上的版本中，自动长高收起时的，残影问题
+            if(browser.ie && browser.ie9above){
+                var $span = $('<span style="padding:0;margin:0;height:0;width:0"></span>');
+                $span.insertAfter($container);
+            }
+
+
+
+
             $container.find('.edui-editor-body').append($editorCont).before(this.createToolbar(editor.options, editor));
 
-            if(editor.options.elementpath || editor.options.wordCount){
-                var $bottombar = $('<div class="edui-bottombar"></div>');
-                $container.append($bottombar);
-                $bottombar.insertBefore($('.edui-dialog-container',$container));
+            $container.find('.edui-toolbar').append($('<div class="edui-dialog-container"></div>'));
 
-            }
-            if(editor.options.elementpath){
-                $bottombar.append(this.getUI(editor,'elementpath'));
-            }
 
             return $container;
         },
@@ -7769,10 +8189,14 @@ UE.ui.define('separator', {
                 $.each(options.toolbar,function(i,uiNames){
                     $.each(uiNames.split(/\s+/),function(index,name){
                         if(name == '|'){
-                            btns.push($.eduiseparator());
+                                $.eduiseparator && btns.push($.eduiseparator());
                         }else{
                             var ui = me.getUI(editor,name);
-                            ui && btns.push(ui);
+                            if(name=="fullscreen"){
+                                ui&&btns.unshift(ui);
+                            }else{
+                                ui && btns.push(ui);
+                            }
                         }
 
                     });
@@ -7790,49 +8214,6 @@ UE.ui.define('separator', {
 })();
 
 
-
-/**
- * 编辑器ready统一入口
- */
-
-UE.ready(function(){
-
-    var editor = this;
-
-    (function(){
-
-        var tips = UE.getUI( editor, 'edittip', 'menu'),
-            inited = false;
-
-        editor.addListener("delcells", function () {
-
-            UE.setActiveEditor(editor);
-            editor.$activeDialog = tips;
-
-            if( !inited ) {
-                inited = true;
-                tips.appendTo($('.edui-dialog-container'));
-            }
-
-            tips.edui().show();
-
-        });
-
-    })();
-
-});
-
-
-
-UE.ready(function(){
-    var T = this;
-    this.addListener('click',function(){
-        T.$container.find('.dropdown-menu').each(function(){
-            $(this).edui().hide()
-        })
-    })
-
-});
 
 UE.registerUI('bold italic redo undo source underline strikethrough superscript subscript insertorderedlist insertunorderedlist ' +
     'cleardoc selectall link unlink print preview justifyleft justifycenter justifyright justifyfull removeformat',
@@ -7855,72 +8236,6 @@ UE.registerUI('bold italic redo undo source underline strikethrough superscript 
 );
 
 
-UE.registerUI('inserttable',
-    /**
-     * tablepicker UI注册
-     * @param name 当前UI注册的名称
-     * @param mode UI调用模式， 在toolbar上调用时传递的是'button'（这里如果是在toolbar上， 也可以不传mode值）, 在menu上调用传递的是'menu'， 默认是button。
-     * @returns {dom} 根据不同的调用模式返回不同的对象
-     *              mode值为：
-     *                  button => 返回一个eduibutton对象
-     *                  menu => 返回一个eduitablepicker对象
-     */
-    function( name, mode, item ) {
-
-        var me = this,
-            $btn = null;
-
-        item && console.log(item.edui())
-
-        //querycommand
-        this.addListener('selectionchange',function(){
-            var state = this.queryCommandState( name );
-            $btn && $btn.edui().disabled( state == -1 ).active( state == 1 );
-        });
-
-        return mode === 'menu' ? $.eduitablepicker({
-            mode: mode
-        }).on('select', function( evt, row, col ){
-                insertTable( row, col );
-            }) :  ($btn = $.eduibutton({
-            icon : 'inserttable',
-            title: me.getLang("labelMap")[name],
-            click : function() {
-
-                var btnWidget = this;
-
-                tablePickerWidget = btnWidget.data( 'tablepicker' );
-
-                if( !tablePickerWidget ) {
-                    tablePickerWidget = $.eduitablepicker({
-                        mode: mode
-                    }).eduitablepicker( "attachTo", btnWidget.root() ).on('select', function( evt, row, col ){
-                        insertTable( row, col );
-                    }).edui();
-                    btnWidget.data( 'tablepicker', tablePickerWidget );
-                }
-                tablePickerWidget.on('show',function(){
-                    UE.setActiveWidget(tablePickerWidget)
-                });
-                tablePickerWidget.show();
-
-            }
-
-        }));
-
-
-        function insertTable( row, col ) {
-
-            me.execCommand('inserttable', {
-                numRows: row,
-                numCols: col
-            });
-
-        }
-
-    }
-
-);
 /**
  * 全屏组件
  */
@@ -7930,7 +8245,7 @@ UE.registerUI('inserttable',
         //状态缓存
     var STATUS_CACHE = {},
         //状态值列表
-        STATUS_LIST = [ 'width', 'height', 'position', 'top', 'left', 'margin', 'padding' ],
+        STATUS_LIST = [ 'width', 'height', 'position', 'top', 'left', 'margin', 'padding', 'overflowX', 'overflowY' ],
         CONTENT_AREA_STATUS = {},
         //页面状态
         DOCUMENT_STATUS = {},
@@ -7955,9 +8270,22 @@ UE.registerUI('inserttable',
         //附加一个按钮
         fullscreenHandler.attachButton( $button );
 
+        me.addListener( "selectionchange", function () {
+
+            var state = this.queryCommandState( name );
+            $button.edui().disabled( state == -1 ).active( state == 1 );
+
+        } );
+
         return $button;
 
     });
+
+    UE.commands['fullscreen'] = {
+        queryCommandState: function () {
+            return this._edui_fullscreen_status;
+        }
+    };
 
 
     function Fullscreen( editor ) {
@@ -8014,6 +8342,8 @@ UE.registerUI('inserttable',
                 editor.fireEvent( 'fullscreenchanged', !_edui_fullscreen_status );
             }
 
+            editor.fireEvent( 'selectionchange' );
+
         },
         //附加一个按钮
         attachButton: function( $btn ){
@@ -8036,6 +8366,12 @@ UE.registerUI('inserttable',
          */
         revert: function(){
 
+            //还原CSS表达式
+            var options = this.editor.options,
+                height = /%$/.test(options.initialFrameHeight) ?  '100%' : (options.initialFrameHeight - this.getStyleValue("padding-top")- this.getStyleValue("padding-bottom") - this.getStyleValue('border-width'));
+
+            $.IE6 && this.getEditorHolder().style.setExpression('height', 'this.scrollHeight <= ' + height + ' ? "' + height + 'px" : "auto"');
+
             //还原容器状态
             this.revertContainerStatus();
 
@@ -8050,14 +8386,6 @@ UE.registerUI('inserttable',
          */
         update: function( isFull ) {
             this.editor._edui_fullscreen_status = isFull;
-
-            //切换按钮状态
-            for( var i = 0, btn; btn = this.buttons[ i ]; i++ ) {
-
-                $(btn)[ isFull ? 'addClass' : 'removeClass' ]('active');
-
-            }
-
         },
         /**
          * 调整当前编辑器的大小, 如果当前编辑器不处于全屏状态， 则不做调整
@@ -8068,7 +8396,10 @@ UE.registerUI('inserttable',
                 height = 0,
                 width = 0,
                 borderWidth = 0,
+                paddingWidth = 0,
                 editor = this.editor,
+                me = this,
+                bound = null,
                 editorBody = null;
 
             if( !this.isFullState() ) {
@@ -8083,22 +8414,31 @@ UE.registerUI('inserttable',
             borderWidth = parseInt( domUtils.getComputedStyle( editorBody, 'border-width' ), 10 ) || 0;
             //容器border宽度
             borderWidth += parseInt( domUtils.getComputedStyle( editor.container, 'border-width' ), 10 ) || 0;
+            //容器padding
+            paddingWidth += parseInt( domUtils.getComputedStyle( editorBody, 'padding-left' ), 10 ) + parseInt( domUtils.getComputedStyle( editorBody, 'padding-right' ), 10 ) || 0;
+
+            //干掉css表达式
+            $.IE6 && editorBody.style.setExpression( 'height', null );
+
+            bound = this.getBound();
 
             $( editor.container ).css( {
                 width: width + 'px',
                 height: height + 'px',
-                position: 'fixed',
-                _position: 'absolute',
-                top: 0,
-                left: 0,
+                position: !$.IE6 ? 'fixed' : 'absolute',
+                top: bound.top,
+                left: bound.left,
                 margin: 0,
-                padding: 0
+                padding: 0,
+                overflowX: 'hidden',
+                overflowY: 'hidden'
             } );
 
-
             $( editorBody ).css({
-                width: width - 2*borderWidth + 'px',
-                height: height - 2*borderWidth - $( '.edui-toolbar', editor.container ).outerHeight() - $( '.edui-bottombar', editor.container).outerHeight() + 'px'
+                width: width - 2*borderWidth - paddingWidth + 'px',
+                height: height - 2*borderWidth - $( '.edui-toolbar', editor.container ).outerHeight() - $( '.edui-bottombar', editor.container).outerHeight() + 'px',
+                overflowX: 'hidden',
+                overflowY: 'auto'
             });
 
         },
@@ -8126,11 +8466,13 @@ UE.registerUI('inserttable',
         },
         saveContentAreaStatus: function(){
 
-            var style = this.getEditorHolder().style;
+            var $holder = $(this.getEditorHolder());
 
             CONTENT_AREA_STATUS[ this.editor.uid ] = {
-                width: style.width,
-                height: style.height
+                width: $holder.css("width"),
+                overflowX: $holder.css("overflowX"),
+                overflowY: $holder.css("overflowY"),
+                height: $holder.css("height")
             };
 
         },
@@ -8142,10 +8484,12 @@ UE.registerUI('inserttable',
             var $doc = $( this.getEditorDocumentBody() );
 
             DOCUMENT_STATUS[ this.editor.uid ] = {
-                overflow: $doc.css( 'overflow' )
+                overflowX: $doc.css( 'overflowX' ),
+                overflowY: $doc.css( 'overflowY' )
             };
             DOCUMENT_ELEMENT_STATUS[ this.editor.uid ] = {
-                overflow: $( this.getEditorDocumentElement() ).css( 'overflow' )
+                overflowX: $( this.getEditorDocumentElement() ).css( 'overflowX'),
+                overflowY: $( this.getEditorDocumentElement() ).css( 'overflowY' )
             };
 
         },
@@ -8159,7 +8503,15 @@ UE.registerUI('inserttable',
          * 恢复编辑区状态
          */
         revertContentAreaStatus: function(){
-            $( this.getEditorHolder() ).css( this.getContentAreaStatus() );
+            var holder = this.getEditorHolder(),
+                state = this.getContentAreaStatus();
+
+            if ( this.supportMin() ) {
+                delete state.height;
+                holder.style.height = null;
+            }
+
+            $( holder ).css( state );
         },
         /**
          * 恢复页面状态
@@ -8167,13 +8519,19 @@ UE.registerUI('inserttable',
         revertDocumentStatus: function() {
 
             var status = this.getDocumentStatus();
-            $( this.getEditorDocumentBody() ).css( 'overflow', status.body.overflow );
-            $( this.getEditorDocumentElement() ).css( 'overflow', status.html.overflow );
+            $( this.getEditorDocumentBody() ).css( 'overflowX', status.body.overflowX );
+            $( this.getEditorDocumentElement() ).css( 'overflowY', status.html.overflowY );
 
         },
         setDocumentStatus: function(){
-            this.getEditorDocumentBody().style.overflow = 'hidden';
-            this.getEditorDocumentElement().style.overflow = 'hidden';
+            $(this.getEditorDocumentBody()).css( {
+                overflowX: 'hidden',
+                overflowY: 'hidden'
+            } );
+            $(this.getEditorDocumentElement()).css( {
+                overflowX: 'hidden',
+                overflowY: 'hidden'
+            } );
         },
         /**
          * 检测当前编辑器是否处于全屏状态全屏状态
@@ -8212,8 +8570,54 @@ UE.registerUI('inserttable',
                 'body': DOCUMENT_STATUS[ this.editor.uid ],
                 'html': DOCUMENT_ELEMENT_STATUS[ this.editor.uid ]
             };
-        }
+        },
+        supportMin: function () {
 
+            var node = null;
+
+            if ( !this._support ) {
+
+                node = document.createElement("div");
+
+                this._support = "minWidth" in node.style;
+
+                node = null;
+
+            }
+
+            return this._support;
+
+        },
+        getBound: function () {
+
+            var tags = {
+                html: true,
+                body: true
+            },
+            result = {
+                top: 0,
+                left: 0
+            },
+            offsetParent = null;
+
+            if ( !$.IE6 ) {
+                return result;
+            }
+
+            offsetParent = this.editor.container.offsetParent;
+
+            if( offsetParent && !tags[ offsetParent.nodeName.toLowerCase() ] ) {
+                tags = offsetParent.getBoundingClientRect();
+                result.top = -tags.top;
+                result.left = -tags.left;
+            }
+
+            return result;
+
+        },
+        getStyleValue: function (attr) {
+            return parseInt(domUtils.getComputedStyle( this.getEditorHolder() ,attr));
+        }
     };
 
 
@@ -8260,8 +8664,6 @@ UE.registerUI('inserttable',
 /**
  * font相关组件
  */
-
-
 UE.registerUI('fontfamily', function( name ) {
 
     var me = this,
@@ -8297,16 +8699,22 @@ UE.registerUI('fontfamily', function( name ) {
     options.items = tempItems;
 
 
-    $fontFamilyCombobox = $.eduibuttoncombobox( options );
-    comboboxWidget = $fontFamilyCombobox.edui();
+    $fontFamilyCombobox =  $.eduibuttoncombobox(options).css('zIndex',me.getOpt('zIndex') + 1);
+    comboboxWidget =  $fontFamilyCombobox.edui();
 
-    comboboxWidget.on( 'comboboxselect', function( evt, res ){
-        me.execCommand( name, res.value );
-    });
+    comboboxWidget
+        .on('comboboxselect', function( evt, res ){
+            me.execCommand( name, res.value );
+        }).on("beforeshow", function(){
+            if( $fontFamilyCombobox.parent().length === 0 ) {
+                $fontFamilyCombobox.appendTo(  me.$container.find('.edui-dialog-container') );
+            }
+        })
 
-    $fontFamilyCombobox.css('zIndex',me.getOpt('zIndex') + 1);
+
+
     //querycommand
-    this.addListener('selectionchange',function(){
+    this.addListener('selectionchange',function( evt ){
 
         //设置按钮状态
         var state = this.queryCommandState( name );
@@ -8315,12 +8723,11 @@ UE.registerUI('fontfamily', function( name ) {
         //设置当前字体
         var fontFamily = this.queryCommandValue( name );
 
-        fontFamily = fontFamily.replace(/^\s*['|"]|['|"]\s*$/g, '');
+        fontFamily = fontFamily.replace(/['"]/g, '').toLowerCase();
 
         comboboxWidget.selectItemByLabel( fontFamily.split(/['|"]?\s*,\s*[\1]?/) );
 
     });
-
 
     return comboboxWidget.button().addClass('edui-combobox');
 
@@ -8329,19 +8736,16 @@ UE.registerUI('fontfamily', function( name ) {
      */
     function wordCountAdaptive( word, hasSuffix ) {
 
-        var tmpNode = document.createElement('span');
+        var $tmpNode = $('<span>' ).html( word ).css( {
+                display: 'inline',
+                position: 'absolute',
+                top: -10000000,
+                left: -100000
+            } ).appendTo( document.body),
+            width = $tmpNode.width();
 
-        tmpNode.innerHTML = word;
-
-        tmpNode.style.cssText = 'display: inline; position: absolute; top: -10000000px; left: -100000px;';
-
-        document.body.appendChild( tmpNode );
-
-        var width = tmpNode.offsetWidth;
-
-        document.body.removeChild( tmpNode );
-
-        tmpNode = null;
+        $tmpNode.remove();
+        $tmpNode = null;
 
         if( width < 50 ) {
 
@@ -8351,7 +8755,7 @@ UE.registerUI('fontfamily', function( name ) {
 
             word = word.slice( 0, hasSuffix ? -4 : -1 );
 
-            if( word.length ===  0 ) {
+            if( !word.length ) {
                 return '...';
             }
 
@@ -8372,6 +8776,7 @@ UE.registerUI('fontsize', function( name ) {
             label: sizeLabel,
             title: sizeLabel,
             autoRecord: false,
+            comboboxName: 'fontsize',
             items: me.options.fontsize
         },
         $fontSizeCombobox = null,
@@ -8379,16 +8784,24 @@ UE.registerUI('fontsize', function( name ) {
 
     options = parseOption( options );
 
-    $fontSizeCombobox = $.eduibuttoncombobox( options );
+    $fontSizeCombobox = $.eduibuttoncombobox( options ).css('zIndex',me.getOpt('zIndex') + 1);
 
-    $fontSizeCombobox.css('zIndex',me.getOpt('zIndex') + 1);
+
 
     $btn = $fontSizeCombobox.edui().button();
-    $btn.on( 'comboboxselect', function(evt, res) {
+
+    $fontSizeCombobox.on( 'comboboxselect', function(evt, res) {
 
         me.execCommand( name, res.value + 'px' );
 
     });
+
+    $fontSizeCombobox.edui().on("beforeshow", function(){
+        if( this.root().parent().length === 0 ) {
+            this.root().appendTo( me.$container.find('.edui-dialog-container') );
+        }
+    });
+
 
     $btn.addClass('edui-combobox');
 
@@ -8439,108 +8852,72 @@ UE.registerUI('fontsize', function( name ) {
 
 });
 
-
-UE.registerUI('forecolor', function( name ) {
-
-    var me = this,
-        colorPickerWidget = null,
-        $colorLabel = null,
-        $btn = null;
-
-    //querycommand
-    this.addListener('selectionchange', function(){
-
-        var state = this.queryCommandState( name );
-        $btn.edui().disabled( state == -1 ).active( state == 1 );
-
-    });
-
-    $btn = $.eduicolorsplitbutton({
-        icon: name,
-        caret: true,
-        title: me.getLang("labelMap")[name],
-        click: function() {
-            me.execCommand( name, getCurrentColor() );
+$.each(['forecolor','backcolor'],function(i,v){
+    UE.registerUI(v, function( name ) {
+        function getCurrentColor() {
+            return domUtils.getComputedStyle( $colorLabel[0], 'background-color' );
         }
-    });
 
-    $colorLabel = $btn.edui().colorLabel();
+        var me = this,
+            $colorPickerWidget = null,
+            $colorLabel = null,
+            $btn = null;
 
-    colorPickerWidget = $.eduicolorpicker({
-        lang_clearColor: me.getLang('clearColor') || '',
-        lang_themeColor: me.getLang('themeColor') || '',
-        lang_standardColor: me.getLang('standardColor') || ''
-    }).eduitablepicker( "attachTo", $btn ).edui().on('pickcolor', function( evt, color ){
-            window.setTimeout( function(){
-                $colorLabel.css("backgroundColor", color);
-                me.execCommand( name, color );
-            }, 0 );
+        //querycommand
+        this.addListener('selectionchange', function(){
+
+            var state = this.queryCommandState( name );
+            $btn.edui().disabled( state == -1 ).active( state == 1 );
+
         });
-    colorPickerWidget.root().css('zIndex',me.getOpt('zIndex') + 1);
 
-    colorPickerWidget.on('show',function(){
-        UE.setActiveWidget( colorPickerWidget.root() );
+        $btn = $.eduicolorsplitbutton({
+            icon: name,
+            caret: true,
+            title: me.getLang("labelMap")[name],
+            click: function() {
+                me.execCommand( name, getCurrentColor() );
+            }
+        });
+
+        $colorLabel = $btn.edui().colorLabel();
+
+        $colorPickerWidget = $.eduicolorpicker({
+            lang_clearColor: me.getLang('clearColor') || '',
+            lang_themeColor: me.getLang('themeColor') || '',
+            lang_standardColor: me.getLang('standardColor') || ''
+        })
+            .on('pickcolor', function( evt, color ){
+                window.setTimeout( function(){
+                    $colorLabel.css("backgroundColor", color);
+                    me.execCommand( name, color );
+                }, 0 );
+            })
+            .on('show',function(){
+                UE.setActiveWidget( colorPickerWidget.root() );
+            }).css('zIndex',me.getOpt('zIndex') + 1);
+
+        $btn.edui().on('arrowclick',function(){
+            if(!$colorPickerWidget.parent().length){
+                me.$container.find('.edui-dialog-container').append($colorPickerWidget);
+            }
+            $colorPickerWidget.edui().show($btn,{
+                caretDir:"down",
+                offsetTop:-5,
+                offsetLeft:8,
+                caretLeft:11,
+                caretTop:-8
+            });
+        }).register('click', $btn, function () {
+                $colorPickerWidget.edui().hide()
+            });
+
+        return $btn;
+
     });
-    $btn.edui().mergeWith( colorPickerWidget.root() );
-
-    return $btn;
-
-    function getCurrentColor() {
-        return domUtils.getComputedStyle( $colorLabel[0], 'background-color' );
-    }
-
 });
 
-
-UE.registerUI('backcolor', function( name ) {
-
-    var me = this,
-        colorPickerWidget = null,
-        $colorLabel = null,
-        $btn = null;
-
-    //querycommand
-    this.addListener('selectionchange', function(){
-        var state = this.queryCommandState( name );
-        $btn.edui().disabled( state == -1 ).active( state == 1 );
-    });
-
-    $btn = $.eduicolorsplitbutton({
-        icon: name,
-        title: me.getLang("labelMap")[name],
-        caret: true,
-        color: 'transparent',
-        click: function() {
-            me.execCommand( name, getCurrentColor() );
-        }
-    });
-
-    $colorLabel = $btn.edui().colorLabel()
-
-    colorPickerWidget = $.eduicolorpicker({
-        lang_clearColor: me.getLang('clearColor') || '',
-        lang_themeColor: me.getLang('themeColor') || '',
-        lang_standardColor: me.getLang('standardColor') || ''
-    }).eduitablepicker( "attachTo", $btn ).edui().on('pickcolor', function( evt, color ){
-            window.setTimeout( function(){
-                $colorLabel.css("backgroundColor", color);
-                me.execCommand( name, color );
-            }, 0 );
-    });
-    colorPickerWidget.root().css('zIndex',me.getOpt('zIndex') + 1);
-    $btn.edui().mergeWith( colorPickerWidget.root() );
-    colorPickerWidget.on('show',function(){
-        UE.setActiveWidget(colorPickerWidget.root())
-    });
-    return $btn;
-
-    function getCurrentColor() {
-        return domUtils.getComputedStyle( $colorLabel[0], 'background-color' );
-    }
-
-});
-
-UE.registerUI('link image gmap map insertvideo',function(name){
+UE.registerUI('link image map insertvideo',function(name){
 
     var me = this, currentRange, $dialog,
         dialogUrl = {
@@ -8552,6 +8929,10 @@ UE.registerUI('link image gmap map insertvideo',function(name){
             url: me.options.UEDITOR_HOME_URL + 'dialogs/' + curDialogUrl + '/' + curDialogUrl + '.js'
         };
 
+    var $btn = $.eduibutton({
+        icon: name,
+        title: this.getLang('labelMap')[name] || ''
+    });
     //加载模版数据
     utils.loadFile(document,{
         src: opt.url,
@@ -8589,33 +8970,49 @@ UE.registerUI('link image gmap map insertvideo',function(name){
         $dialog.attr('id', 'edui-dialog-' + name)
             .find('.edui-modal-body').addClass('edui-dialog-' + name + '-body');
 
-        $dialog.css('zIndex',me.getOpt('zIndex') + 1).edui().on('beforehide',function () {
+        $dialog.edui().on('beforehide',function () {
             var rng = me.selection.getRange();
             if (rng.equals(currentRange)) {
                 rng.select()
             }
         }).on('beforeshow', function () {
+                var $root = this.root(),
+                    win = null,
+                    offset = null;
                 currentRange = me.selection.getRange();
+                if (!$root.parent()[0]) {
+                    me.$container.find('.edui-dialog-container').append($root);
+                }
+
+                //IE6下 特殊处理, 通过计算进行定位
+                if( $.IE6 ) {
+
+                    win = {
+                        width: $( window ).width(),
+                        height: $( window ).height()
+                    };
+                    offset = $root.parents(".edui-toolbar")[0].getBoundingClientRect();
+                    $root.css({
+                        position: 'absolute',
+                        margin: 0,
+                        left: ( win.width - $root.width() ) / 2 - offset.left,
+                        top: 100 - offset.top
+                    });
+
+                }
                 UE.setWidgetBody(name,$dialog,me);
-            });
-
-
+        }).on('afterbackdrop',function(){
+            this.$backdrop.css('zIndex',me.getOpt('zIndex')+1).appendTo(me.$container.find('.edui-dialog-container'))
+            $dialog.css('zIndex',me.getOpt('zIndex')+2)
+        }).on('beforeok',function(){
+            try{
+                currentRange.select()
+            }catch(e){}
+        }).attachTo($btn)
     });
 
 
-    var $btn = $.eduibutton({
-        icon: name,
-        click: function () {
-            if(!$dialog)
-                return;
-            if (!$dialog.parent()[0]) {
-                me.$container.find('.edui-dialog-container').append($dialog);
-            }
-            $dialog.edui().show();
 
-        },
-        title: this.getLang('labelMap')[name] || ''
-    });
 
     me.addListener('selectionchange', function () {
         var state = this.queryCommandState(name);
@@ -8625,8 +9022,12 @@ UE.registerUI('link image gmap map insertvideo',function(name){
 });
 UE.registerUI( 'emotion', function( name ){
     var me = this,
-        url  = me.options.UEDITOR_HOME_URL + 'dialogs/' +name+ '/'+name+'.js',
-        $popup;
+        url  = me.options.UEDITOR_HOME_URL + 'dialogs/' +name+ '/'+name+'.js';
+
+    var $btn = $.eduibutton({
+        icon: name,
+        title: this.getLang('labelMap')[name] || ''
+    });
 
     //加载模版数据
     utils.loadFile(document,{
@@ -8644,110 +9045,100 @@ UE.registerUI( 'emotion', function( name ){
         data.width && (opt.width = data.width);
         data.height && (opt.height = data.height);
 
-        $popup = $.eduipopup(opt).on('beforeshow',function(){
-            UE.setWidgetBody(name,$popup,me);
+        $.eduipopup(opt).css('zIndex',me.options.zIndex + 1)
+            .edui()
+            .on('beforeshow',function(){
+                var $root = this.root();
+                if(!$root.parent().length){
+                    me.$container.find('.edui-dialog-container').append($root);
+                }
+                UE.setWidgetBody(name,$root,me);
+            }).attachTo($btn,{
+                offsetTop:-5,
+                offsetLeft:10,
+                caretLeft:11,
+                caretTop:-8
+            });
+        me.addListener('selectionchange', function () {
+            var state = this.queryCommandState('emotion');
+            $btn.edui().disabled(state == -1).active(state == 1);
         });
     });
-
-
-    var $btn = $.eduibutton({
-        icon: name,
-        click: function () {
-            if(!$popup.parent().length){
-                me.$container.find('.edui-dialog-container').append($popup);
-            }
-            $popup.css('zIndex',me.options.zIndex + 1).edui().show($btn,'left','position');
-        },
-        title: this.getLang('labelMap')[name] || ''
-    });
-
-    $btn.edui().register('click', $btn, function () {
-        $popup.hide()
-    });
-
     return $btn;
 
 } );
 UE.ready(function () {
-    var me = this, bakOverflow, timer, isFullscreen, lastHeight = 0;
+    var me = this,
+        $imagescale;
 
-    me.autoHeightEnabled = me.options.autoHeightEnabled !== false;
-    if (!me.autoHeightEnabled) {
-        return;
-    }
+    if (browser.webkit) {
 
-    function adjustHeight() {
-        var me = this,
-            options = me.options,
-            span, node, currentHeight;
+        me.addListener('click', function (type, e) {
+            var range = me.selection.getRange(),
+                img = range.getClosedNode();
 
-        clearTimeout(timer);
-        if (isFullscreen)return;
-        timer = setTimeout(function () {
-            if (!me.queryCommandState || me.queryCommandState && me.queryCommandState('source') != 1) {
-                if (!span) {
-                    span = me.document.createElement('span');
-                    span.style.cssText = 'display:block;width:0;margin:0;padding:0;border:0;clear:both;';
-                    span.innerHTML = '.';
+            if (img && img.tagName == 'IMG') {
+
+                if (!$imagescale) {
+                    $imagescale = $.eduiscale().css('zIndex', me.options.zIndex);
+                    me.$container.append($imagescale);
+
+                    var _keyDownHandler = function (e) {
+                        $imagescale.edui().hide();
+                    }, _mouseDownHandler = function (e) {
+                        var ele = e.target || e.srcElement;
+                        if (ele && ele.className.indexOf('edui-scale') == -1) {
+                            _keyDownHandler(e);
+                        }
+                    }, timer;
+
+                    $imagescale.edui()
+                        .on('aftershow', function (e) {
+                            $(document).bind('keydown', _keyDownHandler);
+                            $(document).bind('mousedown', _mouseDownHandler);
+                            me.selection.getNative().removeAllRanges();
+                        })
+                        .on('afterhide', function (e) {
+                            $(document).unbind('keydown', _keyDownHandler);
+                            $(document).unbind('mousedown', _mouseDownHandler);
+                            var target = $imagescale.edui().getScaleTarget();
+                            if (target.parentNode) {
+                                me.selection.getRange().selectNode(target).select();
+                            }
+                        })
+                        .on('mousedown', function (e) {
+                            me.selection.getNative().removeAllRanges();
+                            var ele = e.target || e.srcElement;
+                            if (ele && ele.className.indexOf('edui-scale-hand') == -1) {
+                                timer = setTimeout(function() {
+                                    $imagescale.edui().hide();
+                                }, 200);
+                            }
+                        })
+                        .on('mouseup', function (e) {
+                            var ele = e.target || e.srcElement;
+                            if (ele && ele.className.indexOf('edui-scale-hand') == -1) {
+                                clearTimeout(timer);
+                            }
+                        });
                 }
-                node = span.cloneNode(true);
-                me.body.appendChild(node);
-                currentHeight = Math.max(domUtils.getXY(node).y + node.offsetHeight, Math.max(options.minFrameHeight, options.initialFrameHeight));
-                if (currentHeight != lastHeight) {
-                    me.setHeight(currentHeight);
+                $imagescale.edui().show($(img));
 
-                    lastHeight = currentHeight;
-                }
-                domUtils.remove(node);
+            } else {
+                if ($imagescale && $imagescale.css('display') != 'none') $imagescale.edui().hide();
 
             }
         });
+
+        me.addListener('click', function (type, e) {
+            if (e.target.tagName == 'IMG') {
+                var range = new dom.Range(me.document);
+                range.selectNode(e.target).select();
+            }
+        });
+
     }
-
-    me.addListener('fullscreenchanged', function (cmd, f) {
-        isFullscreen = f;
-        me.body.style.overflowY = f ? "auto" : "hidden";
-    });
-    me.addListener('destroy', function () {
-        me.removeListener('contentchange afterinserthtml keyup mouseup', adjustHeight)
-    });
-
-    me.enableAutoHeight = function () {
-        var me = this;
-        if (!me.autoHeightEnabled) {
-            return;
-        }
-        me.autoHeightEnabled = true;
-        bakOverflow = me.body.style.overflowY;
-        me.body.style.overflowY = 'hidden';
-        me.addListener('contentchange afterinserthtml keyup mouseup', adjustHeight);
-        //ff不给事件算得不对
-        setTimeout(function () {
-            adjustHeight.call(me);
-        }, browser.gecko ? 100 : 0);
-        me.fireEvent('autoheightchanged', me.autoHeightEnabled);
-    };
-    me.disableAutoHeight = function () {
-
-        me.body.style.overflowY = bakOverflow || '';
-
-        me.removeListener('contentchange', adjustHeight);
-        me.removeListener('keyup', adjustHeight);
-        me.removeListener('mouseup', adjustHeight);
-        me.autoHeightEnabled = false;
-        me.fireEvent('autoheightchanged', me.autoHeightEnabled);
-    };
-    me.enableAutoHeight();
-
-    domUtils.on(browser.ie ? me.body : me.document, browser.webkit ? 'dragover' : 'drop', function () {
-        clearTimeout(timer);
-        timer = setTimeout(function () {
-            adjustHeight.call(me);
-        }, 100);
-
-    });
 });
-
 UE.ready(function() {
     var me = this,
         lang = me.getLang();
@@ -8806,7 +9197,11 @@ UE.ready(function() {
             return rect;
         },
         flag =true;   //ie7模式下需要偏移
+    var isFullScreening = false;
     function setFloating(){
+        if(isFullScreening){
+            return;
+        }
         var toobarBoxPos = domUtils.getXY(toolbarBox),
             origalFloat = domUtils.getComputedStyle(toolbarBox,'position'),
             origalLeft = domUtils.getComputedStyle(toolbarBox,'left');
@@ -8832,6 +9227,7 @@ UE.ready(function() {
     }
     function unsetFloating(){
         flag = true;
+
         if(placeHolder.parentNode){
             placeHolder.parentNode.removeChild(placeHolder);
         }
@@ -8870,12 +9266,14 @@ UE.ready(function() {
             me.addListener('beforefullscreenchange', function (t, enabled){
                 if (enabled) {
                     unsetFloating();
+                    isFullScreening = enabled;
                 }
             });
             me.addListener('fullscreenchanged', function (t, enabled){
                 if (!enabled) {
                     updateFloating();
                 }
+                isFullScreening = enabled;
             });
             me.addListener('sourcemodechanged', function (t, enabled){
                 setTimeout(function (){
@@ -8890,4 +9288,11 @@ UE.ready(function() {
             })
         }
 });
-})();
+
+UE.ready(function(){
+    var me = this;
+    me.addListener('fullscreenchanged',function(){
+        me.$container.find('textarea').width(me.$body.width() - 10).height(me.$body.height())
+
+    })
+});})();

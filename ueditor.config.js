@@ -306,23 +306,6 @@
         //行内间距 值和显示的名字相同
         //,'lineheight':['1', '1.5','1.75','2', '3', '4', '5']
 
-        //customstyle
-        //自定义样式，不支持国际化，此处配置值即可最后显示值
-        //block的元素是依据设置段落的逻辑设置的，inline的元素依据BIU的逻辑设置
-        //尽量使用一些常用的标签
-        //参数说明
-        //tag 使用的标签名字
-        //label 显示的名字也是用来标识不同类型的标识符，注意这个值每个要不同，
-        //style 添加的样式
-        //每一个对象就是一个自定义的样式
-        //,'customstyle':[
-        //      {tag:'h1', name:'tc', label:'', style:'border-bottom:#ccc 2px solid;padding:0 4px 0 0;text-align:center;margin:0 0 20px 0;'},
-        //      {tag:'h1', name:'tl',label:'', style:'border-bottom:#ccc 2px solid;padding:0 4px 0 0;margin:0 0 10px 0;'},
-        //      {tag:'span',name:'im', label:'', style:'font-style:italic;font-weight:bold'},
-        //      {tag:'span',name:'hi', label:'', style:'font-style:italic;font-weight:bold;color:rgb(51, 153, 204)'}
-        //  ]
-
-
 
         //tab
         //点击tab键时移动的距离,tabSize倍数，tabNode什么字符做为单位

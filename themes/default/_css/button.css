@@ -1,9 +1,9 @@
 /*普通按钮*/
 .edui-btn-toolbar .edui-btn{
     position: relative;
-    display: inline-block !important;
+    display: inline-block;
     vertical-align: top;
-    *display: inline !important;
+    *display: inline;
     *zoom:1;
     width:auto;
     margin: 0 1px;

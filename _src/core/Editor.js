@@ -80,7 +80,7 @@
             isShow: true,
             initialContent: '',
             initialStyle:'.edui-editor-body .edui-body-container p{margin:5px 0;} ' +
-                '.edui-editor-body .edui-body-container{border:0;outline:none;cursor:text;padding:0 5px 0;word-wrap:break-word;font-size:16px;font-family:sans-serif;}' +
+                '.edui-editor-body .edui-body-container{border:0;outline:none;cursor:text;padding:0 10px 0;word-wrap:break-word;font-size:16px;font-family:sans-serif;}' +
                 '.edui-editor-body.focus{border:1px solid #5c9dff}',
             autoClearinitialContent: false,
             iframeCssUrl: me.options.UEDITOR_HOME_URL + 'themes/iframe.css',
@@ -167,6 +167,9 @@
             var me = this;
             me.fireEvent('destroy');
             var container = me.container.parentNode;
+            if(container === document.body){
+                container = me.container;
+            }
             var textarea = me.textarea;
             if (!textarea) {
                 textarea = document.createElement('textarea');
@@ -188,7 +191,7 @@
                     delete this[p];
                 }
             }
-            UE.delEditor(key);
+            UE.clearCache(key)
         },
         initialCont : function(holder){
 
@@ -243,13 +246,13 @@
                 if(options.initialFrameWidth){
                     options.minFrameWidth = options.initialFrameWidth
                 }else{
-                    options.minFrameWidth = options.initialFrameWidth = container.offsetWidth;
+                    options.minFrameWidth = options.initialFrameWidth = $(container).width();
                 }
                 if(options.initialFrameHeight){
                     options.minFrameHeight = options.initialFrameHeight
                 }else{
 
-                    options.initialFrameHeight = options.minFrameHeight = container.offsetHeight;
+                    options.initialFrameHeight = options.minFrameHeight = $(container).height();
                 }
 
                 container.style.width = /%$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth - getStyleValue("padding-left")- getStyleValue("padding-right")   +'px';
@@ -973,19 +976,27 @@
             }
             return count;
         },
-        addInputRule: function (rule) {
+        addInputRule: function (rule,ignoreUndo) {
+            rule.ignoreUndo = ignoreUndo;
             this.inputRules.push(rule);
         },
-        filterInputRule: function (root) {
+        filterInputRule: function (root,isUndoLoad) {
             for (var i = 0, ci; ci = this.inputRules[i++];) {
+                if(isUndoLoad && ci.ignoreUndo){
+                    continue;
+                }
                 ci.call(this, root)
             }
         },
-        addOutputRule: function (rule) {
+        addOutputRule: function (rule,ignoreUndo) {
+            rule.ignoreUndo = ignoreUndo;
             this.outputRules.push(rule)
         },
-        filterOutputRule: function (root) {
+        filterOutputRule: function (root,isUndoLoad) {
             for (var i = 0, ci; ci = this.outputRules[i++];) {
+                if(isUndoLoad && ci.ignoreUndo){
+                    continue;
+                }
                 ci.call(this, root)
             }
         }

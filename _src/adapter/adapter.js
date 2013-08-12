@@ -113,6 +113,17 @@
             return _editors[id] || (_editors[id] = this.createEditor(id, options));
 
         },
+        clearCache : function(id){
+            if ( _editors[id]) {
+                delete  _editors[id]
+            }
+        },
+        delEditor: function (id) {
+            var editor;
+            if (editor = _editors[id]) {
+                editor.destroy();
+            }
+        },
         ready: function( fn ){
             _readyFn.push( fn );
         },
@@ -141,6 +152,10 @@
                     width: options.initialFrameWidth,
                     zIndex:editor.getOpt('zIndex')
                 });
+
+                //ie6下缓存图片
+                UE.browser.ie && UE.browser.version === 6 && $container[0].ownerDocument.execCommand("BackgroundImageCache", false, true);
+
                 editor.render(id);
 
 

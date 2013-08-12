@@ -112,38 +112,38 @@ UE.ready(function() {
     });
 
     if(checkHasUI(me)){
-            toolbarBox = $('.edui-toolbar',me.container)[0];
-            orgTop = getPosition(toolbarBox).top;
-            bakCssText = toolbarBox.style.cssText;
-            placeHolder.style.height = toolbarBox.offsetHeight + 'px';
-            if(LteIE6){
-                fixIE6FixedPos();
-            }
-            domUtils.on(window, ['scroll','resize'], updateFloating);
-            me.addListener('keydown', defer_updateFloating);
-
-            me.addListener('beforefullscreenchange', function (t, enabled){
-                if (enabled) {
-                    unsetFloating();
-                    isFullScreening = enabled;
-                }
-            });
-            me.addListener('fullscreenchanged', function (t, enabled){
-                if (!enabled) {
-                    updateFloating();
-                }
-                isFullScreening = enabled;
-            });
-            me.addListener('sourcemodechanged', function (t, enabled){
-                setTimeout(function (){
-                    updateFloating();
-                },0);
-            });
-            me.addListener("clearDoc",function(){
-                setTimeout(function(){
-                    updateFloating();
-                },0);
-
-            })
+        toolbarBox = $('.edui-toolbar',me.container)[0];
+        orgTop = getPosition(toolbarBox).top;
+        bakCssText = toolbarBox.style.cssText;
+        placeHolder.style.height = toolbarBox.offsetHeight + 'px';
+        if(LteIE6){
+            fixIE6FixedPos();
         }
+        domUtils.on(window, ['scroll','resize'], updateFloating);
+        me.addListener('keydown', defer_updateFloating);
+
+        me.addListener('beforefullscreenchange', function (t, enabled){
+            if (enabled) {
+                unsetFloating();
+                isFullScreening = enabled;
+            }
+        });
+        me.addListener('fullscreenchanged', function (t, enabled){
+            if (!enabled) {
+                updateFloating();
+            }
+            isFullScreening = enabled;
+        });
+        me.addListener('sourcemodechanged', function (t, enabled){
+            setTimeout(function (){
+                updateFloating();
+            },0);
+        });
+        me.addListener("clearDoc",function(){
+            setTimeout(function(){
+                updateFloating();
+            },0);
+
+        })
+    }
 });

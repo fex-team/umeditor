@@ -232,9 +232,9 @@
 
             CONTENT_AREA_STATUS[ this.editor.uid ] = {
                 width: $holder.css("width"),
-                height: $holder.css("height"),
                 overflowX: $holder.css("overflowX"),
-                overflowY: $holder.css("overflowY")
+                overflowY: $holder.css("overflowY"),
+                height: $holder.css("height")
             };
 
         },
@@ -249,7 +249,6 @@
                 overflowX: $doc.css( 'overflowX' ),
                 overflowY: $doc.css( 'overflowY' )
             };
-//            alert(this.getEditorDocumentElement().tagName)
             DOCUMENT_ELEMENT_STATUS[ this.editor.uid ] = {
                 overflowX: $( this.getEditorDocumentElement() ).css( 'overflowX'),
                 overflowY: $( this.getEditorDocumentElement() ).css( 'overflowY' )
@@ -266,7 +265,15 @@
          * 恢复编辑区状态
          */
         revertContentAreaStatus: function(){
-            $( this.getEditorHolder() ).css( this.getContentAreaStatus() );
+            var holder = this.getEditorHolder(),
+                state = this.getContentAreaStatus();
+
+            if ( this.supportMin() ) {
+                delete state.height;
+                holder.style.height = null;
+            }
+
+            $( holder ).css( state );
         },
         /**
          * 恢复页面状态
@@ -325,6 +332,23 @@
                 'body': DOCUMENT_STATUS[ this.editor.uid ],
                 'html': DOCUMENT_ELEMENT_STATUS[ this.editor.uid ]
             };
+        },
+        supportMin: function () {
+
+            var node = null;
+
+            if ( !this._support ) {
+
+                node = document.createElement("div");
+
+                this._support = "minWidth" in node.style;
+
+                node = null;
+
+            }
+
+            return this._support;
+
         },
         getBound: function () {
 

@@ -7,20 +7,20 @@
  */
 
 var attrFix = ie && browser.version < 9 ? {
-        tabindex:"tabIndex",
-        readonly:"readOnly",
-        "for":"htmlFor",
-        "class":"className",
-        maxlength:"maxLength",
-        cellspacing:"cellSpacing",
-        cellpadding:"cellPadding",
-        rowspan:"rowSpan",
-        colspan:"colSpan",
-        usemap:"useMap",
-        frameborder:"frameBorder"
+        tabindex: "tabIndex",
+        readonly: "readOnly",
+        "for": "htmlFor",
+        "class": "className",
+        maxlength: "maxLength",
+        cellspacing: "cellSpacing",
+        cellpadding: "cellPadding",
+        rowspan: "rowSpan",
+        colspan: "colSpan",
+        usemap: "useMap",
+        frameborder: "frameBorder"
     } : {
-        tabindex:"tabIndex",
-        readonly:"readOnly"
+        tabindex: "tabIndex",
+        readonly: "readOnly"
     },
     styleBlock = utils.listToMap([
         '-webkit-box', '-moz-box', 'block' ,
@@ -31,27 +31,27 @@ var attrFix = ie && browser.version < 9 ? {
     ]);
 var domUtils = dom.domUtils = {
     //节点常量
-    NODE_ELEMENT:1,
-    NODE_DOCUMENT:9,
-    NODE_TEXT:3,
-    NODE_COMMENT:8,
-    NODE_DOCUMENT_FRAGMENT:11,
+    NODE_ELEMENT: 1,
+    NODE_DOCUMENT: 9,
+    NODE_TEXT: 3,
+    NODE_COMMENT: 8,
+    NODE_DOCUMENT_FRAGMENT: 11,
 
     //位置关系
-    POSITION_IDENTICAL:0,
-    POSITION_DISCONNECTED:1,
-    POSITION_FOLLOWING:2,
-    POSITION_PRECEDING:4,
-    POSITION_IS_CONTAINED:8,
-    POSITION_CONTAINS:16,
+    POSITION_IDENTICAL: 0,
+    POSITION_DISCONNECTED: 1,
+    POSITION_FOLLOWING: 2,
+    POSITION_PRECEDING: 4,
+    POSITION_IS_CONTAINED: 8,
+    POSITION_CONTAINS: 16,
     //ie6使用其他的会有一段空白出现
-    fillChar:ie && browser.version == '6' ? '\ufeff' : '\u200B',
+    fillChar: ie && browser.version == '6' ? '\ufeff' : '\u200B',
     //-------------------------Node部分--------------------------------
-    keys:{
-        /*Backspace*/ 8:1, /*Delete*/ 46:1,
-        /*Shift*/ 16:1, /*Ctrl*/ 17:1, /*Alt*/ 18:1,
-        37:1, 38:1, 39:1, 40:1,
-        13:1 /*enter*/
+    keys: {
+        /*Backspace*/ 8: 1, /*Delete*/ 46: 1,
+        /*Shift*/ 16: 1, /*Ctrl*/ 17: 1, /*Alt*/ 18: 1,
+        37: 1, 38: 1, 39: 1, 40: 1,
+        13: 1 /*enter*/
     },
     /**
      * 获取节点A相对于节点B的位置关系
@@ -69,7 +69,7 @@ var domUtils = dom.domUtils = {
      *      case 20://组合类型，即节点A满足前置节点A且包含节点B。同样，如果包含，必定前置，所以returnValue事实上也不会存在16的情况
      *  }
      */
-    getPosition:function (nodeA, nodeB) {
+    getPosition: function (nodeA, nodeB) {
         // 如果两个节点是同一个节点
         if (nodeA === nodeB) {
             // domUtils.POSITION_IDENTICAL
@@ -122,12 +122,12 @@ var domUtils = dom.domUtils = {
      * @name getNodeIndex
      * @grammar UE.dom.domUtils.getNodeIndex(node)  => Number  //索引值从0开始
      */
-    getNodeIndex:function (node, ignoreTextNode) {
+    getNodeIndex: function (node, ignoreTextNode) {
         var preNode = node,
             i = 0;
         while (preNode = preNode.previousSibling) {
             if (ignoreTextNode && preNode.nodeType == 3) {
-                if(preNode.nodeType != preNode.nextSibling.nodeType ){
+                if (preNode.nodeType != preNode.nextSibling.nodeType) {
                     i++;
                 }
                 continue;
@@ -142,7 +142,7 @@ var domUtils = dom.domUtils = {
      * @name inDoc
      * @grammar UE.dom.domUtils.inDoc(node,doc)   =>  true|false
      */
-    inDoc:function (node, doc) {
+    inDoc: function (node, doc) {
         return domUtils.getPosition(node, doc) == 10;
     },
     /**
@@ -152,7 +152,7 @@ var domUtils = dom.domUtils = {
      * @grammar UE.dom.domUtils.findParent(node,filterFn)  => Element  //filterFn为过滤函数，node作为参数，返回true时才会将node作为符合要求的节点返回
      * @grammar UE.dom.domUtils.findParent(node,filterFn,includeSelf)  => Element  //includeSelf指定是否包含自身
      */
-    findParent:function (node, filterFn, includeSelf) {
+    findParent: function (node, filterFn, includeSelf) {
         if (node && !domUtils.isBody(node)) {
             node = includeSelf ? node : node.parentNode;
             while (node) {
@@ -171,7 +171,7 @@ var domUtils = dom.domUtils = {
      * @grammar UE.dom.domUtils.findParentByTagName(node,tagNames,includeSelf)   =>  Element  //includeSelf指定是否包含自身
      * @grammar UE.dom.domUtils.findParentByTagName(node,tagNames,includeSelf,excludeFn)   =>  Element  //excludeFn指定例外过滤条件，返回true时忽略该节点
      */
-    findParentByTagName:function (node, tagNames, includeSelf, excludeFn) {
+    findParentByTagName: function (node, tagNames, includeSelf, excludeFn) {
         tagNames = utils.listToMap(utils.isArray(tagNames) ? tagNames : [tagNames]);
         return domUtils.findParent(node, function (node) {
             return tagNames[node.tagName] && !(excludeFn && excludeFn(node));
@@ -185,7 +185,7 @@ var domUtils = dom.domUtils = {
      * @grammar UE.dom.domUtils.findParents(node,includeSelf,filterFn)  => Array  //返回一个祖先节点数组集合，filterFn指定过滤条件，返回true的node将被选取
      * @grammar UE.dom.domUtils.findParents(node,includeSelf,filterFn,closerFirst)  => Array  //返回一个祖先节点数组集合，closerFirst为true的话，node的直接父亲节点是数组的第0个
      */
-    findParents:function (node, includeSelf, filterFn, closerFirst) {
+    findParents: function (node, includeSelf, filterFn, closerFirst) {
         var parents = includeSelf && ( filterFn && filterFn(node) || !filterFn ) ? [node] : [];
         while (node = domUtils.findParent(node, filterFn)) {
             parents.push(node);
@@ -198,7 +198,7 @@ var domUtils = dom.domUtils = {
      * @name insertAfter
      * @grammar UE.dom.domUtils.insertAfter(node,newNode)  => newNode
      */
-    insertAfter:function (node, newNode) {
+    insertAfter: function (node, newNode) {
         return node.parentNode.insertBefore(newNode, node.nextSibling);
     },
 
@@ -208,7 +208,7 @@ var domUtils = dom.domUtils = {
      * @grammar UE.dom.domUtils.remove(node)  =>  node
      * @grammar UE.dom.domUtils.remove(node,keepChildren)  =>  node
      */
-    remove:function (node, keepChildren) {
+    remove: function (node, keepChildren) {
 
         var parent = node.parentNode,
             child;
@@ -229,7 +229,7 @@ var domUtils = dom.domUtils = {
      * @name isBookmarkNode
      * @grammar UE.dom.domUtils.isBookmarkNode(node)  => true|false
      */
-    isBookmarkNode:function (node) {
+    isBookmarkNode: function (node) {
         return node.nodeType == 1 && node.id && /^_baidu_bookmark_/i.test(node.id);
     },
     /**
@@ -237,7 +237,7 @@ var domUtils = dom.domUtils = {
      * @name  getWindow
      * @grammar UE.dom.domUtils.getWindow(node)  => window对象
      */
-    getWindow:function (node) {
+    getWindow: function (node) {
         var doc = node.ownerDocument || node;
         return doc.defaultView || doc.parentWindow;
     },
@@ -248,7 +248,7 @@ var domUtils = dom.domUtils = {
      * @name split
      * @grammar UE.dom.domUtils.split(node,offset)  =>  TextNode  //返回从切分位置开始的后一个文本节点
      */
-    split:function (node, offset) {
+    split: function (node, offset) {
         var doc = node.ownerDocument;
         if (browser.ie && offset == node.nodeValue.length) {
             var next = doc.createTextNode('');
@@ -269,7 +269,7 @@ var domUtils = dom.domUtils = {
      * @name  isWhitespace
      * @grammar  UE.dom.domUtils.isWhitespace(node)  => true|false
      */
-    isWhitespace:function (node) {
+    isWhitespace: function (node) {
         return !new RegExp('[^ \t\n\r' + domUtils.fillChar + ']').test(node.nodeValue);
     },
     /**
@@ -277,14 +277,14 @@ var domUtils = dom.domUtils = {
      * @name getXY
      * @grammar UE.dom.domUtils.getXY(element)  => Object //返回坐标对象{x:left,y:top}
      */
-    getXY:function (element) {
+    getXY: function (element) {
         var x = 0, y = 0;
         while (element.offsetParent) {
             y += element.offsetTop;
             x += element.offsetLeft;
             element = element.offsetParent;
         }
-        return { 'x':x, 'y':y};
+        return { 'x': x, 'y': y};
     },
     /**
      * 为元素element绑定原生DOM事件，type为事件类型，handler为处理函数
@@ -299,7 +299,7 @@ var domUtils = dom.domUtils = {
      *     //evt为事件对象，this为被点击元素对象
      * })
      */
-    on:function (element, type, handler) {
+    on: function (element, type, handler) {
         var types = utils.isArray(type) ? type : [type],
             k = types.length;
         if (k) while (k--) {
@@ -309,15 +309,15 @@ var domUtils = dom.domUtils = {
             } else {
                 if (!handler._d) {
                     handler._d = {
-                        els : []
+                        els: []
                     };
                 }
-                var key = type + handler.toString(),index = utils.indexOf(handler._d.els,element);
+                var key = type + handler.toString(), index = utils.indexOf(handler._d.els, element);
                 if (!handler._d[key] || index == -1) {
-                    if(index == -1){
+                    if (index == -1) {
                         handler._d.els.push(element);
                     }
-                    if(!handler._d[key]){
+                    if (!handler._d[key]) {
                         handler._d[key] = function (evt) {
                             return handler.call(evt.srcElement, evt || window.event);
                         };
@@ -335,7 +335,7 @@ var domUtils = dom.domUtils = {
      * @name un
      * @grammar  UE.dom.donUtils.un(element,type,handler)  //参见<code><a href="#on">on</a></code>
      */
-    un:function (element, type, handler) {
+    un: function (element, type, handler) {
         var types = utils.isArray(type) ? type : [type],
             k = types.length;
         if (k) while (k--) {
@@ -344,20 +344,50 @@ var domUtils = dom.domUtils = {
                 element.removeEventListener(type, handler, false);
             } else {
                 var key = type + handler.toString();
-                try{
+                try {
                     element.detachEvent('on' + type, handler._d ? handler._d[key] : handler);
-                }catch(e){}
+                } catch (e) {
+                }
                 if (handler._d && handler._d[key]) {
-                    var index = utils.indexOf(handler._d.els,element);
-                    if(index!=-1){
-                        handler._d.els.splice(index,1);
+                    var index = utils.indexOf(handler._d.els, element);
+                    if (index != -1) {
+                        handler._d.els.splice(index, 1);
                     }
                     handler._d.els.length == 0 && delete handler._d[key];
                 }
             }
         }
     },
+    /**
+     * 检查节点node是否是空inline节点
+     * @name  isEmptyInlineElement
+     * @grammar   UE.dom.domUtils.isEmptyInlineElement(node)  => 1|0
+     * @example
+     * <b><i></i></b> => 1
+     * <b><i></i><u></u></b> => 1
+     * <b></b> => 1
+     * <b>xx<i></i></b> => 0
+     */
+    isEmptyInlineElement: function (node) {
+        if (node.nodeType != 1 || !dtd.$removeEmpty[ node.tagName ]) {
+            return 0;
+        }
+        node = node.firstChild;
+        while (node) {
+            //如果是创建的bookmark就跳过
+            if (domUtils.isBookmarkNode(node)) {
+                return 0;
+            }
+            if (node.nodeType == 1 && !domUtils.isEmptyInlineElement(node) ||
+                node.nodeType == 3 && !domUtils.isWhitespace(node)
+                ) {
+                return 0;
+            }
+            node = node.nextSibling;
+        }
+        return 1;
 
+    },
 
 
     /**
@@ -365,13 +395,9 @@ var domUtils = dom.domUtils = {
      * @name isBlockElm
      * @grammar UE.dom.domUtils.isBlockElm(node)  => true|false
      */
-    isBlockElm:function (node) {
+    isBlockElm: function (node) {
         return node.nodeType == 1 && (dtd.$block[node.tagName] || styleBlock[domUtils.getComputedStyle(node, 'display')]) && !dtd.$nonChild[node.tagName];
     },
-
-
-
-
 
 
     /**
@@ -379,26 +405,26 @@ var domUtils = dom.domUtils = {
      * @name getElementsByTagName
      * @grammar UE.dom.domUtils.getElementsByTagName(node,tagName)  => Array  //节点集合数组
      */
-    getElementsByTagName:function (node, name,filter) {
-        if(filter && utils.isString(filter)){
-           var className = filter;
-           filter =  function(node){
-               var result = false;
-               $.each(utils.trim(className).replace(/[ ]{2,}/g,' ').split(' '),function(i,v){
-                    if($(node).hasClass(v)){
+    getElementsByTagName: function (node, name, filter) {
+        if (filter && utils.isString(filter)) {
+            var className = filter;
+            filter = function (node) {
+                var result = false;
+                $.each(utils.trim(className).replace(/[ ]{2,}/g, ' ').split(' '), function (i, v) {
+                    if ($(node).hasClass(v)) {
                         result = true;
                         return false;
                     }
-               })
-               return result;
-           }
+                })
+                return result;
+            }
         }
-        name = utils.trim(name).replace(/[ ]{2,}/g,' ').split(' ');
+        name = utils.trim(name).replace(/[ ]{2,}/g, ' ').split(' ');
         var arr = [];
-        for(var n = 0,ni;ni=name[n++];){
+        for (var n = 0, ni; ni = name[n++];) {
             var list = node.getElementsByTagName(ni);
             for (var i = 0, ci; ci = list[i++];) {
-                if(!filter || filter(ci))
+                if (!filter || filter(ci))
                     arr.push(ci);
             }
         }
@@ -411,7 +437,7 @@ var domUtils = dom.domUtils = {
      * @name unSelectable
      * @grammar UE.dom.domUtils.unSelectable(node)
      */
-    unSelectable:ie || browser.opera ? function (node) {
+    unSelectable: ie || browser.opera ? function (node) {
         //for ie9
         node.onselectstart = function () {
             return false;
@@ -450,8 +476,8 @@ var domUtils = dom.domUtils = {
      * //After remove
      * <span style="font-size:14px;">xxxxx</span>
      */
-    removeAttributes:function (node, attrNames) {
-        attrNames = utils.isArray(attrNames) ? attrNames : utils.trim(attrNames).replace(/[ ]{2,}/g,' ').split(' ');
+    removeAttributes: function (node, attrNames) {
+        attrNames = utils.isArray(attrNames) ? attrNames : utils.trim(attrNames).replace(/[ ]{2,}/g, ' ').split(' ');
         for (var i = 0, ci; ci = attrNames[i++];) {
             ci = attrFix[ci] || ci;
             switch (ci) {
@@ -470,7 +496,7 @@ var domUtils = dom.domUtils = {
      * @name createElement
      * @grammar UE.dom.domUtils.createElement(doc,tag,attrs)  =>  Node  //返回创建的节点
      */
-    createElement:function (doc, tag, attrs) {
+    createElement: function (doc, tag, attrs) {
         return domUtils.setAttributes(doc.createElement(tag), attrs)
     },
     /**
@@ -478,9 +504,9 @@ var domUtils = dom.domUtils = {
      * @name setAttributes
      * @grammar UE.dom.domUtils.setAttributes(node,attrs)  => node
      */
-    setAttributes:function (node, attrs) {
+    setAttributes: function (node, attrs) {
         for (var attr in attrs) {
-            if(attrs.hasOwnProperty(attr)){
+            if (attrs.hasOwnProperty(attr)) {
                 var value = attrs[attr];
                 switch (attr) {
                     case 'class':
@@ -512,7 +538,7 @@ var domUtils = dom.domUtils = {
      * getComputedStyle(document.body,"font-size")  =>  "15px"
      * getComputedStyle(form,"color")  =>  "#ffccdd"
      */
-    getComputedStyle:function (element, styleName) {
+    getComputedStyle: function (element, styleName) {
         return utils.transUnitToPx(utils.fixColor(styleName, $(element).css(styleName)));
     },
 
@@ -520,7 +546,7 @@ var domUtils = dom.domUtils = {
      * 阻止事件默认行为
      * @param {Event} evt    需要组织的事件对象
      */
-    preventDefault:function (evt) {
+    preventDefault: function (evt) {
         evt.preventDefault ? evt.preventDefault() : (evt.returnValue = false);
     },
 
@@ -529,7 +555,7 @@ var domUtils = dom.domUtils = {
      * @name getStyle
      * @grammar UE.dom.domUtils.getStyle(element,name)  => String
      */
-    getStyle:function (element, name) {
+    getStyle: function (element, name) {
         var value = element.style[ utils.cssStyleToDomStyle(name) ];
         return utils.fixColor(name, value);
     },
@@ -538,10 +564,10 @@ var domUtils = dom.domUtils = {
      * @name setStyle
      * @grammar UE.dom.domUtils.setStyle(element,name,value)
      */
-    setStyle:function (element, name, value) {
+    setStyle: function (element, name, value) {
         element.style[utils.cssStyleToDomStyle(name)] = value;
-        if(!utils.trim(element.style.cssText)){
-            this.removeAttributes(element,'style')
+        if (!utils.trim(element.style.cssText)) {
+            this.removeAttributes(element, 'style')
         }
     },
 
@@ -549,7 +575,7 @@ var domUtils = dom.domUtils = {
      * 删除_moz_dirty属性
      * @function
      */
-    removeDirtyAttr:function (node) {
+    removeDirtyAttr: function (node) {
         for (var i = 0, ci, nodes = node.getElementsByTagName('*'); ci = nodes[i++];) {
             ci.removeAttribute('_moz_dirty');
         }
@@ -562,7 +588,7 @@ var domUtils = dom.domUtils = {
      * @param  {Function}    fn    过滤子节点的规则，若为空，则得到所有子节点的数量
      * @return {Number}    符合条件子节点的数量
      */
-    getChildCount:function (node, fn) {
+    getChildCount: function (node, fn) {
         var count = 0, first = node.firstChild;
         fn = fn || function () {
             return 1;
@@ -582,7 +608,7 @@ var domUtils = dom.domUtils = {
      * @param {Node}    node    节点
      * @return {Boolean}    是否为空节点
      */
-    isEmptyNode:function (node) {
+    isEmptyNode: function (node) {
         return !node.firstChild || domUtils.getChildCount(node, function (node) {
             return  !domUtils.isBr(node) && !domUtils.isBookmarkNode(node) && !domUtils.isWhitespace(node)
         }) == 0
@@ -593,15 +619,15 @@ var domUtils = dom.domUtils = {
      * @function
      * @param {Node}    node   节点
      */
-    isBr:function (node) {
+    isBr: function (node) {
         return node.nodeType == 1 && node.tagName == 'BR';
     },
-    isFillChar:function (node,isInStart) {
+    isFillChar: function (node, isInStart) {
         return node.nodeType == 3 && !node.nodeValue.replace(new RegExp((isInStart ? '^' : '' ) + domUtils.fillChar), '').length
     },
 
-    isEmptyBlock:function (node,reg) {
-        if(node.nodeType != 1)
+    isEmptyBlock: function (node, reg) {
+        if (node.nodeType != 1)
             return 0;
         reg = reg || new RegExp('[ \t\r\n' + domUtils.fillChar + ']', 'g');
         if (node[browser.ie ? 'innerText' : 'textContent'].replace(reg, '').length > 0) {
@@ -616,26 +642,26 @@ var domUtils = dom.domUtils = {
     },
 
     //判断是否是编辑器自定义的参数
-    isCustomeNode:function (node) {
+    isCustomeNode: function (node) {
         return node.nodeType == 1 && node.getAttribute('_ue_custom_node_');
     },
-    fillNode:function (doc, node) {
+    fillNode: function (doc, node) {
         var tmpNode = browser.ie ? doc.createTextNode(domUtils.fillChar) : doc.createElement('br');
         node.innerHTML = '';
         node.appendChild(tmpNode);
     },
-    isBoundaryNode : function (node,dir){
+    isBoundaryNode: function (node, dir) {
         var tmp;
-        while(!domUtils.isBody(node)){
+        while (!domUtils.isBody(node)) {
             tmp = node;
             node = node.parentNode;
-            if(tmp !== node[dir]){
+            if (tmp !== node[dir]) {
                 return false;
             }
         }
         return true;
     },
-    isFillChar:function (node,isInStart) {
+    isFillChar: function (node, isInStart) {
         return node.nodeType == 3 && !node.nodeValue.replace(new RegExp((isInStart ? '^' : '' ) + domUtils.fillChar), '').length
     }
 };

@@ -2,6 +2,7 @@
     position: relative;
     border: 1px solid #d4d4d4;
     box-shadow: 2px 2px 5px #d3d6da;
+    background-color: #fff;
 }
 .edui-container .edui-toolbar{
     position: relative;
@@ -15,9 +16,12 @@
     position: relative;
     padding: 5px;
 }
-.edui-editor-body{
+.edui-container .edui-editor-body{
     position: relative;
+    background-color: #fff;
+
 }
-.edui-body-container{
+.edui-editor-body .edui-body-container{
     position: relative;
+
 }

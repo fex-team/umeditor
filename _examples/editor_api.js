@@ -57,12 +57,12 @@
             'adapter/adapter.js',
             'adapter/button.js',
             'adapter/fullscreen.js',
-            'adapter/font.js',
             'adapter/dialog.js',
             'adapter/popup.js',
             'adapter/imagescale.js',
             'adapter/autofloat.js',
-            'adapter/source.js'
+            'adapter/source.js',
+            'adapter/combobox.js'
         ],
         baseURL = '../_src/';
     for (var i=0,pi;pi = paths[i++];) {

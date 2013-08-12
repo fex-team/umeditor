@@ -179,7 +179,7 @@
         drag: function () {
             var me = this;
             //做拽上传的支持
-            if (!browser.ie9below) {
+            if (!UE.browser.ie9below) {
                 me.dialog.find('#edui-image-Jcontent').on('drop',function (e) {
 
                     //获取文件列表

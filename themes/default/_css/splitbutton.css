@@ -1,8 +1,8 @@
 .edui-btn-toolbar .edui-splitbutton{
     position: relative;
-    display: inline-block !important;
+    display: inline-block ;
     vertical-align: top;
-    *display: inline !important;
+    *display: inline ;
     *zoom:1;
     margin:0 2px;
 }
@@ -11,9 +11,9 @@
 }
 .edui-splitbutton .edui-caret{
     position: relative;
-    display: inline-block !important;
+    display: inline-block ;
     vertical-align: top;
-    *display: inline !important;
+    *display: inline ;
     *zoom:1;
     width: 8px;
     height: 20px;

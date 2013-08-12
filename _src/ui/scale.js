@@ -11,9 +11,12 @@ UE.ui.define('scale', {
         '<span class="edui-scale-hand7"></span>' +
         '</div>',
     defaultOpt: {
-        doc: document
+        $doc: $(document),
+        $wrap: $(document)
     },
     init: function (options) {
+        if(options.$doc) this.defaultOpt.$doc = options.$doc;
+        if(options.$wrap) this.defaultOpt.$wrap = options.$wrap;
         this.root($($.parseTmpl(this.tpl, options)));
         this.initStyle();
         this.startPos = this.prePos = {x: 0, y: 0};
@@ -34,7 +37,7 @@ UE.ui.define('scale', {
     },
     _eventHandler: function (e) {
         var me = this,
-            doc = me.defaultOpt.doc;
+            $doc = me.defaultOpt.$doc;
         switch (e.type) {
             case 'mousedown':
                 var hand = e.target || e.srcElement, hand;
@@ -42,7 +45,7 @@ UE.ui.define('scale', {
                     me.dragId = hand.className.slice(-1);
                     me.startPos.x = me.prePos.x = e.clientX;
                     me.startPos.y = me.prePos.y = e.clientY;
-                    $(doc).bind('mousemove', $.proxy(me._eventHandler, me));
+                    $doc.bind('mousemove', $.proxy(me._eventHandler, me));
                 }
                 break;
             case 'mousemove':
@@ -60,7 +63,7 @@ UE.ui.define('scale', {
                     var target = me.data('$scaleTarget');
                     if (target.parentNode) me.attachTo(me.data('$scaleTarget'));
                 }
-                $(doc).unbind('mousemove', $.proxy(me._eventHandler, me));
+                $doc.unbind('mousemove', $.proxy(me._eventHandler, me));
                 break;
             default:
                 break;
@@ -105,7 +108,7 @@ UE.ui.define('scale', {
     },
     _validScaledProp: function (prop, value) {
         var $ele = this.root(),
-            $wrap = $(this.defaultOpt.doc),
+            $wrap = this.defaultOpt.$doc,
             calc = function(val, a, b){
                 return (val + a) > b ? b - a : value;
             };
@@ -126,29 +129,31 @@ UE.ui.define('scale', {
         var me = this;
         if ($obj) me.attachTo($obj);
         me.root().bind('mousedown', $.proxy(me._eventHandler, me));
-        $(me.defaultOpt.doc).bind('mouseup', $.proxy(me._eventHandler, me));
+        me.defaultOpt.$doc.bind('mouseup', $.proxy(me._eventHandler, me));
         me.root().show();
         me.trigger("aftershow");
     },
     hide: function () {
         var me = this;
         me.root().unbind('mousedown', $.proxy(me._eventHandler, me));
-        $(me.defaultOpt.doc).unbind('mouseup', $.proxy(me._eventHandler, me));
+        me.defaultOpt.$doc.unbind('mouseup', $.proxy(me._eventHandler, me));
         me.root().hide();
         me.trigger('afterhide')
     },
     attachTo: function ($obj) {
         var me = this,
-        imgPos = $obj.offset(),
-            posObj = $(me.defaultOpt.doc.body).offset();
+            imgPos = $obj.offset(),
+            $root = me.root(),
+            $wrap = me.defaultOpt.$wrap,
+            posObj = $wrap.offset();
 
         me.data('$scaleTarget', $obj);
         me.root().css({
             position: 'absolute',
             width: $obj.width(),
             height: $obj.height(),
-            left: imgPos.left - posObj.left - 2,
-            top: imgPos.top - posObj.top - 2
+            left: imgPos.left - posObj.left - parseInt($wrap.css('border-left-width')) - parseInt($root.css('border-left-width')),
+            top: imgPos.top - posObj.top - parseInt($wrap.css('border-top-width')) - parseInt($root.css('border-top-width'))
         });
     },
     getScaleTarget: function () {
