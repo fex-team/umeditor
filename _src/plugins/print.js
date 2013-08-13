@@ -18,7 +18,7 @@ UE.commands['print'] = {
         document.body.appendChild(iframe);
 
         var w = window.open('', id, ''),
-        d = w.document;
+            d = w.document;
 
         d.open();
         d.write('<html><head><script>' +
@@ -31,4 +31,3 @@ UE.commands['print'] = {
     },
     notNeedUndo : 1
 };
-
