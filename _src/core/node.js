@@ -42,10 +42,10 @@
             })
         }
     };
-    uNode.createText = function (data) {
+    uNode.createText = function (data,noTrans) {
         return new UE.uNode({
             type:'text',
-            'data':utils.unhtml(data || '')
+            'data':noTrans ? data : utils.unhtml(data || '')
         })
     };
     function nodeToHtml(node, arr, formatter, current) {
@@ -196,7 +196,7 @@
                 return tmpRoot.toHtml();
             }
         },
-        innerText:function (textStr) {
+        innerText:function (textStr,noTrans) {
             if (this.type != 'element' || dtd.$empty[this.tagName]) {
                 return this;
             }
@@ -207,7 +207,7 @@
                     }
                 }
                 this.children = [];
-                this.appendChild(uNode.createText(textStr));
+                this.appendChild(uNode.createText(textStr,noTrans));
                 return this;
             } else {
                 return this.toHtml().replace(/<[^>]+>/g, '');
@@ -234,7 +234,7 @@
             var parent = this.parentNode;
             for (var i = 0, ci; ci = parent.children[i]; i++) {
                 if (ci === this) {
-                   return i == 0 ? null : parent.children[i-1];
+                    return i == 0 ? null : parent.children[i-1];
                 }
             }
 
@@ -395,17 +395,17 @@
             if (!cssStyle) {
                 return ''
             }
-            var reg = new RegExp(name + ':([^;]+)','i');
+            var reg = new RegExp('(^|;)\\s*' + name + ':([^;]+)','i');
             var match = cssStyle.match(reg);
             if (match && match[0]) {
-                return match[1]
+                return match[2]
             }
             return '';
         },
         setStyle:function (name, val) {
             function exec(name, val) {
-                var reg = new RegExp(name + ':([^;]+;?)', 'gi');
-                cssStyle = cssStyle.replace(reg, '');
+                var reg = new RegExp('(^|;)\\s*' + name + ':([^;]+;?)', 'gi');
+                cssStyle = cssStyle.replace(reg, '$1');
                 if (val) {
                     cssStyle = name + ':' + utils.unhtml(val) + ';' + cssStyle
                 }
