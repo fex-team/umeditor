@@ -68,8 +68,9 @@ test( '修改已有图片的属性', function () { //ie下有问题  4804 对象
    }
 } );
 
-/*trace1491 修改动图的宽高*/
-test( 'trace1491 修改动图的宽高', function () {  //这个用例的问题  应该是像是没有给用例足够的时间执行一样  所以得到的是undefined，当我一步一步调试的时候，chrome下是通过的
+
+test( 'trace3574 替换图片', function () {  //这个用例的问题  应该是像是没有给用例足够的时间执行一样  所以得到的是undefined，当我一步一步调试的时候，chrome下是通过的
+    if(ua.browser.ie>8)return;//todo trace3574
     var editor = te.obj[0];
     var range = te.obj[1];
     var body = editor.body;
@@ -83,11 +84,12 @@ test( 'trace1491 修改动图的宽高', function () {  //这个用例的问题 
     equal(img.getAttribute('width'),'50','我的比较width');
     equal(img.getAttribute('height'),'80','我的比较width');
     ok(/data\/test\.JPG/.test( img.getAttribute( 'src' )), '比较src' );
-
+    equal(body.innerHTML,'')
 } );
 
 
 test( '选区不闭合插入图像', function () {
+
     var editor = te.obj[0];
     var range = te.obj[1];
     var body = editor.body;
@@ -96,9 +98,10 @@ test( '选区不闭合插入图像', function () {
         range.setStart( body.firstChild.firstChild, 2 ).setEnd( body.lastChild, 2 ).select();
         editor.execCommand( 'insertimage', {src:'http://img.baidu.com/hi/jx2/j_0016.gif', width:'100', height:'100'} );
         ua.manualDeleteFillData( editor.body );
-        equal( body.childNodes.length, 1, '只有一个p' );
+        equal( body.childNodes.length, ua.browser.ie?1:3, '只有一个p' );
+        equal(body.innerHTML,'');
         ua.clearWhiteNode(body.firstChild);
-        var img = body.firstChild.lastChild;
+        var img = body.getElementsByTagName('img')[0];
         equal( img.getAttribute( 'src' ), 'http://img.baidu.com/hi/jx2/j_0016.gif', '比较src' );
         equal( img.getAttribute( 'width' ), '100', '比较width' );
         equal( img.getAttribute( 'height' ), '100', '比较height' );
@@ -106,6 +109,35 @@ test( '选区不闭合插入图像', function () {
     },50);
     stop();
 } );
+
+test( '一次插入多张图片', function () {
+    var editor = te.obj[0];
+    var range = te.obj[1];
+    var body = editor.body;
+    editor.setContent( '<p><br></p>' );
+    setTimeout(function(){
+        range.setStart( body.firstChild, 0 ).collapse( 1 ).select();
+        editor.execCommand( 'insertimage', [{src:'http://img.baidu.com/hi/jx2/j_0001.gif', width:50, height:52},
+            {src:'http://img.baidu.com/hi/jx2/j_0002.gif', width:51, height:52},
+            {src:'http://img.baidu.com/hi/jx2/j_0003.gif', width:52, height:53} ] );
+        ua.manualDeleteFillData( editor.body );
+        var img = body.getElementsByTagName( 'img' )[0];
+        equal( img.getAttribute( 'src' ), 'http://img.baidu.com/hi/jx2/j_0001.gif', '比较src' );
+        equal( img.getAttribute( 'width' ), '50', '比较width' );
+        equal( img.getAttribute( 'height' ), '52', '比较height' );
+        img = body.getElementsByTagName( 'img' )[1];
+        equal( img.getAttribute( 'src' ), 'http://img.baidu.com/hi/jx2/j_0002.gif', '比较src' );
+        equal( img.getAttribute( 'width' ), '51', '比较width' );
+        equal( img.getAttribute( 'height' ), '52', '比较height' );
+        img = body.getElementsByTagName( 'img' )[2];
+        equal( img.getAttribute( 'src' ), 'http://img.baidu.com/hi/jx2/j_0003.gif', '比较src' );
+        equal( img.getAttribute( 'width' ), '52', '比较width' );
+        equal( img.getAttribute( 'height' ), '53', '比较height' );
+        start();
+    },50);
+    stop();
+} );
+
 
 //test( '图像设置左右浮动', function () {//mini中已经取消了execCommand（'imagefloat')函数入口
 //    var editor = te.obj[0];
