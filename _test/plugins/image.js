@@ -84,7 +84,6 @@ test( 'trace3574 替换图片', function () {  //这个用例的问题  应该�
     equal(img.getAttribute('width'),'50','我的比较width');
     equal(img.getAttribute('height'),'80','我的比较width');
     ok(/data\/test\.JPG/.test( img.getAttribute( 'src' )), '比较src' );
-    equal(body.innerHTML,'')
 } );
 
 
@@ -99,7 +98,6 @@ test( '选区不闭合插入图像', function () {
         editor.execCommand( 'insertimage', {src:'http://img.baidu.com/hi/jx2/j_0016.gif', width:'100', height:'100'} );
         ua.manualDeleteFillData( editor.body );
         equal( body.childNodes.length, ua.browser.ie?1:3, '只有一个p' );
-        equal(body.innerHTML,'');
         ua.clearWhiteNode(body.firstChild);
         var img = body.getElementsByTagName('img')[0];
         equal( img.getAttribute( 'src' ), 'http://img.baidu.com/hi/jx2/j_0016.gif', '比较src' );
