@@ -140,8 +140,7 @@
                 var sel = this.getNative();
                 return sel.rangeCount
             }else{
-                var ieRange = _getIERange( this );
-                return  ieRange && this.rangeInBody(ieRange)
+                return  domUtils.inDoc(this.getRange().startContainer,this.body)
             }
         },
         /**
