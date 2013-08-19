@@ -17,6 +17,7 @@ test('init', function () {
 /* 删除当前选区范围中的所有内容*/
 test('deleteContents--删除空', function () {
     var div = te.dom[2];
+
     var range = new UE.dom.Range(document);
     div.innerHTML = '<p>p_text</p>';
     var p_text = div.firstChild.firstChild;
@@ -27,31 +28,53 @@ test('deleteContents--删除空', function () {
 });
 
 test('deleteContents--删除相邻节点之间的内容', function () {
-    var div = te.dom[2];
-    var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
-    div.innerHTML = html;
-    var r = new UE.dom.Range(document);
-    var two = document.getElementById('two');
-    var last = document.getElementById('last');
-    r.setStart(two, 1).setEnd(last, 2);
-    r.deleteContents();
-    ua.checkSameHtml(ua.getHTML(div), '<div id="test"><p id="first">first<!--not--> strong <!-- --><strong id="strong">strong</strong> second <em id="em">em</em> strong.</p><p id="second">bar</p><p id="traverse"><b><em id="em">some text</em></b><em>em text</em>more text</p><table id="table" width="300"><tbody><tr><td>1</td><td id="two">abc</td></tr></tbody></table><p id="last"></p></div>');
+    var div = document.body.appendChild(document.createElement('div'));
+    div.id = 'ue';
+    var editor = UE.getEditor('ue');
+    editor.ready(function(){
+        var div = te.dom[2];
+        var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
+        div.innerHTML = html;
+        var r = new UE.dom.Range(editor.document);
+        var two = document.getElementById('two');
+        var last = document.getElementById('last');
+        r.setStart(two, 1).setEnd(last, 2);
+        r.deleteContents();
+        ua.checkSameHtml(ua.getHTML(div), '<div id="test"><p id="first">first<!--not--> strong <!-- --><strong id="strong">strong</strong> second <em id="em">em</em> strong.</p><p id="second">bar</p><p id="traverse"><b><em id="em">some text</em></b><em>em text</em>more text</p><table id="table" width="300"><tbody><tr><td>1</td><td id="two">abc</td></tr></tbody></table><p id="last"></p></div>');
 
-    ua.checkResult(r, div, div, 4, 4, true, '删除相邻节点的内容');
+        ua.checkResult(r, div, div, 4, 4, true, '删除相邻节点的内容');
+
+        UE.clearCache('ue');
+        te.dom.push(editor.container);
+        start();
+
+    });
+    stop();
 });
 
 
 test('deleteContents--删除子节点', function () {
-    var div = te.dom[2];
-    var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
-    div.innerHTML = html;
-    var r = new UE.dom.Range(document);
+    var div = document.body.appendChild(document.createElement('div'));
+    div.id = 'ue';
+    var editor = UE.getEditor('ue');
+    editor.ready(function(){
+        var div = te.dom[2];
+        var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
+        div.innerHTML = html;
+        var r = new UE.dom.Range(document);
 
-    r.setStart(div, 0).setEnd(div, 2);
-    r.deleteContents();
-    ua.checkSameHtml(ua.getHTML(r.startContainer), '<div id="test"><p id="traverse"><b><em id="em">some text</em></b><em>em text</em>more text</p><table id="table" width="300"><tbody><tr><td>1</td><td id="two">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id="last">textabc<span>span</span></p></div>');
+        r.setStart(div, 0).setEnd(div, 2);
+        r.deleteContents();
+        ua.checkSameHtml(ua.getHTML(r.startContainer), '<div id="test"><p id="traverse"><b><em id="em">some text</em></b><em>em text</em>more text</p><table id="table" width="300"><tbody><tr><td>1</td><td id="two">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id="last">textabc<span>span</span></p></div>');
 
-    ua.checkResult(r, div, div, 0, 0, true, '删除子节点的内容');
+        ua.checkResult(r, div, div, 0, 0, true, '删除子节点的内容');
+
+        UE.clearCache('ue');
+        te.dom.push(editor.container);
+        start();
+
+    });
+   stop();
 });
 
 
