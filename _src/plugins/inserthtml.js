@@ -42,8 +42,11 @@ UE.commands['inserthtml'] = {
             var nativeRange = nativeSel.getRangeAt(0);
             nativeRange.deleteContents();
             var frag = me.document.createDocumentFragment();
-
+            var arr=[];
             $.each($('<div></div>').html(html)[0].childNodes,function(i,n){
+                arr.push(n)
+            });
+            $.each(arr,function(i,n){
                 frag.appendChild(n);
             });
 
