@@ -29,11 +29,13 @@ UE.commands['inserthtml'] = {
         rng.select();
         if(browser.ie ){
             var nRng = me.selection.getIERange(true);
-            html += '<span id="_ue_tmp_cursor_node">&nbsp;</span>';
+            html += '<span id="_ue_tmp_cursor_node">&nbsp;</span> ';
             nRng.pasteHTML(html);
-            var $tmp = $('#_ue_tmp_cursor_node',me.body);
-            new dom.Range(document,me.body).setStartBefore($tmp[0]).collapse(true).select();
-            $tmp.remove()
+            var tmp = $('#_ue_tmp_cursor_node',me.body)[0];
+            var rng = new dom.Range(document,me.body).setStartBefore(tmp);
+            $(tmp).remove();
+            rng.setCursor(false,true);
+
 
         }else{
             var nativeSel = me.selection.getNative();
