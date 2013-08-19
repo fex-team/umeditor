@@ -818,22 +818,7 @@
             }
             return this;
         },
-        /**
-         * 滚动条跳到当然range开始的位置
-         * @name scrollToView
-         * @grammar range.scrollToView([win,offset]) => Range //针对window对象，若不指定，将以编辑区域的窗口为准,offset偏移量
-         */
-        scrollToView:function (win, offset) {
-            win = win ? window : domUtils.getWindow(this.document);
-            var me = this,
-                span = me.document.createElement('span');
-            //trace:717
-            span.innerHTML = '&nbsp;';
-            me.cloneRange().insertNode(span);
-            domUtils.scrollToView(span, win, offset);
-            domUtils.remove(span);
-            return me;
-        },
+      
 
         createAddress : function(ignoreEnd,ignoreTxt){
             var addr = {},me = this;
