@@ -1,5 +1,24 @@
 module('plugins.source');
 
+test('插入表格，切源码再切回来',function(){    
+    var editor = te.obj[0];
+    var div = te.dom[0];
+    // editor.render(div);
+    editor.setContent('<table><tbody><tr><td>hello1</td><td></td></tr><tr><td>hello2</td><td></td></tr></tbody></table>');
+    //source 包含超时操作，ie下必须有同步操作，否则会报错
+    setTimeout(function () {
+        editor.execCommand('source');
+        setTimeout(function () {
+            editor.execCommand('source');
+            var content = editor.getContent();
+            equal(content, '<table><tbody><tr><td>hello1</td><td></td></tr><tr><td>hello2</td><td></td></tr></tbody></table>');
+            start();
+        }, 20);
+    }, 20);
+    
+    stop();
+});
+
 test('chrome删除后切换源码再切换回来，光标没了', function () {
     //opera 取不到range值
     if (ua.browser.opera) return 0;
@@ -49,8 +68,6 @@ test('切换源码，源码中多处空行', function () {
 
     // ok(html.length>=58&&html.length<=60,'切换源码不会多空行');
 });
-
-/*trace 710*/
 test('设置源码内容没有p标签，切换源码后会自动添加', function () {
     var editor = te.obj[0];
     editor.setContent('<strong><em>helloworld你好啊</em></strong>大家好，<strong><i>你在干嘛呢</i></strong><em><strong>。谢谢，不用谢</strong></em>~~%199<p>hello</p>');
@@ -193,7 +210,6 @@ test('在font,b,i标签中输入，会自动转换标签 ', function () {
     stop();
 //    }
 });
-
 test('trace 3334:img和a之间不会产生多余空格', function () {
     var editor = te.obj[0];
     editor.setContent('<p><img src="http://img.baidu.com/hi/jx2/j_0001.gif" /><a href="http://www.baidu.com">http://www.baidu.com</a></p>');

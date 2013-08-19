@@ -307,15 +307,23 @@ test('trimBonudary', function () {
 
 /*前面尽可能往右边跳，后面尽可能往左边跳*/
 test('adjustmentBoundary--startContainer为文本节点', function () {
-    var range = new UE.dom.Range(document);
-    var div = te.dom[2];
-    div.innerHTML = 'div_text<p><span id="span">span_text</span></p>div_text2<p id="p">p_text<em>em_text</em></p>';
-    var span_text = document.getElementById('span').firstChild;
-    var p = document.getElementById('p');
-    range.setStart(span_text, 9).setEnd(p, 0);
-    range.adjustmentBoundary();
-    ua.checkResult(range, div, div, 2, 3, false, 'startContainer为文本节点');
-
+    //adjustmentBoundary用到isbody,需要渲染编辑器才能用
+    var div = document.body.appendChild(document.createElement('div'));
+    div.id = 'ue';
+    var editor = UE.getEditor('ue');
+    editor.ready(function () {
+        var range = new UE.dom.Range(editor.document);
+        editor.setContent('<p><span id="span">span_text</span></p>div_text2<p id="p">p_text<em>em_text</em></p>');
+        var span_text = document.getElementById('span').firstChild;
+        var p = document.getElementById('p');
+        range.setStart(span_text, 9).setEnd(p, 0);
+        range.adjustmentBoundary();
+        ua.checkResult(range, editor.body, editor.body, 1, 2, false, 'startContainer为文本节点');
+        UE.clearCache('ue');
+        te.dom.push(editor.container);
+        start();
+    });
+    stop();
 });
 
 //TODO
@@ -571,51 +579,59 @@ test('range.createAddress,range.moveAddress', function () {
 
     }
 
-    var div = te.dom[0];
-    var rng = new UE.dom.Range(document);
-    div.innerHTML = '<b>xxxx</b>';
-    var addr = rng.setStart(div.firstChild, 0).collapse(true).createAddress(true);
-    var rng1 = new UE.dom.Range(document);
-    rng1.moveToAddress(addr);
-    ok(equalRange(rng, rng1));
-    div.innerHTML = 'aaa';
-    div.appendChild(document.createTextNode('aaa'));
-    div.appendChild(document.createTextNode('aaa'));
-    addr = rng.setStart(div.lastChild, 0).setEnd(div.lastChild, div.lastChild.nodeValue.length).createAddress();
-    rng1.moveToAddress(addr);
-    ok(equalRange(rng, rng1));
-    addr = rng.setStart(div.lastChild, 0).setEnd(div.lastChild, div.lastChild.nodeValue.length).createAddress(false, true);
-    div.innerHTML = 'aaaaaabbb';
-    rng1.moveToAddress(addr);
+    var div = document.body.appendChild(document.createElement('div'));
+    div.id = 'ue';
+    var editor = UE.getEditor('ue');
+    editor.ready(function () {
+        var range = new UE.dom.Range(editor.body,editor.body);
+        editor.setContent('<b>xxxx</b>');
+        var addr = range.setStart(editor.body.firstChild.firstChild, 0).collapse(true).createAddress(true);
+        var range1 = new UE.dom.Range(editor.body,editor.body);
+        range1.moveToAddress(addr);
+        ok(equalRange(range, range1));
+        editor.setContent('aaa');
+        editor.body.appendChild(document.createTextNode('aaa'));
+        editor.body.appendChild(document.createTextNode('aaa'));
+        addr = range.setStart(editor.body.lastChild, 0).setEnd(editor.body.lastChild, editor.body.lastChild.nodeValue.length).createAddress();
+        range1.moveToAddress(addr);
+        ok(equalRange(range, range1));
+        addr = range.setStart(div.lastChild, 0).setEnd(div.lastChild, div.lastChild.nodeValue.length).createAddress(false, true);
+        editor.body.innerHTML = 'aaaaaabbb';
+        range1.moveToAddress(addr);
 
-    div.innerHTML = 'aaaaaabbb<b>sss</b>';
-    addr = rng.setStartAfter(div.lastChild.firstChild).collapse(true).createAddress(false);
-    rng1.moveToAddress(addr);
-    ok(equalRange(rng, rng1))
-    div.innerHTML = '';
-    div.appendChild(document.createTextNode(domUtils.fillChar));
-    div.appendChild(document.createTextNode('aaa'));
-    addr = rng.setStartAtLast(div).collapse(true).createAddress(false, true);
-    div.innerHTML = 'aaa';
-    rng1.moveToAddress(addr);
-    rng.setStartAtLast(div).collapse(true);
-    ok(equalRange(rng, rng1));
-    div.innerHTML = 'aaa<b>sss</b>';
-    div.appendChild(document.createTextNode(domUtils.fillChar));
-    addr = rng.setStartAtLast(div).collapse(true).createAddress(false, true);
-    div.innerHTML = 'aaa<b>sss</b>';
-    rng1.moveToAddress(addr);
-    rng.setStartAtLast(div).collapse(true);
-    ok(equalRange(rng, rng1));
-    div.innerHTML = 'aaa';
-    div.appendChild(document.createTextNode(domUtils.fillChar));
-    div.appendChild(document.createTextNode('aaa'));
-    //空节点有占位
-    addr = rng.setStart(div.firstChild.nextSibling, 0).collapse(true).createAddress(false, true);
-    div.innerHTML = 'aaaaaa';
-    rng1.moveToAddress(addr);
-    rng.setStart(div.firstChild, 3).collapse(true);
-    ok(equalRange(rng, rng1));
+        editor.body.innerHTML = 'aaaaaabbb<b>sss</b>';
+        addr = range.setStartAfter(div.lastChild.firstChild).collapse(true).createAddress(false);
+        range1.moveToAddress(addr);
+        ok(equalRange(range, range1));
+        editor.body.innerHTML = '';
+        editor.body.appendChild(document.createTextNode(domUtils.fillChar));
+        editor.body.appendChild(document.createTextNode('aaa'));
+        addr = range.setStartAtLast(div).collapse(true).createAddress(false, true);
+        editor.body.innerHTML = 'aaa';
+        range1.moveToAddress(addr);
+        range.setStartAtLast(div).collapse(true);
+        ok(equalRange(range, range1));
+        editor.body.innerHTML = 'aaa<b>sss</b>';
+        editor.body.appendChild(document.createTextNode(domUtils.fillChar));
+        addr = range.setStartAtLast(div).collapse(true).createAddress(false, true);
+        editor.body.innerHTML = 'aaa<b>sss</b>';
+        range1.moveToAddress(addr);
+        range.setStartAtLast(div).collapse(true);
+        ok(equalRange(range, range1));
+        editor.body.innerHTML = 'aaa';
+        editor.body.appendChild(document.createTextNode(domUtils.fillChar));
+        editor.body.appendChild(document.createTextNode('aaa'));
+        //空节点有占位
+        addr = range.setStart(div.firstChild.nextSibling, 0).collapse(true).createAddress(false, true);
+        editor.body.innerHTML = 'aaaaaa';
+        range1.moveToAddress(addr);
+        range.setStart(div.firstChild, 3).collapse(true);
+        ok(equalRange(range, range1));
+        UE.clearCache('ue');
+        te.dom.push(editor.container);
+        start();
+    });
+    stop();
 });
 
 test('equals', function () {

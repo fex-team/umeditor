@@ -101,3 +101,23 @@ test('ctrl+z/y', function () {
     stop();
 });
 
+test('reset,index', function () {
+    var editor = te.obj[0];
+    editor.setContent('<p></p>');
+    editor.focus();
+    editor.execCommand('horizontal');
+    var listLength = editor.undoManger.list.length;
+    ok(listLength>0,'检查undoManger.list');
+    equal(editor.undoManger.index,1,'检查undoManger.index');
+    editor.undoManger.undo();
+    equal(editor.undoManger.list.length,listLength,'undo操作,undoManger.list不变');
+    equal(editor.undoManger.index,0,'undo操作,undoManger.index-1');
+    equal(ua.getChildHTML(editor.body), '<p></p>', '检查内容');
+    editor.reset();
+    equal(editor.undoManger.list.length,0,'reset,undoManger.list清空');
+    equal(editor.undoManger.index,0,'reset,undoManger.index清空');
+    editor.undoManger.redo();
+    ua.manualDeleteFillData(editor.body);
+    equal(ua.getChildHTML(editor.body), '<p></p>','检查内容');
+
+});

@@ -92,53 +92,6 @@ UE.plugins['keystrokes'] = function() {
             }
 
         }
-        //处理tab键的逻辑
-        if (keyCode == 9) {
-            //不处理以下标签
-            var excludeTagNameForTabKey = {
-                'ol' : 1,
-                'ul' : 1,
-                'table':1
-            };
-            //处理组件里的tab按下事件
-            if(me.fireEvent('tabkeydown',evt)){
-                domUtils.preventDefault(evt);
-                return;
-            }
-            var range = me.selection.getRange();
-            me.fireEvent('saveScene');
-            for (var i = 0,txt = '',tabSize = me.options.tabSize|| 4,tabNode =  me.options.tabNode || '&nbsp;'; i < tabSize; i++) {
-                txt += tabNode;
-            }
-            var span = me.document.createElement('span');
-            span.innerHTML = txt + domUtils.fillChar;
-            if (range.collapsed) {
-                range.insertNode(span.cloneNode(true).firstChild).setCursor(true);
-            } else {
-                //普通的情况
-                start = domUtils.findParent(range.startContainer, filterFn);
-                end = domUtils.findParent(range.endContainer, filterFn);
-                if (start && end && start === end) {
-                    range.deleteContents();
-                    range.insertNode(span.cloneNode(true).firstChild).setCursor(true);
-                } else {
-                    var bookmark = range.createBookmark(),
-                        filterFn = function(node) {
-                            return domUtils.isBlockElm(node) && !excludeTagNameForTabKey[node.tagName.toLowerCase()]
-
-                        };
-                    range.enlarge(true);
-                    var bookmark2 = range.createBookmark(),
-                        current = domUtils.getNextDomNode(bookmark2.start, false, filterFn);
-                    while (current && !(domUtils.getPosition(current, bookmark2.end) & domUtils.POSITION_FOLLOWING)) {
-                        current.insertBefore(span.cloneNode(true).firstChild, current.firstChild);
-                        current = domUtils.getNextDomNode(current, false, filterFn);
-                    }
-                    range.moveToBookmark(bookmark2).moveToBookmark(bookmark).select();
-                }
-            }
-            domUtils.preventDefault(evt)
-        }
         //trace:1634
         //ff的del键在容器空的时候，也会删除
         if(browser.gecko && keyCode == 46){

@@ -1,143 +1,5 @@
 module( 'plugins.enterkey' );
 
-test( 'br做回车,选区非闭合', function () {
-    te.dom[0].parentNode.removeChild(te.dom[0]);
-    var div2 = document.body.appendChild( document.createElement( 'div' ) );
-    $( div2 ).css( 'width', '500px' ).css( 'height', '500px' ).css( 'border', '1px solid #ccc' );
-    te.dom.push(div2);
-    UE.plugins.table = function(){};
-    var editor = new UE.Editor({'initialContent':'<p>欢迎使用ueditor</p>','autoFloatEnabled':false,'enterTag':'br'});
-    te.obj.push(editor);
-    editor.render(div2);
-    stop();
-    editor.ready(function(){
-        var range = new UE.dom.Range( editor.document );
-        te.obj.push(range);
-        editor.setContent('<p>hello</p>' );
-        te.obj[4].setStart(editor.body.firstChild.firstChild,1).setEnd(editor.body.firstChild.firstChild,3).select();
-        ua.keydown(editor.body,{'keyCode':13});
-        setTimeout(function(){
-            ua.manualDeleteFillData(te.obj[3].body);
-            var html = 'h<br>lo';
-            equal(ua.getChildHTML(te.obj[3].body.firstChild),html,'<br>做回车');
-            editor.setContent('<h1>hello<br></h1><p><img src="http://img.baidu.com/hi/jx2/j_0015.gif" /><a href="http://www.baidu.com"></a></p>' );
-            te.obj[4].setStart( editor.body.lastChild,0 ).setEnd(editor.body.lastChild,1).select();
-            ua.keydown(editor.body,{'keyCode':13});
-            setTimeout(function(){
-                ua.manualDeleteFillData(te.obj[3].body);
-                var html = 'hello<br>';
-                equal(ua.getChildHTML(te.obj[3].body.firstChild),html,'<br>做回车');
-                editor.setContent('<h1>hello<br></h1><p>he<img src="http://img.baidu.com/hi/jx2/j_0015.gif" />oll</p>' );
-                te.obj[4].setStart( editor.body.lastChild,1 ).setEnd(editor.body.lastChild,2).select();
-                ua.keydown(editor.body,{'keyCode':13});
-                setTimeout(function(){
-                    ua.manualDeleteFillData(te.obj[3].body);
-                    var html = 'hello<br>';
-                    equal(ua.getChildHTML(te.obj[3].body.firstChild),html,'<br>做回车');
-                    editor.setContent('<h1>hello<br></h1><p><img src="http://img.baidu.com/hi/jx2/j_0015.gif" /><br></p>' );
-                    te.obj[4].setStart( editor.body.lastChild,0 ).setEnd(editor.body.lastChild,1).select();
-                    ua.keydown(editor.body,{'keyCode':13});
-                    setTimeout(function(){
-                        ua.manualDeleteFillData(te.obj[3].body);
-                        var html = 'hello<br>';
-                        equal(ua.getChildHTML(te.obj[3].body.firstChild),html,'<br>做回车');
-                        editor.setContent('<h1>hello<br></h1><p><img src="http://img.baidu.com/hi/jx2/j_0015.gif" /><a href="http://www.baidu.com">www.baidu.com</a></p>' );
-                        te.obj[4].setStart( editor.body.lastChild,0 ).setEnd(editor.body.lastChild,1).select();
-                        ua.keydown(editor.body,{'keyCode':13});
-                        setTimeout(function(){
-                            ua.manualDeleteFillData(te.obj[3].body);
-                            var html = 'hello<br>';
-                            equal(ua.getChildHTML(te.obj[3].body.firstChild),html,'<br>做回车');
-                            te.dom[1].parentNode.removeChild(te.dom[1]);
-                            start();
-                        },20);
-                    },20);
-                },20);
-            },20);
-        },20);
-    });
-} );
-
-//test( 'br做回车，选区闭合', function () {
-//    te.dom[0].parentNode.removeChild(te.dom[0]);
-//    var div2 = document.body.appendChild( document.createElement( 'div' ) );
-//    $( div2 ).css( 'width', '500px' ).css( 'height', '500px' ).css( 'border', '1px solid #ccc' );
-//    te.dom.push(div2);
-//    UE.plugins.table = function(){};
-//    var editor = new UE.Editor({'initialContent':'<p>欢迎使用ueditor</p>','autoFloatEnabled':false,'enterTag':'br'});
-//    te.obj.push(editor);
-//    editor.render(div2);
-//    stop();
-//    editor.ready(function () {
-//        var range = new UE.dom.Range(editor.document);
-//        te.obj.push(range);
-//        editor.setContent('<p>hello</p>');
-//
-//        setTimeout(function () {
-//            te.obj[4].setStart(editor.body.firstChild.firstChild, 1).collapse(true).select();
-//            ua.keydown(editor.body, {'keyCode':13});
-//            setTimeout(function () {
-//                ua.manualDeleteFillData(te.obj[3].body);
-//                var html = 'h<br>ello';
-//                equal(ua.getChildHTML(te.obj[3].body.firstChild), html, '<br>做回车，选区闭合');
-//                te.dom[1].parentNode.removeChild(te.dom[1]);
-//                start();
-//            }, 50);
-//        }, 50);
-//    });
-//} );
-
-
-test('br做回车，选区闭合',function(){
-    var editor = te.obj[0];
-    var range = te.obj[1];
-    editor.setContent( '<p>hello</p>' );
-    stop();
-    setTimeout(function(){
-        range.setStart(editor.body.firstChild.firstChild,1).setEnd(editor.body.firstChild.firstChild,3).select();//有错误 可能是出在这句话的问题上
-        ua.keydown(editor.body,{'keyCode':13});
-        setTimeout(function(){
-            debugger
-            ua.manualDeleteFillData(editor.body);
-            var html = 'h<br>ello';
-            equal(ua.getChildHTML(editor.body.firstChild),html,'<br>做回车，选区闭合');
-            equal(editor.getContent(editor.body),html,'try');
-            start();
-        },50);
-    },50);
-});
-
-
-test( 'br做回车，选区闭合,在节点尾部输入回车，要插入2个br', function () {
-    te.dom[0].parentNode.removeChild(te.dom[0]);
-    var div2 = document.body.appendChild( document.createElement( 'div' ) );
-    $(div2).css('width', '500px').css('height', '500px').css('border', '1px solid #ccc');
-    te.dom.push(div2);
-    UE.plugins.table = function () {
-    };
-    var editor = new UE.Editor({'initialContent':'<p>欢迎使用ueditor</p>', 'autoFloatEnabled':false, 'enterTag':'br'});
-    te.obj.push(editor);
-    editor.render(div2);
-    stop();
-    editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
-        te.obj.push(range);
-        editor.setContent('<p>hello</p>');
-        setTimeout(function () {
-            te.obj[4].setStart(editor.body.firstChild.firstChild, 5).collapse(true).select();
-            ua.keydown(editor.body, {'keyCode':13});
-            setTimeout(function () {
-                ua.manualDeleteFillData(te.obj[3].body);
-                var html = 'hello<br><br>';
-                equal(ua.getChildHTML(te.obj[3].body.firstChild), html, '<br>做回车，选区闭合,在节点尾部输入回车');
-                te.dom[1].parentNode.removeChild(te.dom[1]);
-                start();
-            }, 50);
-        }, 50);
-    });
-});
-
-
 ///*不作处理chrome会产生div*/
 test( 'chrome删除div', function () {
     var editor = te.obj[0];
@@ -161,4 +23,37 @@ test( 'chrome删除div', function () {
         stop();
     }else{
     }
+} );
+test( 'formatBlock', function () {
+    var editor = te.obj[0];
+    var range = te.obj[1];
+    editor.setContent( '<table><tbody><tr><td>  hello1</td><td ></td></tr><tr><td >hello2</td><td ></td></tr></tbody></table>' );
+    var tds = editor.body.getElementsByTagName('td');
+    range.setStart(tds[0],1).collapse(true).select();
+    ua.keydown(editor.body,{'keyCode':13});
+    setTimeout( function () {
+        ua.keyup(editor.body,{'keyCode':13});
+        setTimeout( function () {
+            var td = editor.body.getElementsByTagName('td')[0];
+            equal(td.firstChild&&td.firstChild.tagName.toLowerCase(),'p','加上p');
+            equal(td.firstChild.innerHTML,'hello1','hello1');
+            start();
+        }, 60 );
+    }, 60 );
+    stop();
+} );
+test( '跨td不删', function () {
+    var editor = te.obj[0];
+    var range = te.obj[1];
+    editor.setContent( '<table><tbody><tr><td>  hello1</td><td ></td></tr><tr><td >hello2</td><td ></td></tr></tbody></table>' );
+    var tds = editor.body.getElementsByTagName('td');
+    range.setStart(tds[0],0).setEnd(tds[2],1).select();
+    editor.addListener("keydown", function (type, evt) {
+        setTimeout( function () {
+            ok(evt.defaultPrevented||!evt.returnValue, "keydown");
+            start();
+        }, 60 );
+    });
+    ua.keydown(editor.body,{'keyCode':13});
+    stop();
 } );

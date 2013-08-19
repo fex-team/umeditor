@@ -63,8 +63,17 @@ test( 'getNodeIndex', function() {
 } );
 
 test( 'findParent--body', function() {
-    var domUtils = te.obj[3];
-    equal( domUtils.findParent( document.body ), null, 'find parent for body' );
+    var div = document.body.appendChild(document.createElement('div'));
+    div.id = 'ue';
+    var editor = UE.getEditor('ue');
+    editor.ready(function () {
+        var domUtils = UE.dom.domUtils;
+        equal(domUtils.findParent(editor.body), null, 'find parent for body');
+        UE.clearCache('ue');
+        te.dom.push(editor.container);
+        start();
+    });
+    stop();
 } );
 
 /*找符合条件的上一个节点，如果条件为空则找父节点*/
@@ -127,38 +136,54 @@ test( 'findParentByTagName--文本节点', function() {
 } );
 
 test( 'findParents', function() {
-    var domUtils = te.obj[3];
-    var div = te.dom[2];
-    div.innerHTML = '<strong>ddddd</strong><!----><!--hhhhh--><span id="span">span</span><b>xxxxx</b><p id="p"><br /><img /><table id="table"><tr><td>dddd</td></tr></table></p>';
-    var span_text = document.getElementById( 'span' ).firstChild;
-    /*includeSelf*/
-    var parents = domUtils.findParents( span_text, true );
-    equal( parents.length, 4, 'check parent count' );
-    same( parents[0], document.body, 'first  parent is body' );
-    same( parents[1], div, 'second parent is div' );
-    same( parents[2], span_text.parentNode, 'third parent is span' );
-    same( parents[3], span_text, 'last parent is self' );
-    /*不逆序存放祖先节点,closerFirst=false*/
-    parents = domUtils.findParents( span_text, false, null, true );
-    equal( parents.length, 3, 'check parent count' );
-    same( parents[0], span_text.parentNode, 'first parent is span' );
-    same( parents[1], div, 'second parent is div' );
-    same( parents[2], document.body, 'last parent is body' );
+    var div = document.body.appendChild(document.createElement('div'));
+    div.id = 'ue';
+    var editor = UE.getEditor('ue');
+    editor.ready(function () {
+        var domUtils = UE.dom.domUtils;
+        var div = editor.body;
+        div.innerHTML = '<strong>ddddd</strong><!----><!--hhhhh--><span id="span">span</span><b>xxxxx</b><p id="p"><br /><img /><table id="table"><tr><td>dddd</td></tr></table></p>';
+        var span_text = document.getElementById('span').firstChild;
+        /*includeSelf*/
+        var parents = domUtils.findParents(span_text, true);
+        equal(parents.length, 3, 'check parent count');
+        same(parents[0], editor.body, 'first  parent is body');
+        same(parents[1], document.getElementById('span'), 'second parent is div');
+        same(parents[2], span_text, 'last parent is self');
+        /*不逆序存放祖先节点,closerFirst=false*/
+        parents = domUtils.findParents(span_text, false, null, true);
+        equal(parents.length, 2, 'check parent count');
+        same(parents[0], document.getElementById('span'), 'first parent is span');
+        same(parents[1], editor.body, 'last parent is body');
+        UE.clearCache('ue');
+        te.dom.push(editor.container);
+        start();
+    });
+    stop();
 } );
 
 
 test( 'findParents--tester', function() {
-    var domUtils = te.obj[3];
-    var div = te.dom[2];
-    div.innerHTML = '<div><p id="p"><br /><img id="img" /><table id="table"><tr><td>dddd</td></tr></table></p></div>';
-    var img = document.getElementById( 'img' );
-    var parents = domUtils.findParents( img, false, function( node ) {
-        if ( node.tagName.toLowerCase() == 'div' || node.tagName.toLowerCase() == 'body' )
-            return false;
-        return true;
-    } );
-    equal( parents.length, 1, 'check parent count' );
-    same( parents[0], div.firstChild.firstChild, 'first  parent is p' );
+    var div = document.body.appendChild(document.createElement('div'));
+    div.id = 'ue';
+    var editor = UE.getEditor('ue');
+    editor.ready(function () {
+        var domUtils = UE.dom.domUtils;
+        var div = editor.body;
+        div.innerHTML = '<div><p id="p"><br /><img id="img" /><table id="table"><tr><td>dddd</td></tr></table></p></div>';
+        var img = document.getElementById('img');
+        var parents = domUtils.findParents(img, false, function (node) {
+            if (node.tagName.toLowerCase() == 'div' || node.tagName.toLowerCase() == 'body')
+                return false;
+            return true;
+        });
+        equal(parents.length, 1, 'check parent count');
+        same(parents[0], div.firstChild.firstChild, 'first  parent is p');
+        UE.clearCache('ue');
+        te.dom.push(editor.container);
+        start();
+    });
+    stop();
 } );
 
 test( 'insertAfter', function() {
@@ -447,8 +472,17 @@ test( 'isBlockElm', function() {
 } );
 
 test( 'isbody', function() {
-    var domUtils = te.obj[3];
-    ok( domUtils.isBody( document.body ), 'is body' );
+    var div = document.body.appendChild(document.createElement('div'));
+    div.id = 'ue';
+    var editor = UE.getEditor('ue');
+    editor.ready(function () {
+        var domUtils = UE.dom.domUtils;
+        ok(domUtils.isBody(editor.body), 'is body');
+        UE.clearCache('ue');
+        te.dom.push(editor.container);
+        start();
+    });
+    stop();
 } );
 
 test( 'getElementsByTagName', function() {
