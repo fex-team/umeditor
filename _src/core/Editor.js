@@ -713,6 +713,7 @@
          * @grammar editor.execCommand(cmdName)   => {*}
          */
         execCommand: function (cmdName) {
+
             if(!this.selection.hasNativeRange()){
                 this.focus(true)
             }

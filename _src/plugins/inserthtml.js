@@ -31,19 +31,31 @@ UE.commands['inserthtml'] = {
             var nRng = me.selection.getIERange(true);
             html += '<span id="_ue_tmp_cursor_node">&nbsp;</span>';
             nRng.pasteHTML(html);
-            var $tmp = $('#_ue_tmp_cursor_node',me.body);
-            new dom.Range(document,me.body).setStartBefore($tmp[0]).collapse(true).select();
-            $tmp.remove()
+            var tmp = $('#_ue_tmp_cursor_node',me.body)[0];
+            var rng = new dom.Range(document,me.body).setStartBefore(tmp);
+            $(tmp).remove();
+            if(browser.ie && rng.collapsed && rng.startContainer.nodeType == 1){
+                var tmpNode = rng.startContainer.childNodes[rng.startOffset];
+                if( !tmpNode || tmpNode.nodeType == 1 && dtd.$empty[tmpNode]){
+                    var tmpTxt = me.document.createTextNode(' ');
+                    rng.insertNode(tmpTxt).setStart(tmpTxt,0);
+                }
+            }
+            rng.setCursor(false,true);
+
 
         }else{
             var nativeSel = me.selection.getNative();
             var nativeRange = nativeSel.getRangeAt(0);
             nativeRange.deleteContents();
             var frag = me.document.createDocumentFragment();
-
+            var arr=[];
             $.each($('<div></div>').html(html)[0].childNodes,function(i,n){
+                arr.push(n)
+            });
+            $.each(arr,function(i,n){
                 frag.appendChild(n);
-            })
+            });
 
             nativeRange.insertNode(frag);
             nativeRange.collapse(false);
