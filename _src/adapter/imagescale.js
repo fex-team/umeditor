@@ -1,10 +1,12 @@
 UE.ready(function () {
     var me = this,
-        $imagescale;
+        $imagescale,
+        imageScaleEnabled = me.getOpt('imageScaleEnabled');
 
-    if (browser.webkit) {
+    if(imageScaleEnabled!==false) imageScaleEnabled = true;
+    if (browser.webkit && imageScaleEnabled) {
 
-        me.addListener('click', function (type, e) {
+        me.addListener('click', function () {
             var range = me.selection.getRange(),
                 img = range.getClosedNode();
 
@@ -14,7 +16,7 @@ UE.ready(function () {
                     $imagescale = $.eduiscale({'$wrap':me.$container}).css('zIndex', me.options.zIndex);
                     me.$container.append($imagescale);
 
-                    var _keyDownHandler = function (e) {
+                    var _keyDownHandler = function () {
                         $imagescale.edui().hide();
                     }, _mouseDownHandler = function (e) {
                         var ele = e.target || e.srcElement;
@@ -24,12 +26,12 @@ UE.ready(function () {
                     }, timer;
 
                     $imagescale.edui()
-                        .on('aftershow', function (e) {
+                        .on('aftershow', function () {
                             $(document).bind('keydown', _keyDownHandler);
                             $(document).bind('mousedown', _mouseDownHandler);
                             me.selection.getNative().removeAllRanges();
                         })
-                        .on('afterhide', function (e) {
+                        .on('afterhide', function () {
                             $(document).unbind('keydown', _keyDownHandler);
                             $(document).unbind('mousedown', _mouseDownHandler);
                             var target = $imagescale.edui().getScaleTarget();
