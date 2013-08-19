@@ -36,6 +36,7 @@
             'plugins/selectall.js',
             'plugins/removeformat.js',
             'plugins/keystrokes.js',
+            'plugins/dropfile.js',
             'ui/widget.js',
             'ui/button.js',
             'ui/toolbar.js',
