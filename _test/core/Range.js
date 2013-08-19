@@ -14,6 +14,113 @@ test('init', function () {
     same(range.document, document, 'check current document of range');
 });
 
+/* 删除当前选区范围中的所有内容*/
+test('deleteContents--删除空', function () {
+    var div = te.dom[2];
+    var range = new UE.dom.Range(document);
+    div.innerHTML = '<p>p_text</p>';
+    var p_text = div.firstChild.firstChild;
+    range.setStart(p_text, 2).setEnd(p_text, 2);
+    range.deleteContents();
+    ua.checkResult(range, p_text, p_text, 2, 2, true, '删除空');
+    equal(ua.getHTML(div), '<div id="test"><p>p_text</p></div>', 'div的innerHTML没有改变 ');
+});
+
+test('deleteContents--删除相邻节点之间的内容', function () {
+    var div = te.dom[2];
+    var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
+    div.innerHTML = html;
+    var r = new UE.dom.Range(document);
+    var two = document.getElementById('two');
+    var last = document.getElementById('last');
+    r.setStart(two, 1).setEnd(last, 2);
+    r.deleteContents();
+    ua.checkSameHtml(ua.getHTML(div), '<div id="test"><p id="first">first<!--not--> strong <!-- --><strong id="strong">strong</strong> second <em id="em">em</em> strong.</p><p id="second">bar</p><p id="traverse"><b><em id="em">some text</em></b><em>em text</em>more text</p><table id="table" width="300"><tbody><tr><td>1</td><td id="two">abc</td></tr></tbody></table><p id="last"></p></div>');
+
+    ua.checkResult(r, div, div, 4, 4, true, '删除相邻节点的内容');
+});
+
+
+test('deleteContents--删除子节点', function () {
+    var div = te.dom[2];
+    var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
+    div.innerHTML = html;
+    var r = new UE.dom.Range(document);
+
+    r.setStart(div, 0).setEnd(div, 2);
+    r.deleteContents();
+    ua.checkSameHtml(ua.getHTML(r.startContainer), '<div id="test"><p id="traverse"><b><em id="em">some text</em></b><em>em text</em>more text</p><table id="table" width="300"><tbody><tr><td>1</td><td id="two">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id="last">textabc<span>span</span></p></div>');
+
+    ua.checkResult(r, div, div, 0, 0, true, '删除子节点的内容');
+});
+
+
+test('deleteContents--删除同一文本节点内容', function () {
+    var div = te.dom[2];
+    var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
+    div.innerHTML = html;
+    var r = new UE.dom.Range(document);
+    var p = div.firstChild;
+    var strong_text = document.getElementById('strong').firstChild;
+    r.setStart(strong_text, 0).setEnd(strong_text, 2);
+    r.deleteContents();
+    equals(ua.getHTML(r.startContainer), 'rong');
+
+    ua.checkSameHtml(ua.getHTML(div), '<div id="test"><p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">rong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p></div>');
+    ua.checkResult(r, strong_text, strong_text, 0, 0, true, '删除子节点的内容');
+});
+
+test('deleteContents--startContainer是endContainer父亲', function () {
+    var div = te.dom[2];
+    var r = new UE.dom.Range(document);
+    div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
+    r.setStart(div, 0);
+    r.setEnd(document.getElementById('traverse'), 2);
+    r.deleteContents();
+    ua.checkSameHtml(ua.getHTML(div), '<div id="test"><p id="traverse">more text</p><table id="table" width="300"><tbody><tr><td>1</td><td id="two">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id="last">textabc<span>span</span></p></div>');
+    ua.checkResult(r, div, div, 0, 0, true, 'startContainer是endContainer父亲');
+});
+
+test('deleteContents--startContainer和endContainer为不同文本节点', function () {
+    var div = te.dom[2];
+    var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
+    div.innerHTML = html;
+    var r = new UE.dom.Range(document);
+    var first = document.getElementById('first');
+    r.setStart(first.firstChild, 1).setEnd(first.lastChild, 4);
+    var p = div.firstChild;
+    r.deleteContents();
+    equals(ua.getHTML(r.startContainer), '<p id="first">fong.</p>');
+    ua.checkResult(r, p, p, 1, 1, true, 'startContainer和endContainer为文本节点内容');
+    ua.checkSameHtml(ua.getHTML(div), '<div id="test"><p id="first">fong.</p><p id="second">bar</p><p id="traverse"><b><em id="em">some text</em></b><em>em text</em>more text</p><table id="table" width="300"><tbody><tr><td>1</td><td id="two">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id="last">textabc<span>span</span></p></div>');
+    equals(ua.getHTML(r.endContainer), '<p id="first">fong.</p>');
+});
+
+
+test('deleteContents--startContainer是endContainer后代', function () {
+    var div = te.dom[2];
+    var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
+    div.innerHTML = html;
+    var r = new UE.dom.Range(document);
+    var em = document.getElementById('em');
+    r.setStart(em, 1).setEnd(div, 3);
+    r.deleteContents();
+    ua.checkSameHtml(ua.getHTML(r.startContainer), '<div id="test"><p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em></p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p></div>');
+    ua.checkResult(r, div, div, 1, 1, true, 'startContainer是endContainer后代');
+});
+
+test('deleteContents--startContainer是文本，endContainer的nodeType=1', function () {
+    var div = te.dom[2];
+    var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
+    div.innerHTML = html;
+    var r = new UE.dom.Range(document);
+    var em = document.getElementById('em').firstChild;
+    var two = document.getElementById('two');
+    r.setStart(em, 1).setEnd(two, 0);
+    r.deleteContents();
+    ua.checkSameHtml(ua.getHTML(r.startContainer), '<div id="test"><p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">e</em></p><table id=\"table\" width=\"300\"><tbody><tr><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p></div>');
+    ua.checkResult(r, div, div, 1, 1, true, 'startContainer是文本，endContainer的nodeType=1');
+});
 
 test('setStart/startEnd 自闭合元素', function () {
     var range = new UE.dom.Range(document);
