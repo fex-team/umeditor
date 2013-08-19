@@ -46,7 +46,6 @@
             'ui/popup.js',
             'ui/scale.js',
             'ui/colorpicker.js',
-            'ui/tablepicker.js',
             'ui/combobox.js',
             'ui/buttoncombobox.js',
             'ui/modal.js',
