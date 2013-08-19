@@ -246,7 +246,7 @@ test('两个有序列表，一个无序列表，将无序列表与第二个有�
     equal(body.lastChild.childNodes.length, 2, '无序列表合并到第二个有序列表中了');
 });
 
-test('trace 3293：列表下的文本合并到列表中', function () {
+test('列表下的文本合并到列表中', function () {
     var editor = te.obj[0];
     var range = te.obj[1];
     var body = editor.body;
@@ -503,7 +503,7 @@ test('2个相同类型的列表合并', function () {//按照用例的意思，d
 
 
 
-test('trace 3164：添加列表，取消列表', function () {
+test('添加列表，取消列表', function () {
     var editor = te.obj[0];
     var body = editor.body;
     //var range = te.obj[1];

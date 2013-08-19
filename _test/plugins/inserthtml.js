@@ -1,6 +1,6 @@
 module( "plugins.inserthtml" );
 
-test( 'trace 3301：闭合方式插入文本', function() {
+test( '闭合方式插入文本', function() {
     var editor = te.obj[0];
     var range = te.obj[1];
     var body = editor.body;
