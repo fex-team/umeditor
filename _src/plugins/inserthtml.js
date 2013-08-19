@@ -43,7 +43,7 @@ UE.commands['inserthtml'] = {
 
             $.each($('<div></div>').html(html)[0].childNodes,function(i,n){
                 frag.appendChild(n);
-            })
+            });
 
             nativeRange.insertNode(frag);
             nativeRange.collapse(false);
