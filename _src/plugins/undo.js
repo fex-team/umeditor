@@ -91,6 +91,12 @@ UE.plugins['undo'] = function () {
 
             try{
                 var rng = new dom.Range(me.document,me.body).moveToAddress(scene.address);
+                if(browser.ie && rng.collapsed && rng.startContainer.nodeType == 1){
+                    var tmpNode = rng.startContainer.childNodes[rng.startOffset];
+                    if( !tmpNode || tmpNode.nodeType == 1 && dtd.$empty[tmpNode]){
+                        rng.insertNode(me.document.createTextNode(' ')).collapse(true);
+                    }
+                }
                 rng.select(noNeedFillCharTags[rng.startContainer.nodeName.toLowerCase()]);
             }catch(e){}
 
@@ -100,10 +106,9 @@ UE.plugins['undo'] = function () {
             me.fireEvent('reset', true);
         };
 
-        this.getScene = function (notSetCursor) {
+        this.getScene = function () {
             var me = this.editor;
             var rng = me.selection.getRange(),
-//                restoreAddress = rng.createAddress(),
                 rngAddress = rng.createAddress(false,true);
             me.fireEvent('beforegetscene');
             var root = UE.htmlparser(me.body.innerHTML,true);
@@ -113,9 +118,6 @@ UE.plugins['undo'] = function () {
             var cont = root.toHtml();
             browser.ie && (cont = cont.replace(/>&nbsp;</g, '><').replace(/\s*</g, '<').replace(/>\s*/g, '>'));
             me.fireEvent('aftergetscene');
-            try{
-//               !notSetCursor && rng.moveToAddress(restoreAddress).select(noNeedFillCharTags[rng.startContainer.nodeName.toLowerCase()]);
-            }catch(e){}
             return {
                 address:rngAddress,
                 content:cont

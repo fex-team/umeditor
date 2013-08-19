@@ -29,11 +29,18 @@ UE.commands['inserthtml'] = {
         rng.select();
         if(browser.ie ){
             var nRng = me.selection.getIERange(true);
-            html += '<span id="_ue_tmp_cursor_node">&nbsp;</span> ';
+            html += '<span id="_ue_tmp_cursor_node">&nbsp;</span>';
             nRng.pasteHTML(html);
             var tmp = $('#_ue_tmp_cursor_node',me.body)[0];
             var rng = new dom.Range(document,me.body).setStartBefore(tmp);
             $(tmp).remove();
+            if(browser.ie && rng.collapsed && rng.startContainer.nodeType == 1){
+                var tmpNode = rng.startContainer.childNodes[rng.startOffset];
+                if( !tmpNode || tmpNode.nodeType == 1 && dtd.$empty[tmpNode]){
+                    var tmpTxt = me.document.createTextNode(' ');
+                    rng.insertNode(tmpTxt).setStart(tmpTxt,0);
+                }
+            }
             rng.setCursor(false,true);
 
 
