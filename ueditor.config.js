@@ -325,6 +325,14 @@
         //当输入的字符数超过该值时，保存一次现场
         //,maxInputCount:1
 
+        //imageScaleEnabled
+        // 是否允许点击文件拖拽改变大小,默认true
+        //,imageScaleEnabled:true
+
+        //dropFileEnabled
+        // 是否允许拖放图片到编辑区域，上传并插入,默认true
+        //,dropFileEnabled:true
+
         //autoHeightEnabled
         // 是否自动长高,默认true
         //,autoHeightEnabled:true

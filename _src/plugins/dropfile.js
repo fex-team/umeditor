@@ -1,10 +1,12 @@
 /*
- * 拖放文件到编辑器上传
+ * 拖放文件到编辑器，上传并插入
  */
 UE.plugins['dropfile'] = function() {
-    var me = this;
+    var me = this,
+        dropFileEnabled = me.getOpt('dropFileEnabled');
 
-    if( window.FormData && window.FileReader ) {
+    if(dropFileEnabled!==false) dropFileEnabled = true;
+    if( dropFileEnabled && window.FormData && window.FileReader ) {
         me.addListener('ready', function(){
             me.$body.on('drop',function (e) {
                 //获取文件列表
