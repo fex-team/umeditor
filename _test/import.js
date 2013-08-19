@@ -36,6 +36,7 @@
 ///import plugins/keystrokes;
 ///import plugins/list;
 ///import plugins/video;
+///import plugins/dropfile;
 ///import adapter/adapter;
 ///import adapter/autofloat;
 ///import adapter/autoheight;
@@ -45,6 +46,7 @@
 ///import adapter/fullscreen;
 ///import adapter/popup;
 ///import adapter/imagescale;
+
 
 ///import ui/widget;
 ///import ui/button;
