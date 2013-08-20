@@ -75,7 +75,7 @@ UE.ready(function() {
         } else {
             if (browser.ie7Compat && flag) {
                 flag = false;
-                toolbarBox.style.left =  domUtils.getXY(toolbarBox).x - document.documentElement.getBoundingClientRect().left+2  + 'px';
+                toolbarBox.style.left =  domUtils.getXY(toolbarBox).x - document.documentElement.getBoundingClientRect().left+3  + 'px';
             }
             if(toolbarBox.style.position != 'fixed'){
                 toolbarBox.style.position = 'fixed';
