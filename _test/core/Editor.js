@@ -173,11 +173,10 @@ test("render-- options", function () {
     var div = document.body.appendChild(document.createElement('div'));
     editor.render(div);
     /*会自动用p标签包围*/
-    var space = UE.browser.ie ? '&nbsp;' : '<br>';
-    //策略变化，自1.2.6，div 标签都会被过滤
+//    var space = UE.browser.ie ? '&nbsp;' : '<br>';
     stop();
     editor.ready(function () {
-        equal(ua.getChildHTML(editor.body), '<p><span class="span">xxx</span></p><p>xxx</p><p>' + space + '</p>', 'check initialContent');
+        equal(ua.getChildHTML(editor.body), '<p><span class="span">xxx</span></p><div>xxx<p></p></div>', 'check initialContent');
         te.dom.push(div);
         start();
     });
@@ -206,7 +205,7 @@ test("getContent--转换空格，nbsp与空格相间显示", function () {
             var innerHTML = '<div> x  x   x&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;&nbsp;  &nbsp;</div>';
             editor.setContent(innerHTML);
 
-            equal(editor.getContent(), '<p>x &nbsp;x &nbsp; x&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;&nbsp; &nbsp;&nbsp;</p>', "转换空格，nbsp与空格相间显示，原nbsp不变");
+            equal(editor.getContent(), '<div>x &nbsp;x &nbsp; x&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;&nbsp; &nbsp;&nbsp;</div>', "转换空格，nbsp与空格相间显示，原nbsp不变");
             start();
         }, 100);
     });
@@ -383,7 +382,8 @@ test("queryCommandValue", function () {
     stop();
     editor.ready(function () {
         editor.focus();
-        editor.setContent('<p style="text-align:left">xxx</p>');
+        var html = ua.browser.ie?'<p align="left">xxx</p>':'<p style="text-align:left">xxx</p>';
+        editor.setContent(html);
         var range = new UE.dom.Range(editor.document);
         var p = editor.document.getElementsByTagName("p")[0];
         range.selectNode(p).select();
@@ -533,8 +533,8 @@ test('2个实例采用2个配置文件', function () {
         editor1.ready(function(){
             var editor2 = UE.getEditor('div2',UEDITOR_CONFIG2);
             editor2.ready(function () {
-                equal(editor1.container.style.height, '200px', '编辑器高度为200px');
-                equal(editor2.container.style.height, '400px', '自定义div高度为400px');
+                equal(editor1.body.style.minHeight, '200px', '编辑器高度为200px');
+                equal(editor2.body.style.minHeight, '400px', '自定义div高度为400px');
                 var html = UEDITOR_CONFIG2.initialContent;
                 ua.checkHTMLSameStyle(html, editor2.document, editor2.body.firstChild, '初始内容为自定制的');
                 equal(editor2.options.enterTag, 'br', 'enterTag is br');

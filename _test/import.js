@@ -46,6 +46,7 @@
 ///import adapter/fullscreen;
 ///import adapter/popup;
 ///import adapter/imagescale;
+///import adapter/source;
 
 
 ///import ui/widget;
