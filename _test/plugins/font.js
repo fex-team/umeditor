@@ -17,6 +17,7 @@ test('设置超链接前景色再清除颜色', function () {
         var html = '<font style=\"background-color: rgb(0, 255, 0);\">hello<a href=\"www.baidu.com\">baidu</a></font>';
         ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, '清除前景色');
         equal(editor.body.firstChild.innerHTML.toLowerCase(),html,'前景色为黑');
+
         setTimeout(function () {
             div.parentNode.removeChild(div);
             start();
@@ -37,7 +38,6 @@ test('font转span', function () {
     ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, '不转换font标签');
 });
 
-/*为超链接添加删除线，超链接仍然有删除线，trace946*/
 test('underline and linethrough', function () {
     var editor = te.obj[2];
     var div = document.body.appendChild(document.createElement('div'));
