@@ -1,5 +1,5 @@
 /**
- * Created by JetBrains PhpStorm.
+ * Created with JetBrains PhpStorm.
  * User: Jinqn
  * Date: 13-8-19
  * Time: 下午4:33
@@ -11,7 +11,7 @@ test( '检查toolbar是否浮动在页面顶端', function() {
     sc.id="sc";
     sc.type = "text/plain";
     document.body.appendChild(sc);
-    var me = UE.getEditor(sc.id, {autoFloatEnabled:false,initialFrameWidth:800,initialFrameHeight:100,autoHeightEnabled:true});
+    var me = UE.getEditor(sc.id, {autoFloatEnabled:true,initialFrameWidth:800,initialFrameHeight:100,autoHeightEnabled:true});
     stop();
     me.ready(function(){
         setTimeout(function () {
