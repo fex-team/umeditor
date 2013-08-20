@@ -21,7 +21,7 @@ UE.plugins['dropfile'] = function() {
 
                             //模拟数据
                             var fd = new FormData();
-                            fd.append(me.getOpt('imageFieldName'), f);
+                            fd.append(me.getOpt('imageFieldName') || 'upfile', f);
                             fd.append('type', 'ajax');
 
                             xhr.send(fd);
