@@ -12,7 +12,7 @@ test( '判断有没有触发fullscreenchanged事件', function () {
     var div = te.dom[0];
     editor.render(div);
     editor.ready(function () {
-        var $btn = UE.getUI(editor, 'bold');
+        var $btn = editor.$container.find('.edui-btn-bold');
         equal($btn.edui().disabled(), editor.queryCommandState('bold') == -1, '判断初始化后ui对象disable状态是否正常');
         equal($btn.edui().active(), editor.queryCommandState('bold') == 1, '判断初始化后ui对象active状态是否正常');
         $btn.click();
