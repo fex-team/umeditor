@@ -7,7 +7,7 @@ UE.registerUI('paragraph fontfamily fontsize', function( name ) {
             label: label,
             title: label,
             comboboxName: name,
-            items: me.options[ name ],
+            items: me.options[ name ] || [],
             itemStyles: [],
             value: [],
             autowidthitem: []
