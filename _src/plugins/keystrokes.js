@@ -90,12 +90,22 @@ UE.plugins['keystrokes'] = function() {
                     return;
                 }
             }
-
+            start = rng.startContainer;
+            if(rng.collapsed && start.nodeType == 1){
+                var currentNode = start.childNodes[rng.startOffset-1];
+                if(currentNode && currentNode.nodeType == 1 && currentNode.tagName == 'BR'){
+                    me.fireEvent('saveScene');
+                    rng.setStartBefore(currentNode).collapse(true);
+                    domUtils.remove(currentNode);
+                    rng.select();
+                    me.fireEvent('saveScene');
+                }
+            }
         }
         //trace:1634
         //ff的del键在容器空的时候，也会删除
         if(browser.gecko && keyCode == 46){
-            range = me.selection.getRange();
+            var range = me.selection.getRange();
             if(range.collapsed){
                 start = range.startContainer;
                 if(domUtils.isEmptyBlock(start)){
