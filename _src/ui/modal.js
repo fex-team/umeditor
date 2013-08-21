@@ -21,8 +21,7 @@ UE.ui.define('modal', {
         width: '',
         height: '',
         backdrop: true,
-        keyboard: true,
-        show: false
+        keyboard: true
     },
     init: function (options) {
         var me = this;
