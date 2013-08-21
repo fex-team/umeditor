@@ -100,7 +100,23 @@ test('trace 1742  isFocus', function () {
     }
 });
 
+test( 'getText', function() {
+    stop();
+    setTimeout( function() {
+        var doc = te.dom[1].contentWindow.document;
+        var range = new UE.dom.Range( doc );
+        var div = doc.createElement( 'div' );
+        doc.body.appendChild( div );
+        div.innerHTML = '<em></em><span>spanText</span><strong>first</strong>second';
 
+        range.setStart( div.firstChild, 0 ).setEnd( div.lastChild, 1 ).select();
+        var selection = new UE.dom.Selection( doc );
+
+        var text = selection.getText();
+        equal( text, 'spanTextfirsts', 'check getText function' );
+        start();
+    }, 20 );
+} );
 
 
 

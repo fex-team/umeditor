@@ -54,8 +54,7 @@ UE.ready(function() {
             rect.bottom = rect.top + rect.height;
             rect.right = rect.left + rect.width;
             return rect;
-        },
-        flag =true;   //ie7模式下需要偏移
+        };
     var isFullScreening = false;
     function setFloating(){
         if(isFullScreening){
@@ -73,10 +72,6 @@ UE.ready(function() {
             }
             toolbarBox.style.top = (document.body.scrollTop||document.documentElement.scrollTop) - orgTop + topOffset  + 'px';
         } else {
-            if (browser.ie7Compat && flag) {
-                flag = false;
-                toolbarBox.style.left =  domUtils.getXY(toolbarBox).x - document.documentElement.getBoundingClientRect().left+2  + 'px';
-            }
             if(toolbarBox.style.position != 'fixed'){
                 toolbarBox.style.position = 'fixed';
                 toolbarBox.style.top = topOffset +"px";
@@ -85,7 +80,6 @@ UE.ready(function() {
         }
     }
     function unsetFloating(){
-        flag = true;
 
         if(placeHolder.parentNode){
             placeHolder.parentNode.removeChild(placeHolder);

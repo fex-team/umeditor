@@ -35,16 +35,6 @@ UE.ui.define('colorpicker', {
         var me = this;
         me.root($($.parseTmpl(me.supper.mergeTpl(me.tpl(options)),options)));
 
-        me.root().find("table")
-            .on("mouseover",function (e) {
-                var color = e.target.getAttribute('data-color');
-                if (color) {
-                    me.root().find(".edui-colorpicker-preview").css("background-color", color);
-                }
-            })
-            .on("mouseout",function () {
-                me.root().find(".edui-colorpicker-preview").css("background-color", "");
-            });
         me.root().on("click",function (e) {
             me.trigger('pickcolor',  $(e.target).data('color'));
         });
