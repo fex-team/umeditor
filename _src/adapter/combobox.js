@@ -52,11 +52,13 @@ UE.registerUI('paragraph fontfamily fontsize', function( name ) {
 
         //设置按钮状态
         comboboxWidget.button().edui().disabled( state == -1 ).active( state == 1 );
+        if(value){
+            //设置label
+            value = value.replace(/['"]/g, '').toLowerCase().split(/['|"]?\s*,\s*[\1]?/);
 
-        //设置label
-        value = value.replace(/['"]/g, '').toLowerCase().split(/['|"]?\s*,\s*[\1]?/);
+            comboboxWidget.selectItemByLabel( value );
+        }
 
-        comboboxWidget.selectItemByLabel( value );
 
     });
 
