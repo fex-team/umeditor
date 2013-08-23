@@ -352,12 +352,15 @@
             if(!browser.ie || browser.ie9above){
 
                 domUtils.on(me.body, ['blur', 'focus'], function (e) {
+                    var nSel = me.selection.getNative();
                     //chrome下会出现alt+tab切换时，导致选区位置不对
                     if (e.type == 'blur') {
-                        me._bakRange = me.selection.getRange();
+                        if(nSel.rangeCount > 0 ){
+                            me._bakRange = nSel.getRangeAt(0);
+                        }
                     } else {
                         try {
-                            me._bakRange && me._bakRange.select();
+                            me._bakRange && nSel.addRange(me._bakRange)
                         } catch (e) {
                         }
                         me._bakRange = null;

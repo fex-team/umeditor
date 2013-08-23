@@ -19,8 +19,7 @@ test( '插入新图像', function () {
     equal( img.getAttribute( 'height' ), '52', '比较height' );
 } );
 
-/*trace 1490 不设宽高，插入图片*/
-test( 'trace 1490 不设宽高，插入图片', function () {
+test( '不设宽高，插入图片', function () {
     var editor = te.obj[0];
     var range = te.obj[1];
     var body = editor.body;

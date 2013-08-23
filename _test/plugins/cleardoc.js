@@ -46,7 +46,6 @@ test('选中文本，清空',function(){
     equal(ua.getChildHTML(editor.body),'<p>'+br+'</p>','');
 });
 
-/*trace 1104*/
 test( '全选后删除', function() {
     var editor = te.obj[0];
     if ( UE.browser.ie )

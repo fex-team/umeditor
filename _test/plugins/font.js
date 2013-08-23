@@ -12,11 +12,12 @@ test('设置超链接前景色再清除颜色', function () {
         editor.execCommand('forecolor', 'rgb(255,0,0)');
         editor.execCommand('backcolor', 'rgb(0,255,0)');
         editor.execCommand('forecolor', 'rgb(0,0,0)');
-        //        var html = '<span style="background-color: rgb(0, 255, 0);">hello</span><a href="www.baidu.com" _href=\"www.baidu.com\" style="text-decoration: underline;"><span style="background-color: rgb(0, 255, 0);">baidu</span></a>';todo 1.2.6.1 样式复制了一次
+        //var html = '<span style="background-color: rgb(0, 255, 0);">hello</span><a href="www.baidu.com" _href=\"www.baidu.com\" style="text-decoration: underline;"><span style="background-color: rgb(0, 255, 0);">baidu</span></a>';todo 1.2.6.1 样式复制了一次
         //var html = '<span style="background-color: rgb(0, 255, 0);">hello</span><a href="www.baidu.com" _href=\"www.baidu.com\" style="background-color: rgb(0, 255, 0);text-decoration: underline;"><span style="background-color: rgb(0, 255, 0);">baidu</span></a>';
         var html = '<font style=\"background-color: rgb(0, 255, 0);\">hello<a href=\"www.baidu.com\">baidu</a></font>';
         ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, '清除前景色');
         equal(editor.body.firstChild.innerHTML.toLowerCase(),html,'前景色为黑');
+
         setTimeout(function () {
             div.parentNode.removeChild(div);
             start();
@@ -37,7 +38,6 @@ test('font转span', function () {
     ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, '不转换font标签');
 });
 
-/*为超链接添加删除线，超链接仍然有删除线，trace946*/
 test('underline and linethrough', function () {
     var editor = te.obj[2];
     var div = document.body.appendChild(document.createElement('div'));
@@ -82,8 +82,7 @@ test('underline and linethrough', function () {
 
 
 
-/*trace 918*/
-test('trace 918：字体的状态反射', function () {
+test('字体的状态反射', function () {
     var editor = te.obj[2];
     var div = document.body.appendChild(document.createElement('div'));
     $(div).css('width', '500px').css('height', '500px').css('border', '1px solid #ccc');
@@ -146,8 +145,7 @@ test('选中文本设置前景色',function(){
 });
 
 
-/*trace 809*/
-test('trace 809：闭合时改变前景色和删除线，再输入文本', function () {
+test('闭合时改变前景色和删除线，再输入文本', function () {
     if (!ua.browser.opera) {
         var editor = te.obj[2];
         var div = document.body.appendChild(document.createElement('div'));
@@ -181,7 +179,6 @@ test('trace 809：闭合时改变前景色和删除线，再输入文本', funct
     }
 });
 
-/*trace 805*/
 //test('trace 805：切换删除线和下划线，前景色没了', function () {
 //    var editor = te.obj[2];
 //    var div = document.body.appendChild(document.createElement('div'));
@@ -209,8 +206,7 @@ test('trace 809：闭合时改变前景色和删除线，再输入文本', funct
 //});
 
 
-//trace 805
-test('trace 805:对字体设置前景色，然后进行下划线和删除线操作，前景色不消失',function(){
+test(':对字体设置前景色，然后进行下划线和删除线操作，前景色不消失',function(){
     var editor = te.obj[0];
     var range = te.obj[1];
     editor.setContent('<p><strong>你好北京</strong></p>');
@@ -229,8 +225,7 @@ test('trace 805:对字体设置前景色，然后进行下划线和删除线操�
     equal(editor.getContent(editor.body),html,'try');
 });
 
-/*trace 802*/
-test('trace 802：为设置了字体的文本添加删除线', function () {
+test('为设置了字体的文本添加删除线', function () {
     var editor = te.obj[2];
     var div = document.body.appendChild(document.createElement('div'));
     $(div).css('width', '500px').css('height', '500px').css('border', '1px solid #ccc');
@@ -259,8 +254,7 @@ test('trace 802：为设置了字体的文本添加删除线', function () {
     });
 });
 
-/*trace 744*/
-test('trace 744：设置超链接背景色后切换到源码再切回来', function () {
+test('设置超链接背景色后切换到源码再切回来', function () {
     var editor = te.obj[2];
     var div = document.body.appendChild(document.createElement('div'));
     $(div).css('width', '500px').css('height', '500px').css('border', '1px solid #ccc');
@@ -272,12 +266,13 @@ test('trace 744：设置超链接背景色后切换到源码再切回来', funct
         range.selectNode(editor.body.firstChild).select();
         editor.execCommand('backcolor', 'rgb(255,0,0)');
         var html = editor.body.firstChild.innerHTML;
+        //var html1 = editor.body.firstChild.outerHTML;
         editor.execCommand('source');
         setTimeout(function () {
             editor.execCommand('source');
             setTimeout(function () {
                 ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, '切换后html代码不变');
-                //equal();
+                //equal(ua.getChildHTML(editor.body),html1.toLowerCase(),'try');
                 /*切换源码前后代码应当相同*/
                 div.parentNode.removeChild(div);
                 start();
@@ -287,7 +282,6 @@ test('trace 744：设置超链接背景色后切换到源码再切回来', funct
 });
 
 
-/*trace 740*/
 //test('trace 740：设置左右字为红色，修改部分字颜色为蓝色，再修改所有字体', function () {//在ff下 有东西没删干净
 //    var editor = te.obj[2];
 //    var div = document.body.appendChild(document.createElement('div'));
@@ -342,14 +336,11 @@ test('trace 740：设置左右字为红色，修改部分字颜色为蓝色，�
             var html1 = '<p><span style=\"color:rgb(255,0,0);font-family: 楷体, 楷体_GB2312, SimKai \">你好</span><span style=\"color:rgb(0,255,0)\">早安</span></p>';
             equal(editor.getContent(editor.body),html1,'查看字体和颜色是否正确');
         }
-
         start();
     }, 50);
 });
 
-
-/*trace 721*/
-test('trace 721：预先设置下划线和字体颜色，再输入文本，查看下划线颜色', function () {
+test('预先设置下划线和字体颜色，再输入文本，查看下划线颜色', function () {
     if (!ua.browser.opera) {
         var editor = te.obj[2];
         var div = document.body.appendChild(document.createElement('div'));
@@ -375,15 +366,6 @@ test('trace 721：预先设置下划线和字体颜色，再输入文本，查�
     }
 });
 
-//test('转换font标签', function () {
-//    var editor = te.obj[0];
-//    editor.setContent('<font size="16" color="red"><b><i>x</i></b></font>');
-//    var html = '<p><span style="font-size:16px;color:red" ><strong><em>x</em></strong></span></p>';
-//    ua.checkHTMLSameStyle(html, editor.document, editor.body, '转换font标签');
-//    editor.setContent('<font style="color:red"><u>x</u></font>');
-//    html = '<span style="color:red"><span style="text-decoration:underline;">x</span></span>';
-//    ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, '转换font标签');
-//});
 
 test('font标签不发生转换', function () {
     var editor = te.obj[0];
@@ -405,7 +387,6 @@ test('font标签不发生转换', function () {
 });
 
 
-/*为不同字号的文本加背景色，trace981*/
 test('background--不同字号', function () {
     if (!ua.browser.opera) {
         var editor = te.obj[2];

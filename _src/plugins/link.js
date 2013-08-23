@@ -26,8 +26,12 @@ UE.plugins['link'] = function(){
             var me = this;
             me.document.execCommand('createlink',false,'_ueditor_link');
             utils.each(domUtils.getElementsByTagName(me.body,'a',function(n){
+
                 return n.getAttribute('href') == '_ueditor_link'
             }),function(l){
+                if($(l).text() == '_ueditor_link'){
+                    $(l).text(opt.href);
+                }
                 domUtils.setAttributes(l,opt)
             })
         }

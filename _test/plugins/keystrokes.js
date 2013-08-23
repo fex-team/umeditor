@@ -63,7 +63,7 @@ test('删除块元素，块元素在前',function(){
     stop();
 });
 
-test('trace 2747 普通情况,选中一个节点，输入tab键',function(){
+test('普通情况,选中一个节点，输入tab键',function(){
     var editor = te.obj[0];
     editor.setContent( '<h1>hello<br></h1><p>he<img src="http://img.baidu.com/hi/jx2/j_0015.gif" />oll</p>' );
     var range = te.obj[1];
@@ -81,7 +81,7 @@ test('trace 2747 普通情况,选中一个节点，输入tab键',function(){
     stop();
 });
 
-test('trace 2746 删除自闭合标签',function(){
+test('删除自闭合标签',function(){
     var editor = te.obj[0];
     editor.setContent( '<h1>hello<br></h1><p>he<img src="http://img.baidu.com/hi/jx2/j_0015.gif" />oll</p>' );
     var range = te.obj[1];
@@ -229,7 +229,7 @@ test( '删除inline的标签', function() {
         setTimeout(function(){
             ua.manualDeleteFillData( editor.body );
             equal( editor.body.firstChild.tagName.toLowerCase(), 'p', 'strong 以及子inline节点都被删除' );
-            if ( !baidu.editor.browser.ie )
+            if ( !ua.browser.ie )
                 equal( editor.body.lastChild.innerHTML, '<br>', '内容被删除了' );
             else
                 equal( editor.body.lastChild.innerHTML, '', '内容被删除了' );
@@ -253,7 +253,7 @@ test( '跨行选择2个块元素', function() {
             ua.manualDeleteFillData( editor.body );
             range = editor.selection.getRange();
             equal( body.childNodes.length, 1, 'div被删除，保留p' );
-            var br = baidu.editor.browser.ie?"":"<br>";
+            var br = ua.browser.ie?"":"<br>";
             equal( ua.getChildHTML( body ), '<p>'+br+'</p>' );
             start();
         },20);
