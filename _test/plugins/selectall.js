@@ -26,7 +26,7 @@ test( 'a part of the content is selected', function () {
         equal( editor.getContent(db), "<p><em><strong>xxxx</strong></em></p><p><strong>ssss</strong></p>", "after calling selectAll command" );
 } );
 
-test( 'trace1743 :content is null', function () {
+test( 'content is null', function () {
     var editor = te.obj[0];
     var range = te.obj[1];
     editor.setContent( '<p><br></p>' );

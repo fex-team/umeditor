@@ -3,8 +3,8 @@ function getDiv(){
     var div = document.body.appendChild(document.createElement('div'));
     return div.appendChild(document.createElement('div'));
 }
-/*trace 856*/
-test('trace 856 输入文本后撤销按钮不亮', function () {
+
+test('输入文本后撤销按钮不亮', function () {
     var div = getDiv();
     div.id = 'ue';
     var editor = UE.getEditor('ue');
@@ -25,8 +25,7 @@ test('trace 856 输入文本后撤销按钮不亮', function () {
     stop();
 });
 
-/*trace 617*/
-test('trace 617 插入文本、分割线、文本,撤销2次，撤销掉分割线', function () {
+test('插入文本、分割线、文本,撤销2次，撤销掉分割线', function () {
     var div = getDiv();
     div.id = 'ue';
     var editor = UE.getEditor('ue');

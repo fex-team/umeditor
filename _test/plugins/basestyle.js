@@ -1,6 +1,5 @@
 module( "plugins.basestyle" );
 
-/*trace 1043*/
 test( 'bold-在已加粗文本中间去除加粗', function () {
     var editor = te.obj[0];
     var body = editor.body;
@@ -15,7 +14,6 @@ test( 'bold-在已加粗文本中间去除加粗', function () {
 //    equal( ua.getChildHTML( body.firstChild ), "aa<strong>hello</strong>ssss", "新文本节点没有加粗" );
 } );
 
-/*trace 958*/
 test( 'bold-不focus时，点击加粗，不会多出一行', function () {
     var editor = te.obj[0];
     var body = editor.body;
@@ -25,12 +23,11 @@ test( 'bold-不focus时，点击加粗，不会多出一行', function () {
     ok( ua.getChildHTML( body ), "<stong></stong>", "editor不focus时点加粗，不会多一个空行" );
 } );
 
-/*trace 958*/
 test( 'bold-加粗状态反射', function () {
     var editor = te.obj[0];
     var body = editor.body;
     var range = te.obj[1];
-    editor.setContent( '<p>this is a dog</p>' );
+    editor.setContent( '<p>This is a dog</p>' );
     stop();
     setTimeout( function () {
         range.selectNode( body.firstChild ).select();
@@ -44,7 +41,6 @@ test( 'bold-加粗状态反射', function () {
     }, 100 )
 } );
 
-/*trace 580*/
 test( 'bold-连续加粗2次', function () {
     var editor = te.obj[0];
     var body = editor.body;
@@ -62,7 +58,6 @@ test( 'bold-连续加粗2次', function () {
     equal( editor.queryCommandState( 'bold' ), 1, '加粗高亮' );
 } );
 
-/*trace 1983*/
 test( 'bold-2个单词，中间有空格第一个单词加粗，第二个单词加粗再去加粗', function () {
     var editor = te.obj[0];
     var body = editor.body;

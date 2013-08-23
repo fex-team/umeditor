@@ -45,7 +45,6 @@ test('chrome删除后切换源码再切换回来，光标没了', function () {
     te.dom.push(div);
 });
 
-//trace 852
 test('切换源码，源码中多处空行', function () {
     var editor = te.obj[0];
     editor.setContent('<p>hello<a href="http://www.baidu.com/">baidu</a></p>');
@@ -119,7 +118,7 @@ test('b,i标签，切换源码后自动转换成strong和em', function () {
     equal(editor.getContent(), '<p><strong>加粗的内容</strong><em>斜体的内容<strong>加粗且斜体</strong></em></p>');
 });
 
-test('trace 1734 range的更新/特殊符号的转换', function () {
+test(' range的更新/特殊符号的转换', function () {
     var editor = te.obj[0];
     editor.setContent('<p>"<></p>');
     setTimeout(function () {
@@ -150,7 +149,6 @@ test('trace 1734 range的更新/特殊符号的转换', function () {
     stop();
 });
 
-/*trace 1234 */
 test('默认插入的占位符', function () {
     var editor = te.obj[0];
     editor.setContent('');
@@ -172,7 +170,7 @@ test('不以http://开头的超链接绝对路径网址', function () {
     stop();
 });
 
-test('trace 1727:插入超链接后再插入空格，空格不能被删除', function () {
+test('插入超链接后再插入空格，空格不能被删除', function () {
     var editor = te.obj[0];
     editor.setContent('<p> <a href="http://www.baidu.com/">绝对路径网址</a>  ddd</p>');
     setTimeout(function () {
@@ -210,7 +208,7 @@ test('在font,b,i标签中输入，会自动转换标签 ', function () {
     stop();
 //    }
 });
-test('trace 3334:img和a之间不会产生多余空格', function () {
+test('img和a之间不会产生多余空格', function () {
     var editor = te.obj[0];
     editor.setContent('<p><img src="http://img.baidu.com/hi/jx2/j_0001.gif" /><a href="http://www.baidu.com">http://www.baidu.com</a></p>');
     setTimeout(function () {
@@ -230,7 +228,7 @@ test('trace 3334:img和a之间不会产生多余空格', function () {
     stop();
 });
 
-test('trace 3349：带颜色的span切到源码再切回，不会丢失span', function () {
+test('带颜色的span切到源码再切回，不会丢失span', function () {
     var editor = te.obj[0];
     editor.setContent('<p><span style="color: rgb(255, 0, 0);"></span><br></p>');
     setTimeout(function () {
