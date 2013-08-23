@@ -53,6 +53,50 @@ var domUtils = dom.domUtils = {
         37: 1, 38: 1, 39: 1, 40: 1,
         13: 1 /*enter*/
     },
+    breakParent:function (node, parent) {
+        var tmpNode,
+            parentClone = node,
+            clone = node,
+            leftNodes,
+            rightNodes;
+        do {
+            parentClone = parentClone.parentNode;
+            if (leftNodes) {
+                tmpNode = parentClone.cloneNode(false);
+                tmpNode.appendChild(leftNodes);
+                leftNodes = tmpNode;
+                tmpNode = parentClone.cloneNode(false);
+                tmpNode.appendChild(rightNodes);
+                rightNodes = tmpNode;
+            } else {
+                leftNodes = parentClone.cloneNode(false);
+                rightNodes = leftNodes.cloneNode(false);
+            }
+            while (tmpNode = clone.previousSibling) {
+                leftNodes.insertBefore(tmpNode, leftNodes.firstChild);
+            }
+            while (tmpNode = clone.nextSibling) {
+                rightNodes.appendChild(tmpNode);
+            }
+            clone = parentClone;
+        } while (parent !== parentClone);
+        tmpNode = parent.parentNode;
+        tmpNode.insertBefore(leftNodes, parent);
+        tmpNode.insertBefore(rightNodes, parent);
+        tmpNode.insertBefore(node, rightNodes);
+        domUtils.remove(parent);
+        return node;
+    },
+    trimWhiteTextNode:function (node) {
+        function remove(dir) {
+            var child;
+            while ((child = node[dir]) && child.nodeType == 3 && domUtils.isWhitespace(child)) {
+                node.removeChild(child);
+            }
+        }
+        remove('firstChild');
+        remove('lastChild');
+    },
     /**
      * 获取节点A相对于节点B的位置关系
      * @name getPosition
