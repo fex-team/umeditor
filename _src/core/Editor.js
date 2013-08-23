@@ -257,9 +257,7 @@
 
                 container.style.width = /%$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth - getStyleValue("padding-left")- getStyleValue("padding-right")   +'px';
                 var height = /%$/.test(options.initialFrameHeight) ?  '100%' : (options.initialFrameHeight - getStyleValue("padding-top")- getStyleValue("padding-bottom") );
-                if(!(browser.ie&&browser.version<=6)){
-                    container.style.minHeight = height +'px';
-                }
+                container.style.minHeight = height +'px';
                 container.style.height = '';
                 container.style.zIndex = options.zIndex;
 
