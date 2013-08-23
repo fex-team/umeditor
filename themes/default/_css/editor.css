@@ -18,10 +18,10 @@
 }
 .edui-container .edui-editor-body{
     position: relative;
+    _position:static;
     background-color: #fff;
-
 }
 .edui-editor-body .edui-body-container{
     position: relative;
-
+    _position:static;
 }
