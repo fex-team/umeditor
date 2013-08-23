@@ -107,7 +107,9 @@ UE.ready(function() {
 
     if(checkHasUI(me)){
         toolbarBox = $('.edui-toolbar',me.container)[0];
-        orgTop = getPosition(toolbarBox).top;
+        me.addListener("afteruiready",function(){
+            orgTop = getPosition(toolbarBox).top;
+        });
         bakCssText = toolbarBox.style.cssText;
         placeHolder.style.height = toolbarBox.offsetHeight + 'px';
         if(LteIE6){
