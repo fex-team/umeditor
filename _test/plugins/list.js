@@ -278,7 +278,7 @@ test('列表下的文本合并到列表中', function () {
     equal(ua.getChildHTML(body.firstChild), '<li>hello3</li><li>hello1</li><li>文本1'+br+'</li><li>文本2'+br+'</li>', '4个li子节点');
 });
 
-test('2个相同类型的列表合并', function () {
+test('trace 3586 :2个相同类型的列表合并', function () {
     var editor = te.obj[0];
     var range = te.obj[1];
     var body = editor.body;

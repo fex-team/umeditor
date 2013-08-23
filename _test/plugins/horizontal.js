@@ -1,7 +1,7 @@
 module( "plugins.horizontal" );
 
 //normal
-test( 'horizontal', function() {
+test( 'trace 3587:horizontal', function() {
     var editor = te.obj[0];
     var d = editor.document;
     var range = te.obj[1];
