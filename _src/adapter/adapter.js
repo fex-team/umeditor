@@ -136,6 +136,7 @@
 
 
                 var $container = this.createUI('#' + id, editor);
+
                 editor.ready(function(){
                     $.each( _readyFn, function( index, fn ){
                         $.proxy( fn, editor )();
@@ -164,7 +165,9 @@
 
                 $container.find('a').click(function(evt){
                     evt.preventDefault()
-                })
+                });
+
+                editor.fireEvent("afteruiready");
             }
 
             return editor;
