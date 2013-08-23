@@ -54,8 +54,7 @@ test( '不设宽高，插入图片', function () {
 //    equal( img.getAttribute( 'height' ), '51', '比较height' );
 //} );
 
-test( '修改已有图片的属性', function () { //ie下有问题  4804 对象不支持这个属性或者方法 nRng.pasteHTML(html);
-     if(!ua.browser.ie){
+test( '修改已有图片的属性', function () {
         var editor = te.obj[0];
         var range = te.obj[1];
         var body = editor.body;
@@ -64,7 +63,6 @@ test( '修改已有图片的属性', function () { //ie下有问题  4804 对象
         editor.execCommand( 'insertimage', {src:'http://img.baidu.com/hi/jx2/j_0018.gif'} );
         equal( ua.getChildHTML( body.firstChild ), '<img src="http://img.baidu.com/hi/jx2/j_0018.gif">hello<img src="http://img.baidu.com/hi/jx2/j_0010.gif">', '检查插入的图像地址' );
         equal( body.firstChild.childNodes.length, 3, '2个img孩子' );
-   }
 } );
 
 
@@ -80,8 +78,8 @@ test( 'trace3574 替换图片', function () {  //这个用例的问题  应该�
     range.selectNode( body.firstChild.firstChild ).select();
     editor.execCommand( 'insertimage', {src:'../data/test.JPG', width:50, height:80} );
     var img = body.getElementsByTagName( 'img' )[0];
-    equal(img.getAttribute('width'),'50','我的比较width');
-    equal(img.getAttribute('height'),'80','我的比较width');
+    equal(img.getAttribute('width'),'50','比较width');
+    equal(img.getAttribute('height'),'80','比较width');
     ok(/data\/test\.JPG/.test( img.getAttribute( 'src' )), '比较src' );
 } );
 
@@ -96,7 +94,7 @@ test( '选区不闭合插入图像', function () {
         range.setStart( body.firstChild.firstChild, 2 ).setEnd( body.lastChild, 2 ).select();
         editor.execCommand( 'insertimage', {src:'http://img.baidu.com/hi/jx2/j_0016.gif', width:'100', height:'100'} );
         ua.manualDeleteFillData( editor.body );
-        equal( body.childNodes.length, ua.browser.ie?1:3, '只有一个p' );
+        equal( body.childNodes.length, 1, '只有一个p' );
         ua.clearWhiteNode(body.firstChild);
         var img = body.getElementsByTagName('img')[0];
         equal( img.getAttribute( 'src' ), 'http://img.baidu.com/hi/jx2/j_0016.gif', '比较src' );
