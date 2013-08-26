@@ -80,6 +80,9 @@ test('ctrl+z/y', function () {
         setTimeout(function () {
             ua.keydown(editor.body, {'keyCode':66, 'ctrlKey':true});
             setTimeout(function () {
+                if(ua.browser.ie)
+                equal(ua.getChildHTML(p),'<strong>没有加粗的文本</strong>');
+                else
                 equal(ua.getChildHTML(p), '<b>没有加粗的文本</b>');
                 ua.keydown(editor.body, {'keyCode':90, 'ctrlKey':true});
                 setTimeout(function () {
@@ -102,6 +105,7 @@ test('ctrl+z/y', function () {
 
 test('reset,index', function () {
     var editor = te.obj[0];
+    var br = ua.browser.ie? '&nbsp;': '';
     editor.setContent('<p></p>');
     editor.focus();
     editor.execCommand('horizontal');
@@ -117,6 +121,6 @@ test('reset,index', function () {
     equal(editor.undoManger.index,0,'reset,undoManger.index清空');
     editor.undoManger.redo();
     ua.manualDeleteFillData(editor.body);
-    equal(ua.getChildHTML(editor.body), '<p></p>','检查内容');
+    equal(ua.getChildHTML(editor.body), '<p>'+br+'</p>','检查内容');
 
 });
