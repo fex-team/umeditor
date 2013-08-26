@@ -109,8 +109,8 @@ UE.ready(function() {
         toolbarBox = $('.edui-toolbar',me.container)[0];
         me.addListener("afteruiready",function(){
             setTimeout(function(){
-                orgTop = getPosition(toolbarBox).top;
-            })
+                orgTop = $(toolbarBox).offset().top;
+            },100);
         });
         bakCssText = toolbarBox.style.cssText;
         placeHolder.style.height = toolbarBox.offsetHeight + 'px';
