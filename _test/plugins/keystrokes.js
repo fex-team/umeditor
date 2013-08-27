@@ -7,24 +7,24 @@
  */
 module( "plugins.keystrokes" );
 
-test('跨节点输入tab键',function(){
-    //todo ie9,10改range bug trace
-    var editor = te.obj[0];
-    editor.setContent( '<h1>hello<br></h1><p>he<img src="http://img.baidu.com/hi/jx2/j_0015.gif" />oll</p>' );
-    var range = te.obj[1];
-    setTimeout(function(){
-        range.setStart( editor.body.lastChild.firstChild,0 ).setEnd(editor.body.lastChild.firstChild.nextSibling,1).select();
-        ua.keydown(editor.body,{'keyCode':9});
-        ua.keyup(editor.body,{'keyCode':9});
-        setTimeout(function(){
-            equal(te.obj[0].undoManger.list.length,2,'');
-            var html = '<h1>hello<br></h1><p>&nbsp;&nbsp;&nbsp;&nbsp;he<img src=\"http://img.baidu.com/hi/jx2/j_0015.gif\" _src=\"http://img.baidu.com/hi/jx2/j_0015.gif\">oll</p>';
-            equal(ua.getChildHTML(te.obj[0].body),html,'跨节点输入tab键');
-            start();
-        },20);
-    },20);
-    stop();
-});
+//test('跨节点输入tab键',function(){//mini下没做
+//    //todo ie9,10改range bug trace
+//    var editor = te.obj[0];
+//    editor.setContent( '<h1>hello<br></h1><p>he<img src="http://img.baidu.com/hi/jx2/j_0015.gif" />oll</p>' );
+//    var range = te.obj[1];
+//    setTimeout(function(){
+//        range.setStart( editor.body.lastChild.firstChild,0 ).setEnd(editor.body.lastChild.firstChild.nextSibling,1).select();
+//        ua.keydown(editor.body,{'keyCode':9});
+//        ua.keyup(editor.body,{'keyCode':9});
+//        setTimeout(function(){
+//            equal(te.obj[0].undoManger.list.length,2,'');
+//            var html = '<h1>hello<br></h1><p>&nbsp;&nbsp;&nbsp;&nbsp;he<img src=\"http://img.baidu.com/hi/jx2/j_0015.gif\" _src=\"http://img.baidu.com/hi/jx2/j_0015.gif\">oll</p>';
+//            equal(ua.getChildHTML(te.obj[0].body),html,'跨节点输入tab键');
+//            start();
+//        },20);
+//    },20);
+//    stop();
+//});
 
 test('删除块元素，块元素在后',function(){
     var editor = te.obj[0];
@@ -63,23 +63,23 @@ test('删除块元素，块元素在前',function(){
     stop();
 });
 
-test('普通情况,选中一个节点，输入tab键',function(){
-    var editor = te.obj[0];
-    editor.setContent( '<h1>hello<br></h1><p>he<img src="http://img.baidu.com/hi/jx2/j_0015.gif" />oll</p>' );
-    var range = te.obj[1];
-    setTimeout(function(){
-        range.setStart( editor.body.lastChild,1 ).setEnd(editor.body.lastChild,2).select();
-        ua.keydown(editor.body,{'keyCode':9});
-        ua.keyup(editor.body,{'keyCode':9});
-        setTimeout(function(){
-            equal(te.obj[0].undoManger.list.length,1,'');
-            var html = '<h1>hello<br></h1><p>he&nbsp;&nbsp;&nbsp;&nbsp;oll</p>';
-            equal(ua.getChildHTML(te.obj[0].body),html,'普通情况，选中一个节点，输入tab键');
-            start();
-        },20);
-    },20);
-    stop();
-});
+//test('普通情况,选中一个节点，输入tab键',function(){//mini下无
+//    var editor = te.obj[0];
+//    editor.setContent( '<h1>hello<br></h1><p>he<img src="http://img.baidu.com/hi/jx2/j_0015.gif" />oll</p>' );
+//    var range = te.obj[1];
+//    setTimeout(function(){
+//        range.setStart( editor.body.lastChild,1 ).setEnd(editor.body.lastChild,2).select();
+//        ua.keydown(editor.body,{'keyCode':9});
+//        ua.keyup(editor.body,{'keyCode':9});
+//        setTimeout(function(){
+//            equal(te.obj[0].undoManger.list.length,1,'');
+//            var html = '<h1>hello<br></h1><p>he&nbsp;&nbsp;&nbsp;&nbsp;oll</p>';
+//            equal(ua.getChildHTML(te.obj[0].body),html,'普通情况，选中一个节点，输入tab键');
+//            start();
+//        },20);
+//    },20);
+//    stop();
+//});
 
 test('删除自闭合标签',function(){
     var editor = te.obj[0];
@@ -133,27 +133,27 @@ test('全选后，退格，剩下空p',function(){
 //    }
 //});
 
-test('在列表中，跨行选中第2，3行，输入tab键',function(){
-    var editor = te.obj[0];
-    editor.setContent( '<ol style="list-style-type:decimal;"><li><p>欢迎使用</p></li><li><p>ueditor</p></li><li><p>ueditor</p></li></ol>' );
-    var range = te.obj[1];
-    setTimeout(function(){
-        range.setStart( editor.body.childNodes[0].childNodes[1].firstChild.firstChild,1 ).setEnd(editor.body.childNodes[0].childNodes[2].firstChild.firstChild,1 ).select();
-        ua.keydown(editor.body,{'keyCode':9});
-        ua.keyup(editor.body,{'keyCode':9});
-        setTimeout(function(){
-            ua.manualDeleteFillData(te.obj[0].body);
-            equal(te.obj[0].body.firstChild.tagName.toLowerCase(),'ol','原列表');
-            equal($(te.obj[0].body.firstChild).css('list-style-type'),'decimal','原列表类型');
-            equal(ua.getChildHTML(te.obj[0].body.firstChild.firstChild),'<p>欢迎使用</p>','第一行保持原来的列表样式');
-            equal(te.obj[0].body.firstChild.lastChild.tagName.toLowerCase(),'ol','后两行变成第二层列表');
-            equal($(te.obj[0].body.firstChild.lastChild).css('list-style-type'),'lower-alpha','第二层列表类型');
-            equal(ua.getChildHTML(te.obj[0].body.firstChild.lastChild),'<li><p>ueditor</p></li><li><p>ueditor</p></li>','检查内容');
-            start();
-        },20);
-    },50);
-    stop();
-});
+//test('在列表中，跨行选中第2，3行，输入tab键',function(){//mini下列表中tab键无作用
+//    var editor = te.obj[0];
+//    editor.setContent( '<ol style="list-style-type:decimal;"><li><p>欢迎使用</p></li><li><p>ueditor</p></li><li><p>ueditor</p></li></ol>' );
+//    var range = te.obj[1];
+//    setTimeout(function(){
+//        range.setStart( editor.body.childNodes[0].childNodes[1].firstChild.firstChild,1 ).setEnd(editor.body.childNodes[0].childNodes[2].firstChild.firstChild,1 ).select();
+//        ua.keydown(editor.body,{'keyCode':9});
+//        ua.keyup(editor.body,{'keyCode':9});
+//        setTimeout(function(){
+//            ua.manualDeleteFillData(te.obj[0].body);
+//            equal(te.obj[0].body.firstChild.tagName.toLowerCase(),'ol','原列表');
+//            equal($(te.obj[0].body.firstChild).css('list-style-type'),'decimal','原列表类型');
+//            equal(ua.getChildHTML(te.obj[0].body.firstChild.firstChild),'<p>欢迎使用</p>','第一行保持原来的列表样式');
+//            equal(te.obj[0].body.firstChild.lastChild.tagName.toLowerCase(),'ol','后两行变成第二层列表');
+//            equal($(te.obj[0].body.firstChild.lastChild).css('list-style-type'),'lower-alpha','第二层列表类型');
+//            equal(ua.getChildHTML(te.obj[0].body.firstChild.lastChild),'<li><p>ueditor</p></li><li><p>ueditor</p></li>','检查内容');
+//            start();
+//        },20);
+//    },50);
+//    stop();
+//});
 
 //todo 这个检查存在问题，如何检查 evt.preventDefault();？
 test('在h1内输入del',function(){
@@ -172,50 +172,50 @@ test('在h1内输入del',function(){
     stop();
 });
 
-test('在列表中，跨行选中，输入tab键',function(){
-    var editor = te.obj[0];
-    editor.setContent( '<ol style="list-style-type:decimal;"><li><p>欢迎使用</p></li><li><p>ueditor</p></li><li><p>ueditor</p></li></ol>' );
-    var range = te.obj[1];
-    setTimeout(function(){
-        range.setStart( editor.body.firstChild.firstChild.firstChild.firstChild,1 ).setEnd(editor.body.firstChild.childNodes[1].firstChild.firstChild,1 ).select();
-        ua.keydown(editor.body,{'keyCode':9});
-        ua.keyup(editor.body,{'keyCode':9});
-        setTimeout(function(){
-            equal(te.obj[0].undoManger.index,1,'undoManger.index');
-            ua.manualDeleteFillData(te.obj[0].body);
-            equal(te.obj[0].body.firstChild.tagName.toLowerCase(),'ol','外面套了一层ol');
-            equal(te.obj[0].body.firstChild.childNodes.length,2,'');
-            equal(te.obj[0].body.firstChild.firstChild.tagName.toLowerCase(),'ol','原列表');
-            equal($(te.obj[0].body.firstChild).css('list-style-type'),'decimal','原列表类型');
-            equal(ua.getChildHTML(te.obj[0].body.firstChild.firstChild),'<li><p>欢迎使用</p></li><li><p>ueditor</p></li>','检查内容');
-            start();
-        },20);
-    },50);
-    stop();
-});
+//test('在列表中，跨行选中，输入tab键',function(){//mini下无
+//    var editor = te.obj[0];
+//    editor.setContent( '<ol style="list-style-type:decimal;"><li><p>欢迎使用</p></li><li><p>ueditor</p></li><li><p>ueditor</p></li></ol>' );
+//    var range = te.obj[1];
+//    setTimeout(function(){
+//        range.setStart( editor.body.firstChild.firstChild.firstChild.firstChild,1 ).setEnd(editor.body.firstChild.childNodes[1].firstChild.firstChild,1 ).select();
+//        ua.keydown(editor.body,{'keyCode':9});
+//        ua.keyup(editor.body,{'keyCode':9});
+//        setTimeout(function(){
+//            equal(te.obj[0].undoManger.index,1,'undoManger.index');
+//            ua.manualDeleteFillData(te.obj[0].body);
+//            equal(te.obj[0].body.firstChild.tagName.toLowerCase(),'ol','外面套了一层ol');
+//            equal(te.obj[0].body.firstChild.childNodes.length,2,'');
+//            equal(te.obj[0].body.firstChild.firstChild.tagName.toLowerCase(),'ol','原列表');
+//            equal($(te.obj[0].body.firstChild).css('list-style-type'),'decimal','原列表类型');
+//            equal(ua.getChildHTML(te.obj[0].body.firstChild.firstChild),'<li><p>欢迎使用</p></li><li><p>ueditor</p></li>','检查内容');
+//            start();
+//        },20);
+//    },50);
+//    stop();
+//});
 
-test(' 光标定位到列表前，输入tab键',function(){
-    var editor = te.obj[0];
-    editor.setContent( '<ol style="list-style-type:decimal;"><li><p>欢迎使用</p></li><li><p>ueditor</p></li></ol>' );
-    var range = te.obj[1];
-    setTimeout(function(){
-        range.setStart( editor.body.firstChild.firstChild.firstChild,0 ).collapse(true).select();
-        ua.keydown(editor.body,{'keyCode':9});
-        ua.keyup(editor.body,{'keyCode':9});
-        setTimeout(function(){
-            equal(te.obj[0].undoManger.list.length,1,'undoManger.index');
-            ua.manualDeleteFillData(te.obj[0].body);
-            equal($(te.obj[0].body.firstChild).css('list-style-type'),'decimal','原列表类型');
-            equal(te.obj[0].body.firstChild.childNodes.length,2,'列表有两个子节点');
-            equal($(te.obj[0].body.firstChild.firstChild).css('list-style-type'),'lower-alpha','第一个节点是另一类型的列表');
-            equal(ua.getChildHTML(te.obj[0].body.firstChild.firstChild),'<li><p>欢迎使用</p></li>','检查内容');
-            equal(te.obj[0].body.firstChild.lastChild.tagName.toLowerCase(),'li','第一个节点是原列表的li');
-            equal(ua.getChildHTML(te.obj[0].body.firstChild.lastChild),'<p>ueditor</p>','检查内容');
-            start();
-        },20);
-    },50);
-    stop();
-});
+//test(' 光标定位到列表前，输入tab键',function(){
+//    var editor = te.obj[0];
+//    editor.setContent( '<ol style="list-style-type:decimal;"><li><p>欢迎使用</p></li><li><p>ueditor</p></li></ol>' );
+//    var range = te.obj[1];
+//    setTimeout(function(){
+//        range.setStart( editor.body.firstChild.firstChild.firstChild,0 ).collapse(true).select();
+//        ua.keydown(editor.body,{'keyCode':9});
+//        ua.keyup(editor.body,{'keyCode':9});
+//        setTimeout(function(){
+//            equal(te.obj[0].undoManger.list.length,1,'undoManger.index');
+//            ua.manualDeleteFillData(te.obj[0].body);
+//            equal($(te.obj[0].body.firstChild).css('list-style-type'),'decimal','原列表类型');
+//            equal(te.obj[0].body.firstChild.childNodes.length,2,'列表有两个子节点');
+//            equal($(te.obj[0].body.firstChild.firstChild).css('list-style-type'),'lower-alpha','第一个节点是另一类型的列表');
+//            equal(ua.getChildHTML(te.obj[0].body.firstChild.firstChild),'<li><p>欢迎使用</p></li>','检查内容');
+//            equal(te.obj[0].body.firstChild.lastChild.tagName.toLowerCase(),'li','第一个节点是原列表的li');
+//            equal(ua.getChildHTML(te.obj[0].body.firstChild.lastChild),'<p>ueditor</p>','检查内容');
+//            start();
+//        },20);
+//    },50);
+//    stop();
+//});
 
 test( '删除inline的标签', function() {
     var editor = te.obj[0];
