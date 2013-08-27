@@ -177,6 +177,13 @@ UE.commands['inserthtml'] = {
         }
         //加上true因为在删除表情等时会删两次，第一次是删的fillData
         try{
+            if(browser.ie9below && range.startContainer.nodeType == 1 && !range.startContainer.childNodes[range.startOffset]){
+                var start = range.startContainer,pre = start.childNodes[range.startOffset-1];
+                if(pre && pre.nodeType == 1 && dtd.$empty[pre.tagName]){
+                    var txt = this.document.createTextNode(domUtils.fillChar);
+                    range.insertNode(txt).setStart(txt,0).collapse(true);
+                }
+            }
             range.select(true);
         }catch(e){}
 

@@ -137,10 +137,11 @@
     Selection.prototype = {
         hasNativeRange : function(){
             if(!browser.ie || browser.ie9above){
-                var sel = this.getNative();
-                return sel.rangeCount
+
+                return this.getNative().rangeCount
             }else{
-                return  domUtils.inDoc(this.getRange().startContainer,this.body)
+                var ieRange = this.getIERange();
+                return  domUtils.inDoc(ieRange.parentElement(),this.body)
             }
         },
         /**
