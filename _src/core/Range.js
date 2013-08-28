@@ -927,7 +927,7 @@
             var winScrollTop = $(window).scrollTop(),
                 winHeight = $(window).height(),
                 spanTop = $span.offset().top;
-            if(spanTop < winScrollTop || spanTop > winScrollTop + winHeight ){
+            if(spanTop < winScrollTop-winHeight || spanTop > winScrollTop + winHeight ){
                 if(spanTop > winScrollTop + winHeight){
                     window.scrollTo(0,spanTop - winHeight + $span.height())
                 }else{
