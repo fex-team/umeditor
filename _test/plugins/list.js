@@ -196,7 +196,7 @@ test('非闭合方式切换有序和无序列表', function () {//原本是有�
     equal(ua.getChildHTML(body.firstChild), '<li>hello</li><li>hello3</li>', '变为有序列表后innerHTML 不变');
 });
 
-test('将列表下的文本合并到列表中', function () {
+test('trace:3591:将列表下的文本合并到列表中', function () {
     var editor = te.obj[0];
     var range = te.obj[1];
     var body = editor.body;
@@ -229,7 +229,7 @@ test('多个列表', function () {
     equal(ua.getChildHTML(body.lastChild), '<li>hello1</li><li>hello2</li>', '2个li子节点');
 });
 
-test('修改列表中间某一段列表为另一种列表', function () {//ie下说'childNodes.1.tagName' 为空或不是对象
+test('修改列表中间某一段列表为另一种列表', function () {//ie下'childNodes.1.tagName' 为空或不是对象
     if(!ua.browser.ie){
         var editor = te.obj[0];
         var range = te.obj[1];
@@ -249,7 +249,7 @@ test('修改列表中间某一段列表为另一种列表', function () {//ie下
 });
 
 //ff和ie下是bug
-test('两个有序列表，一个无序列表，将无序列表与第二个有序列表合并', function () {
+test('trace:3567:两个有序列表，一个无序列表，将无序列表与第二个有序列表合并', function () {
     var editor = te.obj[0];
     var range = te.obj[1];
     var body = editor.body;
