@@ -29,9 +29,9 @@
             "<input id=\"edui-link-Jtarget\" type=\"checkbox\"/>" +
             "</td>" +
             "</tr>" +
-            "<tr>" +
-            "<td colspan=\"2\" id=\"edui-link-Jmsg\"></td>" +
-            "</tr>" +
+//            "<tr>" +
+//            "<td colspan=\"2\" id=\"edui-link-Jmsg\"></td>" +
+//            "</tr>" +
             "</table>",
         initContent: function (editor) {
             var lang = editor.getLang('link');
@@ -41,15 +41,12 @@
             this.root().html(html);
         },
         initEvent: function (editor, $w) {
-            var lang = editor.getLang('link');
-
-            $('#edui-link-Jhref').on("blur", function () {
-                if (!hrefStartWith(this.value, ["http", "/", "ftp://"])) {
-                    $("#edui-link-Jmsg").html("<span style='color: red'>" + lang.httpPrompt + "</span>")
-                } else {
-                    $("#edui-link-Jmsg").html();
-                }
-            });
+            var link = editor.queryCommandValue('link');
+            if(link){
+                $('#edui-link-Jhref',$w).val(utils.html($(link).attr('href')));
+                $('#edui-link-Jtitle',$w).val($(link).attr('title'));
+                $(link).attr('target') == '_blank' && $('#edui-link-Jtarget').attr('checked',true)
+            }
         },
         buttons: {
             'ok': {
@@ -57,17 +54,12 @@
                     var href = $('#edui-link-Jhref').val().replace(/^\s+|\s+$/g, '');
 
                     if (href) {
-                        if (!hrefStartWith(href, ["http", "/", "ftp://"])) {
-                            href = "http://" + href;
-                        }
-                        var obj = {
+                        editor.execCommand('link', {
                             'href': href,
                             'target': $("#edui-link-Jtarget:checked").length ? "_blank" : '_self',
                             'title': $("#edui-link-Jtitle").val().replace(/^\s+|\s+$/g, ''),
                             '_href': href
-                        };
-
-                        editor.execCommand('link', obj);
+                        });
                     }
                 }
             },
