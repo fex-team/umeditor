@@ -82,7 +82,7 @@
             attrhtml = [];
             var attrs = node.attrs;
             for (var a in attrs) {
-                attrhtml.push(a + (attrs[a] !== undefined ? '="' + utils.unhtml(attrs[a]) + '"' : ''))
+                attrhtml.push(a + (attrs[a] !== undefined ? '="' + attrs[a] + '"' : ''))
             }
             attrhtml = attrhtml.join(' ');
         }
