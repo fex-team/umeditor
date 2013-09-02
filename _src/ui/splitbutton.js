@@ -1,7 +1,7 @@
 //splitbutton 类
 ///import button
 UE.ui.define('splitbutton',{
-    tpl :'<div class="edui-splitbutton"  unselectable="on" <%if(title){%>data-original-title="<%=title%>"<%}%>><div class="edui-btn"  unselectable="on" ><%if(icon){%><div  unselectable="on" class="edui-icon-<%=icon%> edui-icon"></div><%}%><%if(text){%><%=text%><%}%></div>'+
+    tpl :'<div class="edui-splitbutton <%if (name){%>edui-splitbutton-<%= name %><%}%>"  unselectable="on" <%if(title){%>data-original-title="<%=title%>"<%}%>><div class="edui-btn"  unselectable="on" ><%if(icon){%><div  unselectable="on" class="edui-icon-<%=icon%> edui-icon"></div><%}%><%if(text){%><%=text%><%}%></div>'+
             '<div  unselectable="on" class="edui-btn edui-dropdown-toggle" >'+
                 '<div  unselectable="on" class="edui-caret"><\/div>'+
             '</div>'+
