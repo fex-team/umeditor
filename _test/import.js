@@ -42,7 +42,7 @@
 ///import adapter/autoheight;
 ///import adapter/button;
 ///import adapter/dialog;
-///import adapter/font;
+///import adapter/combobox;
 ///import adapter/fullscreen;
 ///import adapter/popup;
 ///import adapter/imagescale;

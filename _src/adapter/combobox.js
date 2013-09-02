@@ -193,6 +193,7 @@ $.each(['forecolor','backcolor'],function(i,v){
         $btn = $.eduicolorsplitbutton({
             icon: name,
             caret: true,
+            name: name,
             title: me.getLang("labelMap")[name],
             click: function() {
                 me.execCommand( name, getCurrentColor() );
@@ -202,6 +203,7 @@ $.each(['forecolor','backcolor'],function(i,v){
         $colorLabel = $btn.edui().colorLabel();
 
         $colorPickerWidget = $.eduicolorpicker({
+            name: name,
             lang_clearColor: me.getLang('clearColor') || '',
             lang_themeColor: me.getLang('themeColor') || '',
             lang_standardColor: me.getLang('standardColor') || ''

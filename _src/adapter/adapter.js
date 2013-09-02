@@ -121,7 +121,7 @@
         delEditor: function (id) {
             var editor;
             if (editor = _editors[id]) {
-                editor.destroy();
+                editor.key && editor.destroy();
             }
         },
         ready: function( fn ){
@@ -136,7 +136,7 @@
 
 
                 var $container = this.createUI('#' + id, editor);
-
+                editor.key=id;
                 editor.ready(function(){
                     $.each( _readyFn, function( index, fn ){
                         $.proxy( fn, editor )();

@@ -7,16 +7,42 @@
  */
 module( 'adapter.adapter' );
 
-test('getEditor--delEditor',function(){
+test('getEditor',function(){
     var div = document.createElement('div');
-    div.id='editor2';
+    div.id='editor';
+    var con=document.createElement('div');
+    con.id="contest";
+    con.appendChild(div);
+    document.body.appendChild(con);
+    var ue7=UE.getEditor('editor');
+    var ue8=UE.getEditor('editor');
+
+    stop();
+    ue8.ready(function(){
+        equal(ue8.uid,ue7.uid,'');
+        setTimeout(function(){
+            UE.delEditor('editor');
+            var editor=document.getElementById('editor');
+            editor.parentNode.removeChild(editor);
+            start();
+        },100)
+    });
+});
+
+test('delEditor',function(){
+    var div = document.createElement('div');
+    div.id='editor';
     document.body.appendChild(div);
-    var ue7=UE.getEditor('editor2');
-    ue7.ready(function(){
-        var ue8=UE.getEditor('editor2');
-        equal(ue8.uid,ue7.uid);
-        UE.delEditor('editor2');
-        equal(document.getElementById('editor2').tagName.toLowerCase(),'textarea');
+    var ue=UE.getEditor('editor');
+    stop();
+    ue.ready(function(){
+        setTimeout(function(){
+            UE.delEditor('editor');
+            equal(document.getElementById('editor').tagName.toLowerCase(),'textarea');
+            var div=document.getElementById("editor")
+            div.parentNode.removeChild(div);
+            start();
+        },100)
     });
 });
 
@@ -28,9 +54,13 @@ test( 'render没有内容时，显示initialContent', function() {
     stop();
     ue4.ready(function(){
         equal(ue4.body.firstChild.innerHTML.toLowerCase(),ue4.options.initialContent.toLowerCase(),'标签没有内容，显示initialContent');
-        sc4 = document.getElementById('sc4');
-        sc4.parentNode.removeChild(sc4);
-        start();
+
+        setTimeout(function(){
+            UE.delEditor('sc4');
+            var editor=document.getElementById('sc4');
+            editor.parentNode.removeChild(editor);
+            start();
+        },100)
     });
 } );
 
@@ -44,8 +74,12 @@ test( '判断render有内容时，显示render内容(script)', function() {
     stop();
     ue3.ready(function(){
         equal(ue3.body.firstChild.innerHTML.toLowerCase(),"renderinnerhtml",'标签有内容,显示标签内容');
-        sc3 = document.getElementById('sc3');
-        sc3.parentNode.removeChild(sc3);
-        start();
+
+        setTimeout(function(){
+            UE.delEditor('sc3');
+            var editor=document.getElementById('sc3');
+            editor.parentNode.removeChild(editor);
+            start();
+        },100)
     });
-} );
+});

@@ -23,7 +23,7 @@ test( '不闭合h1和p之间的转换', function() {
     editor.execCommand( 'paragraph', 'p' );
     equal( ua.getChildHTML( body ), '<p>hello</p>' );
     /*多个段落的部分文本*/
-    var block = ua.browser.ie?'普通':'h3';
+    var block = ua.browser.ie?'标题 3':'h3';
     editor.setContent( '<p>hello</p><h2>hello2</h2>' );
         setTimeout(function(){
     range.setStart( body.firstChild.firstChild, 2 ).setEnd( body.lastChild.firstChild, 1 ).select();

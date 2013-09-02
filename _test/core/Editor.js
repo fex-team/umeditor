@@ -412,12 +412,9 @@ test("execCommand", function () {
         editor.execCommand("forecolor", "red");
         var font = doc.getElementsByTagName('font')[0];
         equal(ua.formatColor(font.color), "#ff0000", 'check execCommand color');
-        var div_new = document.createElement('div');
-        div_new.innerHTML = '<p><span style="color: red; ">xx</span></p><p style="text-align: right; ">xxx</p>';
-
-        var div1 = document.createElement('div');
-        div1.innerHTML = editor.body.innerHTML;
-        ok(ua.haveSameAllChildAttribs(div_new, div1), 'check style');
+        var html = '<p>xx</p><p style=\"text-align: right;\"><font color=\"#ff0000\">xxx</font></p>';
+        var html_1 = "<p>xx</p><p align=\"right\"><font color=\"red\">xxx</font></p>";
+        ua.checkSameHtml(editor.body.innerHTML,ua.browser.ie?html_1:html, 'check style')
         UE.clearCache(div.id);
         te.dom.push(editor.container);
         document.getElementById('ue') && te.dom.push(document.getElementById('ue'));

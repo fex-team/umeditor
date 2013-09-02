@@ -24,8 +24,8 @@
 
                 var btnWidget = $.eduibutton({
                     caret: true,
+                    name: options.comboboxName,
                     title: options.title,
-                    mode: options.mode,
                     text: options.label,
                     click: function(){
                         me.show( this.root() );

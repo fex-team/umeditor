@@ -66,6 +66,21 @@ test( '修改已有图片的属性', function () {
 } );
 
 
+//test( '修改已有图片的属性', function () {//尝试修改，在ie8下，range选中的节点还是有问题
+//    var editor = te.obj[0];
+//    var range = te.obj[1];
+//    var body = editor.body;
+//    editor.setContent( '<p><img src="http://img.baidu.com/hi/jx2/j_0004.gif" >hello<img src="http://img.baidu.com/hi/jx2/j_0010.gif" ></p>' );
+//    setTimeout(function(){
+//        range.selectNode( body.firstChild.firstChild).select();//ie8下，无法选中图片节点
+//        editor.execCommand( 'insertimage', {src:'http://img.baidu.com/hi/jx2/j_0018.gif'} );
+//        equal( ua.getChildHTML( body.firstChild ), '<img src="http://img.baidu.com/hi/jx2/j_0018.gif">hello<img src="http://img.baidu.com/hi/jx2/j_0010.gif">', '检查插入的图像地址' );
+//        equal( body.firstChild.childNodes.length, 3, '2个img孩子' );
+//        start();
+//    },50);
+//    stop();
+//} );
+
 test( 'trace3574 替换图片', function () {  //这个用例的问题  应该是像是没有给用例足够的时间执行一样  所以得到的是undefined，当我一步一步调试的时候，chrome下是通过的
     if(ua.browser.ie>8)return;//todo trace3574
     var editor = te.obj[0];
