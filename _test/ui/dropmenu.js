@@ -7,26 +7,31 @@
  */
 module('ui.dropmenu.js');
 
-test('dropmenu初始化', function () {
+test('dropmenu--初始化', function () {
     var div = document.body.appendChild(document.createElement('div'));
     $(div).attr('id', 'test');
 
-    var $dropMenuWidget = $.eduidropmenu({data:[
+    var item, value,
+        $dropMenuWidget = $.eduidropmenu({data:[
             {"value":"decimal","label":"1,2,3..."},
             {"value":"lower-alpha","label":"a,b,c..."},
             {"value":"lower-roman","label":"i,ii,iii..."},
             {"value":"upper-alpha","label":"A,B,C..."},
             {"value":"upper-roman","label":"I,II,III..."}
-        ]}).appendTo(div);
+        ],click:function(evt, val){
+            equal(value, val, '检查菜单点击的value是否正确');
+            div.parentNode.removeChild(div);
+            start();
+        }}).appendTo(div);
 
     var $btn = $.eduibutton({
         icon: "paragraph",
         title: "测试"
     }).appendTo(div);
 
-    stop();
-    setTimeout(function () {
-        $dropMenuWidget.edui().show($btn);
+    $dropMenuWidget.edui().show($btn);
+
+    setTimeout(function(){
 
         var isshow = $dropMenuWidget.css("display") != "none";
         equal(isshow, true, '检查菜单是否显示');
@@ -35,16 +40,11 @@ test('dropmenu初始化', function () {
         var ishide = $dropMenuWidget.css("display") == "none";
         equal(ishide, true, '检查菜单是否隐藏');
 
-        var item = $dropMenuWidget.find("li")[0];
-        var value = $(item).data('value');
+        item = $dropMenuWidget.find("li")[0];
+        value = $(item).data('value');
 
-        $(item).on('click', function (evt, value) {
-            equal(value, value, '检查菜单点击的value是否正确');
-            div.parentNode.removeChild(div);
-            start();
-        });
         ua.click(item);
 
-
-    });
+    },100);
+    stop();
 });
