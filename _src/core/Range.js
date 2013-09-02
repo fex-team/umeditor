@@ -749,7 +749,7 @@
                 txtNode;
             //FF下关闭自动长高时滚动条在关闭dialog时会跳
             //ff下如果不body.focus将不能定位闭合光标到编辑器内
-            browser.gecko ? this.document.body.focus() : win.focus();
+            browser.gecko ? this.body.focus() : win.focus();
             if (sel) {
                 sel.removeAllRanges();
                 // trace:870 chrome/safari后边是br对于闭合得range不能定位 所以去掉了判断

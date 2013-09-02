@@ -250,7 +250,7 @@
             if ( me._cachedRange != null ) {
                 return this._cachedRange;
             }
-            var range = new dom.Range( me.document );
+            var range = new dom.Range( me.document,me.body );
             if ( browser.ie9below ) {
                 var nativeRange = me.getIERange();
                 if ( nativeRange ) {
