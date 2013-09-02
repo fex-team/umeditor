@@ -13,6 +13,7 @@ test( '检测combobox的控制否正常', function() {
         setTimeout(function () {
             var editor = te.obj[0],
                 components = [ "paragraph", "fontfamily", "fontsize" ],
+                $body = $(document.body),
                 colors = [ "forecolor", "backcolor" ];
 
             for ( var i = 0, component; component = components[ i ]; i++ ) {
@@ -20,6 +21,10 @@ test( '检测combobox的控制否正常', function() {
                 $( ".edui-btn-name-" + component, editor.container).trigger("click");
 
                 equal( $( ".edui-combobox-" + component , editor.container ).css("display"), "block", component+' combobox打开正常' );
+
+                $body.trigger("click");
+
+                equal( $( ".edui-combobox-" + component , editor.container ).css("display"), "none", component+' combobox关闭正常' );
 
             }
 
@@ -29,9 +34,11 @@ test( '检测combobox的控制否正常', function() {
 
                 equal( $( ".edui-colorpicker-" + color , editor.container).parents(".edui-popup").css("display"), "block", component+' combobox打开正常' );
 
-            }
+                $body.trigger("click");
 
-            $(document.body).trigger("click");
+                equal( $( ".edui-colorpicker-" + color , editor.container).parents(".edui-popup").css("display"), "none", component+' combobox关闭正常' );
+
+            }
 
             start();
 
