@@ -11,12 +11,30 @@ test( '检测combobox的控制否正常', function() {
     stop();
     editor.ready(function(){
         setTimeout(function () {
-            var editor = te.obj[0];
-            $( ".edui-btn-name-fontfamily", editor.container).trigger("click");
-            setTimeout(function () {
-                equal( $( ".edui-combobox-fontfamily", editor.container ).css("display"), "block", '字体类型combobox打开正常' );
-                start();
-            }, 200);
+            var editor = te.obj[0],
+                components = [ "paragraph", "fontfamily", "fontsize" ],
+                colors = [ "forecolor", "backcolor" ];
+
+            for ( var i = 0, component; component = components[ i ]; i++ ) {
+
+                $( ".edui-btn-name-" + component, editor.container).trigger("click");
+
+                equal( $( ".edui-combobox-" + component , editor.container ).css("display"), "block", component+' combobox打开正常' );
+
+            }
+
+            for ( var i = 0, color; color = colors[ i ]; i++ ) {
+
+                $( ".edui-splitbutton-"+ color +" .edui-dropdown-toggle", editor.container).trigger("click");
+
+                equal( $( ".edui-colorpicker-" + color , editor.container).parents(".edui-popup").css("display"), "block", component+' combobox打开正常' );
+
+            }
+
+            $(document.body).trigger("click");
+
+            start();
+
         }, 200);
     });
 
