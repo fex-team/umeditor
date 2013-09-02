@@ -9,9 +9,9 @@ test('设置超链接前景色再清除颜色', function () {
         var range = new UE.dom.Range(editor.document);
         editor.setContent('<p>hello<a href="www.baidu.com">baidu</a></p>');
         range.selectNode(editor.body.firstChild).select();
-        editor.execCommand('forecolor', 'rgb(255,0,0)');
-        editor.execCommand('backcolor', 'rgb(0,255,0)');
-        editor.execCommand('forecolor', 'rgb(0,0,0)');
+        editor.execCommand('foreColor', 'rgb(255,0,0)');
+        editor.execCommand('backColor', 'rgb(0,255,0)');
+        editor.execCommand('foreColor', 'rgb(0,0,0)');
         //var html = '<span style="background-color: rgb(0, 255, 0);">hello</span><a href="www.baidu.com" _href=\"www.baidu.com\" style="text-decoration: underline;"><span style="background-color: rgb(0, 255, 0);">baidu</span></a>';todo 1.2.6.1 样式复制了一次
         //var html = '<span style="background-color: rgb(0, 255, 0);">hello</span><a href="www.baidu.com" _href=\"www.baidu.com\" style="background-color: rgb(0, 255, 0);text-decoration: underline;"><span style="background-color: rgb(0, 255, 0);">baidu</span></a>';
         var html = '<font style=\"background-color: rgb(0, 255, 0);\">hello<a href=\"www.baidu.com\" _href=\"www.baidu.com\">baidu</a></font>';
@@ -26,7 +26,7 @@ test('设置超链接前景色再清除颜色', function () {
 });
 
 
-test('font转span', function () {
+test('font不转span', function () {
     var editor = te.obj[0];
     editor.setContent('<font size="12" color="red" lang="en" face="arial"><b><i>hello</i>hello</b>');
     //var html = '<span style="font-size:12px;color:red;font-family:arial"><strong><em>hello</em>hello</strong></span>';
@@ -62,14 +62,14 @@ test('underline and linethrough', function () {
             //ua.checkHTMLSameStyle(html, editor.document, body.firstChild, 'check results');
             if(ua.browser.chrome||ua.browser.ie)
             {
-                var html = 'hello<a href=\"http://www.baidu.com/\"><strike>baidu</strike></a>test';
-                equal(editor.body.firstChild.innerHTML.toLowerCase(),html,'超链接也可以添加下划线');
+                var html = 'hello<a href=\"http://www.baidu.com/\" _href=\"http://www.baidu.com/\"><strike>baidu</strike></a>test';
+                equal(editor.body.firstChild.innerHTML.toLowerCase(),html,'超链接也可以添加删除线');
                 ua.checkHTMLSameStyle(html, editor.document, body.firstChild, 'check results');
             }
             else
             {
-                var html = 'hello<strike><a href=\"http://www.baidu.com/\">baidu</a></strike>test';
-                equal(editor.body.firstChild.innerHTML.toLowerCase(),html,'超链接也可以添加下划线');
+                var html = 'hello<strike><a href=\"http://www.baidu.com/\" _href=\"http://www.baidu.com/\">baidu</a></strike>test';
+                equal(editor.body.firstChild.innerHTML.toLowerCase(),html,'超链接也可以添加删除线');
                 ua.checkHTMLSameStyle(html, editor.document, body.firstChild, 'check results');
             }
             setTimeout(function () {
@@ -142,7 +142,7 @@ test('选中文本设置前景色',function(){//ie8不执行
 });
 
 
-test('闭合时改变前景色和删除线，再输入文本', function () {//ie8和ff下是bug
+test('闭合时改变前景色和删除线，再输入文本', function () {
     if (!ua.browser.opera) {
         var editor = te.obj[2];
         var div = document.body.appendChild(document.createElement('div'));
@@ -151,16 +151,16 @@ test('闭合时改变前景色和删除线，再输入文本', function () {//ie
         stop();
         editor.ready(function () {
             var range = new UE.dom.Range(editor.document);
-            editor.setContent('<p><span style="color: rgb(255, 0, 0); text-decoration: line-through; ">你好</span></p>');
+            editor.setContent('<p><span style="color: rgb(255, 0, 0)">你好</span></p>');
             var p = editor.body.firstChild;
             range.setStart(p.firstChild, 1).collapse(true).select();
             editor.execCommand('forecolor', 'rgb(0,255,0)');
-            range = editor.selection.getRange();
+            //range = editor.selection.getRange();
             editor.execCommand('underline');
             range = editor.selection.getRange();
             range.insertNode(editor.document.createTextNode('hey'));
             var p1 = editor.document.createElement('p');
-            p1.innerHTML = '<span style="color: rgb(255, 0, 0); text-decoration: line-through; ">你好</span><span style="color: rgb(255, 0, 0); "><span style="color: rgb(0, 255, 0); text-decoration: underline; ">​hey</span></span>';
+            p1.innerHTML = '<span style="color: rgb(255, 0, 0)">你好</span><span style="color: rgb(0, 255, 0); text-decoration: underline; ">​hey</span></span>';
             ua.manualDeleteFillData(editor.body);
             /*ff下会自动加一个空的设置了style的span，比较时不作考虑*/
             if (UE.dom.domUtils.isEmptyNode(editor.body.firstChild.lastChild) && UE.browser.gecko)
@@ -269,7 +269,7 @@ test('设置超链接背景色后切换到源码再切回来', function () {
             editor.execCommand('source');
             setTimeout(function () {
                 ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, '切换后html代码不变');
-                //equal(editor.getContent(editor.body),html.toLowerCase(),'try');
+                //equal(ua.getChildHTML(editor.body).toLowerCase(),html.toLowerCase(),'try');
                 /*切换源码前后代码应当相同*/
                 div.parentNode.removeChild(div);
                 start();
@@ -386,7 +386,6 @@ test('font标签不发生转换', function () {
 test('background--不同字号', function () {
     if (!ua.browser.opera) {
         var editor = te.obj[2];
-        debugger
         var div = document.body.appendChild(document.createElement('div'));
         $(div).css('width', '500px').css('height', '500px').css('border', '1px solid #ccc');
         te.obj[2].render(div);
