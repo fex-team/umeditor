@@ -1,4 +1,4 @@
-//dropmenu 类
+//menu 类
 UE.ui.define('menu',{
     show : function($obj,dir,fnname,topOffset,leftOffset){
 
