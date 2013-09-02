@@ -461,7 +461,7 @@
             me.fireEvent('beforegetcontent');
             var root = UE.htmlparser(me.body.innerHTML,ignoreBlank);
             me.filterOutputRule(root);
-            me.fireEvent('aftergetcontent', cmd);
+            me.fireEvent('aftergetcontent',root);
             return  root.toHtml(formatter);
         },
         /**

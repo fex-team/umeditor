@@ -167,9 +167,9 @@
         submit: function (sel, callback) {
             var me = this;
 
-            $("input", $(sel, me.dialog)).on("change", function () {
+            $("input", $(sel, me.dialog)).on("change", function (e) {
 
-                $(this).parent().submit();
+                $(this).parent()[0].submit();
                 me.toggleMask("Loading....");
                 callback && callback();
             });
