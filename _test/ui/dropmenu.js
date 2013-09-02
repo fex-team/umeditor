@@ -7,7 +7,7 @@
  */
 module('ui.dropmenu.js');
 
-test('dropmenu初始化', function () {
+test('dropmenu--初始化', function () {
     var div = document.body.appendChild(document.createElement('div'));
     $(div).attr('id', 'test');
 
