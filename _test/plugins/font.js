@@ -14,7 +14,7 @@ test('设置超链接前景色再清除颜色', function () {
         editor.execCommand('forecolor', 'rgb(0,0,0)');
         //var html = '<span style="background-color: rgb(0, 255, 0);">hello</span><a href="www.baidu.com" _href=\"www.baidu.com\" style="text-decoration: underline;"><span style="background-color: rgb(0, 255, 0);">baidu</span></a>';todo 1.2.6.1 样式复制了一次
         //var html = '<span style="background-color: rgb(0, 255, 0);">hello</span><a href="www.baidu.com" _href=\"www.baidu.com\" style="background-color: rgb(0, 255, 0);text-decoration: underline;"><span style="background-color: rgb(0, 255, 0);">baidu</span></a>';
-        var html = '<font style=\"background-color: rgb(0, 255, 0);\">hello<a href=\"www.baidu.com\">baidu</a></font>';
+        var html = '<font style=\"background-color: rgb(0, 255, 0);\">hello<a href=\"www.baidu.com\" _href=\"www.baidu.com\">baidu</a></font>';
         ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, '清除前景色');
         equal(editor.body.firstChild.innerHTML.toLowerCase(),html,'前景色为黑');
 

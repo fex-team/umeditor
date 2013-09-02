@@ -7,7 +7,7 @@ test( 'trace 3570:对包含超链接的文本清除样式', function () {
     editor.setContent( '<p><span style="color:red">hello</span><a href="http://www.baidu.com/" style="font-size: 16pt;">baidu</a></p>' );
     range.selectNode(editor.body.firstChild).select();
     editor.execCommand( 'removeformat' );
-    equal(ua.getChildHTML(editor.body), '<p>hello<a href="http://www.baidu.com/">baidu</a></p>', '对包含超链接的文本去除样式' );
+    equal(ua.getChildHTML(editor.body), '<p>hello<a href=\"http://www.baidu.com/\" _href=\"http://www.baidu.com/\">baidu</a></p>', '对包含超链接的文本去除样式' );
 } );
 
 test( '清除超链接的颜色', function () {
@@ -33,7 +33,7 @@ test( '清除超链接的颜色', function () {
         }
         editor.execCommand( 'removeformat' );
         var cl = ua.browser.ie && ua.browser.ie == 8 ? 'class=\"\"' : "";
-        html = '<p><a href="http://www.baidu.com/">baidu</a></p>';
+        html = '<p><a href=\"http://www.baidu.com/\" _href=\"http://www.baidu.com/\">baidu</a></p>';
         equal(ua.getChildHTML(editor.body),html,'查看清除样式后超链接的样式');
         div.parentNode.removeChild(div);
         start();
@@ -48,10 +48,7 @@ test( '清除颜色的区域有多个inline元素嵌套', function () {
     var strs = body.getElementsByTagName( 'strong' );
     range.setStart( strs[0].firstChild, 2 ).setEnd( strs[1].firstChild.firstChild, 3 ).select();
     editor.execCommand( 'removeformat' );
-    if(ua.browser.ie)
-        equal(ua.getChildHTML(body),'<p><em><strong>he</strong></em>llo1</p><p>hel<em><strong>lo2</em></strong></p>');//很不理解这种表达方式算不算错啊
-    else
-        equal( ua.getChildHTML( body ), '<p><em><strong>he</strong></em>llo1</p><p>hel<strong><em>lo2</em></strong></p>' );
+    equal( ua.getChildHTML( body ), '<p><em><strong>he</strong></em>llo1</p><p>hel<strong><em>lo2</em></strong></p>' );
 } );
 
 
