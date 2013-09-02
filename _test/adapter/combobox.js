@@ -13,9 +13,10 @@ test( '检测combobox的控制否正常', function() {
         setTimeout(function () {
             var editor = te.obj[0];
             $( ".edui-btn-name-fontfamily", editor.container).trigger("click");
-            debugger;
-//            UE.getUI( me, "fontfamily").trigger("click");
-//            equal(scrollTop, me.$container.find('.edui-toolbar').offset().top, '检查toolbar是否在页面顶端');
+            setTimeout(function () {
+                equal( $( ".edui-combobox-fontfamily", editor.container ).css("display"), "block", '字体类型combobox打开正常' );
+                start();
+            }, 200);
         }, 200);
     });
 
