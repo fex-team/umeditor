@@ -20,6 +20,39 @@
  */
 
 UE.plugins['link'] = function(){
+    this.setOpt('autourldetectinie',false);
+    //在ie下禁用autolink
+    if(browser.ie && this.options.autourldetectinie === false){
+        this.addListener('keyup',function(cmd,evt){
+            var me = this,keyCode = evt.keyCode;
+            if(keyCode == 13 || keyCode == 32){
+                var rng = me.selection.getRange();
+                var start = rng.startContainer;
+                if(keyCode == 13){
+                    if(start.nodeName == 'P'){
+                        var pre = start.previousSibling;
+                        if(pre && pre.nodeType == 1){
+                            var pre = pre.lastChild;
+                            if(pre && pre.nodeName == 'A'){
+                                domUtils.remove(pre,true);
+                            }
+                        }
+                    }
+                }else if(keyCode == 32){
+                   if(start.nodeType == 3 && /^\s$/.test(start.nodeValue)){
+                       start = start.previousSibling;
+                       if(start && start.nodeName == 'A'){
+                           domUtils.remove(start,true);
+                       }
+                   }
+                }
+
+            }
+
+
+        });
+    }
+
     this.addOutputRule(function(root){
         $.each(root.getNodesByTagName('a'),function(i,a){
             a.setAttr('href', utils.html(a.getAttr('_href')));
