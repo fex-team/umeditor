@@ -16,20 +16,22 @@ UE.ui.define('tooltip', {
             $obj = $(e.currentTarget);
 
         me.root().css($.extend({display: 'block'}, $obj ? {
-            top:  $obj.outerHeight(),
+            top: $obj.outerHeight(),
             left: (($obj.outerWidth() - me.root().outerWidth()) / 2)
         } : {}))
     },
     show: function (e) {
+        if ($(e.currentTarget).hasClass('disabled')) return;
+
         var me = this;
         me.content(e);
         me.root().appendTo($(e.currentTarget));
         me.position(e);
-        me.root().css('display','block').addClass("in bottom")
+        me.root().css('display', 'block').addClass("in bottom")
     },
     hide: function () {
         var me = this;
-        me.root().removeClass("in bottom").css('display','none')
+        me.root().removeClass("in bottom").css('display', 'none')
     },
     attachTo: function ($obj) {
         var me = this;
@@ -45,8 +47,8 @@ UE.ui.define('tooltip', {
 
             $obj.each(function () {
                 if ($(this).attr("data-original-title")) {
-                    $(this).on('mouseenter', $.proxy(me.show,  me))
-                       .on('mouseleave click', $.proxy(me.hide, me))
+                    $(this).on('mouseenter', $.proxy(me.show, me))
+                        .on('mouseleave click', $.proxy(me.hide, me))
 
                 }
             });
@@ -54,7 +56,7 @@ UE.ui.define('tooltip', {
         }
 
         if ($.type($obj) === "undefined") {
-            $("[data-original-title]").each(function(i,el){
+            $("[data-original-title]").each(function (i, el) {
                 tmp.call(me, $(el));
             })
 
