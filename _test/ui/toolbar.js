@@ -24,5 +24,5 @@ test('toolbar--初始化', function () {
     $toolbarWidget.edui().appendToBtnmenu([$btn]);
     equal($toolbarWidget.html().indexOf('测试按钮')!=-1,true, '判断按钮是否已插入到toolbar');
 
-    $toolbarWidget.parent();
+    $(div).remove();
 });
