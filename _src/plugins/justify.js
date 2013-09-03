@@ -16,7 +16,7 @@ UE.plugins['justify']=function(){
                 return this.document.execCommand(cmdName);
             },
             queryCommandValue: function (cmdName) {
-                return   this.document.queryCommandValue(cmdName) === 'true' ? cmdName.replace(/justify/) : '';
+                return   this.document.queryCommandValue(cmdName) === 'true' ? cmdName.replace(/justify/,'') : '';
                 //return   this.document.queryCommandValue(cmdName) === 'true' ? cmdName : '';
             },
             queryCommandState: function (cmdName) {

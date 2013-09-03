@@ -589,9 +589,10 @@ test( 'getComputedStyle-border', function() {
     var div = te.dom[2];
     var domUtils = UE.dom.domUtils;
     div.innerHTML = '<table style="border: 5px solid red"></table>';
-    equal( domUtils.getComputedStyle( div.firstChild, 'border-width' ), '5px' );
-    equal( domUtils.getComputedStyle( div.lastChild, 'border-style' ), 'solid' );
-    equal( domUtils.getComputedStyle( div.lastChild, 'border-color' ), "#FF0000" );
+    var s  = (ua.browser.ie&&ua.browser.ie>8)?'left-':'';
+    equal( domUtils.getComputedStyle( div.firstChild, 'border-'+s+'width' ), '5px' );
+    equal( domUtils.getComputedStyle( div.lastChild, 'border-'+s+'style' ), 'solid' );
+    equal( ua.formatColor(domUtils.getComputedStyle( div.lastChild, 'border-'+s+'color' )), "#FF0000" );
 } );
 //修复ie下的一个bug，如果在body上强制设了字体大小，h1的字体大小就会继承body的字体，而没有办法取到真是的字体大小
 test( 'getComputedStyle-在body上设置字体大小', function() {

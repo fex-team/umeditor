@@ -7,7 +7,7 @@
  */
 module( "plugins.keystrokes" );
 
-//test('跨节点输入tab键',function(){//mini下没做
+//test('跨节点输入tab键',function(){//删掉的
 //    //todo ie9,10改range bug trace
 //    var editor = te.obj[0];
 //    editor.setContent( '<h1>hello<br></h1><p>he<img src="http://img.baidu.com/hi/jx2/j_0015.gif" />oll</p>' );
@@ -63,7 +63,7 @@ test('删除块元素，块元素在前',function(){
     stop();
 });
 
-//test('普通情况,选中一个节点，输入tab键',function(){//mini下无
+//test('普通情况,选中一个节点，输入tab键',function(){//删掉的
 //    var editor = te.obj[0];
 //    editor.setContent( '<h1>hello<br></h1><p>he<img src="http://img.baidu.com/hi/jx2/j_0015.gif" />oll</p>' );
 //    var range = te.obj[1];
@@ -133,7 +133,7 @@ test('全选后，退格，剩下空p',function(){
 //    }
 //});
 
-//test('在列表中，跨行选中第2，3行，输入tab键',function(){//mini下列表中tab键无作用
+//test('在列表中，跨行选中第2，3行，输入tab键',function(){//删掉的
 //    var editor = te.obj[0];
 //    editor.setContent( '<ol style="list-style-type:decimal;"><li><p>欢迎使用</p></li><li><p>ueditor</p></li><li><p>ueditor</p></li></ol>' );
 //    var range = te.obj[1];
@@ -172,7 +172,7 @@ test('在h1内输入del',function(){
     stop();
 });
 
-//test('在列表中，跨行选中，输入tab键',function(){//mini下无
+//test('在列表中，跨行选中，输入tab键',function(){//删掉的
 //    var editor = te.obj[0];
 //    editor.setContent( '<ol style="list-style-type:decimal;"><li><p>欢迎使用</p></li><li><p>ueditor</p></li><li><p>ueditor</p></li></ol>' );
 //    var range = te.obj[1];
@@ -194,7 +194,7 @@ test('在h1内输入del',function(){
 //    stop();
 //});
 
-//test(' 光标定位到列表前，输入tab键',function(){
+//test(' 光标定位到列表前，输入tab键',function(){//删掉的
 //    var editor = te.obj[0];
 //    editor.setContent( '<ol style="list-style-type:decimal;"><li><p>欢迎使用</p></li><li><p>ueditor</p></li></ol>' );
 //    var range = te.obj[1];
