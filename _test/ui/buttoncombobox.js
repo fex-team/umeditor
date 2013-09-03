@@ -17,6 +17,7 @@ test( '检测buttoncombobox行为是否正确', function() {
                     label: 'test',
                     title: 'test',
                     comboboxName: 'test',
+                    recordStack: [ 'h2', 'h4' ],
                     items: [ 'p', 'h1', 'h2', 'h3', 'h4', 'h5' ],
                     value: [ 'p', 'h1', 'h2', 'h3', 'h4', 'h5' ],
                     autowidthitem: [ 'p', 'h1', 'h2', 'h3', 'h4', 'h5' ],
