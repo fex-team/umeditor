@@ -30,7 +30,18 @@ test('tooltip', function () {
         var isshow=$(".edui-tooltip",$btn).css("display")!="none";
         equal(isshow,true,"检查按钮提示是否显示");
 
+
+        $btn.edui().disabled(true);
+        if(browser.ie){
+            ua.mouseenter($btn[0]);
+        }else{
+            ua.mouseover($btn[0]);
+        }
+        var isHide=$(".edui-tooltip",$btn).css("display")=="none";
+        equal(isHide,true,"检查不可用的按钮不应该有提示");
+
         div.parentNode.removeChild(div);
+
         start();
     });
     stop();
