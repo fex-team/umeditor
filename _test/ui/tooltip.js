@@ -15,13 +15,9 @@ test('tooltip', function () {
     }).appendTo(div);
 
     $(div).attr('id', 'edui-test');
-    var $tooltip=$.eduitooltip('attachTo');
+    $.eduitooltip('attachTo');
 
     setTimeout(function () {
-        ua.click($btn[0]);
-        var ishide=$(".edui-tooltip",$btn).css("display")=="none";
-        equal(ishide,true,"检查按钮提示是否隐藏");
-
         if(browser.ie){
             ua.mouseenter($btn[0]);
         }else{
@@ -30,8 +26,10 @@ test('tooltip', function () {
         var isshow=$(".edui-tooltip",$btn).css("display")!="none";
         equal(isshow,true,"检查按钮提示是否显示");
 
+        ua.click($btn[0]);
+        var ishide=$(".edui-tooltip",$btn).css("display")=="none";
+        equal(ishide,true,"检查按钮提示是否隐藏");
 
-        $tooltip.edui().hide();
 
         $btn.edui().disabled(true);
         if(browser.ie){

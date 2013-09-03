@@ -50,6 +50,7 @@ test('menu--初始化', function () {
             var ishide = $dropMenuWidget.css("display") == "none";
             equal(ishide, true, '检查菜单是否隐藏');
 
+            $(div).remove();
             start();
         },0);
 

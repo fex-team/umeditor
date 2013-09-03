@@ -16,4 +16,5 @@ test('separator--初始化', function () {
     equal($separatorWidget.parent()!=null,true, '判断ui是否已插入到dom上');
     equal($separatorWidget.hasClass('edui-separator'),true, '判断ui的html内容是否正确');
     $separatorWidget.parent();
+    $(div).remove();
 });
