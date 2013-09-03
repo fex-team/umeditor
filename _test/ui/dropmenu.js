@@ -33,8 +33,10 @@ test('dropmenu--初始化', function () {
             equal($dropMenuWidget.edui().val(), 'upper-alpha', '检查设置菜单值是否正常');
 
             $dropMenuWidget.edui().disabled(true);
-            $dropMenuWidget.find("li").hasClass('disabled');
             equal($dropMenuWidget.find("li").hasClass('disabled'), true, '检查选项失效后，菜单项是否有disabled的class');
+
+            $dropMenuWidget.edui().disabled(false);
+            equal($dropMenuWidget.find("li").hasClass('disabled'), false, '检查选项失效后，菜单项是否没有disabled的class');
         }}).appendTo(div);
 
     var $btn = $.eduibutton({
