@@ -36,6 +36,9 @@
     }
 
     var _d = function () {
+        UE.clearCache('testeditor');
+        te.dom.push(te.obj[0].container);
+        document.getElementById('testeditor')&&te.dom.push(document.getElementById('testeditor'));
         if (te) {
             if (te.dom && te.dom.length) {
                 for (var i = 0; i < te.dom.length; i++) {
