@@ -19,7 +19,7 @@ test( 'trace 3587:horizontal', function() {
     }
 } );
 
-test( 'horizontal&&collapsed', function() {
+test( 'horizontal&&collapsed', function() {//ie8下待确定
     var editor = te.obj[0];
     var range = te.obj[1];
     var db = editor.body;

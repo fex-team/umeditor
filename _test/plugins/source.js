@@ -4,6 +4,7 @@ test('插入表格，切源码再切回来',function(){
     var editor = te.obj[0];
     var div = te.dom[0];
     // editor.render(div);
+    editor.focus();
     editor.setContent('<table><tbody><tr><td>hello1</td><td></td></tr><tr><td>hello2</td><td></td></tr></tbody></table>');
     //source 包含超时操作，ie下必须有同步操作，否则会报错
     setTimeout(function () {
