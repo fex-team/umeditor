@@ -51,7 +51,7 @@ test('dropmenu--初始化', function () {
         {"value":"upper-alpha","label":"A,B,C..."},
         {"value":"upper-roman","label":"I,II,III..."}
     ]});
-    $dropMenuWidget.edui().addSubmenu('subMenu', $subMenu, 4);
+    $dropMenuWidget.edui().addSubmenu('subMenu', $subMenu, 5);
     equal($dropMenuWidget.find(".edui-dropdown-menu").length!=0, true, '检查是否已插入子节点');
     stop();
 });
