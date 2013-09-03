@@ -160,8 +160,8 @@
         ,lang:"en"
         ,langPath:URL +"lang/"
 
-        //禁用ie下的链接自动监测
-        //,autourldetectinie:true
+        //ie下的链接自动监测
+        //,autourldetectinie:false
 
         //主题配置项,默认是default。有需要的话也可以使用如下这样的方式来自动多主题切换，当然，前提条件是themes文件夹下存在对应的主题文件：
         //现有如下皮肤:default

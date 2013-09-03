@@ -975,7 +975,7 @@
                 tagNames = (tagNames || []).concat([ 'hr', 'img', 'iframe']);
                 count = this.getContentTxt().replace(/[\t\r\n]+/g, '').length;
                 for (var i = 0, ci; ci = tagNames[i++];) {
-                    count += this.document.getElementsByTagName(ci).length;
+                    count += this.body.getElementsByTagName(ci).length;
                 }
             }
             return count;

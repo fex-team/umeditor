@@ -140,8 +140,8 @@
 
                 return this.getNative().rangeCount
             }else{
-                var ieRange = this.getIERange();
-                return  domUtils.inDoc(ieRange.parentElement(),this.body)
+                var ieRange = this.getIERange(),parent = ieRange.parentElement();
+                return  parent === this.body || domUtils.inDoc(ieRange.parentElement(),this.body)
             }
         },
         /**
@@ -250,7 +250,7 @@
             if ( me._cachedRange != null ) {
                 return this._cachedRange;
             }
-            var range = new dom.Range( me.document );
+            var range = new dom.Range( me.document,me.body );
             if ( browser.ie9below ) {
                 var nativeRange = me.getIERange();
                 if ( nativeRange ) {

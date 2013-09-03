@@ -147,37 +147,17 @@
                     //trace:1106 都删除空了，下边会报错，所以补充一个p占位
                     if(!first){
                         me.body.innerHTML = '<p>'+(browser.ie?'':'<br/>')+'</p>';
-                        first = me.body.firstChild;
                     }
                     //要在ifm为显示时ff才能取到selection,否则报错
                     //这里不能比较位置了
                     me.undoManger && me.undoManger.save(true);
-
                     if(browser.gecko){
-
-                        var input = document.createElement('input');
-                        input.style.cssText = 'position:absolute;left:0;top:-32768px';
-
-                        document.body.appendChild(input);
-
-                        me.body.contentEditable = false;
-                        setTimeout(function(){
-                            domUtils.setViewportOffset(input, { left: -32768, top: 0 });
-                            input.focus();
-                            setTimeout(function(){
-                                me.body.contentEditable = true;
-                                me.selection.getRange().moveToAddress(bakAddress).select(true);
-                                domUtils.remove(input);
-                            });
-
-                        });
-                    }else{
-                        //ie下有可能报错，比如在代码顶头的情况
-                        try{
-                            me.selection.getRange().moveToAddress(bakAddress).select(true);
-                        }catch(e){}
-
+                        me.body.contentEditable = true;
                     }
+                    try{
+                        me.selection.getRange().moveToAddress(bakAddress).select();
+                    }catch(e){}
+
                 }
                 this.fireEvent('sourcemodechanged', sourceMode);
             },
