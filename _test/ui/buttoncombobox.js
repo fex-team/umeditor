@@ -18,7 +18,6 @@ test( '检测buttoncombobox行为是否正确', function() {
                     title: 'test',
                     comboboxName: 'test',
                     items: [ 'p', 'h1', 'h2', 'h3', 'h4', 'h5' ],
-                    itemStyles: [],
                     value: [ 'p', 'h1', 'h2', 'h3', 'h4', 'h5' ],
                     autowidthitem: [ 'p', 'h1', 'h2', 'h3', 'h4', 'h5' ],
                     autoRecord: true
