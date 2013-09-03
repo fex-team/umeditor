@@ -36,6 +36,9 @@ test('popup--初始化', function () {
             caretTop:-8
     });
 
+    ;
+    equal($popupWidget.edui().getBodyContainer()!=null, true, '检查getBodyContaine是否正常');
+
     setTimeout(function(){
 
         var isshow = $popupWidget.css("display") != "none";
