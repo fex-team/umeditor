@@ -71,12 +71,12 @@ UE.ui.define('dropmenu', {
         var $list = $('li[class!=divider]', this.root());
         var $node = $('<li class="dropdown-submenu"><a tabindex="-1" href="#">' + label + '</a></li>').append(menu);
 
-        if (index > 0 && index < $list.length) {
+        if (index >= 0 && index < $list.length) {
             $node.insertBefore($list[index]);
         } else if (index < 0) {
-            $node.insertBefore(0);
-        } else if (index > $list.length) {
-            $node.insertBefore($list.length);
+            $node.insertBefore($list[0]);
+        } else if (index >= $list.length) {
+            $node.appendTo($list);
         }
     }
 }, 'menu');
