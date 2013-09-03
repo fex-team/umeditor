@@ -1,5 +1,5 @@
 module("plugins.font");
-test('设置超链接前景色再清除颜色', function () {
+test('trace 3606 设置超链接前景色再清除颜色', function () {
     var editor = te.obj[2];
     var div = document.body.appendChild(document.createElement('div'));
     $(div).css('width', '500px').css('height', '500px').css('border', '1px solid #ccc');
