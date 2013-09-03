@@ -241,6 +241,7 @@ test('为设置了字体的文本添加删除线', function () {
         p1.innerHTML = '<strong><strike>你好</strike>早安</strong>';
         equal(editor.body.firstChild.innerHTML,p1.innerHTML,'删除线存在');
         editor.execCommand('fontfamily', '隶书');
+        editor.focus();
         var txt = '隶书';
         if (ua.browser.opera)
             txt = '\"隶书\"';
@@ -263,15 +264,15 @@ test('设置超链接背景色后切换到源码再切回来', function () {
         editor.setContent('<p>hello<a href="www.baidu.com">baidu</a></p>');
         range.selectNode(editor.body.firstChild).select();
         editor.execCommand('backcolor', 'rgb(255,0,0)');
-        var html = editor.body.firstChild.innerHTML;
-        //var html1 = editor.body.firstChild.outerHTML;
+        var html = editor.body.innerHTML;
+        var html_ie = "<p><span style=\"background-color: rgb(255, 0, 0);\">hello</span><a href=\"www.baidu.com\" _href=\"www.baidu.com\"><span style=\"background-color: rgb(255, 0, 0);\">baidu</span></a></p>";
+
         editor.execCommand('source');
         setTimeout(function () {
             editor.execCommand('source');
             setTimeout(function () {
-                ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, '切换后html代码不变');
-                //equal(ua.getChildHTML(editor.body).toLowerCase(),html.toLowerCase(),'try');
-                /*切换源码前后代码应当相同*/
+                ua.checkSameHtml(editor.body.innerHTML,ua.browser.ie?html_ie:html,'切换后html代码不变');
+//                /*切换源码前后代码应当相同*/
                 div.parentNode.removeChild(div);
                 start();
             }, 50);
