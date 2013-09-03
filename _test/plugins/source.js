@@ -179,7 +179,7 @@ test('插入超链接后再插入空格，空格不能被删除', function () {
         setTimeout(function () {
             editor.execCommand('source');
             var html =  '<p><a href=\"http://www.baidu.com/\" _href=\"http://www.baidu.com/\">​绝对路径网址</a> &nbsp;ddd</p>';
-            //equal(editor.body.innerHTML.toLowerCase(), html, '查看空格是否被删除');
+            equal(editor.body.innerHTML.toLowerCase(), html, '查看空格是否被删除');
             //equal(editor.body.firstChild.innerHTML.toLowerCase(),'<a href="http://www.baidu.com/">绝对路径网址</a> &nbsp;ddd','空格仍然存在');
             equal(editor.body.innerHTML.toLowerCase().length, html.length, '查看空格是否被删除');
             start();
