@@ -49,18 +49,19 @@ test('delEditor',function(){
 test( 'render没有内容时，显示initialContent', function() {
     var sc4 = document.createElement("script");
     sc4.id="sc4";
+    sc4.style.width ="800px";
+//    sc4.height = "100px";
     document.body.appendChild(sc4);
     var ue4=UE.getEditor('sc4');
     stop();
     ue4.ready(function(){
         equal(ue4.body.firstChild.innerHTML.toLowerCase(),ue4.options.initialContent.toLowerCase(),'标签没有内容，显示initialContent');
-
         setTimeout(function(){
             UE.delEditor('sc4');
             var editor=document.getElementById('sc4');
             editor.parentNode.removeChild(editor);
             start();
-        },100)
+        },200)
     });
 } );
 
@@ -68,6 +69,8 @@ test( '判断render有内容时，显示render内容(script)', function() {
     var sc3 = document.createElement("script");
     sc3.id="sc3";
     sc3.type="text/plain";
+    sc3.style.width ="800px";
+
     sc3.text= 'renderinnerhtml';
     document.body.appendChild(sc3);
     var ue3=UE.getEditor('sc3');

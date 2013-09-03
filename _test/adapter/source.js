@@ -9,6 +9,7 @@ module( 'adapter.source' );
 
 test( '判断有没有触发fullscreenchanged事件', function () {
     var editor = te.obj[0];
+    editor.focus();
     editor.execCommand('source');
     setTimeout(function () {
         var $textarea = editor.$container.find('textarea');
