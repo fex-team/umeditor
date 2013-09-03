@@ -73,6 +73,12 @@ test( '检测buttoncombobox行为是否正确', function() {
 
                     equal( $(".edui-combobox-item", $combox ).length, coboboxOptions.items.length+1, "历史记录条数正确" );
 
+                    //根据label选择
+                    $combox.edui().selectItemByLabel( 'h3' );
+                    equal( $( ".edui-button-label", $btn ).text(), "h3", "根据label选择后， 按钮文字正常" );
+
+                    equal( $(".edui-combobox-item", $combox ).length, coboboxOptions.items.length+2, "历史记录条数正确" );
+
                     start();
 
                 }, 500 );
