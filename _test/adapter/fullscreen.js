@@ -30,9 +30,15 @@ test( '检测全屏操作是否正常', function() {
             };
 
             equal( newState.width, $( window ).width(), '切换至全屏状态后宽度正常' );
-            equal( newState.height, $( window ).height(), '切换至全屏状态后宽度正常' );
+            equal( newState.height, $( window ).height(), '切换至全屏状态后高度正常' );
 
             equal( $fullscreenBtn.hasClass( "active" ), true, '切换至全屏状态后按钮状态正常' );
+
+            //模拟resize
+            $( window ).trigger( "resize" );
+            equal( newState.width, $( window ).width(), 'resize后宽度正常' );
+            equal( newState.height, $( window ).height(), 'resize后高度正常' );
+
 
             //退出全屏
             $fullscreenBtn.trigger("click");
@@ -43,9 +49,14 @@ test( '检测全屏操作是否正常', function() {
             };
 
             equal( newState.width, oldState.width, '退出全屏状态后宽度正常' );
-            equal( newState.height, oldState.height, '退出全屏状态后宽度正常' );
+            equal( newState.height, oldState.height, '退出全屏状态后高度正常' );
 
             equal( $fullscreenBtn.hasClass( "active" ), false, '退出全屏状态后按钮状态正常' );
+
+            //模拟resize
+            $( window ).trigger( "resize" );
+            equal( newState.width, oldState.width, 'resize后宽度未改变' );
+            equal( newState.height, oldState.height, 'resize后高度未改变' );
 
             start();
 
