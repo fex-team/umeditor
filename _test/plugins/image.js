@@ -55,13 +55,13 @@ test( '不设宽高，插入图片', function () {
 //} );
 
 
-test( '修改已有图片的属性', function () {
+test( 'trace:3600  修改已有图片的属性', function () {
     var editor = te.obj[0];
     var range = te.obj[1];
     var body = editor.body;
     editor.setContent( '<p><img src="http://img.baidu.com/hi/jx2/j_0004.gif" >hello<img src="http://img.baidu.com/hi/jx2/j_0010.gif" ></p>' );
     setTimeout(function(){
-        //range.selectNode( body.firstChild.firstChild).select();//ie8下，无法单独选中图片节点
+        //range.selectNode( body.firstChild.firstChild).select();//ie8下，无法单独选中图片节点,
         range.setStart(body.firstChild.firstChild,0).setEnd(body.firstChild.childNodes[1],2).select();
         editor.execCommand( 'insertimage', {src:'http://img.baidu.com/hi/jx2/j_0018.gif'} );
         equal( ua.getChildHTML( body.firstChild ), '<img src="http://img.baidu.com/hi/jx2/j_0018.gif">llo<img src="http://img.baidu.com/hi/jx2/j_0010.gif">', '检查插入的图像地址' );
