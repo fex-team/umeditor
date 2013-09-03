@@ -17,13 +17,7 @@ test('dropmenu--初始化', function () {
             {"value":"lower-alpha","label":"a,b,c..."},
             {"value":"lower-roman","label":"i,ii,iii..."},
             {"value":"upper-alpha","label":"A,B,C..."},
-            {"label":"I,II,III...",data:[
-                {"value":"decimal","label":"1,2,3..."},
-                {"value":"lower-alpha","label":"a,b,c..."},
-                {"value":"lower-roman","label":"i,ii,iii..."},
-                {"value":"upper-alpha","label":"A,B,C..."},
-                {"value":"upper-roman","label":"I,II,III..."}
-            ]}
+            {"value":"upper-roman","label":"I,II,III..."}
         ],click:function(evt, val){
             equal(value, val, '检查菜单点击的value是否正确');
             div.parentNode.removeChild(div);
@@ -49,5 +43,15 @@ test('dropmenu--初始化', function () {
     value = $(item).data('value');
 
     ua.click(item);
+
+    var $subMenu = $.eduidropmenu({data:[
+        {"value":"decimal","label":"1,2,3..."},
+        {"value":"lower-alpha","label":"a,b,c..."},
+        {"value":"lower-roman","label":"i,ii,iii..."},
+        {"value":"upper-alpha","label":"A,B,C..."},
+        {"value":"upper-roman","label":"I,II,III..."}
+    ]});
+    $dropMenuWidget.edui().addSubmenu('subMenu', $subMenu, 4);
+    equal($dropMenuWidget.find(".edui-dropdown-menu").length!=0, true, '检查是否已插入子节点');
     stop();
 });

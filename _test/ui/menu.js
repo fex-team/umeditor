@@ -24,6 +24,10 @@ test('menu--初始化', function () {
         title: "测试"
     }).appendTo(div);
 
+    equal($btn.data('$mergeObj')==undefined, true, 'attachTo方法执行之前，按钮没有data("$mergeObj")');
+    $dropMenuWidget.edui().attachTo($btn);
+    equal($btn.data('$mergeObj')!=undefined, true, 'attachTo方法执行之后，按钮有data("$mergeObj")');
+
     $dropMenuWidget.edui().show($btn);
 
     setTimeout(function(){
