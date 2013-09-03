@@ -28,18 +28,20 @@ test('menu--初始化', function () {
     $dropMenuWidget.edui().attachTo($btn);
     equal($btn.data('$mergeObj')!=undefined, true, 'attachTo方法执行之后，按钮有data("$mergeObj")');
 
-    $dropMenuWidget.edui().show($btn);
+    ua.click($btn[0]);
 
     setTimeout(function(){
 
         var isshow = $dropMenuWidget.css("display") != "none";
         equal(isshow, true, '检查菜单是否显示');
 
-        $dropMenuWidget.edui().hide();
-        var ishide = $dropMenuWidget.css("display") == "none";
-        equal(ishide, true, '检查菜单是否隐藏');
+        ua.click($dropMenuWidget.find('li')[0]);
+        setTimeout(function(){
+            var ishide = $dropMenuWidget.css("display") == "none";
+            equal(ishide, true, '检查菜单是否隐藏');
 
-        start();
+            start();
+        },0);
 
     },100);
     stop();
