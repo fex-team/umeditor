@@ -28,7 +28,10 @@ test( 'trace:3595:不闭合h1和p之间的转换', function() {
         setTimeout(function(){
     range.setStart( body.firstChild.firstChild, 2 ).setEnd( body.lastChild.firstChild, 1 ).select();
     editor.execCommand( 'paragraph', 'h3' );
-    equal( ua.getChildHTML( body ), '<h3>hello</h3><h3>hello2</h3>' );
+    if(ua.browser.chrome)
+        equal( ua.getChildHTML( body ), '<h3>hello<br>hello2</h3>' );
+    else
+        equal( ua.getChildHTML( body ), '<h3>hello</h3><h3>hello2</h3>' );
     equal( editor.queryCommandValue( 'paragraph' ), block, '当前的block元素为h3' );
         start();
     },50);
