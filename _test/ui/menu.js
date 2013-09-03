@@ -28,6 +28,16 @@ test('menu--初始化', function () {
     $dropMenuWidget.edui().attachTo($btn);
     equal($btn.data('$mergeObj')!=undefined, true, 'attachTo方法执行之后，按钮有data("$mergeObj")');
 
+    var $subMenuWidget = $.eduidropmenu({data:[
+        {"value":"decimal","label":"1,2,3..."},
+        {"value":"lower-alpha","label":"a,b,c..."},
+        {"value":"lower-roman","label":"i,ii,iii..."},
+        {"value":"upper-alpha","label":"A,B,C..."},
+        {"value":"upper-roman","label":"I,II,III..."}
+    ]});
+    //插入子菜单
+    $dropMenuWidget.edui().addSubmenu('subMenu', $subMenuWidget, 5);
+
     ua.click($btn[0]);
 
     setTimeout(function(){
