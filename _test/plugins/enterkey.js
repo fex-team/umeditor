@@ -41,7 +41,7 @@ test( 'formatBlock', function () {
                 equal(td.firstChild.innerHTML,'hello1','hello1');
             }
             else
-                equal(ua.getChildHTML(td),'hello1','try');//ie8下手动操作，是有p节点的，但是用例的情况来看是没有产生P节点
+                equal(ua.getChildHTML(td),'hello1','try');
             start();
         }, 60 );
     }, 60 );
