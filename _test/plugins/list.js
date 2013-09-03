@@ -285,13 +285,16 @@ test('trace 3586 :2个相同类型的列表合并', function () {
     editor.setContent('<ol><li>hello3</li><li>hello1</li></ol><ol><li><p>文本1</p></li><li><p>文本2</p></li></ol>');
     range.setStart(body.firstChild,0).setEnd(body.lastChild,2).select();
     editor.execCommand('insertorderedlist');
-    if(!ua.browser.ie)
-        editor.execCommand('insertorderedlist');
-    var ol = body.firstChild;
-    equal(body.childNodes.length, 1, '所有合并为一个列表');
-    equal(ol.tagName.toLowerCase(), 'ol', '仍然是ol');
-    equal(ol.childNodes.length, 4, '下面和上面的列表合并到上面去了');
-    equal(ua.getChildHTML(body.firstChild), '<li>hello3</li><li>hello1</li><li>文本1</li><li>文本2</li>', '4个li子节点');
+    if(ua.browser.ie){
+        var ol = body.firstChild;
+        equal(body.childNodes.length, 1, '所有合并为一个列表');
+        equal(ol.tagName.toLowerCase(), 'ol', '仍然是ol');
+        equal(ol.childNodes.length, 4, '下面和上面的列表合并到上面去了');
+        equal(ua.getChildHTML(body.firstChild), '<li>hello3<br></li><li>hello1<br></li><li>文本1<br></li><li>文本2<br></li>', '4个li子节点');
+    }
+    else{
+        equal(ua.getChildHTML(body),'hello3<br>hello1<br>文本1<br>文本2<br>','列表形式被取消');
+    }
 });
 //
 /*test('列表内后退', function () {
