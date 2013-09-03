@@ -212,7 +212,6 @@ test('在font,b,i标签中输入，会自动转换标签 ', function () {
 test('img和a之间不会产生多余空格', function () {
     var editor = te.obj[0];
     editor.setContent('<p><img src="http://img.baidu.com/hi/jx2/j_0001.gif" /><a href="http://www.baidu.com">http://www.baidu.com</a></p>');
-    debugger
     setTimeout(function () {
         editor.execCommand('source');
         setTimeout(function () {

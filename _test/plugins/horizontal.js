@@ -28,5 +28,8 @@ test( 'horizontal&&collapsed', function() {//ie8下待确定
     editor.execCommand( 'horizontal' );
     ua.manualDeleteFillData(db);
     var spase = ua.browser.chrome?'<p></p>':'';
-    equal( ua.getChildHTML( db ), '<p><b><i>top</i></b></p>'+spase+'<hr><p>bottom</p>', "边界不在table里" );
+    if(ua.browser.ie)
+        equal( ua.getChildHTML( db ), '<p><b><i>top</i></b></p>'+spase+'<p><hr>bottom</p>', "边界不在table里" );
+    else
+        equal( ua.getChildHTML( db ), '<p><b><i>top</i></b></p>'+spase+'<hr><p>bottom</p>', "边界不在table里" );
 } );

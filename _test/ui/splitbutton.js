@@ -5,3 +5,6 @@
  * Time: 下午5:18
  * To change this template use File | Settings | File Templates.
  */
+test('空用例',function(){
+equal('','');
+});
