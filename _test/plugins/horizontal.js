@@ -12,10 +12,7 @@ test( 'trace 3587:horizontal', function() {
         setTimeout(function(){
             range.setStart( d.getElementsByTagName( 'i' )[0].firstChild, 0 ).setEnd( db.lastChild.firstChild, 5 ).select();
             editor.execCommand( 'horizontal' );
-            if(ua.browser.chrome)
-                equal( ua.getChildHTML( db ), '<hr><p>m<br></p>', "horizontal" );
-            else
-                equal(ua.getChildHTML(db),'<p><b><i><hr></i></b>m</p>');//ie8下这种形式可以接受？
+            equal( ua.getChildHTML( db ), '<hr><p>m<br></p>', "horizontal" );
             start();
         },50);
         stop();
@@ -29,6 +26,7 @@ test( 'horizontal&&collapsed', function() {
     editor.setContent( '<b><i>top</i></b><p>bottom</p>' );
     range.setStart( db.lastChild.firstChild, 0 ).collapse( true ).select();
     editor.execCommand( 'horizontal' );
+    ua.manualDeleteFillData(db);
     var spase = ua.browser.chrome?'<p></p>':'';
     equal( ua.getChildHTML( db ), '<p><b><i>top</i></b></p>'+spase+'<hr><p>bottom</p>', "边界不在table里" );
 } );
