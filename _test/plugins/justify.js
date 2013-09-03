@@ -4,6 +4,7 @@ test( '闭合在段落中设置对齐方式', function() {
     var editor = te.obj[0];
     var range = te.obj[1];
     var body = editor.body;
+    editor.focus();
     editor.setContent( '<p><em>hello1</em></p>' );
     editor.execCommand( 'justifycenter' );
     setTimeout(function(){
