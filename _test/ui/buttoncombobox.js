@@ -23,9 +23,16 @@ test( '检测buttoncombobox行为是否正确', function() {
                     autowidthitem: [ 'p', 'h1', 'h2', 'h3', 'h4', 'h5' ],
                     autoRecord: true
                 },
-                $combox = $.eduibuttoncombobox( coboboxOptions ),
-                $btn = $combox.edui().button(),
-                $item = null;
+                $combox = null,
+                $btn = null,
+                $item = null,
+                oldIE6 = $.IE6;
+
+            $.IE6 = true;
+            $combox = $.eduibuttoncombobox( coboboxOptions );
+            $.IE6 = oldIE6;
+            $btn = $combox.edui().button();
+
 
             $combox.appendTo(  editor.$container.find('.edui-dialog-container') );
             $( ".edui-btn-toolbar", editor.$container ).append( $btn.addClass("edui-combobox") );
