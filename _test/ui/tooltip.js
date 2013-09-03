@@ -15,7 +15,7 @@ test('tooltip', function () {
     }).appendTo(div);
 
     $(div).attr('id', 'edui-test');
-    $.eduitooltip('attachTo');
+    var $tooltip=$.eduitooltip('attachTo');
 
     setTimeout(function () {
         ua.click($btn[0]);
@@ -30,6 +30,8 @@ test('tooltip', function () {
         var isshow=$(".edui-tooltip",$btn).css("display")!="none";
         equal(isshow,true,"检查按钮提示是否显示");
 
+
+        $tooltip.edui().hide();
 
         $btn.edui().disabled(true);
         if(browser.ie){
