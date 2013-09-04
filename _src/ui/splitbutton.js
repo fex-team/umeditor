@@ -59,7 +59,7 @@ UE.ui.define('splitbutton',{
         if(!$.contains(document.body,$obj[0])){
             $obj.appendTo(me.root());
         }
-        me.root().on('click','.edui-dropdown-toggle',function(){
+        me.root().delegate('.edui-dropdown-toggle','click',function(){
             me.wrapclick(function(){
                 $obj.edui().show();
             })
