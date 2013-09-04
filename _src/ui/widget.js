@@ -160,7 +160,7 @@
     };
 
     $(function () {
-        $(document).on('click mouseup mousedown dblclickc mouseover', function (evt) {
+        $(document).on('click mouseup mousedown dblclick mouseover', function (evt) {
             $.each(_eventHandler, function (i, obj) {
                 if (obj.evtname == evt.type) {
                     $.each(obj.$els, function (i, $el) {

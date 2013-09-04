@@ -9,7 +9,7 @@ test('getRange--闭合选区的边界情况', function () {
         editor.render(div_new);
         editor.ready(function () {
             setTimeout(function () {
-                var range = new UE.dom.Range(editor.document);
+                var range = new UE.dom.Range(editor.document,editor.body);
                 editor.setContent('<p><strong>xxx</strong></p>');
                 range.setStart(editor.body.firstChild.firstChild, 0).collapse(true).select();
                 range = editor.selection.getRange();
@@ -104,7 +104,7 @@ test( 'getText', function() {
     stop();
     setTimeout( function() {
         var doc = te.dom[1].contentWindow.document;
-        var range = new UE.dom.Range( doc );
+        var range = new UE.dom.Range( doc ,doc.body);
         var div = doc.createElement( 'div' );
         doc.body.appendChild( div );
         div.innerHTML = '<em></em><span>spanText</span><strong>first</strong>second';

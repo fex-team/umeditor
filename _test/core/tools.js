@@ -12,7 +12,7 @@
         var iframe = document.createElement('iframe');
         document.body.appendChild(iframe);
         iframe.id = 'iframe';
-        var range = new UE.dom.Range(document);
+        var range = new UE.dom.Range(document,document.body);
         var domUtils = UE.dom.domUtils;
         var div_dom = document.body.appendChild(document.createElement('div'));
         div_dom.id = 'test';

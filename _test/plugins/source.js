@@ -1,5 +1,8 @@
 module('plugins.source');
 
+//test('', function () {
+//    stop()
+//});
 test('插入表格，切源码再切回来',function(){
     var editor = te.obj[0];
     var div = te.dom[0];
@@ -133,7 +136,7 @@ test(' range的更新/特殊符号的转换', function () {
                 var label = 'html';
                 ua.manualDeleteFillData(editor.body);
                 if (ua.browser.ie && ua.browser.ie > 8)//todo ie9,10改range
-                    equal(editor.selection.getRange().startContainer.parentNode.tagName.toLowerCase(), label, 'range的更新');
+                    equal(editor.selection.getRange().startContainer.parentNode.parentNode.tagName.toLowerCase(), label, 'range的更新');
                 else
                     equal(editor.selection.getRange().startContainer.parentNode.parentNode.parentNode.tagName.toLowerCase(), label, 'range的更新');
                 editor.execCommand('source');
@@ -176,7 +179,8 @@ test('插入超链接后再插入空格，空格不能被删除', function () {
         editor.execCommand('source');
         setTimeout(function () {
             editor.execCommand('source');
-            var html =  '<p><a href=\"http://www.baidu.com/\" _href=\"http://www.baidu.com/\">绝对路径网址</a> &nbsp;ddd​</p>';
+            var html =  '<p><a href=\"http://www.baidu.com/\" _href=\"http://www.baidu.com/\">绝对路径网址</a> &nbsp;ddd</p>';
+            ua.manualDeleteFillData(editor.body)
             equal(editor.body.innerHTML.toLowerCase(), html, '查看空格是否被删除');
             //equal(editor.body.firstChild.innerHTML.toLowerCase(),'<a href="http://www.baidu.com/">绝对路径网址</a> &nbsp;ddd','空格仍然存在');
             equal(editor.body.innerHTML.toLowerCase().length, html.length, '查看空格是否被删除');

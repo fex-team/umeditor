@@ -9,7 +9,7 @@ test( '粘贴', function() {
     me.render(div);
     stop();
     me.ready(function(){
-        var range = new UE.dom.Range( te.obj[2].document );
+        var range = new UE.dom.Range( te.obj[2].document ,te.obj[2].body);
         me.focus();
         me.setContent('<p>hello</p>');
         range.setStart(me.body.firstChild,0).collapse(true).select();

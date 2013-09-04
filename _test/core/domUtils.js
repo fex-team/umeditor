@@ -1,4 +1,8 @@
 module( 'core.domUtils' );
+
+//test('', function () {
+//    stop()
+//});
 test( 'getPosition--A和B是同一个节点', function() {
     var div = te.dom[2];
     div.innerHTML = "<span>span</span><img  /><b>bbb</b>xxx";
@@ -589,7 +593,7 @@ test( 'getComputedStyle-border', function() {
     var div = te.dom[2];
     var domUtils = UE.dom.domUtils;
     div.innerHTML = '<table style="border: 5px solid red"></table>';
-    var s  = (ua.browser.ie&&ua.browser.ie>8)?'left-':'';
+    var s  =( (ua.browser.ie&&ua.browser.ie>8)||ua.browser.gecko)?'left-':'';
     equal( domUtils.getComputedStyle( div.firstChild, 'border-'+s+'width' ), '5px' );
     equal( domUtils.getComputedStyle( div.lastChild, 'border-'+s+'style' ), 'solid' );
     equal( ua.formatColor(domUtils.getComputedStyle( div.lastChild, 'border-'+s+'color' )), "#FF0000" );

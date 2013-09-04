@@ -14,13 +14,39 @@ UE.plugins['horizontal'] = function(){
     me.commands['horizontal'] = {
         execCommand : function(  ) {
             this.document.execCommand('insertHorizontalRule');
-            var rng = me.selection.getRange();
+            var rng = me.selection.getRange(),
+                start = rng.startContainer;
+
             if(domUtils.isBody(rng.startContainer)){
                 var next = rng.startContainer.childNodes[rng.startOffset];
                 if(!next){
                     next = $('<p></p>').appendTo(rng.startContainer).html(browser.ie ? '&nbsp;' : '<br/>')[0]
                 }
                 rng.setStart(next,0).setCursor()
+            }else{
+
+                while(dtd.$inline[start.tagName] && start.lastChild === start.firstChild){
+
+                    var parent = start.parentNode;
+                    parent.appendChild(start.firstChild);
+                    parent.removeChild(start);
+                    start = parent;
+                }
+
+                if(start.childNodes.length == 1){
+                    var hr = start.lastChild;
+                    $(hr).insertBefore(start);
+                    rng.setStart(start,0).setCursor();
+                }else{
+                    hr = $('hr',start)[0];
+                    domUtils.breakParent(hr,start);
+                    var pre = hr;
+                    if(domUtils.isEmpty(pre)){
+                        $(pre).remove()
+                    }
+                    rng.setStart(hr.nextSibling,0).setCursor();
+                }
+
             }
         }
     };

@@ -38,11 +38,11 @@ test("autoSyncData:true（由blur触发的）", function () {
             setTimeout(function () {
                 var form = document.getElementById('form');
                 var textarea = form.lastChild;
-                if(textarea.tagName.toLowerCase()=='textarea'){
+                if (textarea.tagName.toLowerCase() == 'textarea') {
                     equal(textarea.value, '<p>设置内容autoSyncData 2<br/></p>', 'textarea内容正确');
                 }
-                else{
-                    ok(false,'没有textarea');
+                else {
+                    ok(false, '没有textarea');
                 }
                 te.dom.push(editor_a.container);
 
@@ -127,7 +127,7 @@ test("_setDefaultContent--firstBeforeExecCommand", function () {
     stop();
 });
 test("trace 3610 setDisabled,setEnabled", function () {
-    if(ua.browser.gecko)return;//trace 3610
+    if (ua.browser.gecko)return;//trace 3610
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue_setDisabled';
     var editor = UE.getEditor('ue_setDisabled');
@@ -365,7 +365,7 @@ test("queryCommandState", function () {
         editor.focus();
         editor.setContent("<p><b>xxx</b>xxx</p>");
         var p = editor.document.getElementsByTagName('p')[0];
-        var r = new UE.dom.Range(editor.document,editor.body);
+        var r = new UE.dom.Range(editor.document, editor.body);
         r.setStart(p.firstChild, 0).setEnd(p.firstChild, 1).select();
         equal(editor.queryCommandState('bold'), 1, '加粗状态为1');
         r.setStart(p, 1).setEnd(p, 2).select();
@@ -376,16 +376,16 @@ test("queryCommandState", function () {
         start();
     });
 });
-test("queryCommandValue", function () {
+test("trace 3581 queryCommandValue", function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue_queryCommandValue';
     var editor = UE.getEditor('ue_queryCommandValue');
     stop();
     editor.ready(function () {
         editor.focus();
-        var html = ua.browser.ie?'<p align="left">xxx</p>':'<p style="text-align:left">xxx</p>';
+        var html = ua.browser.ie ? '<p align="left">xxx</p>' : '<p style="text-align:left">xxx</p>';
         editor.setContent(html);
-        var range = new UE.dom.Range(editor.document,editor.body);
+        var range = new UE.dom.Range(editor.document, editor.body);
         var p = editor.document.getElementsByTagName("p")[0];
         range.selectNode(p).select();
         equal(editor.queryCommandValue('justifyleft'), 'left', 'text align is left');
@@ -404,18 +404,21 @@ test("execCommand", function () {
         editor.focus();
         editor.setContent("<p>xx</p><p>xxx</p>");
         var doc = editor.document;
-        var range = new UE.dom.Range(doc,editor.body);
+        var range = new UE.dom.Range(doc, editor.body);
         var p = doc.getElementsByTagName('p')[1];
         range.setStart(p, 0).setEnd(p, 1).select();
         editor.execCommand('justifyright');
-        equal($(p).css('text-align'), 'right', 'execCommand align');
+        if (ua.browser.gecko)
+            equal($(p).css('text-align'), '-moz-right', 'execCommand align');
+        else
+            equal($(p).css('text-align'), 'right', 'execCommand align');
         range.selectNode(p).select();
         editor.execCommand("forecolor", "red");
         var font = doc.getElementsByTagName('font')[0];
         equal(ua.formatColor(font.color), "#ff0000", 'check execCommand color');
         var html = '<p>xx</p><p style=\"text-align: right;\"><font color=\"#ff0000\">xxx</font></p>';
         var html_1 = "<p>xx</p><p align=\"right\"><font color=\"red\">xxx</font></p>";
-        ua.checkSameHtml(editor.body.innerHTML,ua.browser.ie?html_1:html, 'check style')
+        ua.checkSameHtml(editor.body.innerHTML, ua.browser.webkit ? html : html_1, 'check style')
         UE.clearCache(div.id);
         te.dom.push(editor.container);
         document.getElementById('ue') && te.dom.push(document.getElementById('ue'));
@@ -527,9 +530,9 @@ test('2个实例采用2个配置文件', function () {
         div1.style.height = '200px';
         var div2 = document.body.appendChild(document.createElement('div'));
         div2.id = 'div2';
-        var editor1 = UE.getEditor('div1',{'UEDITOR_HOME_URL':'../../../', 'initialContent':'欢迎使用ueditor', 'autoFloatEnabled':false});
-        editor1.ready(function(){
-            var editor2 = UE.getEditor('div2',UEDITOR_CONFIG2);
+        var editor1 = UE.getEditor('div1', {'UEDITOR_HOME_URL': '../../../', 'initialContent': '欢迎使用ueditor', 'autoFloatEnabled': false});
+        editor1.ready(function () {
+            var editor2 = UE.getEditor('div2', UEDITOR_CONFIG2);
             editor2.ready(function () {
                 equal(editor1.body.style.minHeight, '200px', '编辑器高度为200px');
                 equal(editor2.body.style.minHeight, '400px', '自定义div高度为400px');
@@ -582,7 +585,7 @@ test('绑定事件', function () {
     document.onkeyup = function (event) {
         ok(true, "keyup is fired");
     };
-    var editor = new UE.Editor({'autoFloatEnabled':false});
+    var editor = new UE.Editor({'autoFloatEnabled': false});
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'event';
     editor.render('event');
@@ -593,8 +596,8 @@ test('绑定事件', function () {
             ua.mousedown(document.body);
             ua.mouseup(document.body);
             ua.mouseover(document.body);
-            ua.keydown(document.body, {'keyCode':13});
-            ua.keyup(document.body, {'keyCode':13});
+            ua.keydown(document.body, {'keyCode': 13});
+            ua.keyup(document.body, {'keyCode': 13});
             setTimeout(function () {
                 document.getElementById('event') && te.dom.push(document.getElementById('event'));
                 start();

@@ -26,6 +26,23 @@ module( "plugins.keystrokes" );
 //    stop();
 //});
 
+
+
+test('trace 3613 删除br标签',function(){
+    var editor = te.obj[0];
+    editor.setContent( '<p><img src="http://img.baidu.com/hi/jx2/j_0015.gif" /><br/><em>hello1</em></p>' );
+    var range = te.obj[1];
+    setTimeout(function(){
+        range.setStart( editor.body.firstChild,2 ).collapse(true).select();
+        ua.keydown(editor.body,{'keyCode':8});
+        ua.keyup(editor.body,{'keyCode':8});
+        equal(ua.getChildHTML(te.obj[0].body),'<p><img src=\"http://img.baidu.com/hi/jx2/j_0015.gif\"><em>hello1</em></p>','删除br标签');
+        start();
+    },20);
+    stop();
+});
+
+
 test('删除块元素，块元素在后',function(){
     var editor = te.obj[0];
     editor.setContent( '<h1>hello<br></h1><h2><img src="http://img.baidu.com/hi/jx2/j_0015.gif" /></h2>' );
