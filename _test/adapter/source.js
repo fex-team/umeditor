@@ -9,13 +9,16 @@ module( 'adapter.source' );
 
 test( '判断有没有触发fullscreenchanged事件', function () {
     var editor = te.obj[0];
-    editor.ready(function () {
-        editor.execCommand( 'source' );
+    editor.focus();
+    editor.execCommand('source');
+    setTimeout(function () {
         var $textarea = editor.$container.find('textarea');
         editor.fireEvent('fullscreenchanged');
-        equal($textarea.width(), editor.$body.width()-10, "textarea的宽是否正确");
-        equal($textarea.height(), editor.$body.height(), "textarea的高是否正确");
-        start();
-    });
+        setTimeout(function () {
+            equal($textarea.width(), editor.$body.width() - 10, "textarea的宽是否正确");
+            equal($textarea.height(), editor.$body.height(), "textarea的高是否正确");
+            start();
+        }, 100);
+    }, 100);
     stop();
 });

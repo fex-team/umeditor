@@ -21,7 +21,6 @@ test('dropmenu--初始化', function () {
         ],click:function(evt, val){
             equal(value, val, '检查菜单点击的value是否正确');
             div.parentNode.removeChild(div);
-            start();
 
             $dropMenuWidget.edui().val('upper-alpha');
             equal($dropMenuWidget.edui().val(), 'upper-alpha', '检查设置菜单值是否正常');
@@ -31,6 +30,8 @@ test('dropmenu--初始化', function () {
 
             $dropMenuWidget.edui().disabled(false);
             equal($dropMenuWidget.find("li").hasClass('disabled'), false, '检查选项失效后，菜单项是否没有disabled的class');
+            $(div).remove();
+            start();
         }}).appendTo(div);
 
     var $btn = $.eduibutton({
@@ -44,14 +45,14 @@ test('dropmenu--初始化', function () {
 
     ua.click(item);
 
-    var $subMenu = $.eduidropmenu({data:[
+    var $subMenuWidget = $.eduidropmenu({data:[
         {"value":"decimal","label":"1,2,3..."},
         {"value":"lower-alpha","label":"a,b,c..."},
         {"value":"lower-roman","label":"i,ii,iii..."},
         {"value":"upper-alpha","label":"A,B,C..."},
         {"value":"upper-roman","label":"I,II,III..."}
     ]});
-    $dropMenuWidget.edui().addSubmenu('subMenu', $subMenu, 4);
+    $dropMenuWidget.edui().addSubmenu('subMenu', $subMenuWidget, 5);
     equal($dropMenuWidget.find(".edui-dropdown-menu").length!=0, true, '检查是否已插入子节点');
     stop();
 });

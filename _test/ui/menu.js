@@ -28,18 +28,31 @@ test('menu--初始化', function () {
     $dropMenuWidget.edui().attachTo($btn);
     equal($btn.data('$mergeObj')!=undefined, true, 'attachTo方法执行之后，按钮有data("$mergeObj")');
 
-    $dropMenuWidget.edui().show($btn);
+    var $subMenuWidget = $.eduidropmenu({data:[
+        {"value":"decimal","label":"1,2,3..."},
+        {"value":"lower-alpha","label":"a,b,c..."},
+        {"value":"lower-roman","label":"i,ii,iii..."},
+        {"value":"upper-alpha","label":"A,B,C..."},
+        {"value":"upper-roman","label":"I,II,III..."}
+    ]});
+    //插入子菜单
+    $dropMenuWidget.edui().addSubmenu('subMenu', $subMenuWidget, 5);
+
+    ua.click($btn[0]);
 
     setTimeout(function(){
 
         var isshow = $dropMenuWidget.css("display") != "none";
         equal(isshow, true, '检查菜单是否显示');
 
-        $dropMenuWidget.edui().hide();
-        var ishide = $dropMenuWidget.css("display") == "none";
-        equal(ishide, true, '检查菜单是否隐藏');
+        ua.click($dropMenuWidget.find('li')[0]);
+        setTimeout(function(){
+            var ishide = $dropMenuWidget.css("display") == "none";
+            equal(ishide, true, '检查菜单是否隐藏');
 
-        start();
+            $(div).remove();
+            start();
+        },0);
 
     },100);
     stop();

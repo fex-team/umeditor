@@ -105,7 +105,7 @@ test('ctrl+z/y', function () {
 
 test('reset,index', function () {
     var editor = te.obj[0];
-    var br = ua.browser.ie? '&nbsp;': '';
+    var br = (ua.browser.ie&&ua.browser.ie<9)? '&nbsp;': '';
     editor.setContent('<p></p>');
     editor.focus();
     editor.execCommand('horizontal');
