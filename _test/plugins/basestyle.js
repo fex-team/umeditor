@@ -104,7 +104,7 @@ test( 'ctrl+i', function() {
     div.id = 'ue';
     var editor = UE.getEditor('ue');
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document,editor.body);
     var body = editor.body;
     editor.setContent( '<p>没有加粗的文本</p>' );
     range.selectNode( body.firstChild ).select();
@@ -133,7 +133,7 @@ test( 'ctrl+b', function() {
     div.id = 'ue1';
     var editor = UE.getEditor('ue1');
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document,editor.body);
     var body = editor.body;
     editor.setContent( '<p>没有加粗的文本</p>' );
     range.selectNode( body.firstChild ).select();
@@ -166,7 +166,7 @@ test( 'ctrl+u', function() {
     div.id = 'ue2';
     var editor = UE.getEditor('ue2');
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document,editor.body);
         var body = editor.body;
 
         editor.setContent( '<p>没有加粗的文本</p>' );

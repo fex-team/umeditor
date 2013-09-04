@@ -1,5 +1,8 @@
 module('core.Range');
 
+//test('', function () {
+//    stop()
+//});/*
 var checkBookmark = function (bookmark, pre, latter, id) {
     same(bookmark['start'], pre, '检查start返回值');
     same(bookmark['end'], latter, '检查end返回值');
@@ -181,9 +184,9 @@ test('setStart/setEnd--nodeType为1', function () {
     ua.checkResult(range, div, div, 0, 1, false, "startContainer is not null");
 });
 /*
- * 测的内容比较多，updateCollapse，setEndPoint，setStart，setEnd，collapse
- * 因为updateCollapse和setEndPoint无法通过Range对象获取， 必须间接调用验证
- */
+* 测的内容比较多，updateCollapse，setEndPoint，setStart，setEnd，collapse
+* 因为updateCollapse和setEndPoint无法通过Range对象获取， 必须间接调用验证
+*/
 test('setStartAfter,setStartBefore', function () {
     var div = te.dom[2];
     div.innerHTML = '<span></span><a></a>';
@@ -399,7 +402,7 @@ test('txtToElmBoundary', function () {
 test('trimBonudary', function () {
     var div = te.dom[2];
     div.innerHTML = '<table border="1"><tr><td>td_xxxx<b><i><u>u_text</u></i></b></td></tr></table>';
-    var range = new UE.dom.Range(document);
+    var range = new UE.dom.Range(document,document.body);
     var td = div.getElementsByTagName('td')[0];
     var td_text = td.firstChild;
     /*startOffset为0，在第一个孩子节点前插入*/
@@ -442,7 +445,7 @@ test('adjustmentBoundary--startContainer为文本节点', function () {
     div.id = 'ue';
     var editor = UE.getEditor('ue');
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document,editor.body);
         editor.setContent('<p><span id="span">span_text</span></p>div_text2<p id="p">p_text<em>em_text</em></p>');
         var span_text = document.getElementById('span').firstChild;
         var p = document.getElementById('p');
@@ -468,8 +471,6 @@ test('adjustmentBoundary--非文本节点', function () {
     ua.checkResult(range, div, div, 2, 3, false, 'startContainer为非文本节点');
 
 });
-
-
 test('selectNodeContents', function () {
     var div = te.dom[2];
     div.innerHTML = '<b>xxxx</b>div_text';
@@ -577,7 +578,6 @@ test('createBookmark/moveToBookmark--元素不闭合', function () {
     equal(ua.getHTML(div), '<div id="test">first_text<b><i>i_text</i>xxxxxxx</b><span id="span">span_text</span><p id="second"><em>em_text</em>p_text</p></div>');
 
 });
-
 test('createBookmark/moveToBookmark--span嵌套', function () {
     var div = te.dom[2];
     var range = new UE.dom.Range(document);
@@ -607,8 +607,6 @@ test('createBookmark/moveToBookmark--元素闭合', function () {
     equal('_baidu_bookmark_start_', pre.id, '检查前面span的id');
 
 });
-
-
 test('getClosedNode', function () {
     var div = te.dom[2];
     var range = new UE.dom.Range(document);
@@ -623,14 +621,13 @@ test('getClosedNode', function () {
     equal(range.getClosedNode(), null, 'get null result');
 
 });
-
 test('b节点取range', function () {
     var div = te.dom[2];
     var editor = new UE.Editor({'autoFloatEnabled':false});
     stop();
     editor.render(div);
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document,editor.body);
         editor.setContent('<p>hello<strong>hello1</strong>hello2</p>');
         range.setStart(editor.body.firstChild.lastChild, 0).collapse(1).select();
         range = editor.selection.getRange();
@@ -673,7 +670,7 @@ test('文本节点中间取range', function () {
     stop();
     editor.render(div);
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document,editor.body);
         editor.setContent('<p>hello2</p>');
         range.setStart(editor.body.firstChild.firstChild, 2).collapse(1).select();
         range = editor.selection.getRange();        if (ua.browser.ie&&ua.browser.ie < 9)
@@ -725,6 +722,8 @@ test('range.createAddress,range.moveAddress', function () {
         addr = range.setStart(editor.body.lastChild, 0).setEnd(editor.body.lastChild, editor.body.lastChild.nodeValue.length).createAddress();
         range1.moveToAddress(addr);
         ok(equalRange(range, range1));
+
+        editor.focus();
         addr = range.setStart(div.lastChild, 0).setEnd(div.lastChild, div.lastChild.nodeValue.length).createAddress(false, true);
         editor.body.innerHTML = 'aaaaaabbb';
         range1.moveToAddress(addr);
