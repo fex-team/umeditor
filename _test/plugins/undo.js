@@ -9,7 +9,7 @@ test('输入文本后撤销按钮不亮', function () {
     div.id = 'ue';
     var editor = UE.getEditor('ue');
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document,editor.body);
         editor.setContent('<p></p>');
         range.setStart(editor.body.firstChild, 0).collapse(true).select();
         ua.keydown(editor.body);
@@ -30,7 +30,7 @@ test('插入文本、分割线、文本,撤销2次，撤销掉分割线', functi
     div.id = 'ue';
     var editor = UE.getEditor('ue');
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document,editor.body);
         editor.setContent('<p></p>');
 
         //输入文本
@@ -71,7 +71,7 @@ test('ctrl+z/y', function () {
     div.id = 'ue';
     var editor = UE.getEditor('ue');
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document,editor.body);
         var body = editor.body;
         editor.setContent('<p>没有加粗的文本</p>');
         range.selectNode(body.firstChild).select();
