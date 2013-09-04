@@ -28,20 +28,24 @@ test('splitbutton--初始化', function () {
     equal($btn.hasClass('disabled'), false, '检查是否没有disabled的class');
 
     $btn.edui().active(true);
-    equal($btn.hasClass('active'), true, '检查是否有disabled的class');
+    equal($btn.edui().active(), true, '检查是否有disabled的class');
     $btn.edui().active(false);
-    equal($btn.hasClass('active'), false, '检查是否有disabled的class');
+    equal($btn.edui().active(), false, '检查是否有disabled的class');
 
     $popup = $.eduipopup({
         subtpl: '<span class="test">popup text</span>',
         width: '100',
         height: '100'
     });
+    equal($popup.edui().data('$mergeObj')==null, true, '检查是否没有disabled的class');
     $btn.edui().mergeWith($popup);
+    equal($popup.edui().data('$mergeObj')!=null, true, '检查是否有disabled的class');
 
-    $btn.trigger('click');
+    $btn.find('.edui-btn:first').trigger('click');
+    $btn.find('.edui-dropdown-toggle').trigger('click');
     setTimeout(function(){
         equal($btn.hasClass('afterBtnClick'), true, '判断点击是否触发设定好的监听函数');
+        equal($popup.css('display')!='none', true, '判断是否已出现颜色选择面板');
         start();
     }, 50);
 

@@ -16,7 +16,7 @@
         stop();
         setTimeout(function(){
             editor.ready(function () {
-                var range = new UE.dom.Range(editor.document);
+                var range = new UE.dom.Range(editor.document,editor.body);
                 te.dom.push(div);
                 te.obj.push(editor);
                 te.obj.push(range);
