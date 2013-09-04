@@ -8,9 +8,10 @@
     var sourceEditors = {
         textarea: function (editor, holder){
             var textarea = holder.ownerDocument.createElement('textarea');
-            textarea.style.cssText = 'resize:none;border:0;padding:0 5px;margin:0;overflow-y:auto;outline:0';
+            textarea.style.cssText = 'resize:none;border:0;padding:0 10px;margin:0;overflow-y:auto;outline:0';
             // todo: IE下只有onresize属性可用... 很纠结
             if (browser.ie && browser.version < 8) {
+
                 textarea.style.width = holder.offsetWidth + 'px';
                 textarea.style.height = holder.offsetHeight + 'px';
                 holder.onresize = function (){
