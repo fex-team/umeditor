@@ -12,7 +12,7 @@ test( 'trace 3587　3614:horizontal', function() {
             range.setStart( d.getElementsByTagName( 'i' )[0].firstChild, 0 ).setEnd( db.lastChild.firstChild, 5 ).select();
             editor.execCommand( 'horizontal' );
             //<p>hello</p><hr>m
-            equal( ua.getChildHTML( db ), '<hr><p>m<br></p>', "horizontal" );
+            equal( ua.getChildHTML( db ), '<p>hello</p><hr><p>m<br></p>', "horizontal" );
             start();
         },50);
         stop();
