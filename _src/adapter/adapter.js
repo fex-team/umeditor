@@ -14,6 +14,8 @@
         _widgetCallBack = {};
 
     utils.extend(UE, {
+        defaultWidth : 500,
+        defaultHeight : 500,
         registerUI: function (name, fn) {
             utils.each(name.split(/\s+/), function (uiname) {
                 _editorUI[uiname] = fn;
@@ -146,7 +148,7 @@
                 if(options.initialFrameWidth){
                     options.minFrameWidth = options.initialFrameWidth
                 }else{
-                    options.minFrameWidth = options.initialFrameWidth = editor.$body.width();
+                    options.minFrameWidth = options.initialFrameWidth = editor.$body.width() || UE.defaultWidth;
                 }
 
                 $container.css({

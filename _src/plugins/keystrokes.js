@@ -101,6 +101,24 @@ UE.plugins['keystrokes'] = function() {
                     me.fireEvent('saveScene');
                 }
             }
+
+            //trace:3613
+            if(browser.chrome){
+                if(rng.collapsed){
+                    start = rng.startContainer;
+                    if(start.nodeType == 3 && rng.startOffset == 0){
+                        var pre = start.previousSibling;
+                        if(pre.nodeName == 'BR'){
+                            rng.setStartBefore(pre);
+                            me.fireEvent('saveScene');
+                            $(pre).remove();
+                            rng.setCursor();
+                            me.fireEvent('saveScene');
+                        }
+                    }
+
+                }
+            }
         }
         //trace:1634
         //ff的del键在容器空的时候，也会删除
