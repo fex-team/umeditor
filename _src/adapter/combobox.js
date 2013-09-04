@@ -171,69 +171,67 @@ UE.registerUI('paragraph fontfamily fontsize', function( name ) {
 });
 
 
-$.each(['forecolor','backcolor'],function(i,v){
-    UE.registerUI(v, function( name ) {
-        function getCurrentColor() {
-            return domUtils.getComputedStyle( $colorLabel[0], 'background-color' );
-        }
+UE.registerUI('forecolor backcolor', function( name ) {
+    function getCurrentColor() {
+        return domUtils.getComputedStyle( $colorLabel[0], 'background-color' );
+    }
 
-        var me = this,
-            $colorPickerWidget = null,
-            $colorLabel = null,
-            $btn = null;
+    var me = this,
+        $colorPickerWidget = null,
+        $colorLabel = null,
+        $btn = null;
 
-        //querycommand
-        this.addListener('selectionchange', function(){
+    //querycommand
+    this.addListener('selectionchange', function(){
 
-            var state = this.queryCommandState( name );
-            $btn.edui().disabled( state == -1 ).active( state == 1 );
-
-        });
-
-        $btn = $.eduicolorsplitbutton({
-            icon: name,
-            caret: true,
-            name: name,
-            title: me.getLang("labelMap")[name],
-            click: function() {
-                me.execCommand( name, getCurrentColor() );
-            }
-        });
-
-        $colorLabel = $btn.edui().colorLabel();
-
-        $colorPickerWidget = $.eduicolorpicker({
-            name: name,
-            lang_clearColor: me.getLang('clearColor') || '',
-            lang_themeColor: me.getLang('themeColor') || '',
-            lang_standardColor: me.getLang('standardColor') || ''
-        })
-            .on('pickcolor', function( evt, color ){
-                window.setTimeout( function(){
-                    $colorLabel.css("backgroundColor", color);
-                    me.execCommand( name, color );
-                }, 0 );
-            })
-            .on('show',function(){
-                UE.setActiveWidget( colorPickerWidget.root() );
-            }).css('zIndex',me.getOpt('zIndex') + 1);
-
-        $btn.edui().on('arrowclick',function(){
-            if(!$colorPickerWidget.parent().length){
-                me.$container.find('.edui-dialog-container').append($colorPickerWidget);
-            }
-            $colorPickerWidget.edui().show($btn,{
-                caretDir:"down",
-                offsetTop:-5,
-                offsetLeft:8,
-                caretLeft:11,
-                caretTop:-8
-            });
-        }).register('click', $btn, function () {
-                $colorPickerWidget.edui().hide()
-            });
-
-        return $btn;
+        var state = this.queryCommandState( name );
+        $btn.edui().disabled( state == -1 ).active( state == 1 );
 
     });
+
+    $btn = $.eduicolorsplitbutton({
+        icon: name,
+        caret: true,
+        name: name,
+        title: me.getLang("labelMap")[name],
+        click: function() {
+            me.execCommand( name, getCurrentColor() );
+        }
+    });
+
+    $colorLabel = $btn.edui().colorLabel();
+
+    $colorPickerWidget = $.eduicolorpicker({
+        name: name,
+        lang_clearColor: me.getLang('clearColor') || '',
+        lang_themeColor: me.getLang('themeColor') || '',
+        lang_standardColor: me.getLang('standardColor') || ''
+    })
+        .on('pickcolor', function( evt, color ){
+            window.setTimeout( function(){
+                $colorLabel.css("backgroundColor", color);
+                me.execCommand( name, color );
+            }, 0 );
+        })
+        .on('show',function(){
+            UE.setActiveWidget( colorPickerWidget.root() );
+        }).css('zIndex',me.getOpt('zIndex') + 1);
+
+    $btn.edui().on('arrowclick',function(){
+        if(!$colorPickerWidget.parent().length){
+            me.$container.find('.edui-dialog-container').append($colorPickerWidget);
+        }
+        $colorPickerWidget.edui().show($btn,{
+            caretDir:"down",
+            offsetTop:-5,
+            offsetLeft:8,
+            caretLeft:11,
+            caretTop:-8
+        });
+    }).register('click', $btn, function () {
+            $colorPickerWidget.edui().hide()
+        });
+
+    return $btn;
+
 });

@@ -19,7 +19,11 @@ UE.plugins['paragraph'] = function() {
             return this.document.execCommand('formatBlock',false,'<' + style + '>');
         },
         queryCommandValue : function() {
-            return this.document.queryCommandValue('formatBlock');
+            try{
+                var  val = this.document.queryCommandValue('formatBlock')
+            }catch(e){
+            }
+            return val ;
         }
     };
 };

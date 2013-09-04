@@ -108,7 +108,21 @@ UE.plugins['font'] = function () {
                                 '48':'7'
                             }[(value+"").replace(/px/,'')]
                         }
-                        return this.document.execCommand(fonts[cmdName],false, value)
+                        this.document.execCommand(fonts[cmdName],false, value);
+                        if(browser.gecko){
+                            $.each(this.$body.find('a'),function(i,a){
+                                var parent = a.parentNode;
+                                if(parent.lastChild === parent.firstChild && /FONT|SPAN/.test(parent.tagName)){
+                                    var cloneNode = parent.cloneNode(false);
+                                    cloneNode.innerHTML = a.innerHTML;
+                                    $(a).html('').append(cloneNode).insertBefore(parent);
+
+                                    $(parent).remove();
+                                }
+                            });
+                        }
+
+                        return true
                     }
 
                 },
