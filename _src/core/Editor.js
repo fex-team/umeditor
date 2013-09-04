@@ -101,7 +101,8 @@
             allHtmlEnabled: false,
             scaleEnabled: false,
             tableNativeEditInFF: false,
-            autoSyncData : true
+            autoSyncData : true,
+
         });
 
         if(!utils.isEmptyObject(UE.I18N)){
@@ -241,18 +242,20 @@
                 utils.cssRule('ueditor_body_css',me.options.initialStyle,document);
 
                 container = this.initialCont(container);
+
                 container.className += ' edui-body-container';
 
                 if(options.initialFrameWidth){
                     options.minFrameWidth = options.initialFrameWidth
                 }else{
-                    options.minFrameWidth = options.initialFrameWidth = $(container).width();
+                    //都没给值，先写死了
+                    options.minFrameWidth = options.initialFrameWidth = $(container).width() || UE.defaultWidth;
                 }
                 if(options.initialFrameHeight){
                     options.minFrameHeight = options.initialFrameHeight
                 }else{
 
-                    options.initialFrameHeight = options.minFrameHeight = $(container).height();
+                    options.initialFrameHeight = options.minFrameHeight = $(container).height() || UE.defaultHeight;
                 }
 
                 container.style.width = /%$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth - getStyleValue("padding-left")- getStyleValue("padding-right")   +'px';
