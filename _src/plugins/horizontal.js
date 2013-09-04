@@ -40,8 +40,8 @@ UE.plugins['horizontal'] = function(){
                 }else{
                     hr = $('hr',start)[0];
                     domUtils.breakParent(hr,start);
-                    var pre = hr;
-                    if(domUtils.isEmpty(pre)){
+                    var pre = hr.previousSibling;
+                    if(pre && domUtils.isEmptyBlock(pre)){
                         $(pre).remove()
                     }
                     rng.setStart(hr.nextSibling,0).setCursor();
