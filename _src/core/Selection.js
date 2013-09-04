@@ -136,13 +136,17 @@
 
     Selection.prototype = {
         hasNativeRange : function(){
+            var rng;
             if(!browser.ie || browser.ie9above){
-
-                return this.getNative().rangeCount
+                var nativeSel = this.getNative();
+                if(!nativeSel.rangeCount){
+                    return false;
+                }
+                rng = nativeSel.getRangeAt(0);
             }else{
-                var ieRange = this.getIERange(),parent = ieRange.item ? ieRange.item(0) : ieRange.parentElement();
-                return  parent === this.body || domUtils.inDoc(parent,this.body)
+                rng = _getIERange(this);
             }
+            return this.rangeInBody(rng);
         },
         /**
          * 获取原生seleciton对象
@@ -216,11 +220,7 @@
          * 编辑器是否得到了选区
          */
         isFocus:function () {
-            try {
-                return browser.ie && _getIERange( this ) || !browser.ie && this.getNative().rangeCount ? true : false;
-            } catch ( e ) {
-                return false;
-            }
+            return this.hasNativeRange()
 
         },
         /**
