@@ -11,6 +11,7 @@ module('plugins.preview');
 
 
 test('设置内容后后预览',function(){
+    if(ua.browser.gecko)return;//ff总不停打开窗口,实际操作没问题
     var editor = te.obj[0];
     var body = editor.body;
     var html = '<p><span style="color:#ff0000">你好，<strong><em>我亲爱</em></strong></span><strong><em>的朋</em></strong>友</p>';

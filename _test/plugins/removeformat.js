@@ -10,14 +10,14 @@ test( 'trace 3570:对包含超链接的文本清除样式', function () {
     equal(ua.getChildHTML(editor.body), '<p>hello<a href=\"http://www.baidu.com/\" _href=\"http://www.baidu.com/\">baidu</a></p>', '对包含超链接的文本去除样式' );
 } );
 
-test( '清除超链接的颜色', function () {
+test( 'trace 3612 清除超链接的颜色', function () {
     var editor = te.obj[2];
     var div = document.body.appendChild( document.createElement( 'div' ) );
     $( div ).css( 'width', '500px' ).css( 'height', '500px' ).css( 'border', '1px solid #ccc' );
     editor.render(div);
     stop();
     setTimeout(function(){
-        var range = new UE.dom.Range( te.obj[2].document );
+        var range = new UE.dom.Range( te.obj[2].document,te.obj[2].body );
         editor.setContent('<a href="http://www.baidu.com/">baidu</a>');
         range.selectNode(editor.body.firstChild).select();
         editor.execCommand( 'forecolor', 'rgb(255,0,0)' );

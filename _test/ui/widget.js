@@ -33,6 +33,14 @@ test('widget--初始化',function(){
     widgetedui.trigger('click');
     equal($widget.hasClass('testWidget'), false, '判断是否没有testWidget的class');
 
+    //测试root和register方法
+    widgetedui.register('click', widgetedui.root(), function(){
+        $widget.addClass('registerClick');
+    });
+    equal($widget.hasClass('registerClick'), false, '判断是否未设置registerClick的class');
+    $widget.parent().trigger('click');
+    equal($widget.hasClass('registerClick'), true, '判断是否已设置registerClick的class');
+
     //测试data方法
     widgetedui.data('testdata', '123456');
     equal(widgetedui.data('testdata'), '123456', '判断是否data数据是否设置正常');

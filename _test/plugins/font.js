@@ -6,7 +6,7 @@ test('trace 3606 设置超链接前景色再清除颜色', function () {
     editor.render(div);
     stop();
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document,editor.body);
         editor.setContent('<p>hello<a href="www.baidu.com">baidu</a></p>');
         range.selectNode(editor.body.firstChild).select();
         editor.execCommand('foreColor', 'rgb(255,0,0)');
@@ -21,21 +21,8 @@ test('trace 3606 设置超链接前景色再清除颜色', function () {
         setTimeout(function () {
             div.parentNode.removeChild(div);
             start();
-        }, 50);
+        }, 100);
     });
-});
-
-
-test('font不转span', function () {
-    var editor = te.obj[0];
-    editor.setContent('<font size="12" color="red" lang="en" face="arial"><b><i>hello</i>hello</b>');
-    //var html = '<span style="font-size:12px;color:red;font-family:arial"><strong><em>hello</em>hello</strong></span>';
-    var html = '<font size="12" color="red" lang="en" face="arial"><b><i>hello</i>hello</b>';
-    ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, '不转换font标签');
-    editor.setContent('<b><font size="10" color="#ff0000" lang="en" face="楷体">hello');
-    //html = '<strong><span style="font-size:10px;color:#ff0000;font-family:楷体">hello</span></strong>';
-    html = '<b><font size="10" color="#ff0000" lang="en" face="楷体">hello';
-    ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, '不转换font标签');
 });
 
 test('underline and linethrough', function () {
@@ -45,7 +32,7 @@ test('underline and linethrough', function () {
     editor.render(div);
     stop();
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document,editor.body);
         editor.setContent('hello<a href="http://www.baidu.com/">baidu</a>test');
         setTimeout(function () {
             if (!ua.browser.opera) {
@@ -75,7 +62,7 @@ test('underline and linethrough', function () {
             setTimeout(function () {
                 div.parentNode.removeChild(div);
                 start();
-            }, 50);
+            }, 100);
         }, 50);
     });
 });
@@ -89,7 +76,7 @@ test('字体的状态反射', function () {
     editor.render(div);
     stop();
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document,editor.body);
         editor.setContent('<p>欢迎你回来</p>');
         var p = editor.body.firstChild;
         range.selectNode(p).select();
@@ -150,7 +137,7 @@ test('闭合时改变前景色和删除线，再输入文本', function () {
         editor.render(div);
         stop();
         editor.ready(function () {
-            var range = new UE.dom.Range(editor.document);
+            var range = new UE.dom.Range(editor.document,editor.body);
             editor.setContent('<p><span style="color: rgb(255, 0, 0)">你好</span></p>');
             var p = editor.body.firstChild;
             range.setStart(p.firstChild, 1).collapse(true).select();
@@ -230,7 +217,7 @@ test('为设置了字体的文本添加删除线', function () {
     editor.render(div);
     stop();
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document,editor.body);
         editor.setContent('<p><strong>你好早安</strong></p>');
         var text = editor.body.firstChild.firstChild.firstChild;
         range.setStart(text, 0).setEnd(text, 2).select();
@@ -260,7 +247,7 @@ test('设置超链接背景色后切换到源码再切回来', function () {
     editor.render(div);
     stop();
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document,editor.body);
         editor.setContent('<p>hello<a href="www.baidu.com">baidu</a></p>');
         range.selectNode(editor.body.firstChild).select();
         editor.execCommand('backcolor', 'rgb(255,0,0)');
@@ -347,7 +334,7 @@ test('预先设置字体颜色，再输入文本，查看文本颜色', function
         editor.render(div);
         stop();
         editor.ready(function () {
-            var range = new UE.dom.Range(editor.document);
+            var range = new UE.dom.Range(editor.document,editor.body);
             editor.setContent('<p><br></p>');
             range.setStart(editor.body.firstChild, 0).collapse(true).select();
             editor.execCommand('forecolor', 'rgb(255,0,0)');
@@ -363,7 +350,19 @@ test('预先设置字体颜色，再输入文本，查看文本颜色', function
         });
     }
 });
+test('font不转span', function () {
+    var editor = te.obj[0];
+    editor.focus();
+    editor.setContent('<font size="12" color="red" lang="en" face="arial"><b><i>hello</i>hello</b>');
+    var html = '<span style="font-size:12px;color:red;font-family:arial"><strong><em>hello</em>hello</strong></span>';
+    var html = '<font size="12" color="red" lang="en" face="arial"><b><i>hello</i>hello</b>';
+    ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, '不转换font标签');
+    editor.setContent('<b><font size="10" color="#ff0000" lang="en" face="楷体">hello');
+    //html = '<strong><span style="font-size:10px;color:#ff0000;font-family:楷体">hello</span></strong>';
+    html = '<b><font size="10" color="#ff0000" lang="en" face="楷体">hello';
+    ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, '不转换font标签');
 
+});
 
 test('font标签不发生转换', function () {
     var editor = te.obj[0];
@@ -393,7 +392,7 @@ test('background--不同字号', function () {
         te.obj[2].render(div);
         stop();
         editor.ready(function () {
-            var range = new UE.dom.Range(te.obj[2].document);
+            var range = new UE.dom.Range(te.obj[2].document,te.obj[2].body);
             te.obj[2].setContent('你好');
             editor.focus();
             //var body = editor.document.body;
