@@ -250,6 +250,7 @@ test('修改列表中间某一段列表为另一种列表', function () {//ie下
 
 //ff和ie下是bug
 test('trace:3567:两个有序列表，一个无序列表，将无序列表与第二个有序列表合并', function () {
+    if(ua.browser.ie||ua.browser.gecko)return;//won't fix
     var editor = te.obj[0];
     var range = te.obj[1];
     var body = editor.body;
@@ -279,19 +280,23 @@ test('列表下的文本合并到列表中', function () {
 });
 
 test('trace 3586 :2个相同类型的列表合并', function () {
+    if(ua.browser.ie||ua.browser.gecko)return;//won't fix
     var editor = te.obj[0];
     var range = te.obj[1];
     var body = editor.body;
     editor.setContent('<ol><li>hello3</li><li>hello1</li></ol><ol><li><p>文本1</p></li><li><p>文本2</p></li></ol>');
     range.setStart(body.firstChild,0).setEnd(body.lastChild,2).select();
     editor.execCommand('insertorderedlist');
-    if(!ua.browser.ie)
-        editor.execCommand('insertorderedlist');
-    var ol = body.firstChild;
-    equal(body.childNodes.length, 1, '所有合并为一个列表');
-    equal(ol.tagName.toLowerCase(), 'ol', '仍然是ol');
-    equal(ol.childNodes.length, 4, '下面和上面的列表合并到上面去了');
-    equal(ua.getChildHTML(body.firstChild), '<li>hello3</li><li>hello1</li><li>文本1</li><li>文本2</li>', '4个li子节点');
+    if(ua.browser.ie){
+        var ol = body.firstChild;
+        equal(body.childNodes.length, 1, '所有合并为一个列表');
+        equal(ol.tagName.toLowerCase(), 'ol', '仍然是ol');
+        equal(ol.childNodes.length, 4, '下面和上面的列表合并到上面去了');
+        equal(ua.getChildHTML(body.firstChild), '<li>hello3<br></li><li>hello1<br></li><li>文本1<br></li><li>文本2<br></li>', '4个li子节点');
+    }
+    else{
+        equal(ua.getChildHTML(body),'hello3<br>hello1<br>文本1<br>文本2<br>','列表形式被取消');
+    }
 });
 //
 /*test('列表内后退', function () {

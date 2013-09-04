@@ -17,12 +17,10 @@ test( 'dropfile', function () {
         var originalEvent = {dataTransfer: {files: fileList}};
         editor.$body.trigger( {type:"drop",originalEvent: originalEvent});
         setTimeout(function () {
-            debugger
-
+            UE.clearCache('ue');
+            te.dom.push(editor.container);
+            start();
         }, 600);
-        UE.clearCache('ue');
-        te.dom.push(editor.container);
-        start();
     });
     stop();
 } );

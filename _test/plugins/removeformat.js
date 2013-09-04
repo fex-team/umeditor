@@ -40,13 +40,13 @@ test( '清除超链接的颜色', function () {
     },500);
 } );
 
-test( '清除颜色的区域有多个inline元素嵌套', function () {
+test( 'trace 3605 清除样式的区域有多个inline元素嵌套', function () {
     var editor = te.obj[0];
     var range = te.obj[1];
     var body = editor.body;
     editor.setContent( '<p><em><strong>hello1</strong></em></p><p><strong><em>hello2</em></strong></p>' );
     var strs = body.getElementsByTagName( 'strong' );
-    range.setStart( strs[0].firstChild, 2 ).setEnd( strs[1].firstChild.firstChild, 3 ).select();
+    range.setStart( strs[0].firstChild, 2 ).setEnd( strs[1].firstChild.lastChild, 3 ).select();
     editor.execCommand( 'removeformat' );
     equal( ua.getChildHTML( body ), '<p><em><strong>he</strong></em>llo1</p><p>hel<strong><em>lo2</em></strong></p>' );
 } );

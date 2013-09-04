@@ -36,6 +36,9 @@ test('popup--初始化', function () {
             caretTop:-8
     });
 
+    ;
+    equal($popupWidget.edui().getBodyContainer()!=null, true, '检查getBodyContaine是否正常');
+
     setTimeout(function(){
 
         var isshow = $popupWidget.css("display") != "none";
@@ -46,6 +49,7 @@ test('popup--初始化', function () {
         equal(ishide, true, '检查popup是否隐藏');
 
         start();
+        $(div).remove();
     },100);
     stop();
 });
