@@ -65,7 +65,7 @@ UE.ready(function () {
 
         me.addListener('click', function (type, e) {
             if (e.target.tagName == 'IMG') {
-                var range = new dom.Range(me.document);
+                var range = new dom.Range(me.document, me.body);
                 range.selectNode(e.target).select();
             }
         });
