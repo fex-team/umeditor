@@ -37,7 +37,7 @@ test('tooltip', function () {
         }else{
             ua.mouseover($btn[0]);
         }
-        var isHide=$(".edui-tooltip",$btn).css("display")=="none";
+        isHide=$(".edui-tooltip",$btn).css("display")=="none";
         equal(isHide,true,"检查不可用的按钮不应该有提示");
 
         div.parentNode.removeChild(div);
