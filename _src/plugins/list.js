@@ -40,7 +40,19 @@ UE.plugins['list'] = function () {
     me.commands['insertorderedlist'] =
     me.commands['insertunorderedlist'] = {
             execCommand:function (cmdName) {
-                return this.document.execCommand(cmdName)
+                this.document.execCommand(cmdName);
+                var rng = this.selection.getRange(),
+                    bk = rng.createBookmark();
+
+                this.$body.find('ol,ul').each(function(i,n){
+                    var parent = n.parentNode;
+                    if(parent.tagName == 'P' && parent.lastChild === parent.firstChild){
+                        $(n).insertBefore(parent);
+                        $(parent).remove();
+                    }
+                });
+                rng.moveToBookmark(bk).select();
+                return true;
             },
             queryCommandState:function (cmdName) {
                 return this.document.queryCommandState(cmdName)
