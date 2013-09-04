@@ -120,3 +120,24 @@ test( 'getText', function() {
 
 
 
+test('hasNativeRange', function () {
+
+    var div_new = document.createElement('div');
+    document.body.appendChild(div_new);
+    var editor = new UE.Editor({'autoFloatEnabled': false});
+    stop();
+    setTimeout(function () {
+        editor.render(div_new);
+        editor.ready(function () {
+            setTimeout(function () {
+                editor.focus();
+                ok(editor.selection.hasNativeRange());
+                var rng = new UE.dom.Range(document,document.body);
+                rng.setStart(document.body,0).setCursor();
+
+                ok(!editor.selection.hasNativeRange())
+                start();
+            }, 50);
+        });
+    }, 50);
+});
