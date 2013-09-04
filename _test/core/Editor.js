@@ -126,7 +126,8 @@ test("_setDefaultContent--firstBeforeExecCommand", function () {
     });
     stop();
 });
-test("setDisabled,setEnabled", function () {
+test("trace 3610 setDisabled,setEnabled", function () {
+    if(ua.browser.gecko)return;//trace 3610
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue_setDisabled';
     var editor = UE.getEditor('ue_setDisabled');
@@ -364,7 +365,7 @@ test("queryCommandState", function () {
         editor.focus();
         editor.setContent("<p><b>xxx</b>xxx</p>");
         var p = editor.document.getElementsByTagName('p')[0];
-        var r = new UE.dom.Range(editor.document);
+        var r = new UE.dom.Range(editor.document,editor.body);
         r.setStart(p.firstChild, 0).setEnd(p.firstChild, 1).select();
         equal(editor.queryCommandState('bold'), 1, '加粗状态为1');
         r.setStart(p, 1).setEnd(p, 2).select();
@@ -384,7 +385,7 @@ test("queryCommandValue", function () {
         editor.focus();
         var html = ua.browser.ie?'<p align="left">xxx</p>':'<p style="text-align:left">xxx</p>';
         editor.setContent(html);
-        var range = new UE.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document,editor.body);
         var p = editor.document.getElementsByTagName("p")[0];
         range.selectNode(p).select();
         equal(editor.queryCommandValue('justifyleft'), 'left', 'text align is left');
@@ -403,7 +404,7 @@ test("execCommand", function () {
         editor.focus();
         editor.setContent("<p>xx</p><p>xxx</p>");
         var doc = editor.document;
-        var range = new UE.dom.Range(doc);
+        var range = new UE.dom.Range(doc,editor.body);
         var p = doc.getElementsByTagName('p')[1];
         range.setStart(p, 0).setEnd(p, 1).select();
         editor.execCommand('justifyright');

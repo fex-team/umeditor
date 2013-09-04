@@ -15,13 +15,9 @@ test('tooltip', function () {
     }).appendTo(div);
 
     $(div).attr('id', 'edui-test');
-    var $tooltip=$.eduitooltip('attachTo');
+    $.eduitooltip('attachTo',$btn);
 
     setTimeout(function () {
-        ua.click($btn[0]);
-        var ishide=$(".edui-tooltip",$btn).css("display")=="none";
-        equal(ishide,true,"检查按钮提示是否隐藏");
-
         if(browser.ie){
             ua.mouseenter($btn[0]);
         }else{
@@ -30,8 +26,12 @@ test('tooltip', function () {
         var isshow=$(".edui-tooltip",$btn).css("display")!="none";
         equal(isshow,true,"检查按钮提示是否显示");
 
+        ua.click($btn[0]);
 
-        $tooltip.edui().hide();
+        var ishide=$(".edui-tooltip",$btn).css("display")=="none";
+
+        equal(ishide,true,"检查按钮提示是否隐藏");
+
 
         $btn.edui().disabled(true);
         if(browser.ie){
@@ -39,7 +39,7 @@ test('tooltip', function () {
         }else{
             ua.mouseover($btn[0]);
         }
-        var isHide=$(".edui-tooltip",$btn).css("display")=="none";
+        isHide=$(".edui-tooltip",$btn).css("display")=="none";
         equal(isHide,true,"检查不可用的按钮不应该有提示");
 
         div.parentNode.removeChild(div);

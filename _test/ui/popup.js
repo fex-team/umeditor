@@ -49,6 +49,7 @@ test('popup--初始化', function () {
         equal(ishide, true, '检查popup是否隐藏');
 
         start();
+        $(div).remove();
     },100);
     stop();
 });
