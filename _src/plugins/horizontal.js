@@ -22,7 +22,7 @@ UE.plugins['horizontal'] = function(){
                     next = $('<p></p>').appendTo(rng.startContainer).html(browser.ie ? '&nbsp;' : '<br/>')[0]
                 }
                 rng.setStart(next,0).setCursor()
-            }else if(start.nodeName == 'P' ){
+            }else if(domUtils.isBlockElm(start) ){
                 if(start.childNodes.length == 1){
                     var hr = start.lastChild;
                     $(hr).insertBefore(start);
