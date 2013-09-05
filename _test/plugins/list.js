@@ -117,14 +117,10 @@ test('多个p，选中其中几个变为列表', function () {
     setTimeout(function () {
         range.setStart(body.firstChild, 0).setEnd(body.firstChild.nextSibling, 1).select();
         editor.execCommand('insertorderedlist');
-        if(ua.browser.chrome){
-            equal(editor.getContent(editor.body.firstChild), '<p><ol><li>hello1<br/></li><li>hello2<br/></li></ol></p><p>hello3</p><p>hello4</p>', '检查列表的内容');
-            equal(body.firstChild.firstChild.tagName.toLowerCase(), 'ol', '检查列表的类型');
-        }
-        else{
-            equal(editor.getContent(editor.body.firstChild), '<ol><li>hello1</li><li>hello2</li></ol><p>hello3</p><p>hello4</p>', '检查列表的内容');
-            equal(body.firstChild.tagName.toLowerCase(), 'ol', '检查列表的类型');
-        }
+
+        var space = ua.browser.webkit?'<br/>':'';
+        equal(editor.getContent(editor.body.firstChild), '<ol><li>hello1'+space+'</li><li>hello2'+space+'</li></ol><p>hello3</p><p>hello4</p>', '检查列表的内容');
+        equal(body.firstChild.tagName.toLowerCase(), 'ol', '检查列表的类型');
         equal(body.childNodes.length, 3, '3个孩子');
         equal(body.lastChild.tagName.toLowerCase(), 'p', '后面的p没有变为列表');
         equal(body.lastChild.innerHTML.toLowerCase(), 'hello4', 'p里的文本');
@@ -142,10 +138,7 @@ test('去除无序列表', function () {
     editor.setContent('<p></p>');
     range.setStart(body.firstChild, 0).collapse(1).select();
     editor.execCommand('insertunorderedlist');
-    if(ua.browser.chrome)
-        equal(body.firstChild.firstChild.tagName.toLowerCase(), 'ul', 'insert an unordered list');
-    else
-        equal(body.firstChild.tagName.toLowerCase(), 'ul', 'insert an unordered list');
+    equal(body.firstChild.tagName.toLowerCase(), 'ul', 'insert an unordered list');
     equal(body.childNodes.length, 1, 'body只有一个孩子');
     ok(editor.queryCommandState('insertunorderedlist'), 'state是1');
     /*去除列表*/
@@ -163,19 +156,13 @@ test('闭合方式有序和无序列表之间的切换', function () {
     editor.setContent('<p></p>');
     range.setStart(body.firstChild, 0).collapse(1).select();
     editor.execCommand('insertunorderedlist');
-    if(ua.browser.chrome)
-        equal(body.firstChild.firstChild.tagName.toLowerCase(), 'ul', 'insert an unordered list');
-    else
-        equal(body.firstChild.tagName.toLowerCase(), 'ul', 'insert an unordered list');
+    equal(body.firstChild.tagName.toLowerCase(), 'ul', 'insert an unordered list');
     equal(body.childNodes.length, 1, 'body只有一个孩子');
     equal(editor.queryCommandValue('insertorderedlist'), null, '有序列表查询结果为null');
     /*切换为有序列表*/
     editor.execCommand('insertorderedlist');
     ua.manualDeleteFillData(editor.body);
-    if(ua.browser.chrome)
-        equal(body.firstChild.firstChild.tagName.toLowerCase(), 'ol', '变为有序列表');
-    else
-        equal(body.firstChild.tagName.toLowerCase(), 'ol', '变为有序列表');
+    equal(body.firstChild.tagName.toLowerCase(), 'ol', '变为有序列表');
     equal(body.childNodes.length, 1, 'body只有一个孩子');
     equal(editor.queryCommandValue('insertunorderedlist'), null, '无序列表查询结果为null');
 });
@@ -530,16 +517,12 @@ test('trace 3586 :2个相同类型的列表合并', function () {
 test('添加列表，取消列表', function () {
     var editor = te.obj[0];
     var body = editor.body;
-    //var range = te.obj[1];
     var br = ua.browser.ie ? '' : '<br>';
     editor.setContent('<p>hello1</p><p>hello2</p><p>hello3</p><p>hello4</p>');
     editor.execCommand('selectAll');
-    //range.selectNode(body.lastChild).select();
     editor.execCommand('insertunorderedlist');
-    if(ua.browser.chrome)
-        equal(body.firstChild.firstChild.tagName.toLowerCase(), 'ul', '检查无序列表');
-    else
-        equal(body.firstChild.tagName.toLowerCase(),'ul','检查无序列表');
+
+    equal(body.firstChild.tagName.toLowerCase(),'ul','检查无序列表');
     ok(editor.queryCommandState('insertunorderedlist'), 'state是1');
     editor.execCommand('selectAll');
     editor.execCommand('insertunorderedlist');
@@ -549,7 +532,7 @@ test('添加列表，取消列表', function () {
         if(ua.browser.gecko)
             equal(ua.getChildHTML(editor.body),'hello1<br>hello2<br>hello3<br>hello4','取消列表');
         else
-            equal(ua.getChildHTML(editor.body),'<p>hello1<br>hello2<br>hello3<br>hello4<br></p>','取消列表');
+            equal(ua.getChildHTML(editor.body),'hello1<br>hello2<br>hello3<br>hello4<br>','取消列表');
     }
     equal(editor.queryCommandValue('insertunorderedlist'), null, '查询取消无序列表的结果');
     ok(!editor.queryCommandState('insertunorderedlist'), 'state是0');
