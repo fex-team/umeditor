@@ -8,7 +8,7 @@
     var sourceEditors = {
         textarea: function (editor, holder){
             var textarea = holder.ownerDocument.createElement('textarea');
-            textarea.style.cssText = 'resize:none;border:0;padding:0 10px;margin:0;overflow-y:auto;outline:0';
+            textarea.style.cssText = 'resize:none;border:0;padding:0;margin:0;overflow-y:auto;outline:0';
             // todo: IE下只有onresize属性可用... 很纠结
             if (browser.ie && browser.version < 8) {
 
@@ -116,7 +116,11 @@
 
                     sourceEditor.setContent(content);
 
-                    $(sourceEditor.container).width($(me.body).width()).height($(me.body).height());
+                    var getStyleValue=function(attr){
+                        return parseInt($(me.body).css(attr));
+                    };
+                    $(sourceEditor.container).width($(me.body).width()+getStyleValue("padding-left")+getStyleValue("padding-right"))
+                        .height($(me.body).height());
                     setTimeout(function (){
                         sourceEditor.select();
                     });

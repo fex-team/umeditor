@@ -554,3 +554,22 @@ test('添加列表，取消列表', function () {
     equal(editor.queryCommandValue('insertunorderedlist'), null, '查询取消无序列表的结果');
     ok(!editor.queryCommandState('insertunorderedlist'), 'state是0');
 });
+
+test('去掉列表外边的p', function () {
+    var editor = te.obj[0];
+    var body = editor.body;
+    //var range = te.obj[1];
+    var br = ua.browser.ie ? '' : '<br>';
+    editor.setContent('<p>hello1</p><p>hello2</p><p>hello3</p><p>hello4</p>');
+    editor.execCommand('selectAll');
+    //range.selectNode(body.lastChild).select();
+    editor.execCommand('insertunorderedlist');
+    var count = 0;
+    editor.$body.find('ol,ul').each(function(i,n){
+        var p = n.parentNode;
+        if(p!==editor.body){
+            count++
+        }
+    })
+    equal(count,0)
+});
