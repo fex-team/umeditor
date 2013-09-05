@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <title>UEditor Mini自定义插件</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="../themes/default/_css/ueditor.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../ueditor.config.js"></script>
+
+    <!--使用版-->
+    <!--<script type="text/javascript" charset="utf-8" src="../ueditor.all.js"></script>-->
+
+    <!--开发版-->
+    <script type="text/javascript" charset="utf-8" src="editor_api.js"></script>
+    <script type="text/javascript" src="../lang/zh-cn/zh-cn.js"></script>
+    <style type="text/css">
+        h1{
+            font-family: "微软雅黑";
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+<h1>UEditor Mini自定义插件</h1>
+
+<!--style给定宽度可以影响编辑器的最终宽度-->
+<script type="text/plain" id="myEditor" style="width:800px;height:240px;">
+    <p>插件描述：单击编辑区域,弹出提示框！</p>
+</script>
+<script type="text/javascript">
+    //创建一个在选中的图片单击时添加边框的插件，其实质就是在baidu.editor.plugins塞进一个闭包
+    UE.plugins["showmsg"] = function () {
+        var me = this;
+        //执行命令
+        me.commands["showmsg"] = {
+            execCommand:function () {
+                alert('1234567890');
+            }
+        };
+        //注册一个触发命令的事件，同学们可以在任意地放绑定触发此命令的事件
+        me.addListener( 'click', function () {
+            setTimeout(function(){
+                me.execCommand( "showmsg" );
+            })
+
+        } );
+    };
+
+    var ue = UE.getEditor('myEditor');
+</script>
+
+</body>
+</html>

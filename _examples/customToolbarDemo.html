@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <title>UEditor Mini自定义toolbar</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="../themes/default/_css/ueditor.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../ueditor.config.js"></script>
+
+    <!--使用版-->
+    <!--<script type="text/javascript" charset="utf-8" src="../ueditor.all.js"></script>-->
+
+    <!--开发版-->
+    <script type="text/javascript" charset="utf-8" src="editor_api.js"></script>
+    <script type="text/javascript" src="../lang/zh-cn/zh-cn.js"></script>
+    <style type="text/css">
+        h1{
+            font-family: "微软雅黑";
+            font-weight: normal;
+        }
+    </style>
+    <style type="text/css">
+        #editor {
+            width: 800px;
+        }
+        #editor_toolbar_box {
+            background: #EEE;
+            padding: 2px;
+            position: relative;
+            border: 1px solid #d4d4d4;
+            box-shadow: 2px 2px 5px #d3d6da;
+            background-color: #fff;
+        }
+        #editor_iframe_holder {
+            border-top: 1px solid #CCC;
+            border-bottom: 1px solid #CCC;
+        }
+    </style>
+</head>
+<body>
+<h1>UEditor Mini自定义toolbar</h1>
+
+<div id="editor">
+    <div id="editor_toolbar_box">
+        <div id="editor_toolbar">
+            <input id="bold" type="button" value="加粗" onclick="myeditor.execCommand('bold')" style="height:24px;line-height:20px"/>
+            <input id="italic" type="button" value="加斜" onclick="myeditor.execCommand('italic')" style="height:24px;line-height:20px"/>
+            <select id="fontfamily" onchange="myeditor.execCommand('fontfamily',this.value)">
+                <option value="宋体,simsun">宋体</option>
+                <option value="楷体,楷体_gb2312,simkai">楷体</option>
+                <option value="隶书,simli">隶书</option>
+                <option value="黑体,simhei">黑体</option>
+                <option value="andale mono,times">andale mono</option>
+                <option value="arial,helvetica,sans-serif">arial</option>
+                <option value="arial black,avant garde">arial black</option>
+                <option value="comic sans ms,sans-serif">comic sans ms</option>
+            </select>
+            <select id="fontsize" onchange="myeditor.execCommand('fontsize',this.value)">
+                <option value="10px">10px</option>
+                <option value="11px">11px</option>
+                <option value="12px">12px</option>
+                <option value="14px">14px</option>
+                <option value="16px">16px</option>
+                <option value="18px">18px</option>
+                <option value="20px">20px</option>
+                <option value="22px">22px</option>
+                <option value="24px">24px</option>
+                <option value="36px">36px</option>
+            </select>
+            <input type="button" value="插入html" onclick="insert()" style="height:24px;line-height:20px"/>
+            <input type="button" value="清除格式" onclick="myeditor.execCommand('removeformat')" style="height:24px;line-height:20px"/>
+            <input type="button" value="获得编辑器内容" onclick="alert(myeditor.getContent())" style="height:24px;line-height:20px"/>
+            <input type="button" value="获得编辑器纯文本内容" onclick="alert(myeditor.getContentTxt())" style="height:24px;line-height:20px"/>
+        </div>
+    </div>
+    <div id="editor_iframe_holder" style="width:800px;height:240px;"></div>
+</div>
+
+<script type="text/javascript">
+    var myeditor = UE.getEditor('editor_iframe_holder',{
+        toolbar:[],
+        initialContent: '初始化内容',//初始化编辑器的内容
+        initialFrameHeight: 200
+    });
+
+    /*自定义按钮执行的操作*/
+    function G(id){
+        return document.getElementById(id);
+    }
+    //给编辑器增加一个选中改变的事件，用来判断所选内容以及状态
+    myeditor.addListener('selectionchange', function (){
+        var cmdName = ['bold','italic'],//命令列表
+                fontName = ['fontfamily','fontsize'];//字体设置下拉框列表，此处选择其中两个
+
+        //查询每个命令当前的状态，并设置对应状态样式
+        var i =-1;
+        while(i++ < cmdName.length-1){
+            var state = myeditor.queryCommandState(cmdName[i]);
+            G(cmdName[i]).style.color = state == 1?"red":"";
+        }
+        //依据当前光标所在的字体改变下拉列表的选中值
+        i = -1;
+        while(i++<fontName.length-1){
+            var fstate = myeditor.queryCommandValue(fontName[i]).toLowerCase();
+            var fselect = G(fontName[i]);
+            for(var j= 0;j<fselect.options.length;j++){
+                if(fselect.options[j].value.toLowerCase().indexOf(fstate.split(",")[0])!=-1){
+                    fselect.options[j].selected = "true";
+                }
+            }
+        }
+    });
+    //插入文本
+    function insert(){
+        var insertTxt = "插入的文本";
+        insertTxt = prompt("插入的内容",insertTxt);
+        insertTxt&&myeditor.execCommand("inserthtml",insertTxt);
+    }
+    function execUnderline(cmd){
+        myeditor.execCommand(cmd);
+    }
+</script>
+
+</body>
+</html>
