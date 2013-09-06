@@ -3,8 +3,9 @@ UE.ready(function () {
         $imagescale,
         imageScaleEnabled = me.getOpt('imageScaleEnabled');
 
-    if(imageScaleEnabled!==false) imageScaleEnabled = true;
-    if (browser.webkit && imageScaleEnabled) {
+    me.setOpt('imageScaleEnabled', true);
+
+    if (browser.webkit && me.getOpt('imageScaleEnabled')) {
 
         me.addListener('click', function () {
             var range = me.selection.getRange(),

@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <title>UEditor Mini提交示例</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="../themes/default/_css/ueditor.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../ueditor.config.js"></script>
+
+    <!--使用版-->
+    <!--<script type="text/javascript" charset="utf-8" src="../ueditor.all.js"></script>-->
+
+    <!--开发版-->
+    <script type="text/javascript" charset="utf-8" src="editor_api.js"></script>
+    <script type="text/javascript" src="../lang/zh-cn/zh-cn.js"></script>
+    <style type="text/css">
+        h1{
+            font-family: "微软雅黑";
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+<h1>UEditor Mini提交示例</h1>
+<form id="form" method="post" target="_blank">
+    <script type="text/plain" id="myEditor" name="myEditor" style="width:800px;height:240px;">
+        <p>欢迎使用UEditor！</p>
+    </script>
+    <input type="submit" value="通过input的submit提交">
+</form>
+<p>
+    <button onclick="document.getElementById('form').submit()">通过js调用submit提交</button>
+</p>
+<script type="text/javascript">
+    var ue = UE.getEditor('myEditor');
+
+    //自动切换提交地址
+    var doc=document,
+        version=ue.options.imageUrl||"php",
+        form=doc.getElementById("form");
+
+    if(version.match(/php/)){
+        form.action="../php/getContent.php";
+    }else if(version.match(/net/)){
+        form.action="../net/getContent.ashx";
+    }else if(version.match(/jsp/)){
+        form.action="../jsp/getContent.jsp";
+    }
+</script>
+
+</body>
+</html>
