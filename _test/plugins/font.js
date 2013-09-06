@@ -1,5 +1,5 @@
 module("plugins.font");
-test('trace 3606 设置超链接前景色，背景色', function () {
+test('trace 3606 3625 设置超链接前景色，背景色', function () {
     var editor = te.obj[2];
     var div = document.body.appendChild(document.createElement('div'));
     $(div).css('width', '500px').css('height', '500px').css('border', '1px solid #ccc');
