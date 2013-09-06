@@ -108,10 +108,8 @@ test( 'getText', function() {
         var div = doc.createElement( 'div' );
         doc.body.appendChild( div );
         div.innerHTML = '<em></em><span>spanText</span><strong>first</strong>second';
-
         range.setStart( div.firstChild, 0 ).setEnd( div.lastChild, 1 ).select();
-        var selection = new UE.dom.Selection( doc );
-
+        var selection = new UE.dom.Selection( doc,doc.body );
         var text = selection.getText();
         equal( text, 'spanTextfirsts', 'check getText function' );
         start();

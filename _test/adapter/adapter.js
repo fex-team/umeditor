@@ -46,7 +46,7 @@ test('delEditor',function(){
     });
 });
 
-test( 'render没有内容时，显示initialContent', function() {
+test( 'trace 3623 render没有内容时，显示initialContent', function() {
     var sc4 = document.createElement("script");
     sc4.id="sc4";
     sc4.style.width ="800px";
