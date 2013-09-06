@@ -105,16 +105,17 @@ UE.plugins['keystrokes'] = function() {
             //trace:3613
             if(browser.chrome){
                 if(rng.collapsed){
-                    start = rng.startContainer;
-                    if(start.nodeType == 3 && rng.startOffset == 0){
-                        var pre = start.previousSibling;
-                        if(pre.nodeName == 'BR'){
-                            rng.setStartBefore(pre);
-                            me.fireEvent('saveScene');
-                            $(pre).remove();
-                            rng.setCursor();
-                            me.fireEvent('saveScene');
-                        }
+
+                    while(rng.startOffset == 0 && !domUtils.isEmptyBlock(rng.startContainer)){
+                        rng.setStartBefore(rng.startContainer)
+                    }
+                    var pre = rng.startContainer.childNodes[rng.startOffset-1];
+                    if(pre && pre.nodeName == 'BR'){
+                        rng.setStartBefore(pre);
+                        me.fireEvent('saveScene');
+                        $(pre).remove();
+                        rng.setCursor();
+                        me.fireEvent('saveScene');
                     }
 
                 }

@@ -85,6 +85,13 @@ UE.plugins['font'] = function () {
                 };
             }
             node.tagName = 'span';
+            if(node.parentNode.tagName == 'span' && node.parentNode.children.length == 1){
+                $.each(node.attrs,function(k,v){
+
+                    node.parentNode.attrs[k] = k == 'style' ? node.parentNode.attrs[k] + v : v;
+                })
+                node.parentNode.removeChild(node,true);
+            }
         });
     });
     for(var p in fonts){
@@ -121,7 +128,18 @@ UE.plugins['font'] = function () {
                                 }
                             });
                         }
-
+                        if(!browser.ie){
+                            var nativeRange = this.selection.getNative().getRangeAt(0);
+                            var common = nativeRange.commonAncestorContainer;
+                            $(common).find('a').each(function(i,n){
+                                var parent = n.parentNode;
+                                if(parent.nodeName == 'FONT'){
+                                    var font = parent.cloneNode(false);
+                                    font.innerHTML = n.innerHTML;
+                                    $(n).html('').append(font);
+                                }
+                            })
+                        }
                         return true
                     }
 
