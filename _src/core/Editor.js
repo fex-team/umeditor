@@ -756,7 +756,12 @@
          * * ''1'' 当前命令已经执行过了
          */
         queryCommandState: function (cmdName) {
-            return this._callCmdFn('queryCommandState', arguments);
+            try{
+                return this._callCmdFn('queryCommandState', arguments);
+            }catch(e){
+                return 0
+            }
+
         },
 
         /**
@@ -765,7 +770,11 @@
          * @grammar editor.queryCommandValue(cmdName)  =>  {*}
          */
         queryCommandValue: function (cmdName) {
-            return this._callCmdFn('queryCommandValue', arguments);
+            try{
+                return this._callCmdFn('queryCommandValue', arguments);
+            }catch(e){
+                return null
+            }
         },
         /**
          * 检查编辑区域中是否有内容，若包含tags中的节点类型，直接返回true
