@@ -55,7 +55,7 @@ test( 'trace 3623 render没有内容时，显示initialContent', function() {
     var ue4=UE.getEditor('sc4');
     stop();
     ue4.ready(function(){
-        equal(ue4.body.firstChild.innerHTML.toLowerCase(),ue4.options.initialContent.toLowerCase(),'标签没有内容，显示initialContent');
+        equal(ue4.getContent().toLowerCase(),ue4.options.initialContent.toLowerCase(),'标签没有内容，显示initialContent');
         setTimeout(function(){
             UE.delEditor('sc4');
             var editor=document.getElementById('sc4');
