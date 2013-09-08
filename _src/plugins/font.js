@@ -131,6 +131,9 @@ UE.plugins['font'] = function () {
                         if(!browser.ie){
                             var nativeRange = this.selection.getNative().getRangeAt(0);
                             var common = nativeRange.commonAncestorContainer;
+                            var rng = this.selection.getRange(),
+                                bk = rng.createBookmark(true);
+
                             $(common).find('a').each(function(i,n){
                                 var parent = n.parentNode;
                                 if(parent.nodeName == 'FONT'){
@@ -138,7 +141,8 @@ UE.plugins['font'] = function () {
                                     font.innerHTML = n.innerHTML;
                                     $(n).html('').append(font);
                                 }
-                            })
+                            });
+                            rng.moveToBookmark(bk).select()
                         }
                         return true
                     }
