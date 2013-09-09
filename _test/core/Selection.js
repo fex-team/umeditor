@@ -132,8 +132,7 @@ test('hasNativeRange', function () {
                 ok(editor.selection.hasNativeRange());
                 var rng = new UE.dom.Range(document,document.body);
                 rng.setStart(document.body,0).setCursor();
-
-                ok(!editor.selection.hasNativeRange())
+                ok(!editor.selection.hasNativeRange());
                 start();
             }, 50);
         });
