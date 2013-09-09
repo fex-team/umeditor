@@ -1,5 +1,5 @@
 module("plugins.font");
-test('trace 3606 设置超链接前景色再清除颜色', function () {
+test('trace 3606 设置超链接前景色，背景色', function () {
     var editor = te.obj[2];
     var div = document.body.appendChild(document.createElement('div'));
     $(div).css('width', '500px').css('height', '500px').css('border', '1px solid #ccc');
@@ -11,7 +11,6 @@ test('trace 3606 设置超链接前景色再清除颜色', function () {
         range.selectNode(editor.body.firstChild).select();
         editor.execCommand('foreColor', 'rgb(255,0,0)');
         editor.execCommand('backColor', 'rgb(0,255,0)');
-        editor.execCommand('foreColor', 'rgb(0,0,0)');
         //var html = '<span style="background-color: rgb(0, 255, 0);">hello</span><a href="www.baidu.com" _href=\"www.baidu.com\" style="text-decoration: underline;"><span style="background-color: rgb(0, 255, 0);">baidu</span></a>';todo 1.2.6.1 样式复制了一次
         //var html = '<span style="background-color: rgb(0, 255, 0);">hello</span><a href="www.baidu.com" _href=\"www.baidu.com\" style="background-color: rgb(0, 255, 0);text-decoration: underline;"><span style="background-color: rgb(0, 255, 0);">baidu</span></a>';
         var html = '<font style=\"background-color: rgb(0, 255, 0);\">hello<a href=\"www.baidu.com\" _href=\"www.baidu.com\">baidu</a></font>';
