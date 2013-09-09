@@ -34,7 +34,7 @@ UE.commands['print'] = {
             "setTimeout(function(){" +
             "window.parent.$('#" + id + "').remove();" +
             "},100);" +
-            "},100);" +
+            "},200);" +
             '</script></body></html>');
         d.close();
     },
