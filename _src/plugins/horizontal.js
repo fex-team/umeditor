@@ -14,7 +14,7 @@ UE.plugins['horizontal'] = function(){
     me.commands['horizontal'] = {
         execCommand : function(  ) {
             this.document.execCommand('insertHorizontalRule');
-            var rng = me.selection.getRange(),
+            var rng = me.selection.getRange().txtToElmBoundary(true),
                 start = rng.startContainer;
 
             if(domUtils.isBody(rng.startContainer)){

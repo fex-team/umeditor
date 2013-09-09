@@ -31,8 +31,10 @@ UE.commands['print'] = {
         d.write('<html><head></head><body><div>'+this.getContent(null,null,true)+'</div><script>' +
             "setTimeout(function(){" +
             "window.print();" +
+            "setTimeout(function(){" +
             "window.parent.$('#" + id + "').remove();" +
             "},100);" +
+            "},200);" +
             '</script></body></html>');
         d.close();
     },

@@ -80,7 +80,7 @@
             isShow: true,
             initialContent: '',
             initialStyle:'.edui-editor-body .edui-body-container p{margin:5px 0;} ' +
-                '.edui-editor-body .edui-body-container{border:0;outline:none;cursor:text;padding:0 10px 0;word-wrap:break-word;font-size:16px;font-family:sans-serif;}' +
+                '.edui-editor-body .edui-body-container{border:0;outline:none;cursor:text;padding:0 10px 0;oveflow:auto;display:block;word-wrap:break-word;font-size:16px;font-family:sans-serif;}' +
                 '.edui-editor-body.focus{border:1px solid #5c9dff}',
             autoClearinitialContent: false,
             iframeCssUrl: me.options.UEDITOR_HOME_URL + 'themes/iframe.css',
@@ -183,7 +183,11 @@
             textarea.style.height = me.body.offsetHeight + 'px';
             textarea.value = me.getContent();
             textarea.id = me.key;
+            if(container.contains(textarea)){
+                $(textarea).insertBefore(container);
+            }
             container.innerHTML = '';
+
             domUtils.remove(container);
             var key = me.key;
             //trace:2004

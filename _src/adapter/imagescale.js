@@ -1,7 +1,6 @@
 UE.ready(function () {
     var me = this,
-        $imagescale,
-        imageScaleEnabled = me.getOpt('imageScaleEnabled');
+        $imagescale;
 
     me.setOpt('imageScaleEnabled', true);
 

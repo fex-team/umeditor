@@ -51,8 +51,7 @@ test( '检测buttoncombobox行为是否正确', function() {
                     $item = $(".edui-combobox-item:first", $combox );
 
                     $item.addClass( "edui-combobox-item-hover" );
-                    equal( $item.css("backgroundColor"), "rgb(213, 225, 242)" , 'hover in 背景色正常' );
-
+                    equal( ua.formatColor($item.css("backgroundColor")), "#d5e1f2" , 'hover in 背景色正常' );
                     $item.removeClass( "edui-combobox-item-hover" );
                     equal( $item.css("backgroundColor") !== "rgb(213, 225, 242)", true , 'hover out 背景色正常' );
 
