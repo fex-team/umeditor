@@ -98,7 +98,9 @@ UE.plugins['font'] = function () {
         (function (cmd) {
             UE.commands[cmd] = {
                 execCommand: function (cmdName,value) {
-
+                    if(value == 'transparent'){
+                        return;
+                    }
                     var rng = this.selection.getRange();
                     if(rng.collapsed){
                         var span = $('<span></span>').css(cmdNameToStyle[cmdName],value)[0];
