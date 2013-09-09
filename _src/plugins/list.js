@@ -42,11 +42,16 @@ UE.plugins['list'] = function () {
             execCommand:function (cmdName) {
                 this.document.execCommand(cmdName);
                 var rng = this.selection.getRange(),
-                    bk = rng.createBookmark();
+                    bk = rng.createBookmark(true);
 
                 this.$body.find('ol,ul').each(function(i,n){
                     var parent = n.parentNode;
                     if(parent.tagName == 'P' && parent.lastChild === parent.firstChild){
+                        $(n).children().each(function(j,li){
+                            var p = parent.cloneNode(false);
+                            $(p).append(li.innerHTML);
+                            $(li).html('').append(p)
+                        })
                         $(n).insertBefore(parent);
                         $(parent).remove();
                     }
