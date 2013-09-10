@@ -1,5 +1,5 @@
 module("plugins.font");
-test('trace 3606 设置超链接前景色，背景色', function () {
+test('trace 3606 3625 设置超链接前景色，背景色', function () {
     var editor = te.obj[2];
     var div = document.body.appendChild(document.createElement('div'));
     $(div).css('width', '500px').css('height', '500px').css('border', '1px solid #ccc');
@@ -13,10 +13,16 @@ test('trace 3606 设置超链接前景色，背景色', function () {
         editor.execCommand('backColor', 'rgb(0,255,0)');
         //var html = '<span style="background-color: rgb(0, 255, 0);">hello</span><a href="www.baidu.com" _href=\"www.baidu.com\" style="text-decoration: underline;"><span style="background-color: rgb(0, 255, 0);">baidu</span></a>';todo 1.2.6.1 样式复制了一次
         //var html = '<span style="background-color: rgb(0, 255, 0);">hello</span><a href="www.baidu.com" _href=\"www.baidu.com\" style="background-color: rgb(0, 255, 0);text-decoration: underline;"><span style="background-color: rgb(0, 255, 0);">baidu</span></a>';
-        var html = '<font style=\"background-color: rgb(0, 255, 0);\">hello<a href=\"www.baidu.com\" _href=\"www.baidu.com\">baidu</a></font>';
-        ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, '清除前景色');
-        equal(editor.body.firstChild.innerHTML.toLowerCase(),html,'前景色为黑');
-
+        //
+        var forecolor = ua.browser.ie?"rgb(255,0,0)":"#ff0000";
+        var html = '<font color=\"#ff0000\" style=\"background-color: rgb(0, 255, 0);\">hello<a href=\"www.baidu.com\" _href=\"www.baidu.com\"><font color=\"#ff0000\" style=\"background-color: rgb(0, 255, 0);\"><font color=\"#ff0000\">baidu</font></font></a></font>';
+        if(ua.browser.gecko){
+            html='<span style=\"background-color: rgb(0, 255, 0);\"><font color=\"rgb(255,0,0)\">hello<a href=\"www.baidu.com\" _href=\"www.baidu.com\"><font color=\"rgb(255,0,0)\"><font color=\"rgb(255,0,0)\">baidu</font></font></a></font></span>'
+        }
+        else if(ua.browser.ie){
+            html = '<font color=\"rgb(255,0,0)\" style=\"background-color: rgb(0, 255, 0);\">hello</font><a href=\"www.baidu.com\" _href=\"www.baidu.com\"><font color=\"rgb(255,0,0)\" style=\"background-color: rgb(0, 255, 0);\">baidu</font></a>'
+        }
+        ua.checkSameHtml(editor.body.firstChild.innerHTML,html,'');
         setTimeout(function () {
             div.parentNode.removeChild(div);
             start();
@@ -90,7 +96,7 @@ test('字体的状态反射', function () {
         }
         range.setStart(p.firstChild.firstChild, 3).setEnd(p.firstChild.firstChild, 4).select();
         editor.execCommand('fontfamily', '楷体');
-        if (ua.browser.chrome || ua.browser.ie)
+        if (ua.browser.webkit || ua.browser.ie ||ua.browser.gecko)
             var txt = '楷体';
         else
         if(ua.browser.opera)
