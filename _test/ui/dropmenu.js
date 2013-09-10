@@ -40,10 +40,9 @@ test('dropmenu--初始化', function () {
     }).appendTo(div);
 
     $dropMenuWidget.edui().show($btn);
-    item = $dropMenuWidget.find("li")[0];
-    value = $(item).data('value');
-
-    ua.click(item);
+    $item = $dropMenuWidget.find("li").eq(0);
+    value = $item.data('value');
+    $item.trigger('click');
 
     var $subMenuWidget = $.eduidropmenu({data:[
         {"value":"decimal","label":"1,2,3..."},
