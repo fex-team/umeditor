@@ -8,22 +8,23 @@
 module('ui.popup');
 test('检查表情的pupop显示是否正常', function () {
     var editor = te.obj[0];
-//    editor.ready(function () {
-    var $emotionBtn = editor.$container.find('.edui-btn-emotion');
-    ok($emotionBtn.data('$mergeObj').parent()[0] === undefined, '判断点击按钮前pupop是否未插入到dom树里面');
-    editor.focus();
-    $emotionBtn.click();
-    ok($emotionBtn.data('$mergeObj').parent()[0] !== undefined, '判断点击按钮后pupop是否已插入到dom树里面');
-
-    equal($emotionBtn.edui().disabled(), editor.queryCommandState('emotion') == -1, '判断初始化后btn对象disable状态是否正常');
-    equal($emotionBtn.edui().active(), editor.queryCommandState('emotion') == 1, '判断初始化后btn对象active状态是否正常');
-    editor.focus();
-    $emotionBtn.click();
     setTimeout(function () {
-        equal($emotionBtn.edui().disabled(), editor.queryCommandState('emotion') == -1, '判断点击按钮后btn对象disable状态是否正常');
-        equal($emotionBtn.edui().active(), editor.queryCommandState('emotion') == 1, '判断点击按钮后btn对象active状态是否正常');
-        start();
+
+        var $emotionBtn = editor.$container.find('.edui-btn-emotion');
+        ok($emotionBtn.data('$mergeObj').parent()[0] === undefined, '判断点击按钮前pupop是否未插入到dom树里面');
+        editor.focus();
+        $emotionBtn.click();
+        ok($emotionBtn.data('$mergeObj').parent()[0] !== undefined, '判断点击按钮后pupop是否已插入到dom树里面');
+
+        equal($emotionBtn.edui().disabled(), editor.queryCommandState('emotion') == -1, '判断初始化后btn对象disable状态是否正常');
+        equal($emotionBtn.edui().active(), editor.queryCommandState('emotion') == 1, '判断初始化后btn对象active状态是否正常');
+        editor.focus();
+        $emotionBtn.click();
+        setTimeout(function () {
+            equal($emotionBtn.edui().disabled(), editor.queryCommandState('emotion') == -1, '判断点击按钮后btn对象disable状态是否正常');
+            equal($emotionBtn.edui().active(), editor.queryCommandState('emotion') == 1, '判断点击按钮后btn对象active状态是否正常');
+            start();
+        }, 100);
     }, 100);
-//    });
     stop();
 });
