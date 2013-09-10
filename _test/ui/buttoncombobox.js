@@ -45,7 +45,7 @@ test( '检测buttoncombobox行为是否正确', function() {
                 window.setTimeout( function () {
 
                     equal( Math.abs( $combox.position().left - $btn.position().left ) < 3, true , '弹出层的左边界对齐正常' );
-                    equal( $combox.position().top, $btn.position().top + $btn.outerHeight() , '弹出层的上边界对齐正常' );
+                    equal( Math.abs($combox.position().top-($btn.position().top + $btn.outerHeight())) < 2,true , '弹出层的上边界对齐正常' );
 
                     //hover背景改变
                     $item = $(".edui-combobox-item:first", $combox );
