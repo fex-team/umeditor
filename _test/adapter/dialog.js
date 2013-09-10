@@ -9,8 +9,10 @@
 module('ui.dialog');
 test('检查insertvideo的按钮和弹出的dialog面板是否正常显示', function () {
     var editor = te.obj[0];
+    setTimeout(function () {
     var $vedioBtn = editor.$container.find('.edui-btn-insertvideo');
     ok($vedioBtn.data('$mergeObj').parent()[0] === undefined, '判断点击按钮前dialog是否未插入到dom树里面');
+    editor.focus();
     $vedioBtn.click();
     ok($vedioBtn.data('$mergeObj').parent()[0] !== undefined, '判断点击按钮后dialog是否已插入到dom树里面');
     $vedioBtn.click();
@@ -24,6 +26,7 @@ test('检查insertvideo的按钮和弹出的dialog面板是否正常显示', fun
             equal($vedioBtn.edui().active(), editor.queryCommandState('insertvideo') == 1, '判断点击按钮后btn对象active状态是否正常');
             start();
         }, 100);
+    }, 100);
     }, 100);
     stop();
 });
