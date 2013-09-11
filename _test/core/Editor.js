@@ -6,7 +6,7 @@ module("core.Editor");
 test("autoSyncData:true,textarea容器(由setcontent触发的)", function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.innerHTML = '<form id="form" method="post" target="_blank"><textarea id="myEditor" name="myEditor">这里的内容将会和html，body等标签一块提交</textarea></form>';
-    var editor_a = UE.getEditor('myEditor');
+    var editor_a = UM.getEditor('myEditor');
     stop();
     editor_a.ready(function () {
         editor_a.setContent('<p>设置内容autoSyncData 1<br/></p>');
@@ -27,7 +27,7 @@ test("autoSyncData:true（由blur触发的）", function () {
     if (ua.browser.ie > 8 || !ua.browser.ie) {
         var div = document.body.appendChild(document.createElement('div'));
         div.innerHTML = '<form id="form" method="post" ><script type="text/plain" id="myEditor_autoSyncData_blur" name="myEditor"></script></form>';
-        var editor_a = UE.getEditor('myEditor_autoSyncData_blur');
+        var editor_a = UM.getEditor('myEditor_autoSyncData_blur');
         stop();
         editor_a.ready(function () {
             editor_a.body.innerHTML = '<p>设置内容autoSyncData 2<br/></p>';
@@ -55,7 +55,7 @@ test("autoSyncData:true（由blur触发的）", function () {
 test("sync", function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.innerHTML = '<form id="form" method="post" target="_blank"><textarea id="myEditor_sync" name="myEditor">这里的内容将会和html，body等标签一块提交</textarea></form>';
-    var editor_a = UE.getEditor('myEditor_sync');
+    var editor_a = UM.getEditor('myEditor_sync');
     stop();
     editor_a.ready(function () {
         editor_a.body.innerHTML = '<p>hello</p>';
@@ -72,7 +72,7 @@ test("sync", function () {
 test("hide,show", function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue_hide_show';
-    var editor = UE.getEditor('ue_hide_show');
+    var editor = UM.getEditor('ue_hide_show');
     editor.ready(function () {
         equal(editor.body.getElementsByTagName('span').length, 0, '初始没有书签');
         editor.hide();
@@ -86,7 +86,7 @@ test("hide,show", function () {
                 var br = ua.browser.ie ? '' : '<br>';
                 equal(ua.getChildHTML(editor.body), '<p>' + br + '</p>', '删除书签');
                 te.dom.push(editor.container);
-                UE.delEditor('ue_hide_show');
+                UM.delEditor('ue_hide_show');
                 start();
             }, 200);
         }, 200);
@@ -97,7 +97,7 @@ test("hide,show", function () {
 test("_setDefaultContent--focus", function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue_setDefaultContent_focus';
-    var editor = UE.getEditor('ue_setDefaultContent_focus');
+    var editor = UM.getEditor('ue_setDefaultContent_focus');
     editor.ready(function () {
         editor._setDefaultContent('hello');
         editor.fireEvent('focus');
@@ -114,7 +114,7 @@ test("_setDefaultContent--focus", function () {
 test("_setDefaultContent--firstBeforeExecCommand", function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue_setDefaultContent_firstBef';
-    var editor = UE.getEditor('ue_setDefaultContent_firstBef');
+    var editor = UM.getEditor('ue_setDefaultContent_firstBef');
     editor.ready(function () {
         editor._setDefaultContent('hello');
         editor.fireEvent('firstBeforeExecCommand');
@@ -129,12 +129,12 @@ test("_setDefaultContent--firstBeforeExecCommand", function () {
 test("trace 3610 setDisabled,setEnabled", function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue_setDisabled';
-    var editor = UE.getEditor('ue_setDisabled');
+    var editor = UM.getEditor('ue_setDisabled');
     editor.ready(function () {
         editor.setContent('<p>欢迎使用ueditor!</p>');
         editor.focus();
         if(ua.browser.ie&&ua.browser.ie<9){//trace 3628 ie8 focus 设置无效,手动设range
-            var range = new UE.dom.Range(editor.document,editor.body);
+            var range = new UM.dom.Range(editor.document,editor.body);
             range.setStart(editor.body.firstChild,0).collapse(true).select();
         }
         setTimeout(function () {
@@ -173,12 +173,12 @@ test("trace 3610 setDisabled,setEnabled", function () {
 });
 test("render-- options", function () {
     var options = {'initialContent': '<span class="span">xxx</span><div>xxx<p></p></div>', 'UEDITOR_HOME_URL': '../../../', autoClearinitialContent: false, 'autoFloatEnabled': false};
-    var editor = new UE.Editor(options);
+    var editor = new UM.Editor(options);
 
     var div = document.body.appendChild(document.createElement('div'));
     editor.render(div);
     /*会自动用p标签包围*/
-//    var space = UE.browser.ie ? '&nbsp;' : '<br>';
+//    var space = UM.browser.ie ? '&nbsp;' : '<br>';
     stop();
     editor.ready(function () {
         equal(ua.getChildHTML(editor.body), '<p><span class="span">xxx</span></p><div>xxx<p></p></div>', 'check initialContent');
@@ -190,11 +190,11 @@ test("render-- options", function () {
 test('destroy', function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'edu';
-    var editor = UE.getEditor('edu');
+    var editor = UM.getEditor('edu');
     editor.ready(function () {
         editor.destroy();
         equal(document.getElementById('edu').tagName.toLowerCase(), 'textarea', '容器被删掉了');
-        UE.clearCache('edu');
+        UM.clearCache('edu');
         document.getElementById('edu') && te.dom.push(document.getElementById('ed'));
     });
 });
@@ -250,7 +250,7 @@ test('getContent--2个参数，第一个参数为参数为函数', function () {
 });
 
 test("setContent", function () {
-    var editor = UE.getEditor('test1');
+    var editor = UM.getEditor('test1');
     stop();
     editor.ready(function () {
         editor.focus();
@@ -269,7 +269,7 @@ test("setContent", function () {
         div2.innerHTML = editor.body.innerHTML;
         ua.haveSameAllChildAttribs(div2, div_new, 'check contents');
         setTimeout(function () {
-            UE.clearCache('test1');
+            UM.clearCache('test1');
             te.dom.push(editor.container);
             document.getElementById('test1') && te.dom.push(document.getElementById('test1'));
             setTimeout(function () {
@@ -282,7 +282,7 @@ test("setContent", function () {
 test("setContent 追加", function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue_setContent';
-    var editor = UE.getEditor('ue_setContent');
+    var editor = UM.getEditor('ue_setContent');
     stop();
     editor.ready(function () {
         editor.focus();
@@ -310,10 +310,10 @@ test("focus(false)", function () {
     if(ua.browser.ie&&ua.browser.ie<9)return;//trace 3628 ie8 focus
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue_focus_false';
-    var editor = UE.getEditor('ue_focus_false');
+    var editor = UM.getEditor('ue_focus_false');
     stop();
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document,editor.body);
+        var range = new UM.dom.Range(editor.document,editor.body);
         editor.setContent("<p>hello1</p><p>hello2</p>");
         editor.focus(false);
         setTimeout(function(){
@@ -329,7 +329,7 @@ test("focus(false)", function () {
         equal(editor.selection.getRange().endOffset, 0, "focus(false)焦点在最前面");
         setTimeout(function(){
             te.dom.push(editor.container);
-            UE.delEditor('ue_focus_false');
+            UM.delEditor('ue_focus_false');
             document.getElementById('ue_focus_false') && te.dom.push(document.getElementById('ue_focus_false'));
             start();
         },100);
@@ -340,10 +340,10 @@ test("focus(false)", function () {
 test("focus(true)", function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue_focus_true';
-    var editor = UE.getEditor('ue_focus_true');
+    var editor = UM.getEditor('ue_focus_true');
     stop();
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
+        var range = new UM.dom.Range(editor.document);
         editor.setContent("<p>hello1</p><p>hello2</p>");
         editor.focus(true);
         if (ua.browser.gecko) {
@@ -369,37 +369,38 @@ test("focus(true)", function () {
 test("queryCommandState", function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue_queryCommandState';
-    var editor = UE.getEditor('ue_queryCommandState');
+    var editor = UM.getEditor('ue_queryCommandState');
     stop();
     editor.ready(function () {
         editor.focus();
         editor.setContent("<p><b>xxx</b>xxx</p>");
         var p = editor.document.getElementsByTagName('p')[0];
-        var r = new UE.dom.Range(editor.document, editor.body);
+        var r = new UM.dom.Range(editor.document, editor.body);
         r.setStart(p.firstChild, 0).setEnd(p.firstChild, 1).select();
         equal(editor.queryCommandState('bold'), 1, '加粗状态为1');
         r.setStart(p, 1).setEnd(p, 2).select();
         equal(editor.queryCommandState('bold'), 0, '加粗状态为0');
-        UE.clearCache(div.id);
+        UM.clearCache(div.id);
         te.dom.push(editor.container);
         document.getElementById('ue_queryCommandState') && te.dom.push(document.getElementById('ue_queryCommandState'));
         start();
     });
 });
 test("trace 3581 queryCommandValue", function () {
+    if(ua.browser.gecko)return;//todo trace 3581
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue_queryCommandValue';
-    var editor = UE.getEditor('ue_queryCommandValue');
+    var editor = UM.getEditor('ue_queryCommandValue');
     stop();
     editor.ready(function () {
         editor.focus();
         var html = ua.browser.ie ? '<p align="left">xxx</p>' : '<p style="text-align:left">xxx</p>';
         editor.setContent(html);
-        var range = new UE.dom.Range(editor.document, editor.body);
+        var range = new UM.dom.Range(editor.document, editor.body);
         var p = editor.document.getElementsByTagName("p")[0];
         range.selectNode(p).select();
         equal(editor.queryCommandValue('justifyleft'), 'left', 'text align is left');
-        UE.clearCache(div.id);
+        UM.clearCache(div.id);
         te.dom.push(editor.container);
         document.getElementById('ue_queryCommandValue') && te.dom.push(document.getElementById('ue_queryCommandValue'));
         start();
@@ -408,13 +409,13 @@ test("trace 3581 queryCommandValue", function () {
 test("execCommand", function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    var editor = UM.getEditor('ue');
     stop();
     editor.ready(function () {
         editor.focus();
         editor.setContent("<p>xx</p><p>xxx</p>");
         var doc = editor.document;
-        var range = new UE.dom.Range(doc, editor.body);
+        var range = new UM.dom.Range(doc, editor.body);
         var p = doc.getElementsByTagName('p')[1];
         range.setStart(p, 0).setEnd(p, 1).select();
         editor.execCommand('justifyright');
@@ -429,7 +430,7 @@ test("execCommand", function () {
         var html = '<p>xx</p><p style=\"text-align: right;\"><font color=\"#ff0000\">xxx</font></p>';
         var html_1 = "<p>xx</p><p align=\"right\"><font color=\"red\">xxx</font></p>";
         ua.checkSameHtml(editor.body.innerHTML, ua.browser.webkit ? html : html_1, 'check style')
-        UE.clearCache(div.id);
+        UM.clearCache(div.id);
         te.dom.push(editor.container);
         document.getElementById('ue') && te.dom.push(document.getElementById('ue'));
         start();
@@ -439,7 +440,7 @@ test("execCommand", function () {
 test("hasContents", function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    var editor = UM.getEditor('ue');
     stop();
     editor.ready(function () {
         editor.focus();
@@ -449,7 +450,7 @@ test("hasContents", function () {
         ok(editor.hasContents(), "has contents");
         editor.setContent('<p><br/></p>');
         ok(!editor.hasContents(), '空p认为是空');
-        UE.clearCache(div.id);
+        UM.clearCache(div.id);
         te.dom.push(editor.container);
         document.getElementById('ue') && te.dom.push(document.getElementById('ue'));
         start();
@@ -461,7 +462,7 @@ test("hasContents", function () {
 test("hasContents--有参数", function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    var editor = UM.getEditor('ue');
     stop();
     editor.ready(function () {
         editor.focus();
@@ -471,7 +472,7 @@ test("hasContents--有参数", function () {
         editor.setContent('<p><br></p>');
         ok(!editor.hasContents(['']), "为空");
         ok(editor.hasContents(['br']), "不为空");
-        UE.clearCache(div.id);
+        UM.clearCache(div.id);
         te.dom.push(editor.container);
         document.getElementById('ue') && te.dom.push(document.getElementById('ue'));
         start();
@@ -483,7 +484,7 @@ test('trace 1964 getPlainTxt--得到有格式的编辑器的纯文本内容', fu
 
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    var editor = UM.getEditor('ue');
     stop();
     editor.ready(function () {
         editor.focus();
@@ -498,7 +499,7 @@ test('trace 1964 getPlainTxt--得到有格式的编辑器的纯文本内容', fu
 test('getContentTxt--文本前后的空格,&nbs p转成空格', function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    var editor = UM.getEditor('ue');
     stop();
     editor.ready(function () {
         editor.focus();
@@ -514,7 +515,7 @@ test('getAllHtml', function () {
 
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue_getAllHtml';
-    var editor = UE.getEditor('ue_getAllHtml');
+    var editor = UM.getEditor('ue_getAllHtml');
     stop();
     editor.ready(function () {
         editor.focus();
@@ -540,9 +541,9 @@ test('2个实例采用2个配置文件', function () {
         div1.style.height = '200px';
         var div2 = document.body.appendChild(document.createElement('div'));
         div2.id = 'div2';
-        var editor1 = UE.getEditor('div1', {'UEDITOR_HOME_URL': '../../../', 'initialContent': '欢迎使用ueditor', 'autoFloatEnabled': false});
+        var editor1 = UM.getEditor('div1', {'UEDITOR_HOME_URL': '../../../', 'initialContent': '欢迎使用ueditor', 'autoFloatEnabled': false});
         editor1.ready(function () {
-            var editor2 = UE.getEditor('div2', UEDITOR_CONFIG2);
+            var editor2 = UM.getEditor('div2', UEDITOR_CONFIG2);
             editor2.ready(function () {
                 equal(editor1.body.style.minHeight, '200px', '编辑器高度为200px');
                 equal(editor2.body.style.minHeight, '400px', '自定义div高度为400px');
@@ -564,7 +565,7 @@ test('2个实例采用2个配置文件', function () {
 test("_initEvents,_proxyDomEvent--click", function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue_initEvents';
-    var editor = UE.getEditor('ue_initEvents');
+    var editor = UM.getEditor('ue_initEvents');
     stop();
     editor.ready(function () {
         editor.focus();
@@ -595,7 +596,7 @@ test('绑定事件', function () {
     document.onkeyup = function (event) {
         ok(true, "keyup is fired");
     };
-    var editor = new UE.Editor({'autoFloatEnabled': false});
+    var editor = new UM.Editor({'autoFloatEnabled': false});
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'event';
     editor.render('event');

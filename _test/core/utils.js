@@ -291,26 +291,26 @@ test( "domReady", function () {
 test( 'each 遍历方法', function () {
    var div =  te.dom[0];
    div.innerHTML = '<span></span><span></span><span id="a"></span><span></span>';
-   UE.utils.each(div.getElementsByTagName('span'),function(node,i){
+   UM.utils.each(div.getElementsByTagName('span'),function(node,i){
         equal(node.tagName,'SPAN','遍历nodelist');
    });
     var count = 0;
-    UE.utils.each(div.getElementsByTagName('span'),function(node,i){
+    UM.utils.each(div.getElementsByTagName('span'),function(node,i){
         count++;
        if(node.id =='a')
             return false
     });
     equal(count,3);
-    UE.utils.each(['a','b'],function(v,i){
+    UM.utils.each(['a','b'],function(v,i){
         equal(v,['a','b'][i],'遍历数组');
     });
-    UE.utils.each({a:1,b:2},function(v,k){
+    UM.utils.each({a:1,b:2},function(v,k){
         equal(v,{a:1,b:2}[k],'遍历对象');
     });
 } ) ;
 test( 'clone 转换', function () {
     var obj = {a:1};
-    var obj1= UE.utils.clone({a:1});
+    var obj1= UM.utils.clone({a:1});
     obj.a = 2;
     equal(obj1.a,1);
     obj = {
@@ -319,7 +319,7 @@ test( 'clone 转换', function () {
         },
         c:[1,2]
     }
-    obj1 = UE.utils.clone(obj);
+    obj1 = UM.utils.clone(obj);
     obj.a.b = 2;
     equal(obj1.a.b,1);
     obj.c[1] = 3;
@@ -328,6 +328,6 @@ test( 'clone 转换', function () {
 
 } ) ;
 test( 'transUnitToPx 转换', function () {
-    equal(UE.utils.transUnitToPx('20pt'),'27px');
-    equal(UE.utils.transUnitToPx('0pt'),'0');
+    equal(UM.utils.transUnitToPx('20pt'),'27px');
+    equal(UM.utils.transUnitToPx('0pt'),'0');
 } ) ;

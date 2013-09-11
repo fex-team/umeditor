@@ -102,9 +102,9 @@ test( 'trace 1884:单击B再单击I ', function () {
 test( 'ctrl+i', function() {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    var editor = UM.getEditor('ue');
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document,editor.body);
+        var range = new UM.dom.Range(editor.document,editor.body);
     var body = editor.body;
     editor.setContent( '<p>没有加粗的文本</p>' );
     range.selectNode( body.firstChild ).select();
@@ -119,7 +119,7 @@ test( 'ctrl+i', function() {
             else
                 equal(ua.getChildHTML(p),'<i>没有加粗的文本</i>');
             te.dom.push(editor.container);
-            //UE.delEditor('ue');
+            //UM.delEditor('ue');
             start();
         }, 150 );
     }, 100 );
@@ -131,9 +131,9 @@ test( 'ctrl+i', function() {
 test( 'ctrl+b', function() {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue1';
-    var editor = UE.getEditor('ue1');
+    var editor = UM.getEditor('ue1');
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document,editor.body);
+        var range = new UM.dom.Range(editor.document,editor.body);
     var body = editor.body;
     editor.setContent( '<p>没有加粗的文本</p>' );
     range.selectNode( body.firstChild ).select();
@@ -154,7 +154,7 @@ test( 'ctrl+b', function() {
 
             }
             te.dom.push(editor.container);
-            //UE.delEditor('ue');
+            //UM.delEditor('ue');
             start();
         }, 150 );
     }, 100 );
@@ -164,9 +164,9 @@ test( 'ctrl+b', function() {
 test( 'ctrl+u', function() {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue2';
-    var editor = UE.getEditor('ue2');
+    var editor = UM.getEditor('ue2');
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document,editor.body);
+        var range = new UM.dom.Range(editor.document,editor.body);
         var body = editor.body;
 
         editor.setContent( '<p>没有加粗的文本</p>' );
@@ -177,7 +177,7 @@ test( 'ctrl+u', function() {
                 var html = '<span style="text-decoration: underline;">没有加粗的文本</span>';
                 ua.checkHTMLSameStyle( html, editor.document, body.firstChild, '文本被添加了下划线' );
                 //equal(editor.body.firstChild.firstChild.style.textDecoration,'underline');
-                //UE.delEditor('ue');
+                //UM.delEditor('ue');
                 te.dom.push(editor.container);
                 start();
             }, 150 );

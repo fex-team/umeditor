@@ -45,7 +45,7 @@ test( '不设宽高，插入图片', function () {
 //    var p = body.firstChild;
 //    equal( p.style['textAlign'], 'center', '居中对齐' );
 //    ok( p.nextSibling.innerHTML.indexOf( 'hello' ) > -1, '第二个p里面是hello' );      //1.2版本在FF中，hello前有不可见字符
-//    if ( UE.browser.ie )
+//    if ( UM.browser.ie )
 //            equal( img.style['styleFloat'], '', 'float为空' );
 //    else
 //            equal( img.style['cssFloat'], '', 'float为空' );
