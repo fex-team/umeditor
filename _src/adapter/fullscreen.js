@@ -4,7 +4,7 @@
 
 (function(){
 
-        //状态缓存
+    //状态缓存
     var STATUS_CACHE = {},
         //状态值列表
         STATUS_LIST = [ 'width', 'height', 'position', 'top', 'left', 'margin', 'padding', 'overflowX', 'overflowY' ],
@@ -19,18 +19,14 @@
     UE.registerUI('fullscreen', function( name ){
 
         var me = this,
-            fullscreenHandler = new Fullscreen( me ),
             $button = $.eduibutton({
                 'icon': 'fullscreen',
                 'title': (me.options.labelMap && me.options.labelMap[name]) || me.getLang("labelMap." + name),
                 'click': function(){
                     //切换
-                    fullscreenHandler.toggle();
+                    me.execCommand( name );
                 }
             });
-
-        //附加一个按钮
-        fullscreenHandler.attachButton( $button );
 
         me.addListener( "selectionchange", function () {
 
@@ -39,16 +35,31 @@
 
         } );
 
+        //切换至全屏
+        me.addListener('ready', function(){
+
+            me.options.fullscreen && Fullscreen.getInstance( me ).toggle();
+
+        });
+
         return $button;
 
     });
 
-    UE.commands['fullscreen'] = {
-        queryCommandState: function () {
-            return this._edui_fullscreen_status;
-        }
-    };
+    UE.commands[ 'fullscreen' ] = {
 
+        execCommand: function (cmdName) {
+
+            Fullscreen.getInstance( this ).toggle();
+
+        },
+        queryCommandState: function (cmdName) {
+
+            return this._edui_fullscreen_status;
+        },
+        notNeedUndo: 1
+
+    };
 
     function Fullscreen( editor ) {
 
@@ -59,8 +70,6 @@
         }
 
         me.editor = editor;
-        //附加按钮对象列表
-        me.buttons = [];
 
         //记录初始化的全屏组件
         FULLSCREENS[ editor.uid ] = this;
@@ -69,16 +78,6 @@
             delete FULLSCREENS[ editor.uid ];
             me.editor = null;
         });
-
-        //响应编辑器的全屏选项
-        if( editor.options.fullscreen ) {
-
-            //切换至全屏
-            editor.addListener('ready', function(){
-                me.toggle();
-            });
-
-        }
 
     }
 
@@ -90,7 +89,7 @@
         toggle: function(){
 
             var editor = this.editor,
-                //当前编辑器的缩放状态
+            //当前编辑器的缩放状态
                 _edui_fullscreen_status = this.isFullState();
             editor.fireEvent('beforefullscreenchange', !_edui_fullscreen_status );
 
@@ -106,10 +105,6 @@
 
             editor.fireEvent( 'selectionchange' );
 
-        },
-        //附加一个按钮
-        attachButton: function( $btn ){
-            this.buttons.push( $btn );
         },
         /**
          * 执行放大
@@ -198,7 +193,7 @@
 
             $( editorBody ).css({
                 width: width - 2*borderWidth - paddingWidth + 'px',
-                height: height - 2*borderWidth - $( '.edui-toolbar', editor.container ).outerHeight() - $( '.edui-bottombar', editor.container).outerHeight() + 'px',
+                height: height - 2*borderWidth - ( editor.options.withoutToolbar ? 0 : $( '.edui-toolbar', editor.container ).outerHeight() ) - $( '.edui-bottombar', editor.container).outerHeight() + 'px',
                 overflowX: 'hidden',
                 overflowY: 'auto'
             });
@@ -353,14 +348,14 @@
         getBound: function () {
 
             var tags = {
-                html: true,
-                body: true
-            },
-            result = {
-                top: 0,
-                left: 0
-            },
-            offsetParent = null;
+                    html: true,
+                    body: true
+                },
+                result = {
+                    top: 0,
+                    left: 0
+                },
+                offsetParent = null;
 
             if ( !$.IE6 ) {
                 return result;
@@ -416,7 +411,18 @@
 
             } );
 
+        },
+
+        getInstance: function ( editor ) {
+
+            if ( !FULLSCREENS[editor.uid  ] ) {
+                new Fullscreen( editor );
+            }
+
+            return FULLSCREENS[editor.uid  ];
+
         }
+
     });
 
     //开始监听
