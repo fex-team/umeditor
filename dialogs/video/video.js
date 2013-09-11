@@ -3,10 +3,6 @@
 
     var widgetName = 'insertvideo';
 
-    function $G( id ) {
-        return document.getElementById( id );
-    }
-
     UE.registerWidget( widgetName,{
 
         tpl: "<link rel=\"stylesheet\" type=\"text/css\" href=\"<%=video_url%>video.css\" />" +
@@ -52,7 +48,7 @@
         initEvent:function(){
 
             var me = this,
-                url = $G("eduiVideoUrl");
+                url = $("#eduiVideoUrl")[0];
 
             if( 'oninput' in url ) {
                 url.oninput = function(){
@@ -75,9 +71,9 @@
 
             //编辑视频时初始化相关信息
             if(img && img.className == "edui-faked-video"){
-                $G("videoUrl").value = url = img.getAttribute("_url");
-                $G("videoWidth").value = img.width;
-                $G("videoHeight").value = img.height;
+                $("#eduiVideoUrl")[0].value = url = img.getAttribute("_url");
+                $("#eduiVideoWidth")[0].value = img.width;
+                $("#eduiVideoHeight")[0].value = img.height;
                 var align = domUtils.getComputedStyle(img,"float"),
                     parentAlign = domUtils.getComputedStyle(img.parentNode,"text-align");
                 me.updateAlignButton(parentAlign==="center"?"center":align);
@@ -103,13 +99,13 @@
                 }else if(youku){
                     url = "http://player.youku.com/player.php/sid/"+youku[1]+"/v.swf"
                 }else if(!me.endWith(url,[".swf",".flv",".wmv"])){
-                    $G("eduiVideoPreview").innerHTML = lang.urlError;
+                    $("#eduiVideoPreview").html( lang.urlError );
                     return;
                 }
             }else{
                 url = url.replace(/\?f=.*/,"");
             }
-            $G("eduiVideoPreview").innerHTML = '<embed type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
+            $("#eduiVideoPreview")[0].innerHTML = '<embed type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
                 ' src="' + url + '"' +
                 ' width="' + 420  + '"' +
                 ' height="' + 280  + '"' +
@@ -122,9 +118,9 @@
         insertSingle: function(){
 
             var me = this,
-                width = $G("eduiVideoWidth"),
-                height = $G("eduiVideoHeight"),
-                url=$G('eduiVideoUrl').value,
+                width = $("#eduiVideoWidth")[0],
+                height = $("#eduiVideoHeight")[0],
+                url=$('#eduiVideoUrl')[0].value,
                 align = this.findFocus("eduiVideoFloat","name");
 
             if(!url) return false;
@@ -174,7 +170,7 @@
             return /(0|^[1-9]\d*$)/.test( value );
         },
         updateAlignButton: function( align ) {
-            var aligns = $G( "eduiVideoFloat" ).children;
+            var aligns = $( "#eduiVideoFloat" )[0].children;
 
             for ( var i = 0, ci; ci = aligns[i++]; ) {
                 if ( ci.getAttribute( "name" ) == align ) {
@@ -199,7 +195,7 @@
                 vidoe_home = UEDITOR_CONFIG.UEDITOR_HOME_URL + 'dialogs/video/';
 
             for ( var i = 0, ci; ci = ids[i++]; ) {
-                var floatContainer = $G( ci ),
+                var floatContainer = $( "#" + ci ) [0],
                     nameMaps = {"none":lang['default'], "left":lang.floatLeft, "right":lang.floatRight, "center":lang.block};
                 for ( var j in nameMaps ) {
                     var div = document.createElement( "div" );
@@ -216,7 +212,7 @@
          * 选择切换
          */
         switchSelect: function( selectParentId ) {
-            var selects = $G( selectParentId ).children;
+            var selects = $( "#" + selectParentId )[0].children;
             for ( var i = 0, ci; ci = selects[i++]; ) {
                 domUtils.on( ci, "click", function () {
                     for ( var j = 0, cj; cj = selects[j++]; ) {
@@ -233,7 +229,7 @@
          * @param returnProperty
          */
         findFocus: function( id, returnProperty ) {
-            var tabs = $G( id ).children,
+            var tabs = $( "#" + id )[0].children,
                 property;
             for ( var i = 0, ci; ci = tabs[i++]; ) {
                 if ( ci.className=="edui-video-focus" ) {
@@ -262,14 +258,14 @@
         buttons: {
             ok: {
                 exec: function( editor ){
-                    $G("eduiVideoPreview").innerHTML = "";
+                    $("#eduiVideoPreview").html("");
                     UE.getWidgetData(widgetName).insertSingle();
                 }
             },
             cancel: {
                 exec: function(){
                     //清除视频
-                    $G("eduiVideoPreview").innerHTML = "";
+                    $("#eduiVideoPreview").html("");
                 }
             }
         }
