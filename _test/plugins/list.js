@@ -118,8 +118,11 @@ test('多个p，选中其中几个变为列表', function () {
         range.setStart(body.firstChild, 0).setEnd(body.firstChild.nextSibling, 1).select();
         editor.execCommand('insertorderedlist');
 
-        var space = ua.browser.webkit?'<br/>':'';
-        equal(editor.getContent(editor.body.firstChild), '<ol><li>hello1'+space+'</li><li>hello2'+space+'</li></ol><p>hello3</p><p>hello4</p>', '检查列表的内容');
+        //var space = ua.browser.webkit?'<br/>':'';
+        if(ua.browser.webkit)
+            equal(editor.getContent(editor.body.firstChild), '<ol><li><p>hello1<br/></p></li><li><p>hello2<br/></p></li></ol><p>hello3</p><p>hello4</p>', '检查列表的内容');
+        else
+            equal(editor.getContent(editor.body.firstChild), '<ol><li>hello1</li><li>hello2</li></ol><p>hello3</p><p>hello4</p>', '检查列表的内容');
         equal(body.firstChild.tagName.toLowerCase(), 'ol', '检查列表的类型');
         equal(body.childNodes.length, 3, '3个孩子');
         equal(body.lastChild.tagName.toLowerCase(), 'p', '后面的p没有变为列表');

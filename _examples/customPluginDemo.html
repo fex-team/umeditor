@@ -27,7 +27,7 @@
 
 <!--style给定宽度可以影响编辑器的最终宽度-->
 <script type="text/plain" id="myEditor" style="width:800px;height:240px;">
-    <p>插件描述：单击编辑区域,弹出提示框！</p>
+    <p>插件描述：单击编辑区域,弹出输入框,可插入内容到编辑器！</p>
 </script>
 <script type="text/javascript">
     //创建一个在选中的图片单击时添加边框的插件，其实质就是在baidu.editor.plugins塞进一个闭包
@@ -36,7 +36,7 @@
         //执行命令
         me.commands["showmsg"] = {
             execCommand:function () {
-                alert('1234567890');
+                me.execCommand( "inserthtml",prompt('自定义插件实现插入内容:','请填写要插入的内容') );
             }
         };
         //注册一个触发命令的事件，同学们可以在任意地放绑定触发此命令的事件

@@ -10,8 +10,8 @@ UM.ui.define('colorpicker', {
                 '7f7f7f,0c0c0c,1d1b10,0f243e,244061,632423,4f6128,3f3151,205867,974806,' +
                 'c00000,ff0000,ffc000,ffff00,92d050,00b050,00b0f0,0070c0,002060,7030a0,').split(',');
 
-        var html = '<div class="edui-colorpicker<%if (name){%> edui-colorpicker-<%=name%><%}%>" >' +
-            '<table>' +
+        var html = '<div unselectable="on" onmousedown="return false" class="edui-colorpicker<%if (name){%> edui-colorpicker-<%=name%><%}%>" >' +
+            '<table unselectable="on" onmousedown="return false">' +
             '<tr><td colspan="10">'+opt.lang_themeColor+'</td> </tr>' +
             '<tr class="edui-colorpicker-firstrow" >';
 

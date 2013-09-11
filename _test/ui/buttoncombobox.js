@@ -45,14 +45,13 @@ test( '检测buttoncombobox行为是否正确', function() {
                 window.setTimeout( function () {
 
                     equal( Math.abs( $combox.position().left - $btn.position().left ) < 3, true , '弹出层的左边界对齐正常' );
-                    equal( $combox.position().top, $btn.position().top + $btn.outerHeight() , '弹出层的上边界对齐正常' );
+                    equal( Math.abs($combox.position().top-($btn.position().top + $btn.outerHeight())) < 2,true , '弹出层的上边界对齐正常' );
 
                     //hover背景改变
                     $item = $(".edui-combobox-item:first", $combox );
 
                     $item.addClass( "edui-combobox-item-hover" );
-                    equal( $item.css("backgroundColor"), "rgb(213, 225, 242)" , 'hover in 背景色正常' );
-
+                    equal( ua.formatColor($item.css("backgroundColor")), "#d5e1f2" , 'hover in 背景色正常' );
                     $item.removeClass( "edui-combobox-item-hover" );
                     equal( $item.css("backgroundColor") !== "rgb(213, 225, 242)", true , 'hover out 背景色正常' );
 

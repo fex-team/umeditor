@@ -17,7 +17,7 @@
     UM.ui.define( widgetName, ( function(){
 
         return {
-            tpl: "<ul class=\"dropdown-menu edui-combobox-menu<%if (comboboxName!=='') {%> edui-combobox-<%=comboboxName%><%}%>\" role=\"menu\" aria-labelledby=\"dropdownMenu\">" +
+            tpl: "<ul class=\"dropdown-menu edui-combobox-menu<%if (comboboxName!=='') {%> edui-combobox-<%=comboboxName%><%}%>\" unselectable=\"on\" onmousedown=\"return false\" role=\"menu\" aria-labelledby=\"dropdownMenu\">" +
                 "<%if(autoRecord) {%>" +
                 "<%for( var i=0, len = recordStack.length; i<len; i++ ) {%>" +
                 "<%var index = recordStack[i];%>" +

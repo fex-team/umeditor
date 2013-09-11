@@ -19,7 +19,6 @@ test("autoSyncData:true,textarea容器(由setcontent触发的)", function () {
             setTimeout(function () {
                 start();
             }, 100);
-
         }, 100);
     });
 });
@@ -87,10 +86,10 @@ test("hide,show", function () {
                 var br = ua.browser.ie ? '' : '<br>';
                 equal(ua.getChildHTML(editor.body), '<p>' + br + '</p>', '删除书签');
                 te.dom.push(editor.container);
-
+                UE.delEditor('ue_hide_show');
                 start();
-            }, 50);
-        }, 50);
+            }, 200);
+        }, 200);
     });
     stop();
 });
@@ -102,11 +101,12 @@ test("_setDefaultContent--focus", function () {
     editor.ready(function () {
         editor._setDefaultContent('hello');
         editor.fireEvent('focus');
-        var br = ua.browser.ie ? '' : '<br>';
-        equal(ua.getChildHTML(editor.body), '<p>' + br + '</p>', 'focus');
-        te.dom.push(editor.container);
-
-        start();
+        setTimeout(function(){
+            var br = ua.browser.ie ? '' : '<br>';
+            equal(ua.getChildHTML(editor.body), '<p>' + br + '</p>', 'focus');
+            te.dom.push(editor.container);
+            start();
+        },200);
     });
     stop();
 });
@@ -127,14 +127,20 @@ test("_setDefaultContent--firstBeforeExecCommand", function () {
     stop();
 });
 test("trace 3610 setDisabled,setEnabled", function () {
-    if (ua.browser.gecko)return;//trace 3610
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue_setDisabled';
     var editor = UE.getEditor('ue_setDisabled');
     editor.ready(function () {
         editor.setContent('<p>欢迎使用ueditor!</p>');
         editor.focus();
+        if(ua.browser.ie&&ua.browser.ie<9){//trace 3628 ie8 focus 设置无效,手动设range
+            var range = new UE.dom.Range(editor.document,editor.body);
+            range.setStart(editor.body.firstChild,0).collapse(true).select();
+        }
         setTimeout(function () {
+            if(ua.browser.ie&&ua.browser.ie<9){//trace 3628 ie8 focus 设置无效,手动设range
+                ua.manualDeleteFillData(editor.body);
+            }
             var startContainer = editor.selection.getRange().startContainer.outerHTML;
             var startOffset = editor.selection.getRange().startOffset;
             var collapse = editor.selection.getRange().collapsed;
@@ -165,8 +171,6 @@ test("trace 3610 setDisabled,setEnabled", function () {
     });
     stop();
 });
-
-
 test("render-- options", function () {
     var options = {'initialContent': '<span class="span">xxx</span><div>xxx<p></p></div>', 'UEDITOR_HOME_URL': '../../../', autoClearinitialContent: false, 'autoFloatEnabled': false};
     var editor = new UE.Editor(options);
@@ -303,14 +307,16 @@ test("setContent 追加", function () {
 });
 
 test("focus(false)", function () {
+    if(ua.browser.ie&&ua.browser.ie<9)return;//trace 3628 ie8 focus
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue_focus_false';
     var editor = UE.getEditor('ue_focus_false');
     stop();
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
+        var range = new UE.dom.Range(editor.document,editor.body);
         editor.setContent("<p>hello1</p><p>hello2</p>");
         editor.focus(false);
+        setTimeout(function(){
         if (ua.browser.gecko) {
             equal(editor.selection.getRange().startContainer, editor.body.firstChild, "focus(false)焦点在最前面");
             equal(editor.selection.getRange().endContainer, editor.body.firstChild, "focus(false)焦点在最前面");
@@ -321,9 +327,13 @@ test("focus(false)", function () {
         }
         equal(editor.selection.getRange().startOffset, 0, "focus(false)焦点在最前面");
         equal(editor.selection.getRange().endOffset, 0, "focus(false)焦点在最前面");
-        te.dom.push(editor.container);
-        document.getElementById('ue_focus_false') && te.dom.push(document.getElementById('ue_focus_false'));
-        start();
+        setTimeout(function(){
+            te.dom.push(editor.container);
+            UE.delEditor('ue_focus_false');
+            document.getElementById('ue_focus_false') && te.dom.push(document.getElementById('ue_focus_false'));
+            start();
+        },100);
+        },100);
     });
 });
 
@@ -549,7 +559,7 @@ test('2个实例采用2个配置文件', function () {
                 start();
             });
         });
-    }, 100);
+    },300);
 });
 test("_initEvents,_proxyDomEvent--click", function () {
     var div = document.body.appendChild(document.createElement('div'));
