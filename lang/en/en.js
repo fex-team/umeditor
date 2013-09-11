@@ -5,7 +5,7 @@
  * Time: 下午6:57
  * To change this template use File | Settings | File Templates.
  */
-UE.I18N['en'] = {
+UM.I18N['en'] = {
     'labelMap':{
         'anchor':'Anchor', 'undo':'Undo', 'redo':'Redo', 'bold':'Bold', 'indent':'Indent', 'snapscreen':'SnapScreen',
         'italic':'Italic', 'underline':'Underline', 'strikethrough':'Strikethrough', 'subscript':'SubScript','fontborder':'text border',
