@@ -334,7 +334,7 @@ var utils = UM.utils = {
                 }
             };
             element.onerror = function () {
-                throw Error('The load ' + (obj.href || obj.src) + ' fails,check the url settings of file ueditor.config.js ')
+                throw Error('The load ' + (obj.href || obj.src) + ' fails,check the url settings of file umeditor.config.js ')
             };
             doc.getElementsByTagName("head")[0].appendChild(element);
         }

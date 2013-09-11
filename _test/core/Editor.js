@@ -131,7 +131,7 @@ test("trace 3610 setDisabled,setEnabled", function () {
     div.id = 'ue_setDisabled';
     var editor = UM.getEditor('ue_setDisabled');
     editor.ready(function () {
-        editor.setContent('<p>欢迎使用ueditor!</p>');
+        editor.setContent('<p>欢迎使用umeditor!</p>');
         editor.focus();
         if(ua.browser.ie&&ua.browser.ie<9){//trace 3628 ie8 focus 设置无效,手动设range
             var range = new UM.dom.Range(editor.document,editor.body);
@@ -154,7 +154,7 @@ test("trace 3610 setDisabled,setEnabled", function () {
                 editor.setEnabled();
                 setTimeout(function () {
                     equal(editor.body.contentEditable, 'true', 'setEnabled');
-                    equal(ua.getChildHTML(editor.body), '<p>欢迎使用ueditor!</p>', '内容恢复');
+                    equal(ua.getChildHTML(editor.body), '<p>欢迎使用umeditor!</p>', '内容恢复');
                     if (!ua.browser.ie || ua.browser.ie < 9) {//todo ie9,10改range 之后，ie9,10这里的前后range不一致，focus时是text，setEnabled后是p
                         equal(editor.selection.getRange().startContainer.outerHTML, startContainer, '检查range');
                     }
@@ -520,7 +520,7 @@ test('getAllHtml', function () {
     editor.ready(function () {
         editor.focus();
         var html = editor.getAllHtml();
-        ok(/ueditor.css/.test(html), '引入样式');
+        ok(/umeditor.css/.test(html), '引入样式');
         te.dom.push(editor.container);
         document.getElementById('ue_getAllHtml') && te.dom.push(document.getElementById('ue_getAllHtml'));
         start();
@@ -534,14 +534,14 @@ test('2个实例采用2个配置文件', function () {
     head.appendChild(script);
     expect(6);
     stop();
-    /*动态加载js需要时间，用这个ueditor.config.js覆盖默认的配置文件*/
+    /*动态加载js需要时间，用这个umeditor.config.js覆盖默认的配置文件*/
     setTimeout(function () {
         var div1 = document.body.appendChild(document.createElement('div'));
         div1.id = 'div1';
         div1.style.height = '200px';
         var div2 = document.body.appendChild(document.createElement('div'));
         div2.id = 'div2';
-        var editor1 = UM.getEditor('div1', {'UEDITOR_HOME_URL': '../../../', 'initialContent': '欢迎使用ueditor', 'autoFloatEnabled': false});
+        var editor1 = UM.getEditor('div1', {'UEDITOR_HOME_URL': '../../../', 'initialContent': '欢迎使用umeditor', 'autoFloatEnabled': false});
         editor1.ready(function () {
             var editor2 = UM.getEditor('div2', UEDITOR_CONFIG2);
             editor2.ready(function () {
@@ -550,8 +550,8 @@ test('2个实例采用2个配置文件', function () {
                 var html = UEDITOR_CONFIG2.initialContent;
                 ua.checkHTMLSameStyle(html, editor2.document, editor2.body.firstChild, '初始内容为自定制的');
                 equal(editor2.options.enterTag, 'br', 'enterTag is br');
-                html = '欢迎使用ueditor';
-                equal(html, editor1.body.firstChild.innerHTML, '内容和ueditor.config一致');
+                html = '欢迎使用umeditor';
+                equal(html, editor1.body.firstChild.innerHTML, '内容和umeditor.config一致');
                 equal(editor1.options.enterTag, 'p', 'enterTag is p');
                 te.dom.push(editor1.container);
                 te.dom.push(editor2.container);

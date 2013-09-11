@@ -80,12 +80,12 @@ UM.plugins['link'] = function(){
                 }
 
             }else{
-                me.document.execCommand('createlink',false,'_ueditor_link');
+                me.document.execCommand('createlink',false,'_umeditor_link');
                 utils.each(domUtils.getElementsByTagName(me.body,'a',function(n){
 
-                    return n.getAttribute('href') == '_ueditor_link'
+                    return n.getAttribute('href') == '_umeditor_link'
                 }),function(l){
-                    if($(l).text() == '_ueditor_link'){
+                    if($(l).text() == '_umeditor_link'){
                         $(l).text(opt.href);
                     }
                     domUtils.setAttributes(l,opt);

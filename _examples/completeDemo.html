@@ -3,16 +3,11 @@
 <head>
 
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <title>UEditor Mini完整demo</title>
+    <title>UMEDITOR 完整demo</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link href="../themes/default/_css/ueditor.css" type="text/css" rel="stylesheet">
+    <link href="../themes/default/_css/umeditor.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" charset="utf-8" src="../ueditor.config.js"></script>
-
-    <!--使用版-->
-    <!--<script type="text/javascript" charset="utf-8" src="../ueditor.all.js"></script>-->
-
-    <!--开发版-->
+    <script type="text/javascript" charset="utf-8" src="../umeditor.config.js"></script>
     <script type="text/javascript" charset="utf-8" src="editor_api.js"></script>
     <script type="text/javascript" src="../lang/zh-cn/zh-cn.js"></script>
     <style type="text/css">
@@ -23,7 +18,7 @@
     </style>
 </head>
 <body>
-<h1>UEditor Mini完整demo</h1>
+<h1>UMEDITOR 完整demo</h1>
 
 <!--style给定宽度可以影响编辑器的最终宽度-->
 <script type="text/plain" id="myEditor" style="width:800px;height:240px;">
@@ -93,8 +88,8 @@
     }
     function setContent(isAppendTo) {
         var arr = [];
-        arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
-        UM.getEditor('myEditor').setContent('欢迎使用ueditor', isAppendTo);
+        arr.push("使用editor.setContent('欢迎使用umeditor')方法可以设置编辑器的内容");
+        UM.getEditor('myEditor').setContent('欢迎使用umeditor', isAppendTo);
         alert(arr.join("\n"));
     }
     function setDisabled() {

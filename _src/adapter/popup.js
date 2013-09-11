@@ -1,6 +1,6 @@
 UM.registerUI( 'emotion', function( name ){
     var me = this,
-        url  = me.options.UEDITOR_HOME_URL + 'dialogs/' +name+ '/'+name+'.js';
+        url  = me.options.UMEDITOR_HOME_URL + 'dialogs/' +name+ '/'+name+'.js';
 
     var $btn = $.eduibutton({
         icon: name,

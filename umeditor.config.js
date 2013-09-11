@@ -1,5 +1,5 @@
 /**
- *  ueditor完整配置项
+ *  umeditor完整配置项
  *  可以在这里配置整个编辑器的特性
  */
 /**************************提示********************************
@@ -14,12 +14,12 @@
     /**
      * 编辑器资源文件根路径。它所表示的含义是：以编辑器实例化页面为当前路径，指向编辑器资源文件（即dialog等文件夹）的路径。
      * 鉴于很多同学在使用编辑器的时候出现的种种路径问题，此处强烈建议大家使用"相对于网站根目录的相对路径"进行配置。
-     * "相对于网站根目录的相对路径"也就是以斜杠开头的形如"/myProject/ueditor/"这样的路径。
+     * "相对于网站根目录的相对路径"也就是以斜杠开头的形如"/myProject/umeditor/"这样的路径。
      * 如果站点中有多个不在同一层级的页面需要实例化编辑器，且引用了同一UEditor的时候，此处的URL可能不适用于每个页面的编辑器。
      * 因此，UEditor提供了针对不同页面的编辑器可单独配置的根路径，具体来说，在需要实例化编辑器的页面最顶部写上如下代码即可。当然，需要令此处的URL等于对应的配置。
-     * window.UEDITOR_HOME_URL = "/xxxx/xxxx/";
+     * window.UMEDITOR_HOME_URL = "/xxxx/xxxx/";
      */
-    var URL = window.UEDITOR_HOME_URL || (function(){
+    var URL = window.UMEDITOR_HOME_URL || (function(){
 
         function PathStack() {
 
@@ -130,10 +130,10 @@
     /**
      * 配置项主体。注意，此处所有涉及到路径的配置别遗漏URL变量。
      */
-    window.UEDITOR_CONFIG = {
+    window.UMEDITOR_CONFIG = {
 
         //为编辑器实例添加一个路径，这个不能被注释
-        UEDITOR_HOME_URL : URL
+        UMEDITOR_HOME_URL : URL
 
         //图片上传配置区
         ,imageUrl:URL+"php/imageUp.php"             //图片上传提交地址
@@ -177,7 +177,7 @@
         //常用配置项目
         //,isShow : true    //默认显示编辑器
 
-        //,initialContent:'欢迎使用ueditor!'    //初始化编辑器的内容,也可以通过textarea/script给值，看官网例子
+        //,initialContent:'欢迎使用UMEDITOR!'    //初始化编辑器的内容,也可以通过textarea/script给值，看官网例子
 
         //,initialFrameWidth:1000  //初始化编辑器宽度,默认1000
         //,initialFrameHeight:320  //初始化编辑器高度,默认320

@@ -19,7 +19,7 @@
         if (editor.textarea) {
             if (utils.isString(editor.textarea)) {
                 for (var i = 0, ti, tis = domUtils.getElementsByTagName(form, 'textarea'); ti = tis[i++];) {
-                    if (ti.id == 'ueditor_textarea_' + editor.options.textarea) {
+                    if (ti.id == 'umeditor_textarea_' + editor.options.textarea) {
                         textarea = ti;
                         break;
                     }
@@ -31,7 +31,7 @@
         if (!textarea) {
             form.appendChild(textarea = domUtils.createElement(document, 'textarea', {
                 'name': editor.options.textarea,
-                'id': 'ueditor_textarea_' + editor.options.textarea,
+                'id': 'umeditor_textarea_' + editor.options.textarea,
                 'style': "display:none"
             }));
             //不要产生多个textarea
@@ -71,7 +71,7 @@
         me.uid = uid++;
         EventBase.call(me);
         me.commands = {};
-        me.options = utils.extend(utils.clone(options || {}), UEDITOR_CONFIG, true);
+        me.options = utils.extend(utils.clone(options || {}), UMEDITOR_CONFIG, true);
         me.shortcutkeys = {};
         me.inputRules = [];
         me.outputRules = [];
@@ -83,7 +83,7 @@
                 '.edui-editor-body .edui-body-container{border:0;outline:none;cursor:text;padding:0 10px 0;oveflow:auto;display:block;word-wrap:break-word;font-size:16px;font-family:sans-serif;}' +
                 '.edui-editor-body.focus{border:1px solid #5c9dff}',
             autoClearinitialContent: false,
-            iframeCssUrl: me.options.UEDITOR_HOME_URL + 'themes/iframe.css',
+            iframeCssUrl: me.options.UMEDITOR_HOME_URL + 'themes/iframe.css',
             textarea: 'editorValue',
             focus: false,
             focusInEnd: true,
@@ -95,9 +95,9 @@
             enterTag: 'p',
             customDomain: false,
             lang: 'zh-cn',
-            langPath: me.options.UEDITOR_HOME_URL + 'lang/',
+            langPath: me.options.UMEDITOR_HOME_URL + 'lang/',
             theme: 'default',
-            themePath: me.options.UEDITOR_HOME_URL + 'themes/',
+            themePath: me.options.UMEDITOR_HOME_URL + 'themes/',
             allHtmlEnabled: false,
             scaleEnabled: false,
             tableNativeEditInFF: false,
@@ -120,7 +120,7 @@
             });
         }
 
-        UM.instants['ueditorInstant' + me.uid] = me;
+        UM.instants['umeditorInstant' + me.uid] = me;
     };
     Editor.prototype = {
         /**
@@ -243,7 +243,7 @@
                 container = document.getElementById(container);
             }
             if (container) {
-                utils.cssRule('ueditor_body_css',me.options.initialStyle,document);
+                utils.cssRule('umeditor_body_css',me.options.initialStyle,document);
 
                 container = this.initialCont(container);
 

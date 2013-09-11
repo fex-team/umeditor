@@ -303,7 +303,7 @@
         initContent: function (editor) {
             var lang = editor.getLang('image')["static"],
                 opt = $.extend({}, lang, {
-                    image_url: UEDITOR_CONFIG.UEDITOR_HOME_URL + 'dialogs/image/'
+                    image_url: UMEDITOR_CONFIG.UMEDITOR_HOME_URL + 'dialogs/image/'
                 });
 
             if (lang) {

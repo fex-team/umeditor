@@ -1,4 +1,4 @@
-UEDITOR_CONFIG = window.UEDITOR_CONFIG || {};
+UMEDITOR_CONFIG = window.UMEDITOR_CONFIG || {};
 
 window.UM = {
     plugins : {},

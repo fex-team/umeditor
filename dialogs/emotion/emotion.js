@@ -52,7 +52,7 @@
             var me = this,
                 emotion = me.sourceData.emotion,
                 lang = _editor.getLang( 'emotion' )['static'],
-                emotionUrl = UEDITOR_CONFIG.UEDITOR_HOME_URL + 'dialogs/emotion/',
+                emotionUrl = UMEDITOR_CONFIG.UMEDITOR_HOME_URL + 'dialogs/emotion/',
                 options = $.extend( {}, lang, {
                     emotion_url: emotionUrl
                 } );
@@ -230,7 +230,7 @@
         },
         insertSmiley: function( url, evt ) {
             var obj = {
-                src:editor.options.emotionLocalization ? editor.options.UEDITOR_HOME_URL + "dialogs/emotion/" + url : url
+                src:editor.options.emotionLocalization ? editor.options.UMEDITOR_HOME_URL + "dialogs/emotion/" + url : url
             };
             obj._src = obj.src;
             editor.execCommand( 'insertimage', obj );
