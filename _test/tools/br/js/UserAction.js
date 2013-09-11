@@ -1843,7 +1843,7 @@ UserAction = {
         else
             return true;
     }, checkSameHtml:function (stringA, stringB, scholium) {
-        ok(this.checkSameNode(UE.htmlparser(stringA), UE.htmlparser(stringB)), scholium);
+        ok(this.checkSameNode(UM.htmlparser(stringA), UM.htmlparser(stringB)), scholium);
     }
 };
 var ua = UserAction;

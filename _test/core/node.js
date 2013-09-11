@@ -1,7 +1,7 @@
 module( 'core.node' );
 
 test( 'createElement', function() {
-    var uNode = UE.uNode;
+    var uNode = UM.uNode;
     var node = uNode.createElement('div');
     equals(node.tagName,'div','空div ——tagname');
     equals(node.type,'element','空div ——节点类型');
@@ -11,7 +11,7 @@ test( 'createElement', function() {
 });
 
 test( 'getNodeById', function() {
-    var uNode = UE.uNode;
+    var uNode = UM.uNode;
     var node = uNode.createElement('<div id="aa"><div id="bb"></div>sdfadf</div>');
     node = node.getNodeById('bb');
     equals(node.getAttr('id'),'bb','获取标签id');
@@ -21,7 +21,7 @@ test( 'getNodeById', function() {
 });
 
 test( 'getNodesByTagName', function() {
-    var uNode = UE.uNode;
+    var uNode = UM.uNode;
     var node = uNode.createElement('<div id="aa"><div id="bb"><div id="cc"></div> </div>sdfadf</div>');
     var nodelist = node.getNodesByTagName('div');
     equals(nodelist.length,2,'div节点列表长度');
@@ -29,7 +29,7 @@ test( 'getNodesByTagName', function() {
 });
 
 test( 'innerHTML', function() {
-    var uNode = UE.uNode;
+    var uNode = UM.uNode;
     var node = uNode.createElement('<div id="aa">sdfadf</div>');
     node.innerHTML('<div><div><div></div></div></div>');
     var nodelist =node.getNodesByTagName('div');
@@ -44,13 +44,13 @@ test( 'innerHTML', function() {
 });
 
 test( 'innerText', function() {
-    var tmp = new UE.uNode.createElement('area');
+    var tmp = new UM.uNode.createElement('area');
     tmp.innerHTML('<p></p>');
     equals(tmp.innerText(),tmp,'标签类型特殊');
-    tmp = new UE.uNode.createText('');
+    tmp = new UM.uNode.createText('');
     tmp.innerHTML('<p></p>');
     equals(tmp.innerText(),tmp,'对象类型不为element');
-    var uNode = UE.uNode;
+    var uNode = UM.uNode;
     var node = uNode.createElement('<div id="aa">sdfadf</div>');
     node.innerHTML('<p>dfsdfsdf<b>eee</b>sdf</p>');
     equals(node.innerText(),'dfsdfsdfeeesdf','获取标签中纯文本');
@@ -59,14 +59,14 @@ test( 'innerText', function() {
 });
 
 test( 'getData', function() {
-    var tmp = new UE.uNode.createElement('div');
+    var tmp = new UM.uNode.createElement('div');
     equals(tmp.getData(),'','element元素');
-    tmp = new UE.uNode.createText('askdj');
+    tmp = new UM.uNode.createText('askdj');
     equals(tmp.getData(),"askdj",'其他类型');
 });
 
 test( 'appendChild && insertBefore', function() {
-    var uNode = UE.uNode;
+    var uNode = UM.uNode;
     var node = uNode.createElement('<div id="aa">sdfadf</div>');
     node.innerHTML('<p><td></td></p>');
     equals(node.innerHTML().replace(/[ ]+>/g,'>'),'<p><table><tbody><tr><td></td></tr></tbody></table></p>','补全html标签');
@@ -80,7 +80,7 @@ test( 'appendChild && insertBefore', function() {
 });
 
 test( 'replaceChild && setAttr', function() {
-    var uNode = UE.uNode;
+    var uNode = UM.uNode;
     var node = uNode.createElement('<div id="aa">sdfadf</div>');
     node.innerHTML('<p><table><tbody><tr><td></td></tr></tbody></table></p><div></div>');
     var tmp = uNode.createElement('p');
@@ -103,7 +103,7 @@ test( 'replaceChild && setAttr', function() {
 });
 
 test( 'insertAfter', function() {
-    var uNode = UE.uNode;
+    var uNode = UM.uNode;
     var node = uNode.createElement('<div id="aa">sdfadf</div>');
     node.innerHTML('<p><td></td></p>');
     var tmp = uNode.createElement('div');
@@ -113,7 +113,7 @@ test( 'insertAfter', function() {
 });
 
 test( 'getStyle', function() {
-    var uNode = UE.uNode;
+    var uNode = UM.uNode;
     var node = uNode.createElement('div');
     node.innerHTML('<div style=""><div>');
     node = node.firstChild();
@@ -130,7 +130,7 @@ test( 'getStyle', function() {
 });
 
 test( 'setStyle', function() {
-    var uNode = UE.uNode;
+    var uNode = UM.uNode;
     var node = uNode.createElement('div');
     node.innerHTML('<div style="border:1px solid #ccc;color:#ccc"><div>');
     node = node.firstChild();
@@ -171,17 +171,17 @@ test( 'setStyle', function() {
 });
 
 test( 'getIndex', function() {
-    var uNode = UE.uNode;
+    var uNode = UM.uNode;
     var node = uNode.createElement('div');
     node.innerHTML('<div>asdfasdf<b>sdf</b></div>')
     node.removeChild(node.firstChild(),true);
-    var tmp = new UE.uNode.createElement('div');
+    var tmp = new UM.uNode.createElement('div');
     node.appendChild(tmp);
     equals(tmp.getIndex(),2,'节点索引');
 });
 
 test( 'traversal', function() {
-    var uNode = UE.uNode;
+    var uNode = UM.uNode;
     var node = uNode.createElement('div');
     node.innerHTML('<div>asdfasdf<b>sdf</b></div>')
     var count = 0;

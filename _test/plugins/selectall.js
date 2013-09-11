@@ -34,7 +34,7 @@ test( 'content is null', function () {
     editor.focus();
     editor.execCommand( 'selectAll' );
     equal( ua.getChildHTML( editor.body ), "<p><br></p>", "content is null" );
-    //equal(UE.plugins['selectall'].notNeedUndo, 1, "notNeedUndo==1" );
+    //equal(UM.plugins['selectall'].notNeedUndo, 1, "notNeedUndo==1" );
     range.setStart( editor.body.firstChild, 0 ).collapse( 1 ).select();
     editor.execCommand( "bold" );
     ua.manualDeleteFillData( editor.body );

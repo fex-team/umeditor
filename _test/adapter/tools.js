@@ -9,13 +9,13 @@
         }
         var div = document.body.appendChild(document.createElement('div'));
         $(div).css('width', '500px').css('height', '500px').css('border', '1px solid #ccc').attr('id', 'testeditor');
-        var editor = UE.getEditor(div.id, {'initialContent':'<p>欢迎使用ueditor</p>', 'autoFloatEnabled':false,webAppKey:'Qr0M9yTEoLIiUSXXQTtq7yFt'});
-        var ue = new UE.Editor({'UEDITOR_HOME_URL':'../../../', 'autoFloatEnabled':true,webAppKey:'Qr0M9yTEoLIiUSXXQTtq7yFt'});
+        var editor = UM.getEditor(div.id, {'initialContent':'<p>欢迎使用ueditor</p>', 'autoFloatEnabled':false,webAppKey:'Qr0M9yTEoLIiUSXXQTtq7yFt'});
+        var ue = new UM.Editor({'UEDITOR_HOME_URL':'../../../', 'autoFloatEnabled':true,webAppKey:'Qr0M9yTEoLIiUSXXQTtq7yFt'});
         QUnit.readyFlag =0;
         stop();
         setTimeout(function(){
             editor.ready(function () {
-                var range = new UE.dom.Range(editor.document,editor.body);
+                var range = new UM.dom.Range(editor.document,editor.body);
                 te.dom.push(div);
                 te.obj.push(editor);
                 te.obj.push(range);
@@ -36,7 +36,7 @@
     }
 
     var _d = function () {
-        UE.clearCache('testeditor');
+        UM.clearCache('testeditor');
         te.dom.push(te.obj[0].container);
         document.getElementById('testeditor')&&te.dom.push(document.getElementById('testeditor'));
         if (te) {

@@ -7,13 +7,13 @@
 
         var div = document.body.appendChild(document.createElement('div'));
         div.id = 'test1';
-        var utils = UE.utils;
-        var editor = new UE.Editor({'UEDITOR_HOME_URL':'../../../', 'autoFloatEnabled':false,initialContent:'tool'});
+        var utils = UM.utils;
+        var editor = new UM.Editor({'UEDITOR_HOME_URL':'../../../', 'autoFloatEnabled':false,initialContent:'tool'});
         var iframe = document.createElement('iframe');
         document.body.appendChild(iframe);
         iframe.id = 'iframe';
-        var range = new UE.dom.Range(document,document.body);
-        var domUtils = UE.dom.domUtils;
+        var range = new UM.dom.Range(document,document.body);
+        var domUtils = UM.dom.domUtils;
         var div_dom = document.body.appendChild(document.createElement('div'));
         div_dom.id = 'test';
         te.dom.push(div);

@@ -15,7 +15,7 @@ module("plugins.list");
 test('列表复制粘贴', function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    var editor = UM.getEditor('ue');
     editor.ready(function () {
         editor.setContent('<ol class="custom_num2 list-paddingleft-1"><li class="list-num-3-1 list-num2-paddingleft-1">a</li><li>b</li></ol><ul><li>a</li><li>b</li></ul>');
         ua.keydown(editor.body, {'keyCode':65, 'ctrlKey':true});
@@ -66,7 +66,7 @@ test('修改列表再删除列表', function () {
     if ((ua.browser.safari && !ua.browser.chrome))return 0;
     var editor = te.obj[0];
     var range = te.obj[1];
-    var br = UE.browser.chrome ? "<br/>" : "";
+    var br = UM.browser.chrome ? "<br/>" : "";
     editor.setContent('<ol>hello1</ol>');
 //    range.setStart(editor.body.firstChild, 0).collapse(true).select();//如果是闭合选区的话  只有ie8是正确的 chrome和ff都是有些问题的
     range.selectNode(editor.body.firstChild).select();
@@ -88,9 +88,9 @@ test('修改列表再删除列表', function () {
 //    if (ua.browser.safari)return;
 //    var div = document.body.appendChild(document.createElement('div'));
 //    div.id = 'ue';
-//    var editor = UE.getEditor('ue');
+//    var editor = UM.getEditor('ue');
 //    editor.ready(function () {
-//        var range = new UE.dom.Range(editor.document);
+//        var range = new UM.dom.Range(editor.document);
 //        var lis;
 //        var br = ua.browser.ie ? '<br>' : '<br>';
 //        editor.setContent('<ol><li><p>hello</p><p><a href="http://www.baidu.com">www.baidu.com</a></p></li></ol>');
@@ -190,7 +190,7 @@ test('trace:3591:将列表下的文本合并到列表中', function () {
     var editor = te.obj[0];
     var range = te.obj[1];
     var body = editor.body;
-    var br = UE.browser.chrome ? "<br>" : "";
+    var br = UM.browser.chrome ? "<br>" : "";
     editor.setContent('<ul><li>hello1</li></ul><p>是的</p>');
     setTimeout(function () {
         range.setStart(body.firstChild, 0).setEnd(body.lastChild, 1).select();
@@ -225,7 +225,7 @@ test('修改列表中间某一段列表为另一种列表', function () {//ie下
         var editor = te.obj[0];
         var range = te.obj[1];
         var body = editor.body;
-        var br = UE.browser.chrome ? "<br>" : "";
+        var br = UM.browser.chrome ? "<br>" : "";
         editor.setContent('<ol><li>hello</li><li>hello2</li><li>hello3</li><li>hello4</li></ol>');
         //var lis = body.firstChild.getElementsByTagName('li');
         // range.setStart(lis[1], 0).setEnd(lis[2], 1).select();
@@ -259,7 +259,7 @@ test('列表下的文本合并到列表中', function () {
     var editor = te.obj[0];
     var range = te.obj[1];
     var body = editor.body;
-    var br = UE.browser.chrome ? "<br>" : "";
+    var br = UM.browser.chrome ? "<br>" : "";
     editor.setContent('<ol><li>hello3</li><li>hello1</li></ol><p>文本1</p><p>文本2</p>');
     range.setStart(body, 1).setEnd(body, 3).select();
     /*选中文本变为有序列表，和上面的列表合并了*/
@@ -297,9 +297,9 @@ test('trace 3586 :2个相同类型的列表合并', function () {
         return 0;
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    var editor = UM.getEditor('ue');
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document);
+        var range = new UM.dom.Range(editor.document);
         var lis;
         var br = ua.browser.ie ? '<br>' : '<br>';
 //////标签空格的处理
@@ -341,9 +341,9 @@ test('trace 3586 :2个相同类型的列表合并', function () {
 //test('列表内回车', function () {//ie8下 用例不通过 ff和chrome下各种问题，比较乱  待定
 //    var div = document.body.appendChild(document.createElement('div'));
 //    div.id = 'ue';
-//    var editor = UE.getEditor('ue');
+//    var editor = UM.getEditor('ue');
 //    editor.ready(function () {
-//        var range = new UE.dom.Range(editor.document);
+//        var range = new UM.dom.Range(editor.document);
 //        var lis;
 //        var br = ua.browser.ie ? '&nbsp;' : '<br>';
 //        editor.setContent('<ol><li></li></ol>');
@@ -388,9 +388,9 @@ test('trace 3586 :2个相同类型的列表合并', function () {
 //test('回车后产生新的li-选区闭合', function () {
 //    var div = document.body.appendChild(document.createElement('div'));
 //    div.id = 'ue';
-//    var editor = UE.getEditor('ue');
+//    var editor = UM.getEditor('ue');
 //    editor.ready(function () {
-//        var range = new UE.dom.Range(editor.document);
+//        var range = new UM.dom.Range(editor.document);
 //        var body = editor.body;
 //        editor.setContent('<p>hello1</p><p>hello2</p>');
 //        setTimeout(function () {
@@ -428,9 +428,9 @@ test('trace 3586 :2个相同类型的列表合并', function () {
 //    if ((ua.browser.safari && !ua.browser.chrome))return 0;
 //    var div = document.body.appendChild(document.createElement('div'));
 //    div.id = 'ue';
-//    var editor = UE.getEditor('ue');
+//    var editor = UM.getEditor('ue');
 //    editor.ready(function () {
-//        var range = new UE.dom.Range(editor.document);
+//        var range = new UM.dom.Range(editor.document);
 //        var br = ua.browser.ie ? '<br>' : '<br>';
 //        editor.setContent('<ol><li>hello</li><li><p><br></p></li></ol>');
 //
@@ -461,7 +461,7 @@ test('trace 3586 :2个相同类型的列表合并', function () {
 //    if ((ua.browser.safari && !ua.browser.chrome))return 0;
 //    var div = document.body.appendChild(document.createElement('div'));
 //    div.id = 'ue';
-//    var editor = UE.getEditor('ue');
+//    var editor = UM.getEditor('ue');
 //    editor.ready(function () {
 //
 //        var br = ua.browser.ie ? '' : '<br>';
@@ -482,9 +482,9 @@ test('trace 3586 :2个相同类型的列表合并', function () {
 //    if (ua.browser.ie == 9)return 0;//TODO 1.2.6
 //    var div = document.body.appendChild(document.createElement('div'));
 //    div.id = 'ue';
-//    var editor = UE.getEditor('ue');
+//    var editor = UM.getEditor('ue');
 //    editor.ready(function () {
-//        var range = new UE.dom.Range(editor.document);
+//        var range = new UM.dom.Range(editor.document);
 //        editor.setContent('<ol><li><br></li></ol>');
 //        range.selectNode(editor.body.firstChild.firstChild.firstChild.firstChild).select();
 //        ua.keydown(editor.body, {keyCode:8});

@@ -13,7 +13,7 @@ test( '鼠标在八个角上拖拽改变图片大小', function() {
         sc.id="sc";
         sc.type = "text/plain";
         document.body.appendChild(sc);
-        var editor = UE.getEditor(sc.id, {initialFrameWidth:800,initialFrameHeight:320,autoHeightEnabled:true});
+        var editor = UM.getEditor(sc.id, {initialFrameWidth:800,initialFrameHeight:320,autoHeightEnabled:true});
         editor.ready(function () {
             editor.setContent( '<p>修正webkit下图片选择的问题<img src="" width="200" height="100" />修正webkit下图片选择的问题</p>' );
             var img = editor.body.getElementsByTagName( 'img' )[0];

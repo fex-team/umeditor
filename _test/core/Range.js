@@ -12,7 +12,7 @@ var checkBookmark = function (bookmark, pre, latter, id) {
 test('init', function () {
     expect(6);
     var div = te.dom[2];
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     ua.checkResult(range, null, null, null, null, true, 'for init range');
     same(range.document, document, 'check current document of range');
 });
@@ -21,7 +21,7 @@ test('init', function () {
 test('deleteContents--删除空', function () {
     var div = te.dom[2];
 
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     div.innerHTML = '<p>p_text</p>';
     var p_text = div.firstChild.firstChild;
     range.setStart(p_text, 2).setEnd(p_text, 2);
@@ -33,12 +33,12 @@ test('deleteContents--删除空', function () {
 test('deleteContents--删除相邻节点之间的内容', function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    var editor = UM.getEditor('ue');
     editor.ready(function(){
         var div = te.dom[2];
         var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
         div.innerHTML = html;
-        var r = new UE.dom.Range(editor.document);
+        var r = new UM.dom.Range(editor.document);
         var two = document.getElementById('two');
         var last = document.getElementById('last');
         r.setStart(two, 1).setEnd(last, 2);
@@ -47,7 +47,7 @@ test('deleteContents--删除相邻节点之间的内容', function () {
 
         ua.checkResult(r, div, div, 4, 4, true, '删除相邻节点的内容');
 
-        UE.clearCache('ue');
+        UM.clearCache('ue');
         te.dom.push(editor.container);
         start();
 
@@ -59,12 +59,12 @@ test('deleteContents--删除相邻节点之间的内容', function () {
 test('deleteContents--删除子节点', function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    var editor = UM.getEditor('ue');
     editor.ready(function(){
         var div = te.dom[2];
         var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
         div.innerHTML = html;
-        var r = new UE.dom.Range(document);
+        var r = new UM.dom.Range(document);
 
         r.setStart(div, 0).setEnd(div, 2);
         r.deleteContents();
@@ -72,7 +72,7 @@ test('deleteContents--删除子节点', function () {
 
         ua.checkResult(r, div, div, 0, 0, true, '删除子节点的内容');
 
-        UE.clearCache('ue');
+        UM.clearCache('ue');
         te.dom.push(editor.container);
         start();
 
@@ -85,7 +85,7 @@ test('deleteContents--删除同一文本节点内容', function () {
     var div = te.dom[2];
     var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     div.innerHTML = html;
-    var r = new UE.dom.Range(document);
+    var r = new UM.dom.Range(document);
     var p = div.firstChild;
     var strong_text = document.getElementById('strong').firstChild;
     r.setStart(strong_text, 0).setEnd(strong_text, 2);
@@ -98,7 +98,7 @@ test('deleteContents--删除同一文本节点内容', function () {
 
 test('deleteContents--startContainer是endContainer父亲', function () {
     var div = te.dom[2];
-    var r = new UE.dom.Range(document);
+    var r = new UM.dom.Range(document);
     div.innerHTML = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     r.setStart(div, 0);
     r.setEnd(document.getElementById('traverse'), 2);
@@ -111,7 +111,7 @@ test('deleteContents--startContainer和endContainer为不同文本节点', funct
     var div = te.dom[2];
     var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     div.innerHTML = html;
-    var r = new UE.dom.Range(document);
+    var r = new UM.dom.Range(document);
     var first = document.getElementById('first');
     r.setStart(first.firstChild, 1).setEnd(first.lastChild, 4);
     var p = div.firstChild;
@@ -127,7 +127,7 @@ test('deleteContents--startContainer是endContainer后代', function () {
     var div = te.dom[2];
     var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     div.innerHTML = html;
-    var r = new UE.dom.Range(document);
+    var r = new UM.dom.Range(document);
     var em = document.getElementById('em');
     r.setStart(em, 1).setEnd(div, 3);
     r.deleteContents();
@@ -139,7 +139,7 @@ test('deleteContents--startContainer是文本，endContainer的nodeType=1', func
     var div = te.dom[2];
     var html = '<p id=\"first\">first<!--not--> strong <!-- --><strong id=\"strong\">strong</strong> second <em id=\"em\">em</em> strong.</p><p id=\"second\">bar</p><p id=\"traverse\"><b><em id=\"em\">some text</em></b><em>em text</em>more text</p><table id=\"table\" width=\"300\"><tbody><tr><td>1</td><td id=\"two\">abc</td></tr><tr><td>3</td><td>4</td></tr></tbody></table><p id=\"last\">textabc<span>span</span></p>';
     div.innerHTML = html;
-    var r = new UE.dom.Range(document);
+    var r = new UM.dom.Range(document);
     var em = document.getElementById('em').firstChild;
     var two = document.getElementById('two');
     r.setStart(em, 1).setEnd(two, 0);
@@ -149,7 +149,7 @@ test('deleteContents--startContainer是文本，endContainer的nodeType=1', func
 });
 
 test('setStart/startEnd 自闭合元素', function () {
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     var div = te.dom[2];
     var img = document.createElement('img');
     div.appendChild(img);
@@ -165,7 +165,7 @@ test('setStart/startEnd 自闭合元素', function () {
 });
 
 test('setStart/startEnd--nodeType不为1', function () {
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     var div = te.dom[2];
     var text = document.createTextNode("text");
     div.appendChild(text);
@@ -176,7 +176,7 @@ test('setStart/startEnd--nodeType不为1', function () {
 });
 
 test('setStart/setEnd--nodeType为1', function () {
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     var div = te.dom[2];
     range.setStart(div, 0);
     ua.checkResult(range, div, div, 0, 0, true, "endContainer is null");
@@ -192,7 +192,7 @@ test('setStartAfter,setStartBefore', function () {
     div.innerHTML = '<span></span><a></a>';
     var span = div.firstChild;
     var a = div.lastChild;
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     range.setStartAfter(a);
     equal(range.startOffset, 2, 'check startOffset for setStartAfter--boundary testing');
     range.setStartAfter(span);
@@ -213,7 +213,7 @@ test('setEndAfter,setEndBefore', function () {
     div.innerHTML = '<span></span><a></a>';
     var span = div.firstChild;
     var a = div.lastChild;
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     range.setEndAfter(a);
     equal(range.endOffset, 2, 'check startOffset for setEndAfter--boundary testing');
     range.setEndAfter(span);
@@ -228,7 +228,7 @@ test('setEndAfter,setEndBefore', function () {
 test('collapse', function () {
     var text = document.createTextNode('TextNode');
     te.dom[2].appendChild(text);
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     range.setStart(text, 1);
 //    ua.checkResult(range.endContainer,range.startContainer,0)
     ok(range.collapsed, 'check collapse method true--setStart');
@@ -249,7 +249,7 @@ test('selectNode', function () {
     var div = te.dom[2];
     div.innerHTML = "text!";
     div.id = 'div_id';
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     range.selectNode(div);
     var index = ua.getIndex(div);
     ua.checkResult(range, document.body, document.body, index, index + 1, false, 'check selectNode');
@@ -257,7 +257,7 @@ test('selectNode', function () {
 
 test('selectNode--空节点', function () {
     var div = te.dom[2];
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     range.selectNode(div);
     var index = ua.getIndex(div);
     ua.checkResult(range, document.body, document.body, index, index + 1, false, 'check selectNode');
@@ -265,7 +265,7 @@ test('selectNode--空节点', function () {
 
 test('selectNode--空文本节点', function () {
     var div = te.dom[2];
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     var textNode = document.createTextNode('');
     div.appendChild(textNode);
     range.selectNode(div);
@@ -278,14 +278,14 @@ test('selectNodeContents', function () {
     var div = te.dom[2];
     div.innerHTML = '<div>text</div><a>';
     var text = div.firstChild.firstChild;
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     range = range.selectNodeContents(div);
     ua.checkResult(range, div, div, 0, 2, false, 'selectNodeContents');
     /*textNode*/
     range = range.selectNodeContents((text));
     ua.checkResult(range, text, text, 0, 4, false, 'selectNodeContents for textNode');
     div.innerHTML = '<b>xxx<i>xxx</i>xxx</b>';
-    range = new UE.dom.Range(document);
+    range = new UM.dom.Range(document);
     range = range.selectNodeContents(div.firstChild);
     ua.checkResult(range, div.firstChild, div.firstChild, 0, 3, false, 'selectNodeContents');
 
@@ -295,7 +295,7 @@ test('selectNodeContents', function () {
 test('cloneRange', function () {
     expect(5);
     var div = te.dom[2];
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     div.innerHTML = '<div>cloneRange</div>';
     range.setStart(div, 0);
     range.setEnd(div, 1);
@@ -308,7 +308,7 @@ test('cloneRange', function () {
 /*循环缩进子节点，直到子节点元素类型不为1或为自闭合元素*/
 test('shrinkBoundary--not ignore end', function () {
     var div = te.dom[2];
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
 //    $('#test').css('background','red');
     div.innerHTML = '<div>div1_text</div><a>a_text</a><div><span>span_text</span>div3_text</div>';
 
@@ -321,7 +321,7 @@ test('shrinkBoundary--not ignore end', function () {
 
 test('shrinkBoundary--ignoreEnd', function () {
     var div = te.dom[2];
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     div.innerHTML = "<div><p>p_text</p></div>";
     var div_child = div.firstChild;
     var p = div_child.firstChild;
@@ -332,7 +332,7 @@ test('shrinkBoundary--ignoreEnd', function () {
 });
 test('shrinkBonudaryl', function () {
     var div = te.dom[2];
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     div.innerHTML = '<b><i>xxxx</i>xxxxxxx</b>';
     /*ignoreEnd=true*/
     range.selectNodeContents(div).shrinkBoundary(true);
@@ -379,7 +379,7 @@ test('shrinkBonudaryl', function () {
 test('txtToElmBoundary', function () {
     var div = te.dom[2];
     div.innerHTML = 'text_node';
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     var text = div.firstChild;
     /*endOffset大于text的长度*/
     range.setStart(text, 0).setEnd(text, 10);
@@ -402,7 +402,7 @@ test('txtToElmBoundary', function () {
 test('trimBonudary', function () {
     var div = te.dom[2];
     div.innerHTML = '<table border="1"><tr><td>td_xxxx<b><i><u>u_text</u></i></b></td></tr></table>';
-    var range = new UE.dom.Range(document,document.body);
+    var range = new UM.dom.Range(document,document.body);
     var td = div.getElementsByTagName('td')[0];
     var td_text = td.firstChild;
     /*startOffset为0，在第一个孩子节点前插入*/
@@ -443,16 +443,16 @@ test('adjustmentBoundary--startContainer为文本节点', function () {
     //adjustmentBoundary用到isbody,需要渲染编辑器才能用
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    var editor = UM.getEditor('ue');
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document,editor.body);
+        var range = new UM.dom.Range(editor.document,editor.body);
         editor.setContent('<p><span id="span">span_text</span></p>div_text2<p id="p">p_text<em>em_text</em></p>');
         var span_text = document.getElementById('span').firstChild;
         var p = document.getElementById('p');
         range.setStart(span_text, 9).setEnd(p, 0);
         range.adjustmentBoundary();
         ua.checkResult(range, editor.body, editor.body, 1, 2, false, 'startContainer为文本节点');
-        UE.clearCache('ue');
+        UM.clearCache('ue');
         te.dom.push(editor.container);
         start();
     });
@@ -461,7 +461,7 @@ test('adjustmentBoundary--startContainer为文本节点', function () {
 
 //TODO
 test('adjustmentBoundary--非文本节点', function () {
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     var div = te.dom[2];
     div.innerHTML = 'div_text<p><span id="span">span_text</span></p>div_text2<p id="p">p_text<em>em_text</em></p>';
     var span = document.getElementById('span');
@@ -474,7 +474,7 @@ test('adjustmentBoundary--非文本节点', function () {
 test('selectNodeContents', function () {
     var div = te.dom[2];
     div.innerHTML = '<b>xxxx</b>div_text';
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     /*选中非文本节点*/
     range.selectNodeContents(div);
     ua.checkResult(range, div, div, 0, 2, false, 'selectNodeContents');
@@ -485,7 +485,7 @@ test('selectNodeContents', function () {
 
 test('insertNode--文本中插入', function () {
     var div = te.dom[2];
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     div.innerHTML = 'div_text1<p>p_text</p>xxx<em>em_text</em>xxxxxxx<b>xxxx|xxx</b><p>bbbbb</p>text2_div';
     var p_text = div.firstChild.nextSibling.firstChild;
     range.setStart(p_text, 1).setEnd(p_text, 2);
@@ -508,7 +508,7 @@ test('insertNode--文本中插入', function () {
 
 test('inserNode--块元素中插入', function () {
     var div = te.dom[2];
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     div.innerHTML = 'div_text1<p>p_text</p>xxx<em>em_text</em>xxxxxxx<b>xxxx|xxx</b><p>bbbbb</p>text2_div';
 //	var p_text = div.firstChild.nextSibling.firstChild;
     range.setStart(div, 1).setEnd(div.lastChild, 2);
@@ -522,7 +522,7 @@ test('inserNode--块元素中插入', function () {
 
 test('insertNode--插入的节点为endContainer孩子', function () {
     var div = te.dom[2];
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     div.innerHTML = 'xxx<p>xxxxx</p>xxx<em>xxx</em>xxxxxxx<b>xxxx|xxx</b><p>bbbbb</p>xx';
     var length = div.childNodes.length;
     range.setStart(div, 1).setEnd(div, length);
@@ -535,7 +535,7 @@ test('insertNode--插入的节点为endContainer孩子', function () {
 
 test('insertNode--插入的fragment为endContainer孩子', function () {
     var div = te.dom[2];
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     var frag = document.createDocumentFragment();
 
     div.innerHTML = 'xxx<p>xxxxx</p>xxx<em>xxx</em>xxxxxxx<b>xxxx|xxx</b><p>bbbbb</p>xx';
@@ -552,7 +552,7 @@ test('insertNode--插入的fragment为endContainer孩子', function () {
 
 test('createBookmark/moveToBookmark--元素不闭合', function () {
     var div = te.dom[2];
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     div.innerHTML = 'first_text<b><i>i_text</i>xxxxxxx</b><span id="span">span_text</span><p id="second"><em>em_text</em>p_text</p>';
     var bookmark = range.selectNode(div).createBookmark();
     ua.checkResult(range, document.body, document.body, ua.getIndex(div), ua.getIndex(div) + 1, false, "元素不闭合,创建书签");
@@ -580,7 +580,7 @@ test('createBookmark/moveToBookmark--元素不闭合', function () {
 });
 test('createBookmark/moveToBookmark--span嵌套', function () {
     var div = te.dom[2];
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     div.innerHTML = 'first_text<b><i>i_text</i>xxxxxxx</b><span id="span">span_text</span><p id="second"><em>em_text</em>p_text</p>';
     var span = document.getElementById('span');
     range.setStart(span, 0).setEnd(span, 1);
@@ -595,7 +595,7 @@ test('createBookmark/moveToBookmark--span嵌套', function () {
 
 test('createBookmark/moveToBookmark--元素闭合', function () {
     var div = te.dom[2];
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     div.innerHTML = 'first_text<b><i>i_text</i>xxxxxxx</b><span id="span">span_text</span><p id="second"><em id="em">em_text</em>p_text</p>';
     var em_text = document.getElementById('em').firstChild;
     var em = em_text.parentNode;
@@ -609,7 +609,7 @@ test('createBookmark/moveToBookmark--元素闭合', function () {
 });
 test('getClosedNode', function () {
     var div = te.dom[2];
-    var range = new UE.dom.Range(document);
+    var range = new UM.dom.Range(document);
     div.innerHTML = 'xxx<span>xxx</span><img />xxxx';
     range.setStart(div, 2).setEnd(div, 3);
     same(range.getClosedNode(), div.lastChild.previousSibling, 'check result is img');
@@ -623,11 +623,11 @@ test('getClosedNode', function () {
 });
 test('b节点取range', function () {
     var div = te.dom[2];
-    var editor = new UE.Editor({'autoFloatEnabled':false});
+    var editor = new UM.Editor({'autoFloatEnabled':false});
     stop();
     editor.render(div);
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document,editor.body);
+        var range = new UM.dom.Range(editor.document,editor.body);
         editor.setContent('<p>hello<strong>hello1</strong>hello2</p>');
         range.setStart(editor.body.firstChild.lastChild, 0).collapse(1).select();
         range = editor.selection.getRange();
@@ -666,11 +666,11 @@ test('b节点取range', function () {
 
 test('文本节点中间取range', function () {
     var div = te.dom[2];
-    var editor = new UE.Editor({'autoFloatEnabled':false});
+    var editor = new UM.Editor({'autoFloatEnabled':false});
     stop();
     editor.render(div);
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document,editor.body);
+        var range = new UM.dom.Range(editor.document,editor.body);
         editor.setContent('<p>hello2</p>');
         range.setStart(editor.body.firstChild.firstChild, 2).collapse(1).select();
         range = editor.selection.getRange();        if (ua.browser.ie&&ua.browser.ie < 9)
@@ -685,7 +685,7 @@ test('文本节点中间取range', function () {
 
 //test( 'select--closedNode', function() {
 //    var div = te.dom[2];
-//    var range = new UE.dom.Range( document );
+//    var range = new UM.dom.Range( document );
 //    div.innerHTML = 'div_text<span style="color:red">span_text</span><img />div2_text<em>em_text</em>';
 ////    range.setStart(div.getElementsBytagName('img'),0).setEnd(div.)
 ////    var span = div.firstChild.nextSibling;
@@ -694,7 +694,7 @@ test('文本节点中间取range', function () {
 ////
 ////     ua.checkResult(range,span,div,1,4,false,'check range');
 ////    range.insertNode(document.createTextNode('aa'));
-////    var selection = new UE.dom.Selection( document );
+////    var selection = new UM.dom.Selection( document );
 ////    var nativeRange = selection.getRange();
 //    //TODO
 //} );
@@ -708,12 +708,12 @@ test('range.createAddress,range.moveAddress', function () {
 
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    var editor = UM.getEditor('ue');
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.body,editor.body);
+        var range = new UM.dom.Range(editor.body,editor.body);
         editor.setContent('<b>xxxx</b>');
         var addr = range.setStart(editor.body.firstChild.firstChild, 0).collapse(true).createAddress(true);
-        var range1 = new UE.dom.Range(editor.body,editor.body);
+        var range1 = new UM.dom.Range(editor.body,editor.body);
         range1.moveToAddress(addr);
         ok(equalRange(range, range1));
         editor.setContent('aaa');
@@ -756,7 +756,7 @@ test('range.createAddress,range.moveAddress', function () {
         range1.moveToAddress(addr);
         range.setStart(div.firstChild, 3).collapse(true);
         ok(equalRange(range, range1));
-        UE.clearCache('ue');
+        UM.clearCache('ue');
         te.dom.push(editor.container);
         start();
     });
@@ -765,7 +765,7 @@ test('range.createAddress,range.moveAddress', function () {
 
 test('equals', function () {
     var div = te.dom[2];
-    var rng = new UE.dom.Range(document);
+    var rng = new UM.dom.Range(document);
     div.innerHTML = '<b>xxxx</b>';
     rng.setStart(div.firstChild, 0).collapse(true);
     var rng2 = rng.cloneRange();

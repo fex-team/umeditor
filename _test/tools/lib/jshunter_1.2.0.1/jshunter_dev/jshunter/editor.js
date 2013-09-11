@@ -4,19 +4,19 @@ var baidu = window.baidu || {};
 
 window.baidu = baidu;
 
-window.UE = UE =  {};
+window.UM = UM =  {};
 
-UE.plugins = {};
+UM.plugins = {};
 
-UE.commands = {};
+UM.commands = {};
 
-UE.instants = {};
+UM.instants = {};
 
-UE.I18N = {};
+UM.I18N = {};
 
 console.log("console");
 alert("alert");
 
-UE.version = "1.2.3.0";
+UM.version = "1.2.3.0";
 
-var dom = UE.dom = {};
+var dom = UM.dom = {};

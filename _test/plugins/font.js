@@ -6,7 +6,7 @@ test('trace 3606 3625 设置超链接前景色，背景色', function () {
     editor.render(div);
     stop();
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document,editor.body);
+        var range = new UM.dom.Range(editor.document,editor.body);
         editor.setContent('<p>hello<a href="www.baidu.com">baidu</a></p>');
         range.selectNode(editor.body.firstChild).select();
         editor.execCommand('foreColor', 'rgb(255,0,0)');
@@ -37,7 +37,7 @@ test('underline and linethrough', function () {
     editor.render(div);
     stop();
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document,editor.body);
+        var range = new UM.dom.Range(editor.document,editor.body);
         editor.setContent('hello<a href="http://www.baidu.com/">baidu</a>test');
         setTimeout(function () {
             if (!ua.browser.opera) {
@@ -81,7 +81,7 @@ test('字体的状态反射', function () {
     editor.render(div);
     stop();
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document,editor.body);
+        var range = new UM.dom.Range(editor.document,editor.body);
         editor.setContent('<p>欢迎你回来</p>');
         var p = editor.body.firstChild;
         range.selectNode(p).select();
@@ -142,7 +142,7 @@ test('闭合时改变前景色和删除线，再输入文本', function () {
         editor.render(div);
         stop();
         editor.ready(function () {
-            var range = new UE.dom.Range(editor.document,editor.body);
+            var range = new UM.dom.Range(editor.document,editor.body);
             editor.setContent('<p><span style="color: rgb(255, 0, 0)">你好</span></p>');
             var p = editor.body.firstChild;
             range.setStart(p.firstChild, 1).collapse(true).select();
@@ -156,7 +156,7 @@ test('闭合时改变前景色和删除线，再输入文本', function () {
             p1.innerHTML = '<span style="color: rgb(255, 0, 0)">你好<span style="color: rgb(0, 255, 0)">​hey</span></span>';
             ua.manualDeleteFillData(editor.body);
             /*ff下会自动加一个空的设置了style的span，比较时不作考虑*/
-            if (UE.dom.domUtils.isEmptyNode(editor.body.firstChild.lastChild) && UE.browser.gecko)
+            if (UM.dom.domUtils.isEmptyNode(editor.body.firstChild.lastChild) && UM.browser.gecko)
                 editor.body.firstChild.removeChild(editor.body.firstChild.lastChild);
             //ok(ua.haveSameAllChildAttribs(editor.body.firstChild, p1), '检查新输入的文本下划线和颜色是否正确');
             ua.checkSameHtml( p1.innerHTML,editor.body.firstChild.innerHTML, '检查新输入的文本下划线和颜色是否正确');
@@ -176,7 +176,7 @@ test('闭合时改变前景色和删除线，再输入文本', function () {
 //    editor.render(div);
 //    stop();
 //    editor.ready(function () {
-//        var range = new UE.dom.Range(editor.document);
+//        var range = new UM.dom.Range(editor.document);
 //        editor.setContent('<p><strong>你好早安</strong></p>');
 //        var text = editor.body.firstChild.firstChild.firstChild;
 //        range.selectNode(text).select();
@@ -222,7 +222,7 @@ test('为设置了字体的文本添加删除线', function () {
     editor.render(div);
     stop();
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document,editor.body);
+        var range = new UM.dom.Range(editor.document,editor.body);
         editor.setContent('<p><strong>你好早安</strong></p>');
         var text = editor.body.firstChild.firstChild.firstChild;
         range.setStart(text, 0).setEnd(text, 2).select();
@@ -252,7 +252,7 @@ test('设置超链接背景色后切换到源码再切回来', function () {
     editor.render(div);
     stop();
     editor.ready(function () {
-        var range = new UE.dom.Range(editor.document,editor.body);
+        var range = new UM.dom.Range(editor.document,editor.body);
         editor.setContent('<p>hello<a href="www.baidu.com">baidu</a></p>');
         range.selectNode(editor.body.firstChild).select();
         editor.execCommand('backcolor', 'rgb(255,0,0)');
@@ -280,7 +280,7 @@ test('设置超链接背景色后切换到源码再切回来', function () {
 //    editor.render(div);
 //    stop();
 //    editor.ready(function () {
-//        var range = new UE.dom.Range(editor.document);
+//        var range = new UM.dom.Range(editor.document);
 //        editor.setContent('<p>你好早安</p>');
 //        range.selectNode(editor.body.firstChild).select();
 //        editor.execCommand('forecolor', 'rgb(255,0,0)');
@@ -339,7 +339,7 @@ test('预先设置字体颜色，再输入文本，查看文本颜色', function
         editor.render(div);
         stop();
         editor.ready(function () {
-            var range = new UE.dom.Range(editor.document,editor.body);
+            var range = new UM.dom.Range(editor.document,editor.body);
             editor.setContent('<p><br></p>');
             range.setStart(editor.body.firstChild, 0).collapse(true).select();
             editor.execCommand('forecolor', 'rgb(255,0,0)');
@@ -397,7 +397,7 @@ test('background--不同字号', function () {
         te.obj[2].render(div);
         stop();
         editor.ready(function () {
-            var range = new UE.dom.Range(te.obj[2].document,te.obj[2].body);
+            var range = new UM.dom.Range(te.obj[2].document,te.obj[2].body);
             te.obj[2].setContent('你好');
             editor.focus();
             //var body = editor.document.body;
