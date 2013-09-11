@@ -1,5 +1,5 @@
 //colorpicker 类
-UE.ui.define('colorpicker', {
+UM.ui.define('colorpicker', {
     tpl: function (opt) {
         var COLORS = (
             'ffffff,000000,eeece1,1f497d,4f81bd,c0504d,9bbb59,8064a2,4bacc6,f79646,' +

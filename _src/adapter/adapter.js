@@ -13,7 +13,7 @@
         _widgetData = {},
         _widgetCallBack = {};
 
-    utils.extend(UE, {
+    utils.extend(UM, {
         defaultWidth : 500,
         defaultHeight : 500,
         registerUI: function (name, fn) {
@@ -89,7 +89,7 @@
         getActiveEditor: function ($widget) {
 
             var ac;
-            utils.each(UE.instants, function (editor) {
+            utils.each(UM.instants, function (editor) {
                 if (editor.selection.isFocus()) {
                     ac = editor;
                     return false;
@@ -139,7 +139,7 @@
             _readyFn.push( fn );
         },
         createEditor: function (id, opt) {
-            var editor = new UE.Editor(opt);
+            var editor = new UM.Editor(opt);
             var T = this;
 
             editor.langIsReady ? $.proxy(renderUI,T)() : editor.addListener("langReady", $.proxy(renderUI,T));
@@ -157,7 +157,7 @@
                 if(options.initialFrameWidth){
                     options.minFrameWidth = options.initialFrameWidth
                 }else{
-                    options.minFrameWidth = options.initialFrameWidth = editor.$body.width() || UE.defaultWidth;
+                    options.minFrameWidth = options.initialFrameWidth = editor.$body.width() || UM.defaultWidth;
                 }
 
                 $container.css({
@@ -166,7 +166,7 @@
                 });
 
                 //ie6下缓存图片
-                UE.browser.ie && UE.browser.version === 6 && $container[0].ownerDocument.execCommand("BackgroundImageCache", false, true);
+                UM.browser.ie && UM.browser.version === 6 && $container[0].ownerDocument.execCommand("BackgroundImageCache", false, true);
 
                 editor.render(id);
 

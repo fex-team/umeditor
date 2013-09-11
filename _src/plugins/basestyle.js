@@ -5,10 +5,10 @@
 /**
  * b u i等基础功能实现
  * @function
- * @name UE.execCommands
+ * @name UM.execCommands
  * @param    {String}    cmdName    bold加粗。italic斜体。subscript上标。superscript下标。
 */
-UE.plugins['basestyle'] = function(){
+UM.plugins['basestyle'] = function(){
     var basestyles = ['bold','underline','superscript','subscript','italic','strikethrough'],
         me = this;
     //添加快捷键

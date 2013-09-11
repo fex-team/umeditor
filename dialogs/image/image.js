@@ -144,7 +144,7 @@
                 $(".edui-image-icon", this).toggleClass("hover");
             });
 
-            if (!(UE.browser.ie && UE.browser.version <= 8)) {
+            if (!(UM.browser.ie && UM.browser.version <= 8)) {
                 $("#edui-image-JdragTip", me.dialog).css("display", "block");
             }
 
@@ -179,7 +179,7 @@
         drag: function () {
             var me = this;
             //做拽上传的支持
-            if (!UE.browser.ie9below) {
+            if (!UM.browser.ie9below) {
                 me.dialog.find('#edui-image-Jcontent').on('drop',function (e) {
 
                     //获取文件列表
@@ -278,7 +278,7 @@
 
     var $tab = null;
 
-    UE.registerWidget('image', {
+    UM.registerWidget('image', {
         tpl: "<link rel=\"stylesheet\" type=\"text/css\" href=\"<%=image_url%>image.css\">" +
             "<div id=\"edui-image-Jwrapper\" class=\"edui-image-wrapper\">" +
             "<ul class=\"edui-tab-nav\">" +

@@ -10,7 +10,7 @@
 
     var widgetName = 'buttoncombobox';
 
-    UE.ui.define( widgetName, ( function(){
+    UM.ui.define( widgetName, ( function(){
 
         return {
             defaultOpt: {

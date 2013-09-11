@@ -30,19 +30,19 @@
 <script type="text/plain" id="myEditor2" style="width:800px;height:100px;"><p>这里我可以写一些输入提示</p></script><br/>
 <script type="text/plain" id="myEditor3" style="width:800px;height:100px;"></script>
 <script type="text/javascript">
-    var ue1 = UE.getEditor('myEditor1', {
+    var ue1 = UM.getEditor('myEditor1', {
         theme:"default", //皮肤
         lang:'zh-cn' //语言
     });
 
-    var ue2 = UE.getEditor('myEditor2', {
+    var ue2 = UM.getEditor('myEditor2', {
         autoClearinitialContent:true, //focus时自动清空初始化时的内容
         wordCount:false, //关闭字数统计
         elementPathEnabled:false,//关闭elementPath
         lang:"en"
     });
 
-    var ue3 = UE.getEditor('myEditor3', {
+    var ue3 = UM.getEditor('myEditor3', {
         toolbar:['fullscreen', 'source', 'undo', 'redo','bold']//这里可以选择自己需要的工具按钮名称,此处仅选择如下五个
         //更多其他参数，请参考ueditor.config.js中的配置项
     });

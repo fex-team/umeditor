@@ -16,7 +16,7 @@
         FULLSCREENS = {};
 
 
-    UE.registerUI('fullscreen', function( name ){
+    UM.registerUI('fullscreen', function( name ){
 
         var me = this,
             fullscreenHandler = new Fullscreen( me ),
@@ -43,7 +43,7 @@
 
     });
 
-    UE.commands['fullscreen'] = {
+    UM.commands['fullscreen'] = {
         queryCommandState: function () {
             return this._edui_fullscreen_status;
         }

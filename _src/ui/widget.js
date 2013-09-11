@@ -74,14 +74,14 @@
     function _createClass(ClassObj, properties, supperClass) {
         ClassObj.prototype = $.extend2(
             $.extend({}, properties),
-            (UE.ui[supperClass] || _widget).prototype,
+            (UM.ui[supperClass] || _widget).prototype,
             true
         );
-        ClassObj.prototype.supper = (UE.ui[supperClass] || _widget).prototype;
+        ClassObj.prototype.supper = (UM.ui[supperClass] || _widget).prototype;
         //父class的defaultOpt 合并
-        if( UE.ui[supperClass] && UE.ui[supperClass].prototype.defaultOpt ) {
+        if( UM.ui[supperClass] && UM.ui[supperClass].prototype.defaultOpt ) {
 
-            var parentDefaultOptions = UE.ui[supperClass].prototype.defaultOpt,
+            var parentDefaultOptions = UM.ui[supperClass].prototype.defaultOpt,
                 subDefaultOptions = ClassObj.prototype.defaultOpt;
 
             ClassObj.prototype.defaultOpt = $.extend( {}, parentDefaultOptions, subDefaultOptions || {} );
@@ -122,9 +122,9 @@
         }
     }
 
-    UE.ui = {
+    UM.ui = {
         define: function (className, properties, supperClass) {
-            var ClassObj = UE.ui[className] = _createClass(function (options, $el) {
+            var ClassObj = UM.ui[className] = _createClass(function (options, $el) {
                     var _obj = function () {
                     };
                     $.extend(_obj.prototype, ClassObj.prototype, {

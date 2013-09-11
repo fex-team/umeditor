@@ -2,7 +2,7 @@
 
     var widgetName = 'map';
 
-    UE.registerWidget(widgetName, {
+    UM.registerWidget(widgetName, {
 
         tpl: "<style type=\"text/css\">" +
             ".edui-map-content{width:530px; height: 350px;margin: 10px auto;}" +
@@ -40,7 +40,7 @@
             "for( var i = 1, len = scripts.length; i<len; i++ ) {" +
             "src.push( scripts[i].src );" +
             "}" +
-            "parent.UE.getWidgetData(\'map\').requestMapApi( src );" +
+            "parent.UM.getWidgetData(\'map\').requestMapApi( src );" +
             "};" +
             "function mapReadyStateChange ( state ) { " +
             " if ( state === 'complete' || state === 'loaded' ) {" +
@@ -222,7 +222,7 @@
         buttons: {
             ok: {
                 exec: function (editor) {
-                    var widget = UE.getWidgetData(widgetName),
+                    var widget = UM.getWidgetData(widgetName),
                         center = widget.map.getCenter(),
                         zoom = widget.map.zoomLevel,
                         size = widget.map.getSize(),
@@ -236,7 +236,7 @@
             },
             cancel: {
                 exec: function(){
-                    UE.getWidgetData(widgetName).reset();
+                    UM.getWidgetData(widgetName).reset();
                 }
             }
         }

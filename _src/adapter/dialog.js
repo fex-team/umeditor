@@ -1,4 +1,4 @@
-UE.registerUI('link image map insertvideo',function(name){
+UM.registerUI('link image map insertvideo',function(name){
 
     var me = this, currentRange, $dialog,
         dialogUrl = {
@@ -7,7 +7,7 @@ UE.registerUI('link image map insertvideo',function(name){
         curDialogUrl = dialogUrl[ name ] || name,
         opt = {
             title: (me.options.labelMap && me.options.labelMap[name]) || me.getLang("labelMap." + name),
-            url: me.options.UEDITOR_HOME_URL + 'dialogs/' + curDialogUrl + '/' + curDialogUrl + '.js'
+            url: me.options.UMDITOR_HOME_URL + 'dialogs/' + curDialogUrl + '/' + curDialogUrl + '.js'
         };
 
     var $btn = $.eduibutton({
@@ -22,7 +22,7 @@ UE.registerUI('link image map insertvideo',function(name){
         defer: "defer"
     },function(){
         //调整数据
-        var data = UE.getWidgetData(name);
+        var data = UM.getWidgetData(name);
         if(data.buttons){
             var ok = data.buttons.ok;
             if(ok){
@@ -81,7 +81,7 @@ UE.registerUI('link image map insertvideo',function(name){
                     });
 
                 }
-                UE.setWidgetBody(name,$dialog,me);
+                UM.setWidgetBody(name,$dialog,me);
         }).on('afterbackdrop',function(){
             this.$backdrop.css('zIndex',me.getOpt('zIndex')+1).appendTo(me.$container.find('.edui-dialog-container'))
             $dialog.css('zIndex',me.getOpt('zIndex')+2)

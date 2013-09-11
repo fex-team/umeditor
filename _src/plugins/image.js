@@ -9,7 +9,7 @@
  * User: zhanyi
  * for image
  */
-UE.commands['insertimage'] = {
+UM.commands['insertimage'] = {
     execCommand:function (cmd, opt) {
         opt = utils.isArray(opt) ? opt : [opt];
         if (!opt.length) {

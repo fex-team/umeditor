@@ -50,9 +50,9 @@
         <button onclick="setDisabled()">不可编辑</button>
     </div>
     <div>
-        <button onclick="UE.getEditor('myEditor').setHide()">隐藏编辑器</button>
-        <button onclick="UE.getEditor('myEditor').setShow()">显示编辑器</button>
-        <button onclick="UE.getEditor('myEditor').setHeight(300)">设置编辑器的高度为300</button>
+        <button onclick="UM.getEditor('myEditor').setHide()">隐藏编辑器</button>
+        <button onclick="UM.getEditor('myEditor').setShow()">显示编辑器</button>
+        <button onclick="UM.getEditor('myEditor').setHeight(300)">设置编辑器的高度为300</button>
     </div>
 
 </div>
@@ -63,7 +63,11 @@
 
 <script type="text/javascript">
     //实例化编辑器
-    var ue = UE.getEditor('myEditor');
+    var ue = UM.getEditor('myEditor');
+    ue.ready(function(){
+       var rng = this.selection.getRange();
+        rng.setStart(this.body,0).collapse(true).select()
+    })
 
     //按钮的操作
     function insertHtml() {
@@ -72,46 +76,46 @@
     }
     function createEditor() {
         enableBtn();
-        UE.getEditor('myEditor');
+        UM.getEditor('myEditor');
     }
     function getAllHtml() {
-        alert(UE.getEditor('myEditor').getAllHtml())
+        alert(UM.getEditor('myEditor').getAllHtml())
     }
     function getContent() {
         var arr = [];
         arr.push("使用editor.getContent()方法可以获得编辑器的内容");
         arr.push("内容为：");
-        arr.push(UE.getEditor('myEditor').getContent());
+        arr.push(UM.getEditor('myEditor').getContent());
         alert(arr.join("\n"));
     }
     function getPlainTxt() {
         var arr = [];
         arr.push("使用editor.getPlainTxt()方法可以获得编辑器的带格式的纯文本内容");
         arr.push("内容为：");
-        arr.push(UE.getEditor('myEditor').getPlainTxt());
+        arr.push(UM.getEditor('myEditor').getPlainTxt());
         alert(arr.join('\n'))
     }
     function setContent(isAppendTo) {
         var arr = [];
         arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
-        UE.getEditor('myEditor').setContent('欢迎使用ueditor', isAppendTo);
+        UM.getEditor('myEditor').setContent('欢迎使用ueditor', isAppendTo);
         alert(arr.join("\n"));
     }
     function setDisabled() {
-        UE.getEditor('myEditor').setDisabled('fullscreen');
+        UM.getEditor('myEditor').setDisabled('fullscreen');
         disableBtn("enable");
     }
 
     function setEnabled() {
-        UE.getEditor('myEditor').setEnabled();
+        UM.getEditor('myEditor').setEnabled();
         enableBtn();
     }
 
     function getText() {
         //当你点击按钮时编辑区域已经失去了焦点，如果直接用getText将不会得到内容，所以要在选回来，然后取得内容
-        var range = UE.getEditor('myEditor').selection.getRange();
+        var range = UM.getEditor('myEditor').selection.getRange();
         range.select();
-        var txt = UE.getEditor('myEditor').selection.getText();
+        var txt = UM.getEditor('myEditor').selection.getText();
         alert(txt)
     }
 
@@ -119,22 +123,22 @@
         var arr = [];
         arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
         arr.push("编辑器的纯文本内容为：");
-        arr.push(UE.getEditor('myEditor').getContentTxt());
+        arr.push(UM.getEditor('myEditor').getContentTxt());
         alert(arr.join("\n"));
     }
     function hasContent() {
         var arr = [];
         arr.push("使用editor.hasContents()方法判断编辑器里是否有内容");
         arr.push("判断结果为：");
-        arr.push(UE.getEditor('myEditor').hasContents());
+        arr.push(UM.getEditor('myEditor').hasContents());
         alert(arr.join("\n"));
     }
     function setFocus() {
-        UE.getEditor('myEditor').focus();
+        UM.getEditor('myEditor').focus();
     }
     function deleteEditor() {
         disableBtn();
-        UE.getEditor('myEditor').destroy();
+        UM.getEditor('myEditor').destroy();
     }
     function disableBtn(str) {
         var div = document.getElementById('btns');

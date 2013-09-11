@@ -1,4 +1,4 @@
-UE.registerUI( 'emotion', function( name ){
+UM.registerUI( 'emotion', function( name ){
     var me = this,
         url  = me.options.UEDITOR_HOME_URL + 'dialogs/' +name+ '/'+name+'.js';
 
@@ -18,7 +18,7 @@ UE.registerUI( 'emotion', function( name ){
             url : url
         };
         //调整数据
-        var data = UE.getWidgetData(name);
+        var data = UM.getWidgetData(name);
 
         data.width && (opt.width = data.width);
         data.height && (opt.height = data.height);
@@ -30,7 +30,7 @@ UE.registerUI( 'emotion', function( name ){
                 if(!$root.parent().length){
                     me.$container.find('.edui-dialog-container').append($root);
                 }
-                UE.setWidgetBody(name,$root,me);
+                UM.setWidgetBody(name,$root,me);
             }).attachTo($btn,{
                 offsetTop:-5,
                 offsetLeft:10,

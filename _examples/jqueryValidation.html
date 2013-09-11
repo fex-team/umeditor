@@ -38,13 +38,13 @@
 
 <script>
     $(function(){
-        UE.getEditor('content').addListener('contentchange',function(){
+        UM.getEditor('content').addListener('contentchange',function(){
             this.sync();
             //1.2.4+以后可以直接给textarea的id名字就行了
             $('textarea').valid();
         });
         var validator = $("#myform").submit(function() {
-            UE.getEditor('content').sync();
+            UM.getEditor('content').sync();
         }).validate({
                     ignore: "",
                     rules: {
@@ -60,7 +60,7 @@
                 try {
                     var toFocus = $(this.findLastActive() || this.errorList.length && this.errorList[0].element || []);
                     if (toFocus.is("textarea")) {
-                        UE.getEditor('content').focus()
+                        UM.getEditor('content').focus()
                     } else {
                         toFocus.filter(":visible").focus();
                     }
@@ -71,7 +71,7 @@
     })
 </script>
 <script type="text/javascript">
-    var ue = UE.getEditor('myEditor');
+    var ue = UM.getEditor('myEditor');
 </script>
 
 </body>

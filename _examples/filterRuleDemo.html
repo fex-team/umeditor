@@ -32,7 +32,7 @@
     <p>这里我可以写一些输入提示</p>
 </script>
 <script type="text/javascript">
-    var ue = UE.getEditor('myEditor', {
+    var ue = UM.getEditor('myEditor', {
         filterRules: function () {
             return{
                 span:function(node){
@@ -52,18 +52,18 @@
                         node.setAttr('class','MsoListParagraph')
                     }
                     if(!node.firstChild()){
-                        node.innerHTML(UE.browser.ie ? '&nbsp;' : '<br>')
+                        node.innerHTML(UM.browser.ie ? '&nbsp;' : '<br>')
                     }
                 },
                 div: function (node) {
-                    var tmpNode, p = UE.uNode.createElement('p');
+                    var tmpNode, p = UM.uNode.createElement('p');
                     while (tmpNode = node.firstChild()) {
-                        if (tmpNode.type == 'text' || !UE.dom.dtd.$block[tmpNode.tagName]) {
+                        if (tmpNode.type == 'text' || !UM.dom.dtd.$block[tmpNode.tagName]) {
                             p.appendChild(tmpNode);
                         } else {
                             if (p.firstChild()) {
                                 node.parentNode.insertBefore(p, node);
-                                p = UE.uNode.createElement('p');
+                                p = UM.uNode.createElement('p');
                             } else {
                                 node.parentNode.insertBefore(tmpNode, node);
                             }
@@ -119,16 +119,16 @@
                         node.setAttr()
                     }
                     var tmpNodes = node.getNodesByTagName('ol ul');
-                    UE.utils.each(tmpNodes,function(n){
+                    UM.utils.each(tmpNodes,function(n){
                         node.parentNode.insertAfter(n,node);
 
                     })
 
                 },
                 table: function (node) {
-                    UE.utils.each(node.getNodesByTagName('table'), function (t) {
-                        UE.utils.each(t.getNodesByTagName('tr'), function (tr) {
-                            var p = UE.uNode.createElement('p'), child, html = [];
+                    UM.utils.each(node.getNodesByTagName('table'), function (t) {
+                        UM.utils.each(t.getNodesByTagName('tr'), function (tr) {
+                            var p = UM.uNode.createElement('p'), child, html = [];
                             while (child = tr.firstChild()) {
                                 html.push(child.innerHTML());
                                 tr.removeChild(child);

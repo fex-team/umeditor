@@ -31,7 +31,7 @@
 <p><input id="destroy" type="button" onclick="destroy()" value="销毁编辑器"></p>
 
 <script type="text/javascript">
-    var ue = UE.getEditor('simple');
+    var ue = UM.getEditor('simple');
     function simple() {
         if(ue){
             ue.setContent("编辑器内部变量已经被重置!");
@@ -46,7 +46,7 @@
 
         button.value = "重新渲染";
         button.onclick = function(){
-            ue = UE.getEditor('simple');
+            ue = UM.getEditor('simple');
             this.value="销毁编辑器";
             this.onclick = destroy;
             timer = setInterval( setMsg, 100 );

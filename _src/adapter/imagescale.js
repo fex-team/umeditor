@@ -1,4 +1,4 @@
-UE.ready(function () {
+UM.ready(function () {
     var me = this,
         $imagescale,
         imageScaleEnabled = me.getOpt('imageScaleEnabled');

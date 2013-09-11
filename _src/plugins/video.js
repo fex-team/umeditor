@@ -4,7 +4,7 @@
 ///commandsName InsertVideo
 ///commandsTitle  插入视频
 ///commandsDialog  dialogs\video
-UE.plugins['video'] = function (){
+UM.plugins['video'] = function (){
     var me =this,
         div;
 
@@ -34,7 +34,7 @@ UE.plugins['video'] = function (){
             if(node.getAttr('class') == 'edui-faked-video'){
 
                 var html = creatInsertStr( img2embed ? node.getAttr('_url') : node.getAttr('src'),node.getAttr('width'),node.getAttr('height'),null,node.getStyle('float') || '',img2embed);
-                node.parentNode.replaceChild(UE.uNode.createElement(html),node)
+                node.parentNode.replaceChild(UM.uNode.createElement(html),node)
             }
         })
     }

@@ -7,7 +7,7 @@
  * @description 处理回车
  * @author zhanyi
  */
-UE.plugins['enterkey'] = function() {
+UM.plugins['enterkey'] = function() {
     var hTag,
         me = this,
         tag = me.options.enterTag;

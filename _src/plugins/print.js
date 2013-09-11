@@ -8,7 +8,7 @@
  * @param   {String}   cmdName     print打印编辑器内容
  * @author zhanyi
  */
-UE.commands['print'] = {
+UM.commands['print'] = {
     execCommand : function(){
         var me = this,
             id = 'editor_print_' + +new Date();

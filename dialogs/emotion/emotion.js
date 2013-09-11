@@ -2,7 +2,7 @@
 
     var editor = null;
 
-    UE.registerWidget('emotion',{
+    UM.registerWidget('emotion',{
 
         tpl: "<link type=\"text/css\" rel=\"stylesheet\" href=\"<%=emotion_url%>emotion.css\">" +
             "<div id=\"edui-emotion-tab-Jpanel\" class=\"edui-emotion-wrapper\">" +

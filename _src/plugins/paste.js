@@ -9,7 +9,7 @@
  ** @description 粘贴
  * @author zhanyi
  */
-UE.plugins['paste'] = function () {
+UM.plugins['paste'] = function () {
     function getClipboardData(callback) {
         var doc = this.document;
         if (doc.getElementById('baidu_pastebin')) {
@@ -116,12 +116,12 @@ UE.plugins['paste'] = function () {
             html = div.innerHTML;//.replace(/>(?:(\s|&nbsp;)*?)</g,'><');
 
             //过滤word粘贴过来的冗余属性
-            html = UE.filterWord(html);
+            html = UM.filterWord(html);
             //取消了忽略空白的第二个参数，粘贴过来的有些是有空白的，会被套上相关的标签
-            var root = UE.htmlparser(html);
+            var root = UM.htmlparser(html);
             //如果给了过滤规则就先进行过滤
             if (me.options.filterRules) {
-                UE.filterNode(root, me.options.filterRules);
+                UM.filterNode(root, me.options.filterRules);
             }
             //执行默认的处理
             me.filterInputRule(root);

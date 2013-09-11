@@ -1,5 +1,5 @@
 /*tab 类*/
-UE.ui.define('tab', {
+UM.ui.define('tab', {
     init: function (options) {
         var me = this,
             slr = options.selector;

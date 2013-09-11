@@ -1,5 +1,5 @@
 //button 类
-UE.ui.define('separator', {
+UM.ui.define('separator', {
     tpl: '<div class="edui-separator" unselectable="on" onmousedown="return false" ></div>',
     init: function (options) {
         var me = this;

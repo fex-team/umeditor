@@ -1,12 +1,12 @@
 /**
  * @file
- * @name UE.filterNode
+ * @name UM.filterNode
  * @short filterNode
  * @desc 根据给定的规则过滤节点
  * @import editor.js,core/utils.js
  * @anthor zhanyi
  */
-var filterNode = UE.filterNode = function () {
+var filterNode = UM.filterNode = function () {
     function filterNode(node,rules){
         switch (node.type) {
             case 'text':

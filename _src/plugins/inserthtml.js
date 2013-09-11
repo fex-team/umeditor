@@ -6,7 +6,7 @@
  * @param   {String}   html                要插入的内容
  * @author zhanyi
  */
-UE.commands['inserthtml'] = {
+UM.commands['inserthtml'] = {
     execCommand: function (command,html,notNeedFilter){
         var me = this,
             range,
@@ -22,10 +22,10 @@ UE.commands['inserthtml'] = {
         div.style.display = 'inline';
 
         if (!notNeedFilter) {
-            var root = UE.htmlparser(html);
+            var root = UM.htmlparser(html);
             //如果给了过滤规则就先进行过滤
             if(me.options.filterRules){
-                UE.filterNode(root,me.options.filterRules);
+                UM.filterNode(root,me.options.filterRules);
             }
             //执行默认的处理
             me.filterInputRule(root);
