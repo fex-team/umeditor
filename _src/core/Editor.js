@@ -101,7 +101,7 @@
             allHtmlEnabled: false,
             scaleEnabled: false,
             tableNativeEditInFF: false,
-            autoSyncData : true,
+            autoSyncData : true
 
         });
 
@@ -611,7 +611,7 @@
                 } else {
                     rng.select(true);
                 }
-                this.fireEvent('focus');
+//                this.fireEvent('focus');
             } catch (e) {
             }
         },

@@ -26,7 +26,7 @@
         },
         registerWidget : function(name,pro,cb){
             _widgetData[name] = $.extend2(pro,{
-                $root : null,
+                $root : '',
                 _preventDefault:false,
                 root:function($el){
                     return this.$root || (this.$root = $el);
@@ -44,10 +44,19 @@
             return _widgetData[name]
         },
         setWidgetBody : function(name,$widget,editor){
+            if(!editor._widgetData){
+                editor._widgetData = {};
+            }
             var pro = _widgetData[name];
             if(!pro){
                 return null;
             }
+            pro = editor._widgetData[name];
+            if(!pro){
+                pro = _widgetData[name];
+                pro = editor._widgetData[name] = $.type(pro) == 'function' ? pro : utils.clone(pro);
+            }
+
             pro.root($widget.edui().getBodyContainer());
 
             pro.initContent(editor,$widget);
