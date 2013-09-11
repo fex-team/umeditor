@@ -2,7 +2,7 @@
  * 创建按钮
  */
 
-UE.registerUI('save', function( name ){
+UM.registerUI('save', function( name ){
 
     //该方法里的this指向编辑器实例
 

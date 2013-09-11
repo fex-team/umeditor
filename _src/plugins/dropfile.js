@@ -1,7 +1,7 @@
 /*
  * 拖放文件到编辑器，上传并插入
  */
-UE.plugins['dropfile'] = function() {
+UM.plugins['dropfile'] = function() {
     var me = this;
 
     me.setOpt('dropFileEnabled', true);

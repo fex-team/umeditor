@@ -3,7 +3,7 @@
 
     var widgetName = 'insertvideo';
 
-    UE.registerWidget( widgetName,{
+    UM.registerWidget( widgetName,{
 
         tpl: "<link rel=\"stylesheet\" type=\"text/css\" href=\"<%=video_url%>video.css\" />" +
             "<div class=\"edui-video-wrapper\">" +
@@ -259,7 +259,7 @@
             ok: {
                 exec: function( editor ){
                     $("#eduiVideoPreview").html("");
-                    UE.getWidgetData(widgetName).insertSingle();
+                    UM.getWidgetData(widgetName).insertSingle();
                 }
             },
             cancel: {

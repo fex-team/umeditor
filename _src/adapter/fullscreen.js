@@ -46,7 +46,7 @@
 
     });
 
-    UE.commands[ 'fullscreen' ] = {
+    UM.commands[ 'fullscreen' ] = {
 
         execCommand: function (cmdName) {
 
