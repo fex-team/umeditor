@@ -130,6 +130,10 @@ test('hasNativeRange', function () {
         editor.ready(function () {
             setTimeout(function () {
                 editor.focus();
+                if(ua.browser.ie==8){//todo trace 3628 focus有问题,select代替
+                    var range = new UM.dom.Range( editor.document ,editor.body);
+                    range.setStart(editor.body,0).collapse(true).select();
+                }
                 ok(editor.selection.hasNativeRange());
                 var rng = new UM.dom.Range(document,document.body);
                 rng.setStart(document.body,0).setCursor();
