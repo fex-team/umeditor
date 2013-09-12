@@ -625,9 +625,23 @@
                 } else {
                     rng.select(true);
                 }
-//                this.fireEvent('focus');
+                this.fireEvent('focus');
             } catch (e) {
             }
+        },
+        /**
+         * 使编辑区域失去焦点
+         */
+        blur:function(){
+            var sel = this.selection.getNative();
+            sel.empty ? sel.empty() : sel.removeAllRanges();
+            this.fireEvent('blur')
+        },
+        /**
+         * 判断编辑器当前是否获得了焦点
+         */
+        isFocus : function(){
+            return this.selection.isFocus()
         },
 
         /**

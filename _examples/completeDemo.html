@@ -38,7 +38,9 @@
         <button onclick="hasContent()">判断是否有内容</button>
     </div>
     <div>
-        <button onclick="setFocus()">使编辑器获得焦点</button>
+        <button onclick="setFocus()">编辑器获得焦点</button>
+        <button onclick="isFocus()">编辑器是否获得焦点</button>
+        <button onclick="doBlur()">编辑器取消焦点</button>
         <button onclick="getText()">获得当前选中的文本</button>
         <button onclick="insertHtml()">插入给定的内容</button>
         <button id="enable" onclick="setEnabled()">可以编辑</button>
@@ -55,15 +57,28 @@
     <button onclick="createEditor()"/>创建编辑器</button>
     <button onclick="deleteEditor()"/>删除编辑器</button>
 </div>
-
+<div>
+    <h3 id="focush2"></h3>
+</div>
 <script type="text/javascript">
     //实例化编辑器
     var ue = UM.getEditor('myEditor');
-
+    ue.addListener('blur',function(){
+        $('#focush2').html('编辑器失去焦点了')
+    });
+    ue.addListener('focus',function(){
+        $('#focush2').html('')
+    })
     //按钮的操作
     function insertHtml() {
         var value = prompt('插入html代码', '');
         ue.execCommand('insertHtml', value)
+    }
+    function isFocus(){
+        alert(ue.isFocus())
+    }
+    function doBlur(){
+        ue.blur()
     }
     function createEditor() {
         enableBtn();
