@@ -275,13 +275,7 @@
                 }else{
                     $(container).height(height)
                 }
-
                 container.style.zIndex = options.zIndex;
-
-
-
-
-
                 this._setup(container);
 
             }
