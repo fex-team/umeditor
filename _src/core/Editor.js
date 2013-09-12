@@ -406,10 +406,14 @@
          */
         setHeight: function (height,notSetHeight) {
             !notSetHeight && (this.options.initialFrameHeight = height);
-
-            this.body.style.height = height + 'px';
+            $(this.body).css({
+                'min-height':height + 'px'
+            })
         },
-
+        setWidth:function(width){
+            this.$container && this.$container.width(width);
+            $(this.body).width(width - $(this.body).css('padding-left') * 1 - $(this.body).css('padding-right') * 1)
+        },
         addshortcutkey: function (cmd, keys) {
             var obj = {};
             if (keys) {
