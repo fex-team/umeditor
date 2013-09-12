@@ -196,13 +196,12 @@
                             Base.createImgBase64(img, f, me.dialog);
 
                             var xhr = new XMLHttpRequest();
-                            xhr.open("post", me.editor.getOpt('imageUrl'), true);
+                            xhr.open("post", me.editor.getOpt('imageUrl') + "?type=ajax", true);
                             xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 
                             //模拟数据
                             var fd = new FormData();
                             fd.append(me.editor.getOpt('imageFieldName'), f);
-                            fd.append('type', 'ajax');
 
                             xhr.send(fd);
                             xhr.addEventListener('load', function (e) {
