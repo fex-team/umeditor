@@ -84,12 +84,6 @@
             }
 
         },
-        getUI:function(editor,name,mode){
-            if(_editorUI[name]){
-                return $.proxy(_editorUI[name],editor,name,mode)()
-            }
-            return null;
-        },
         setActiveWidget : function($widget){
             _activeWidget = $widget;
         },
@@ -185,7 +179,6 @@
             return $container;
         },
         createToolbar: function (options, editor) {
-            var me = this;
             var $toolbar = $.eduitoolbar(), toolbar = $toolbar.edui();
             //创建下来菜单列表
 

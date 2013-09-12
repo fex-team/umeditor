@@ -93,14 +93,11 @@
             zIndex: 999,
             imagePopup: true,
             enterTag: 'p',
-            customDomain: false,
             lang: 'zh-cn',
             langPath: me.options.UMEDITOR_HOME_URL + 'lang/',
             theme: 'default',
             themePath: me.options.UMEDITOR_HOME_URL + 'themes/',
             allHtmlEnabled: false,
-            scaleEnabled: false,
-            tableNativeEditInFF: false,
             autoSyncData : true,
             autoHeightEnabled : true
         });
@@ -1048,15 +1045,6 @@
                 ci.call(this, root)
             }
         }
-        /**
-         * 得到dialog实例对象
-         * @name getDialog
-         * @grammar editor.getDialog(dialogName) => Object
-         * @example
-         * var dialog = editor.getDialog("insertimage");
-         * dialog.open();   //打开dialog
-         * dialog.close();  //关闭dialog
-         */
     };
     utils.inherits(Editor, EventBase);
 })();

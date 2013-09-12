@@ -142,18 +142,13 @@
 
 
         //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的从新定义
-        ,  toolbar:[
+        ,toolbar:[
             'source | undo redo | bold italic underline strikethrough | superscript subscript | forecolor backcolor | removeformat |',
             'insertorderedlist insertunorderedlist | selectall cleardoc paragraph | fontfamily fontsize' ,
             '| justifyleft justifycenter justifyright justifyjustify |',
             'link unlink | emotion image insertvideo  | map',
             '| horizontal print preview fullscreen'
         ]
-
-        //当鼠标放在工具栏上时显示的tooltip提示,留空支持自动多语言配置，否则以配置值为准
-//        ,labelMap:{
-//            'anchor':'', 'undo':''
-//        }
 
         //语言配置项,默认是zh-cn。有需要的话也可以使用如下这样的方式来自动多语言切换，当然，前提条件是lang文件夹下存在对应的语言文件：
         //lang值也可以通过自动获取 (navigator.language||navigator.browserLanguage ||navigator.userLanguage).toLowerCase()
@@ -168,8 +163,7 @@
         //,theme:'default'
         //,themePath:URL +"themes/"
 
-        //若实例化编辑器的页面手动修改的domain，此处需要设置为true
-        //,customDomain:false
+
 
         //针对getAllHtml方法，会在对应的head标签中增加该编码设置。
         //,charset:"utf-8"
@@ -179,12 +173,10 @@
 
         //,initialContent:'欢迎使用UMEDITOR!'    //初始化编辑器的内容,也可以通过textarea/script给值，看官网例子
 
-        //,initialFrameWidth:1000  //初始化编辑器宽度,默认1000
-        //,initialFrameHeight:320  //初始化编辑器高度,默认320
+        //,initialFrameWidth:500 //初始化编辑器宽度,默认500
+        //,initialFrameHeight:500  //初始化编辑器高度,默认500
 
         //,autoClearinitialContent:true //是否自动清除编辑器初始内容，注意：如果focus属性设置为true,这个也为真，那么编辑器一上来就会触发导致初始化的内容看不到了
-
-        //,iframeCssUrl: URL + '/themes/iframe.css' //给编辑器内部引入一个css文件
 
         //,textarea:'editorValue' // 提交表单时，服务器获取编辑器提交内容的所用的参数，多实例时可以给容器name属性，会将name给定的值最为每个实例的键值，不用每次实例化的时候都设置这个值
 
@@ -204,75 +196,11 @@
         //,initialStyle:'p{line-height:1em}'//编辑器层级的基数,可以用来改变字体等
 
         //,autoSyncData:true //自动同步编辑器要提交的数据
+
         //,emotionLocalization:false //是否开启表情本地化，默认关闭。若要开启请确保emotion文件夹下包含官网提供的images表情文件夹
 
-        //,pasteplain:false  //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴
-        //纯文本粘贴模式下的过滤规则
-//        'filterTxtRules' : function(){
-//            function transP(node){
-//                node.tagName = 'p';
-//                node.setStyle();
-//            }
-//            return {
-//                //直接删除及其字节点内容
-//                '-' : 'script style object iframe embed input select',
-//                'p': {$:{}},
-//                'br':{$:{}},
-//                'div':{'$':{}},
-//                'li':{'$':{}},
-//                'caption':transP,
-//                'th':transP,
-//                'tr':transP,
-//                'h1':transP,'h2':transP,'h3':transP,'h4':transP,'h5':transP,'h6':transP,
-//                'td':function(node){
-//                    //没有内容的td直接删掉
-//                    var txt = !!node.innerText();
-//                    if(txt){
-//                        node.parentNode.insertAfter(UE.uNode.createText(' &nbsp; &nbsp;'),node);
-//                    }
-//                    node.parentNode.removeChild(node,node.innerText())
-//                }
-//            }
-//        }()
         //,allHtmlEnabled:false //提交到后台的数据是否包含整个html字符串
-        //iframeUrlMap
-        //dialog内容的路径 ～会被替换成URL,垓属性一旦打开，将覆盖所有的dialog的默认路径
-        //,iframeUrlMap:{
-        // 'anchor':'~/dialogs/anchor/anchor.html',
-        // }
 
-        //insertorderedlist
-        //有序列表的下拉配置,值留空时支持多语言自动识别，若配置值，则以此值为准
-//        ,'insertorderedlist':{
-//              //自定的样式
-//                'num':'1,2,3...',
-//                'num1':'1),2),3)...',
-//                'num2':'(1),(2),(3)...',
-//                'cn':'一,二,三....',
-//                'cn1':'一),二),三)....',
-//                'cn2':'(一),(二),(三)....',
-//             //系统自带
-//             'decimal' : '' ,         //'1,2,3...'
-//             'lower-alpha' : '' ,    // 'a,b,c...'
-//             'lower-roman' : '' ,    //'i,ii,iii...'
-//             'upper-alpha' : '' , lang   //'A,B,C'
-//             'upper-roman' : ''      //'I,II,III...'
-//        }
-
-        //insertunorderedlist
-        //无序列表的下拉配置，值留空时支持多语言自动识别，若配置值，则以此值为准
-        //,insertunorderedlist : {
-        //              //自定的样式
-//        'dash' :'— 破折号',
-//        'dot':' 。 小圆圈'
-//             //系统自带
-        //    'circle' : '',  // '○ 小圆圈'
-        //    'disc' : '',    // '● 小圆点'
-        //    'square' : ''   //'■ 小方块'
-        //}
-//        ,listDefaultPaddingLeft : '30'//默认的左边缩进的基数倍
-//        ,listiconpath : 'http://bs.baidu.com/listicon/'//自定义标号的路径
-//        ,maxListLevel : 3 //限制可以tab的级数-1不限制
         //fontfamily
         //字体设置 label留空支持多语言自动切换，若配置，则以配置值为准
 //        ,'fontfamily':[
@@ -297,31 +225,6 @@
         //段落格式 值留空时支持多语言自动识别，若配置，则以配置值为准
         //,'paragraph':{'p':'', 'h1':'', 'h2':'', 'h3':'', 'h4':'', 'h5':'', 'h6':''}
 
-        //rowspacingtop
-        //段间距 值和显示的名字相同
-        //,'rowspacingtop':['5', '10', '15', '20', '25']
-
-        //rowspacingBottom
-        //段间距 值和显示的名字相同
-        //,'rowspacingbottom':['5', '10', '15', '20', '25']
-
-        //lineheight
-        //行内间距 值和显示的名字相同
-        //,'lineheight':['1', '1.5','1.75','2', '3', '4', '5']
-
-
-        //tab
-        //点击tab键时移动的距离,tabSize倍数，tabNode什么字符做为单位
-        //,tabSize:4
-        //,tabNode:'&nbsp;'
-
-        //removeFormat
-        //清除格式时可以删除的标签和属性
-        //removeForamtTags标签
-        //,removeFormatTags:'b,big,code,del,dfn,em,font,i,ins,kbd,q,samp,small,span,strike,strong,sub,sup,tt,u,var'
-        //removeFormatAttributes属性
-        //,removeFormatAttributes:'class,style,lang,width,height,align,hspace,valign'
-
         //undo
         //可以最多回退的次数,默认20
         //,maxUndoCount:20
@@ -343,16 +246,13 @@
         //autoFloatEnabled
         //是否保持toolbar的位置不动,默认true
         //,autoFloatEnabled:true
+
         //浮动时工具栏距离浏览器顶部的高度，用于某些具有固定头部的页面
         //,topOffset:30
         //编辑器底部距离工具栏高度(如果参数大于等于编辑器高度，则设置无效)
         //,toolbarTopOffset:400
 
-        //indentValue
-        //首行缩进距离,默认是2em
-        //,indentValue:'2em'
-
         //填写过滤规则
-//        ,filterRules: {}
+        //,filterRules: {}
     };
 })();

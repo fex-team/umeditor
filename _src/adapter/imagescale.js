@@ -1,4 +1,4 @@
-UM.ready(function () {
+UM.registerUI('imagescale',function () {
     var me = this,
         $imagescale;
 
