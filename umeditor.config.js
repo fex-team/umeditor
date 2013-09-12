@@ -202,19 +202,9 @@
         //,allHtmlEnabled:false //提交到后台的数据是否包含整个html字符串
 
         //fontfamily
-        //字体设置 label留空支持多语言自动切换，若配置，则以配置值为准
+        //字体设置
 //        ,'fontfamily':[
-//            { label:'',name:'songti',val:'宋体,SimSun'},
-//            { label:'',name:'kaiti',val:'楷体,楷体_GB2312, SimKai'},
-//            { label:'',name:'yahei',val:'微软雅黑,Microsoft YaHei'},
-//            { label:'',name:'heiti',val:'黑体, SimHei'},
-//            { label:'',name:'lishu',val:'隶书, SimLi'},
-//            { label:'',name:'andaleMono',val:'andale mono'},
-//            { label:'',name:'arial',val:'arial, helvetica,sans-serif'},
-//            { label:'',name:'arialBlack',val:'arial black,avant garde'},
-//            { label:'',name:'comicSansMs',val:'comic sans ms'},
-//            { label:'',name:'impact',val:'impact,chicago'},
-//            { label:'',name:'timesNewRoman',val:'times new roman'}
+//              { name: 'songti', val: '宋体,SimSun'},
 //          ]
 
         //fontsize
