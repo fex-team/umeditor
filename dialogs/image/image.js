@@ -159,8 +159,12 @@
             return me;
         },
         config: function (sel) {
-            var me = this;
-            $("form", $(sel, me.dialog)).attr("action", me.editor.options.imageUrl);
+            var me = this,
+                url=me.editor.options.imageUrl;
+
+            url=url + (url.indexOf("?") == -1 ? "?" : "&") + "editorid="+me.editor.id;//初始form提交地址;
+
+            $("form", $(sel, me.dialog)).attr("action", url);
 
             return me;
         },

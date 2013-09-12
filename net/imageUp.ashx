@@ -19,6 +19,8 @@ public class  imageUp: IHttpHandler
             string[] filetype = { ".gif", ".png", ".jpg", ".jpeg", ".bmp" };                    //文件允许格式
 
             string type = context.Request["type"];
+            string editorId = context.Request["editorid"];
+
         
             //上传图片
             Hashtable info = new Hashtable();
@@ -31,7 +33,7 @@ public class  imageUp: IHttpHandler
             }
             else
             {
-                HttpContext.Current.Response.Write("<script>parent.UM.getWidgetCallback('image')('" + info["url"] + "','" + info["state"] + "')</script>");//回调函数
+                HttpContext.Current.Response.Write("<script>parent.UM.getEditor('"+ editorId +"')getWidgetCallback('image')('" + info["url"] + "','" + info["state"] + "')</script>");//回调函数
                 
             }
     }
