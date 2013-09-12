@@ -20,7 +20,9 @@
                 _editorUI[uiname] = fn;
             })
         },
-
+        getWidgetCallback : function(widgetName){
+            return _widgetCallBack[widgetName];
+        },
         setEditor : function(editor){
             !_editors[editor.id] && (_editors[editor.id] = editor);
         },
