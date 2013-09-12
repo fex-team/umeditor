@@ -3,14 +3,14 @@
 <head>
 
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <title>UEditor Mini过滤规则定制化</title>
+    <title>UMEDITOR 过滤规则定制化</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link href="../themes/default/_css/ueditor.css" type="text/css" rel="stylesheet">
+    <link href="../themes/default/_css/umeditor.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" charset="utf-8" src="../ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../umeditor.config.js"></script>
 
     <!--使用版-->
-    <!--<script type="text/javascript" charset="utf-8" src="../ueditor.all.js"></script>-->
+    <!--<script type="text/javascript" charset="utf-8" src="../umeditor.all.js"></script>-->
 
     <!--开发版-->
     <script type="text/javascript" charset="utf-8" src="editor_api.js"></script>
@@ -24,7 +24,7 @@
 </head>
 <body>
 
-<h1>UEditor Mini过滤规则定制化</h1>
+<h1>UMEDITOR 过滤规则定制化</h1>
 
 <p>尝试粘贴内容近来，这里边不能粘贴任何inline的样式，不能有iframe,style,script,embed等标签，表格不能嵌套</p>
 <!--style给定宽度可以影响编辑器的最终宽度-->
@@ -32,7 +32,7 @@
     <p>这里我可以写一些输入提示</p>
 </script>
 <script type="text/javascript">
-    var ue = UE.getEditor('myEditor', {
+    var ue = UM.getEditor('myEditor', {
         filterRules: function () {
             return{
                 span:function(node){
@@ -52,18 +52,18 @@
                         node.setAttr('class','MsoListParagraph')
                     }
                     if(!node.firstChild()){
-                        node.innerHTML(UE.browser.ie ? '&nbsp;' : '<br>')
+                        node.innerHTML(UM.browser.ie ? '&nbsp;' : '<br>')
                     }
                 },
                 div: function (node) {
-                    var tmpNode, p = UE.uNode.createElement('p');
+                    var tmpNode, p = UM.uNode.createElement('p');
                     while (tmpNode = node.firstChild()) {
-                        if (tmpNode.type == 'text' || !UE.dom.dtd.$block[tmpNode.tagName]) {
+                        if (tmpNode.type == 'text' || !UM.dom.dtd.$block[tmpNode.tagName]) {
                             p.appendChild(tmpNode);
                         } else {
                             if (p.firstChild()) {
                                 node.parentNode.insertBefore(p, node);
-                                p = UE.uNode.createElement('p');
+                                p = UM.uNode.createElement('p');
                             } else {
                                 node.parentNode.insertBefore(tmpNode, node);
                             }
@@ -119,16 +119,16 @@
                         node.setAttr()
                     }
                     var tmpNodes = node.getNodesByTagName('ol ul');
-                    UE.utils.each(tmpNodes,function(n){
+                    UM.utils.each(tmpNodes,function(n){
                         node.parentNode.insertAfter(n,node);
 
                     })
 
                 },
                 table: function (node) {
-                    UE.utils.each(node.getNodesByTagName('table'), function (t) {
-                        UE.utils.each(t.getNodesByTagName('tr'), function (tr) {
-                            var p = UE.uNode.createElement('p'), child, html = [];
+                    UM.utils.each(node.getNodesByTagName('table'), function (t) {
+                        UM.utils.each(t.getNodesByTagName('tr'), function (tr) {
+                            var p = UM.uNode.createElement('p'), child, html = [];
                             while (child = tr.firstChild()) {
                                 html.push(child.innerHTML());
                                 tr.removeChild(child);

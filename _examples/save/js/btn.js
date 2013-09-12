@@ -2,13 +2,13 @@
  * 创建按钮
  */
 
-UE.registerUI('save', function( name ){
+UM.registerUI('save', function( name ){
 
     //该方法里的this指向编辑器实例
 
     var me = this,
 
-        //实例化一个UEditor提供的按钮对象
+        //实例化一个UMEDITOR提供的按钮对象
         $button = $.eduibutton({
             //按钮icon的名字， 在这里会生成一个“edui-icon-save”的className的icon box，
             //用户可以重写该className的background样式来更改icon的图标

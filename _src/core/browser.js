@@ -1,52 +1,52 @@
 /**
  * @file
- * @name UE.browser
+ * @name UM.browser
  * @short Browser
  * @desc UEditor中采用的浏览器判断模块
  */
-var browser = UE.browser = function(){
+var browser = UM.browser = function(){
     var agent = navigator.userAgent.toLowerCase(),
         opera = window.opera,
         browser = {
         /**
          * 检测浏览器是否为IE
          * @name ie
-         * @grammar UE.browser.ie  => true|false
+         * @grammar UM.browser.ie  => true|false
          */
         ie		: !!window.ActiveXObject,
 
         /**
          * 检测浏览器是否为Opera
          * @name opera
-         * @grammar UE.browser.opera  => true|false
+         * @grammar UM.browser.opera  => true|false
          */
         opera	: ( !!opera && opera.version ),
 
         /**
          * 检测浏览器是否为webkit内核
          * @name webkit
-         * @grammar UE.browser.webkit  => true|false
+         * @grammar UM.browser.webkit  => true|false
          */
         webkit	: ( agent.indexOf( ' applewebkit/' ) > -1 ),
 
         /**
          * 检测浏览器是否为mac系统下的浏览器
          * @name mac
-         * @grammar UE.browser.mac  => true|false
+         * @grammar UM.browser.mac  => true|false
          */
         mac	: ( agent.indexOf( 'macintosh' ) > -1 ),
 
         /**
          * 检测浏览器是否处于怪异模式
          * @name quirks
-         * @grammar UE.browser.quirks  => true|false
+         * @grammar UM.browser.quirks  => true|false
          */
         quirks : ( document.compatMode == 'BackCompat' )
     };
     /**
      * 检测浏览器是否处为gecko内核
      * @name gecko
-     * @grammar UE.browser.gecko  => true|false
+     * @grammar UM.browser.gecko  => true|false
      */
     browser.gecko =( navigator.product == 'Gecko' && !browser.webkit && !browser.opera );
 
@@ -58,27 +58,27 @@ var browser = UE.browser = function(){
         /**
          * 检测浏览器是否为 IE9 模式
          * @name ie9Compat
-         * @grammar UE.browser.ie9Compat  => true|false
+         * @grammar UM.browser.ie9Compat  => true|false
          */
         browser.ie9Compat = document.documentMode == 9;
         /**
          * 检测浏览器是否为 IE8 浏览器
          * @name ie8
-         * @grammar     UE.browser.ie8  => true|false
+         * @grammar     UM.browser.ie8  => true|false
          */
         browser.ie8 = !!document.documentMode;
 
         /**
          * 检测浏览器是否为 IE8 模式
          * @name ie8Compat
-         * @grammar     UE.browser.ie8Compat  => true|false
+         * @grammar     UM.browser.ie8Compat  => true|false
          */
         browser.ie8Compat = document.documentMode == 8;
 
         /**
          * 检测浏览器是否运行在 兼容IE7模式
          * @name ie7Compat
-         * @grammar     UE.browser.ie7Compat  => true|false
+         * @grammar     UM.browser.ie7Compat  => true|false
          */
         browser.ie7Compat = ( ( version == 7 && !document.documentMode )
                 || document.documentMode == 7 );
@@ -86,7 +86,7 @@ var browser = UE.browser = function(){
         /**
          * 检测浏览器是否IE6模式或怪异模式
          * @name ie6Compat
-         * @grammar     UE.browser.ie6Compat  => true|false
+         * @grammar     UM.browser.ie6Compat  => true|false
          */
         browser.ie6Compat = ( version < 7 || browser.quirks );
 
@@ -107,7 +107,7 @@ var browser = UE.browser = function(){
     /**
      * 检测浏览器是否为chrome
      * @name chrome
-     * @grammar     UE.browser.chrome  => true|false
+     * @grammar     UM.browser.chrome  => true|false
      */
     if (/chrome\/(\d+\.\d)/i.test(agent)) {
         browser.chrome = + RegExp['\x241'];
@@ -115,7 +115,7 @@ var browser = UE.browser = function(){
     /**
      * 检测浏览器是否为safari
      * @name safari
-     * @grammar     UE.browser.safari  => true|false
+     * @grammar     UM.browser.safari  => true|false
      */
     if(/(\d+\.\d)?(?:\.\d)?\s+safari\/?(\d+\.\d+)?/i.test(agent) && !/chrome/i.test(agent)){
     	browser.safari = + (RegExp['\x241'] || RegExp['\x242']);
@@ -136,9 +136,9 @@ var browser = UE.browser = function(){
      * gecko系列会返回10900，158900等.
      * webkit系列会返回其build号 (如 522等).
      * @name version
-     * @grammar     UE.browser.version  => number
+     * @grammar     UM.browser.version  => number
      * @example
-     * if ( UE.browser.ie && UE.browser.version == 6 ){
+     * if ( UM.browser.ie && UM.browser.version == 6 ){
      *     alert( "Ouch!居然是万恶的IE6!" );
      * }
      */
@@ -147,9 +147,9 @@ var browser = UE.browser = function(){
     /**
      * 是否是兼容模式的浏览器
      * @name isCompatible
-     * @grammar  UE.browser.isCompatible  => true|false
+     * @grammar  UM.browser.isCompatible  => true|false
      * @example
-     * if ( UE.browser.isCompatible ){
+     * if ( UM.browser.isCompatible ){
      *     alert( "你的浏览器相当不错哦！" );
      * }
      */

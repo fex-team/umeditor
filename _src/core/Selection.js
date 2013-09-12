@@ -5,7 +5,7 @@
 ///import core/dom/domUtils.js
 ///import core/dom/Range.js
 /**
- * @class UE.dom.Selection    Selection类
+ * @class UM.dom.Selection    Selection类
  */
 (function () {
 
@@ -152,7 +152,7 @@
          * 获取原生seleciton对象
          * @public
          * @function
-         * @name    UE.dom.Selection.getNative
+         * @name    UM.dom.Selection.getNative
          * @return {Selection}    获得selection对象
          */
         getNative:function (txtRange) {
@@ -167,7 +167,7 @@
          * 获得ieRange
          * @public
          * @function
-         * @name    UE.dom.Selection.getIERange
+         * @name    UM.dom.Selection.getIERange
          * @return {ieRange}    返回ie原生的Range
          */
         getIERange:function (txtRange) {
@@ -188,7 +188,7 @@
          * 缓存当前选区的range和选区的开始节点
          * @public
          * @function
-         * @name    UE.dom.Selection.cache
+         * @name    UM.dom.Selection.cache
          */
         cache:function () {
             this.clear();
@@ -211,7 +211,7 @@
          * 清空缓存
          * @public
          * @function
-         * @name    UE.dom.Selection.clear
+         * @name    UM.dom.Selection.clear
          */
         clear:function () {
             this._cachedStartElementPath = this._cachedRange = this._cachedStartElement = null;
@@ -227,8 +227,8 @@
          * 获取选区对应的Range
          * @public
          * @function
-         * @name    UE.dom.Selection.getRange
-         * @returns {UE.dom.Range}    得到Range对象
+         * @name    UM.dom.Selection.getRange
+         * @returns {UM.dom.Range}    得到Range对象
          */
         getRange:function () {
             var me = this;
@@ -288,7 +288,7 @@
          * 获取开始元素，用于状态反射
          * @public
          * @function
-         * @name    UE.dom.Selection.getStart
+         * @name    UM.dom.Selection.getStart
          * @return {Element}     获得开始元素
          */
         getStart:function () {
@@ -334,7 +334,7 @@
          * 得到选区中的文本
          * @public
          * @function
-         * @name    UE.dom.Selection.getText
+         * @name    UM.dom.Selection.getText
          * @return  {String}    选区中包含的文本
          */
         getText:function () {

@@ -5,7 +5,7 @@
 /**
  * 有序列表
  * @function
- * @name UE.execCommand
+ * @name UM.execCommand
  * @param   {String}   cmdName     insertorderlist插入有序列表
  * @param   {String}   style               值为：decimal,lower-alpha,lower-roman,upper-alpha,upper-roman
  * @author zhanyi
@@ -13,13 +13,13 @@
 /**
  * 无序链接
  * @function
- * @name UE.execCommand
+ * @name UM.execCommand
  * @param   {String}   cmdName     insertunorderlist插入无序列表
  * * @param   {String}   style            值为：circle,disc,square
  * @author zhanyi
  */
 
-UE.plugins['list'] = function () {
+UM.plugins['list'] = function () {
     var me = this;
 
     me.setOpt( {

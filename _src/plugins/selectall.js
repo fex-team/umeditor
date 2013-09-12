@@ -5,11 +5,11 @@
 /**
  * 选中所有
  * @function
- * @name UE.execCommand
+ * @name UM.execCommand
  * @param   {String}   cmdName    selectall选中编辑器里的所有内容
  * @author zhanyi
 */
-UE.plugins['selectall'] = function(){
+UM.plugins['selectall'] = function(){
     var me = this;
     me.commands['selectall'] = {
         execCommand : function(){

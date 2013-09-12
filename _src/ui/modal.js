@@ -1,5 +1,5 @@
 /*modal 类*/
-UE.ui.define('modal', {
+UM.ui.define('modal', {
     tpl: '<div class="edui-modal" tabindex="-1" >' +
         '<div class="edui-modal-header">' +
         '<div class="edui-close" data-hide="modal"></div>' +

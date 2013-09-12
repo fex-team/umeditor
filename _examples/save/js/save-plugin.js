@@ -3,9 +3,9 @@
  */
 
 //注册一个名为“save”的插件
-UE.plugins['save'] = function () {
+UM.plugins['save'] = function () {
 
-    UE.commands[ 'save' ] = {
+    UM.commands[ 'save' ] = {
 
         execCommand: function (cmdName) {
 

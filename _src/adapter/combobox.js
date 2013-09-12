@@ -1,5 +1,5 @@
 
-UE.registerUI('paragraph fontfamily fontsize', function( name ) {
+UM.registerUI('paragraph fontfamily fontsize', function( name ) {
 
     var me = this,
         label = (me.options.labelMap && me.options.labelMap[name]) || me.getLang("labelMap." + name),
@@ -171,7 +171,7 @@ UE.registerUI('paragraph fontfamily fontsize', function( name ) {
 });
 
 
-UE.registerUI('forecolor backcolor', function( name ) {
+UM.registerUI('forecolor backcolor', function( name ) {
     function getCurrentColor() {
         return domUtils.getComputedStyle( $colorLabel[0], 'background-color' );
     }
@@ -214,7 +214,7 @@ UE.registerUI('forecolor backcolor', function( name ) {
             }, 0 );
         })
         .on('show',function(){
-            UE.setActiveWidget( colorPickerWidget.root() );
+            UM.setActiveWidget( colorPickerWidget.root() );
         }).css('zIndex',me.getOpt('zIndex') + 1);
 
     $btn.edui().on('arrowclick',function(){

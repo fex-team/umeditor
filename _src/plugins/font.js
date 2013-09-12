@@ -5,11 +5,11 @@
 ///commandsTitle  字体颜色,背景色,字号,字体,下划线,删除线
 /**
  * @description 字体
- * @name UE.execCommand
+ * @name UM.execCommand
  * @param {String}     cmdName    执行的功能名称
  * @param {String}    value             传入的值
  */
-UE.plugins['font'] = function () {
+UM.plugins['font'] = function () {
     var me = this,
         fonts = {
             'forecolor': 'forecolor',
@@ -96,7 +96,7 @@ UE.plugins['font'] = function () {
     });
     for(var p in fonts){
         (function (cmd) {
-            UE.commands[cmd] = {
+            UM.commands[cmd] = {
                 execCommand: function (cmdName,value) {
                     if(value == 'transparent'){
                         return;

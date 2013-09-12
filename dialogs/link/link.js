@@ -9,7 +9,7 @@
         return false;
     }
 
-    UE.registerWidget('link', {
+    UM.registerWidget('link', {
         tpl: "<style type=\"text/css\">" +
             ".edui-link-table{font-size: 12px;margin: 10px;line-height: 30px}" +
             ".edui-link-txt{width:300px;height:21px;line-height:21px;border:1px solid #d7d7d7;}" +

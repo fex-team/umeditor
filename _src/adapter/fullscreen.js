@@ -6,17 +6,17 @@
 
     //状态缓存
     var STATUS_CACHE = {},
-        //状态值列表
+    //状态值列表
         STATUS_LIST = [ 'width', 'height', 'position', 'top', 'left', 'margin', 'padding', 'overflowX', 'overflowY' ],
         CONTENT_AREA_STATUS = {},
-        //页面状态
+    //页面状态
         DOCUMENT_STATUS = {},
         DOCUMENT_ELEMENT_STATUS = {},
 
         FULLSCREENS = {};
 
 
-    UE.registerUI('fullscreen', function( name ){
+    UM.registerUI('fullscreen', function( name ){
 
         var me = this,
             $button = $.eduibutton({
@@ -46,7 +46,7 @@
 
     });
 
-    UE.commands[ 'fullscreen' ] = {
+    UM.commands[ 'fullscreen' ] = {
 
         execCommand: function (cmdName) {
 

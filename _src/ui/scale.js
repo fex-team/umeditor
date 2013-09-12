@@ -1,5 +1,5 @@
 //scale 类
-UE.ui.define('scale', {
+UM.ui.define('scale', {
     tpl: '<div class="edui-scale" unselectable="on">' +
         '<span class="edui-scale-hand0"></span>' +
         '<span class="edui-scale-hand1"></span>' +

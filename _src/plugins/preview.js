@@ -5,10 +5,10 @@
 /**
  * 预览
  * @function
- * @name UE.execCommand
+ * @name UM.execCommand
  * @param   {String}   cmdName     preview预览编辑器内容
  */
-UE.commands['preview'] = {
+UM.commands['preview'] = {
     execCommand : function(){
         var w = window.open('', '_blank', ''),
             d = w.document;

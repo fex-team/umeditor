@@ -1,6 +1,6 @@
 //toolbar 类
 (function () {
-    UE.ui.define('toolbar', {
+    UM.ui.define('toolbar', {
         tpl: '<div class="edui-toolbar"  ><div class="edui-btn-toolbar" unselectable="on" onmousedown="return false"  ></div></div>'
           ,
         init: function () {

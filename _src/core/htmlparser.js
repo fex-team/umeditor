@@ -1,6 +1,6 @@
 //html字符串转换成uNode节点
 //by zhanyi
-var htmlparser = UE.htmlparser = function (htmlstr,ignoreBlank) {
+var htmlparser = UM.htmlparser = function (htmlstr,ignoreBlank) {
     var re_tag = /<(?:(?:\/([^>]+)>)|(?:!--([\S|\s]*?)-->)|(?:([^\s\/>]+)\s*((?:(?:"[^"]*")|(?:'[^']*')|[^"'<>])*)\/?>))/g,
         re_attr = /([\w\-:.]+)(?:(?:\s*=\s*(?:(?:"([^"]*)")|(?:'([^']*)')|([^\s>]+)))|(?=\s|$))/g;
 
@@ -22,7 +22,7 @@ var htmlparser = UE.htmlparser = function (htmlstr,ignoreBlank) {
 
 
 
-    var uNode = UE.uNode,
+    var uNode = UM.uNode,
         needParentNode = {
             'td':'tr',
             'tr':['tbody','thead','tfoot'],

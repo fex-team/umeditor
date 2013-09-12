@@ -1,5 +1,5 @@
 //menu 类
-UE.ui.define('menu',{
+UM.ui.define('menu',{
     show : function($obj,dir,fnname,topOffset,leftOffset){
 
         fnname = fnname || 'position';

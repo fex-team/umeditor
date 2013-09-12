@@ -51,7 +51,7 @@
         }
     };
 
-    UE.plugins['source'] = function (){
+    UM.plugins['source'] = function (){
         var me = this;
         var opt = this.options;
         var sourceMode = false;
@@ -87,7 +87,7 @@
 
 
                     me.fireEvent('beforegetcontent');
-                    var root = UE.htmlparser(me.body.innerHTML);
+                    var root = UM.htmlparser(me.body.innerHTML);
                     me.filterOutputRule(root);
                     root.traversal(function (node) {
                         if (node.type == 'element') {

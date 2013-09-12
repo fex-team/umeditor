@@ -1,5 +1,5 @@
 //dropmenu 类
-UE.ui.define('dropmenu', {
+UM.ui.define('dropmenu', {
     tmpl: '<ul class="edui-dropdown-menu" aria-labelledby="dropdownMenu" >' +
         '<%for(var i=0,ci;ci=data[i++];){%>' +
         '<%if(ci.divider){%><li class="edui-divider"></li><%}else{%>' +

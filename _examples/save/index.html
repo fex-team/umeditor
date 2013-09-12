@@ -4,20 +4,20 @@
 <head>
 
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <title>UEditor Mini自动保存</title>
+    <title>UMEDITOR 自动保存</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <!-- 引用UEditor的样式资源 -->
-    <link href="../../themes/default/_css/ueditor.css" type="text/css" rel="stylesheet">
+    <!-- 引用UMEDITOR的样式资源 -->
+    <link href="../../themes/default/_css/umeditor.css" type="text/css" rel="stylesheet">
     <!-- 引用保存按钮的图片样式 -->
     <link rel="stylesheet" href="css/btn.css">
 
-    <!-- 引入UEditor脚本支持文件 -->
+    <!-- 引入UMEDITOR脚本支持文件 -->
     <script type="text/javascript" src="../jquery.js"></script>
-    <script type="text/javascript" charset="utf-8" src="../../ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../umeditor.config.js"></script>
     <!--开发版-->
     <script type="text/javascript" charset="utf-8" src="js/editor_api.js"></script>
     <!--使用版-->
-    <!--<script type="text/javascript" charset="utf-8" src="../ueditor.all.js"></script>-->
+    <!--<script type="text/javascript" charset="utf-8" src="../umeditor.all.js"></script>-->
 
     <!-- 主动引入语言文件资源，解决IE下语言加载失败的问题 -->
     <script type="text/javascript" src="../../lang/zh-cn/zh-cn.js"></script>
@@ -34,14 +34,14 @@
 <body>
 <!--style给定宽度可以影响编辑器的最终宽度-->
 <script type="text/plain" id="myEditor" style="width:800px;height:240px;">
-    <h1>Mini插件开发示例， 该示例实现了一个“保存功能”的简单教程， 大家可以查看源代码来了解如何实现一个UEditor Mini的插件。</h1>
+    <h1>插件开发示例， 该示例实现了一个“保存功能”的简单教程， 大家可以查看源代码来了解如何实现一个UMEDITOR 的插件。</h1>
 </script>
 
 <script type="text/javascript">
 
     jQuery( function () {
 
-        var editor = UE.getEditor('myEditor', {
+        var editor = UM.getEditor('myEditor', {
 
             //设置toolbar不占位
             withoutToolbar: true,

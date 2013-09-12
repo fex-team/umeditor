@@ -6,7 +6,7 @@
 //模拟的节点类
 //by zhanyi
 (function () {
-    var uNode = UE.uNode = function (obj) {
+    var uNode = UM.uNode = function (obj) {
         this.type = obj.type;
         this.data = obj.data;
         this.tagName = obj.tagName;
@@ -33,7 +33,7 @@
     //支持标签和html
     uNode.createElement = function (html) {
         if (/[<>]/.test(html)) {
-            return UE.htmlparser(html).children[0]
+            return UM.htmlparser(html).children[0]
         } else {
             return new uNode({
                 type:'element',
@@ -43,7 +43,7 @@
         }
     };
     uNode.createText = function (data,noTrans) {
-        return new UE.uNode({
+        return new UM.uNode({
             type:'text',
             'data':noTrans ? data : utils.unhtml(data || '')
         })
@@ -182,14 +182,14 @@
                     }
                 }
                 this.children = [];
-                var tmpRoot = UE.htmlparser(htmlstr);
+                var tmpRoot = UM.htmlparser(htmlstr);
                 for (var i = 0, ci; ci = tmpRoot.children[i++];) {
                     this.children.push(ci);
                     ci.parentNode = this;
                 }
                 return this;
             } else {
-                var tmpRoot = new UE.uNode({
+                var tmpRoot = new UM.uNode({
                     type:'root',
                     children:this.children
                 });

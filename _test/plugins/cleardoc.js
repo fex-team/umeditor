@@ -14,7 +14,7 @@ test( '取得焦点后清空后查看range', function () {
     var body = editor.body;
     editor.execCommand( 'cleardoc' );
     ua.manualDeleteFillData( editor.body );
-    if ( UE.browser.ie ) {
+    if ( UM.browser.ie ) {
         equal( ua.getChildHTML( body ), '<p></p>' );         //目前ie清空文档后不放空格占位符
     }
     else {
@@ -28,7 +28,7 @@ test( '编辑器没有焦点，清空', function () {
     var body = editor.body;
     editor.execCommand( 'cleardoc' );
     ua.manualDeleteFillData( editor.body );
-    if ( UE.browser.ie ) {
+    if ( UM.browser.ie ) {
         equal( ua.getChildHTML( body ), '<p></p>' );
     }
     else {
@@ -48,7 +48,7 @@ test('选中文本，清空',function(){
 
 test( '全选后删除', function() {
     var editor = te.obj[0];
-    if ( UE.browser.ie )
+    if ( UM.browser.ie )
         editor.setContent( '<p>dsafds&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>' );
     else
         editor.setContent( '<p><br></p><p><br></p><p><br></p><p>d<br></p><p><br></p><p><br></p><p><br></p><p><br></p><p><br></p>' );

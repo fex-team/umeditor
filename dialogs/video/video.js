@@ -3,7 +3,7 @@
 
     var widgetName = 'insertvideo';
 
-    UE.registerWidget( widgetName,{
+    UM.registerWidget( widgetName,{
 
         tpl: "<link rel=\"stylesheet\" type=\"text/css\" href=\"<%=video_url%>video.css\" />" +
             "<div class=\"edui-video-wrapper\">" +
@@ -36,7 +36,7 @@
 
             var me = this,
                 lang = editor.getLang( widgetName),
-                video_url = UEDITOR_CONFIG.UEDITOR_HOME_URL + 'dialogs/video/';
+                video_url = UMEDITOR_CONFIG.UMEDITOR_HOME_URL + 'dialogs/video/';
 
             me.lang = lang;
             me.editor = editor;
@@ -192,7 +192,7 @@
         createAlignButton: function( ids ) {
 
             var lang = this.lang,
-                vidoe_home = UEDITOR_CONFIG.UEDITOR_HOME_URL + 'dialogs/video/';
+                vidoe_home = UMEDITOR_CONFIG.UMEDITOR_HOME_URL + 'dialogs/video/';
 
             for ( var i = 0, ci; ci = ids[i++]; ) {
                 var floatContainer = $( "#" + ci ) [0],
@@ -259,7 +259,7 @@
             ok: {
                 exec: function( editor ){
                     $("#eduiVideoPreview").html("");
-                    UE.getWidgetData(widgetName).insertSingle();
+                    UM.getWidgetData(widgetName).insertSingle();
                 }
             },
             cancel: {

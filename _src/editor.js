@@ -1,6 +1,6 @@
-UEDITOR_CONFIG = window.UEDITOR_CONFIG || {};
+UMEDITOR_CONFIG = window.UMEDITOR_CONFIG || {};
 
-window.UE = {
+window.UM = {
     plugins : {},
 
     commands : {},
@@ -9,7 +9,7 @@ window.UE = {
 
     I18N : {},
 
-    version : "mini1.0.0.0"
+    version : "1.0.0"
 };
 
-var dom = UE.dom = {};
+var dom = UM.dom = {};

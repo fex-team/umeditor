@@ -6,10 +6,10 @@
 /**
  * 分割线
  * @function
- * @name UE.execCommand
+ * @name UM.execCommand
  * @param {String}     cmdName    horizontal插入分割线
  */
-UE.plugins['horizontal'] = function(){
+UM.plugins['horizontal'] = function(){
     var me = this;
     me.commands['horizontal'] = {
         execCommand : function(  ) {

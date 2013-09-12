@@ -28,11 +28,11 @@ test( '光标闭合且没有超链接', function () {
 //test( '给图片添加超链接', function () {//ie8下无法选中 单个图像节点
 //    var editor = te.obj[0];
 //    var range = te.obj[1];
-//    editor.setContent( '<p><img  style="width: 200px;height: 200px" src="http://ueditor.baidu.com/img/logo.png">hello</p>' );
+//    editor.setContent( '<p><img  style="width: 200px;height: 200px" src="http://umeditor.baidu.com/img/logo.png">hello</p>' );
 //    range.selectNode( editor.body.firstChild.firstChild ).select();
 //    editor.execCommand( 'link', {href:'http://www.baidu.com/'} );
-//    //var html = '<a  href="http://www.baidu.com/" ><img  src="http://ueditor.baidu.com/img/logo.png" _src=\"http://ueditor.baidu.com/img/logo.png" style="width: 200px;height: 200px" ></a>hello';
-//    var html1 = '<a href=\"http://www.baidu.com/\"><img style=\"width: 200px;height: 200px\" src=\"http://ueditor.baidu.com/img/logo.png\"></a>hello';
+//    //var html = '<a  href="http://www.baidu.com/" ><img  src="http://umeditor.baidu.com/img/logo.png" _src=\"http://umeditor.baidu.com/img/logo.png" style="width: 200px;height: 200px" ></a>hello';
+//    var html1 = '<a href=\"http://www.baidu.com/\"><img style=\"width: 200px;height: 200px\" src=\"http://umeditor.baidu.com/img/logo.png\"></a>hello';
 //    if(ua.browser.ie)
 //        ua.checkHTMLSameStyle( html1, editor.document, editor.body.firstChild, '给图片添加超链接' );
 //    else
@@ -76,7 +76,7 @@ test( '对现有的超链接修改超链接地址', function () {
     editor.execCommand( 'link', {href:'ueditor.baidu.com'} );
     a1 = body.firstChild.firstChild;
     equal( a1.getAttribute( 'href' ), 'ueditor.baidu.com', 'check href' );
-    //equal( a1.innerHTML, 'ueditor.baidu.com', 'innerHTML也相应变化' );  //ff下的超链接和取消都不好用   显示演示的是会改变  ie和chrome的是不会改变(有问题，要确认一下)
+    //equal( a1.innerHTML, 'umeditor.baidu.com', 'innerHTML也相应变化' );  //ff下的超链接和取消都不好用   显示演示的是会改变  ie和chrome的是不会改变(有问题，要确认一下)
 
     var a2 = body.firstChild.getElementsByTagName( 'a' )[1];
     range.selectNode( a2 ).select();

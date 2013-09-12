@@ -69,11 +69,11 @@ test( 'getNodeIndex', function() {
 test( 'findParent--body', function() {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    var editor = UM.getEditor('ue');
     editor.ready(function () {
-        var domUtils = UE.dom.domUtils;
+        var domUtils = UM.dom.domUtils;
         equal(domUtils.findParent(editor.body), null, 'find parent for body');
-        UE.clearCache('ue');
+        UM.clearCache('ue');
         te.dom.push(editor.container);
         start();
     });
@@ -142,9 +142,9 @@ test( 'findParentByTagName--文本节点', function() {
 test( 'findParents', function() {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    var editor = UM.getEditor('ue');
     editor.ready(function () {
-        var domUtils = UE.dom.domUtils;
+        var domUtils = UM.dom.domUtils;
         var div = editor.body;
         div.innerHTML = '<strong>ddddd</strong><!----><!--hhhhh--><span id="span">span</span><b>xxxxx</b><p id="p"><br /><img /><table id="table"><tr><td>dddd</td></tr></table></p>';
         var span_text = document.getElementById('span').firstChild;
@@ -159,7 +159,7 @@ test( 'findParents', function() {
         equal(parents.length, 2, 'check parent count');
         same(parents[0], document.getElementById('span'), 'first parent is span');
         same(parents[1], editor.body, 'last parent is body');
-        UE.clearCache('ue');
+        UM.clearCache('ue');
         te.dom.push(editor.container);
         start();
     });
@@ -170,9 +170,9 @@ test( 'findParents', function() {
 test( 'findParents--tester', function() {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    var editor = UM.getEditor('ue');
     editor.ready(function () {
-        var domUtils = UE.dom.domUtils;
+        var domUtils = UM.dom.domUtils;
         var div = editor.body;
         div.innerHTML = '<div><p id="p"><br /><img id="img" /><table id="table"><tr><td>dddd</td></tr></table></p></div>';
         var img = document.getElementById('img');
@@ -183,7 +183,7 @@ test( 'findParents--tester', function() {
         });
         equal(parents.length, 1, 'check parent count');
         same(parents[0], div.firstChild.firstChild, 'first  parent is p');
-        UE.clearCache('ue');
+        UM.clearCache('ue');
         te.dom.push(editor.container);
         start();
     });
@@ -271,7 +271,7 @@ test( 'isWhitespace', function() {
     var domUtils = te.obj[3];
     div.innerHTML = "aaa\ufeff\u200B\t\t\n\r";
     ok( !domUtils.isWhitespace( div.firstChild ), 'not whiteSpace' );
-    div.innerHTML = UE.browser.ie && UE.browser.version == '6' ? '\ufeff' : '\u200B' + '\t\t\n\r';
+    div.innerHTML = UM.browser.ie && UM.browser.version == '6' ? '\ufeff' : '\u200B' + '\t\t\n\r';
     ok( domUtils.isWhitespace( div.firstChild ), 'is whiteSpace' );
 } );
 
@@ -478,11 +478,11 @@ test( 'isBlockElm', function() {
 test( 'isbody', function() {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue';
-    var editor = UE.getEditor('ue');
+    var editor = UM.getEditor('ue');
     editor.ready(function () {
-        var domUtils = UE.dom.domUtils;
+        var domUtils = UM.dom.domUtils;
         ok(domUtils.isBody(editor.body), 'is body');
-        UE.clearCache('ue');
+        UM.clearCache('ue');
         te.dom.push(editor.container);
         start();
     });
@@ -491,7 +491,7 @@ test( 'isbody', function() {
 
 test( 'getElementsByTagName', function() {
     var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     div.innerHTML = '<p><u><em></em></u><span>xxxx</span><u><i>uitext</i></u><br /></p><div>xxxx</div> <p>xxxx</p>';
     var elms = domUtils.getElementsByTagName( div, 'p' );
     equal( elms.length, 2, 'check elem count' );
@@ -501,10 +501,10 @@ test( 'getElementsByTagName', function() {
 
 test( 'unselectable--检查赋值是否成功', function() {
     var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     div.innerHTML = '<div><p>xxxx<span><b><i>xxx</i></b>xxxx</span></p>dddd<p><img /><a>aaaa</a></p></div>';
     domUtils.unSelectable( div );
-    if ( UE.browser.gecko || UE.browser.webkit ) {
+    if ( UM.browser.gecko || UM.browser.webkit ) {
         equal( div.style.MozUserSelect || div.style.KhtmlUserSelect, 'none', 'webkit or gecko unselectable' );
     } else {
         equal( div.unselectable, 'on', '检查unselectable属性' );
@@ -516,7 +516,7 @@ test( 'unselectable--检查赋值是否成功', function() {
 
 test( 'unselectable--检查是否真的不能选中', function() {
     var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     div.innerHTML = '<p>xxx</p>';
     //TODO ie下如何选中文本节点需要重新想一想，用程序选择文本貌似不会考虑unselectable属性，都是可以选中的
     if ( ! ua.browser.ie && !ua.browser.opera) {
@@ -543,7 +543,7 @@ test( 'unselectable--检查是否真的不能选中', function() {
 //test( 'removeAttributes--删除一个属性', function() {
 //    var div = te.dom[2];
 //    div.innerHTML = '<div class="div_class" name="div_name"></div>';
-//    var domUtils = UE.dom.domUtils;
+//    var domUtils = UM.dom.domUtils;
 //    domUtils.removeAttributes( div.firstChild, 'class' );
 //    equal( ua.getChildHTML( div ), '<div name="div_name"></div>' );
 //} );
@@ -551,7 +551,7 @@ test( 'unselectable--检查是否真的不能选中', function() {
 test( 'removeAttributes--删除多个属性，包括style', function() {
     var div = te.dom[2];
     div.innerHTML = '<div class="div_class" name="div_name" style="color:red;font-size:12px"></div>';
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     /*诡异模式下className可以删除，而非诡异模式下不能删除*/
     domUtils.removeAttributes( div.firstChild, ['class','name','style'] );
     equal( ua.getChildHTML( div ), '<div></div>' );
@@ -559,7 +559,7 @@ test( 'removeAttributes--删除多个属性，包括style', function() {
 
 test( 'setAttributes--设置class,style', function() {
     var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     div.innerHTML = '<div></div>';
     domUtils.setAttributes( div.firstChild, {'class':'div_class','id':'div_id','style':'color:red;font-size:12px;'} );
     var div_new = document.createElement( 'div' );
@@ -570,7 +570,7 @@ test( 'setAttributes--设置class,style', function() {
 
 test( 'getComputedStyle', function() {
     var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     div.innerHTML = '<div class="div_class" name="div_name" style="color:red;font-size:12px"></div><span></span>';
     equal( domUtils.getComputedStyle( div.firstChild, 'font-size' ), '12px' );
     equal( domUtils.getComputedStyle( div.firstChild, 'display' ), 'block' );
@@ -582,16 +582,17 @@ test( 'getComputedStyle', function() {
 
 test( 'getComputedStyle--获取默认的背景色', function() {
     var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     div.innerHTML = '<div>hello</div>';
     /*chrome下不作特殊处理得到的结果是rgba(0,0,0,0)，处理后是结果是“”*/
-    var result = UE.browser.webkit ? "" : "transparent";
+    var result = UM.browser.webkit ? "" : "transparent";
     equal( domUtils.getComputedStyle( div, 'background-color' ), result, '默认背景色为透明色' );
 } );
 
-test( 'getComputedStyle-border', function() {
+test( 'trace 3629 getComputedStyle-border', function() {
+    if(ua.browser.ie==9)return;//todo trace 3629
     var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     div.innerHTML = '<table style="border: 5px solid red"></table>';
     var s  =( (ua.browser.ie&&ua.browser.ie>8)||ua.browser.gecko)?'left-':'';
     equal( domUtils.getComputedStyle( div.firstChild, 'border-'+s+'width' ), '5px' );
@@ -600,14 +601,14 @@ test( 'getComputedStyle-border', function() {
 } );
 //修复ie下的一个bug，如果在body上强制设了字体大小，h1的字体大小就会继承body的字体，而没有办法取到真是的字体大小
 test( 'getComputedStyle-在body上设置字体大小', function() {
-    var domUtils = UE.dom.domUtils;
-    var editor = new UE.Editor({'autoFloatEnabled':false});
+    var domUtils = UM.dom.domUtils;
+    var editor = new UM.Editor({'autoFloatEnabled':false});
     var div = document.body.appendChild( document.createElement( 'div' ) );
     editor.render( div );
     stop();
     editor.ready(function(){
         var body = editor.body;
-        var range = new UE.dom.Range( editor.document );
+        var range = new UM.dom.Range( editor.document );
         var h1 = body.appendChild( editor.document.createElement( 'h1' ) );
 //    editor.body.style['fontSize'] = '10px';
 //   h1的字体大小不是10px
@@ -621,7 +622,7 @@ test( 'getComputedStyle-在body上设置字体大小', function() {
 test( "preventDefault", function() {
     expect( 1 );
     var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     /*img用来撑大页面*/
     var img = document.createElement( 'img' );
     img.src = upath + 'test.jpg';
@@ -650,7 +651,7 @@ test( "preventDefault", function() {
 
 test( 'getStyle--color is red', function() {
     var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     div.innerHTML = '<div class="div_class div_class2 div_class3" name="div_name" style="top:13px;color:red;font-size:12px"></div>';
     equal( domUtils.getStyle( div.firstChild, 'color' ), 'red', 'check color' );
     equal( domUtils.getStyle( div.firstChild, 'font-size' ), '12px', 'check font size' );
@@ -659,7 +660,7 @@ test( 'getStyle--color is red', function() {
 
 test( 'getStyle--color is rgb', function() {
     var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     div.innerHTML = '<div class="div_class div_class2 div_class3" name="div_name" style="top:13px;color:rgb(255,0,0);font-size:12px"></div>';
     equal( domUtils.getStyle( div.firstChild, 'color' ), '#FF0000', 'check color' );
     equal( domUtils.getStyle( div.firstChild, 'font-size' ), '12px', 'check font size' );
@@ -668,7 +669,7 @@ test( 'getStyle--color is rgb', function() {
 
 test( 'getStyle--color is #ff0000', function() {
     var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     div.innerHTML = '<div class="div_class div_class2 div_class3" name="div_name" style="top:13px;color:#ff0000;font-size:12px"></div>';
     equal( domUtils.getStyle( div.firstChild, 'color' ).toUpperCase(), '#FF0000', 'check color' );
     equal( domUtils.getStyle( div.firstChild, 'font-size' ), '12px', 'check font size' );
@@ -682,7 +683,7 @@ test( 'getStyle--color is #ff0000', function() {
 //} );
 test( 'removeDirtyAttr', function() {
     var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     div.innerHTML = '<div><span>xxx</span><img /></div>xx';
     $( div ).attr( '_moz_dirty', 'xxxx' );
     for ( var i = 0,ci,nodes = div.getElementsByTagName( '*' ); ci = nodes[i++]; ) {
@@ -698,7 +699,7 @@ test( 'removeDirtyAttr', function() {
 
 test( 'getChildCount', function() {
     var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     div.innerHTML = '<div name="div_name" style="top:13px;color:#ff0000;font-size:12px"><p><span>xxx<b><u></u></b></span></p><span>xxxx</span>xxx<img/>xxx</div>';
     var divChild = div.firstChild;
     equal( domUtils.getChildCount( div ), 1, 'one childNode' );
@@ -711,7 +712,7 @@ test( 'getChildCount', function() {
 
 test( 'setStyle', function() {
     var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     div.innerHTML = '<div style="float: left"><p style="background: red"></p></div>';
     /*修改float值*/
     domUtils.setStyle( div.firstChild, 'float', 'right' );
@@ -723,7 +724,7 @@ test( 'setStyle', function() {
 //zhuwenxuan add
 test( 'isEmptyNode', function() {
     var div = te.dom[2];
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     div.innerHTML = " \t\t\n\r";
     ok(domUtils.isEmptyNode(div));
     div.innerHTML = '<div><i></i><b>dasdf</b></div>';
@@ -732,7 +733,7 @@ test( 'isEmptyNode', function() {
 
 //zhuwenxuan add
 test( 'isBr', function() {
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     var div = te.dom[2];
     div.innerHTML = "<br>";
     equal(true,domUtils.isBr(div.firstChild));
@@ -740,7 +741,7 @@ test( 'isBr', function() {
 
 //zhuwenxuan add
 test( 'isFillChar', function() {
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     var div = te.dom[2];
     domUtils.fillNode(document,div);
     if(ua.browser.ie){
@@ -751,7 +752,7 @@ test( 'isFillChar', function() {
 
 //zhuwenxuan add
 test( 'isEmptyBlock', function() {
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     var div = te.dom[2];
     domUtils.fillNode(document,div);
     ok(domUtils.isEmptyBlock(div));
@@ -763,7 +764,7 @@ test( 'isEmptyBlock', function() {
 
 //zhuwenxuan add
 test( 'fillNode', function() {
-    var domUtils = UE.dom.domUtils;
+    var domUtils = UM.dom.domUtils;
     var div = te.dom[2];
     domUtils.fillNode(document,div);
     ok(div.innerHTML.length>0);

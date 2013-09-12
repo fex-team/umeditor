@@ -1,4 +1,4 @@
-UE.ready(function() {
+UM.ready(function() {
     var me = this,
         lang = me.getLang();
     me.setOpt({
@@ -16,7 +16,7 @@ UE.ready(function() {
         quirks = browser.quirks;
 
     function checkHasUI(){
-        if(!UE.ui){
+        if(!UM.ui){
             alert(lang.autofloatMsg);
             return 0;
         }

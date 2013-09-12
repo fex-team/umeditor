@@ -1,12 +1,12 @@
 /**
  * @file
- * @name UE.filterWord
+ * @name UM.filterWord
  * @short filterWord
  * @desc 用来过滤word粘贴过来的字符串
  * @import editor.js,core/utils.js
  * @anthor zhanyi
  */
-var filterWord = UE.filterWord = function () {
+var filterWord = UM.filterWord = function () {
 
     //是否是word过来的内容
     function isWordDocument( str ) {

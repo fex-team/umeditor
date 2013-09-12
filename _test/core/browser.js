@@ -2,7 +2,7 @@ module( "core.browser" );
 
 
 test( 'browser', function() {
-    var browser = UE.browser;
+    var browser = UM.browser;
     /*ie*/
     if ( browser.ie ) {
         ok( ua.browser.ie, 'is ie' );

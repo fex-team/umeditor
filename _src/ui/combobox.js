@@ -14,7 +14,7 @@
         ICON_CLASS = 'edui-combobox-checked-icon',
         labelClassName = 'edui-combobox-item-label';
 
-    UE.ui.define( widgetName, ( function(){
+    UM.ui.define( widgetName, ( function(){
 
         return {
             tpl: "<ul class=\"dropdown-menu edui-combobox-menu<%if (comboboxName!=='') {%> edui-combobox-<%=comboboxName%><%}%>\" unselectable=\"on\" onmousedown=\"return false\" role=\"menu\" aria-labelledby=\"dropdownMenu\">" +

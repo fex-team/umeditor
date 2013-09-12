@@ -3,14 +3,14 @@
 <head>
 
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <title>UEditor Mini重置编辑器</title>
+    <title>UMEDITOR 重置编辑器</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link href="../themes/default/_css/ueditor.css" type="text/css" rel="stylesheet">
+    <link href="../themes/default/_css/umeditor.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript" charset="utf-8" src="../ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../umeditor.config.js"></script>
 
     <!--使用版-->
-    <!--<script type="text/javascript" charset="utf-8" src="../ueditor.all.js"></script>-->
+    <!--<script type="text/javascript" charset="utf-8" src="../umeditor.all.js"></script>-->
 
     <!--开发版-->
     <script type="text/javascript" charset="utf-8" src="editor_api.js"></script>
@@ -23,7 +23,7 @@
     </style>
 </head>
 <body>
-<h1>UEditor Mini重置编辑器</h1>
+<h1>UMEDITOR 重置编辑器</h1>
 
 <!--style给定宽度可以影响编辑器的最终宽度-->
 <div id="container"><div class="content" id="simple" style="width:800px;height:240px;"></div></div>
@@ -31,7 +31,7 @@
 <p><input id="destroy" type="button" onclick="destroy()" value="销毁编辑器"></p>
 
 <script type="text/javascript">
-    var ue = UE.getEditor('simple');
+    var ue = UM.getEditor('simple');
     function simple() {
         if(ue){
             ue.setContent("编辑器内部变量已经被重置!");
@@ -46,7 +46,7 @@
 
         button.value = "重新渲染";
         button.onclick = function(){
-            ue = UE.getEditor('simple');
+            ue = UM.getEditor('simple');
             this.value="销毁编辑器";
             this.onclick = destroy;
             timer = setInterval( setMsg, 100 );

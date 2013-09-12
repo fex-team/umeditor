@@ -2,7 +2,7 @@
     var File = java.io.File;
     var System = java.lang.System;
     var match;
-    var inFile = new File(inFilePath+'_css/ueditor.css');
+    var inFile = new File(inFilePath+'_css/umeditor.css');
 
     var html = getStringOfFile(inFile);
 

@@ -1,6 +1,6 @@
 /**
  * @file
- * @name UE.Editor
+ * @name UM.Editor
  * @short Editor
  * @import editor.js,core/utils.js,core/EventBase.js,core/browser.js,core/dom/dtd.js,core/dom/domUtils.js,core/dom/Range.js,core/dom/Selection.js,plugins/serialize.js
  * @desc 编辑器主类，包含编辑器提供的大部分公用接口
@@ -19,7 +19,7 @@
         if (editor.textarea) {
             if (utils.isString(editor.textarea)) {
                 for (var i = 0, ti, tis = domUtils.getElementsByTagName(form, 'textarea'); ti = tis[i++];) {
-                    if (ti.id == 'ueditor_textarea_' + editor.options.textarea) {
+                    if (ti.id == 'umeditor_textarea_' + editor.options.textarea) {
                         textarea = ti;
                         break;
                     }
@@ -31,7 +31,7 @@
         if (!textarea) {
             form.appendChild(textarea = domUtils.createElement(document, 'textarea', {
                 'name': editor.options.textarea,
-                'id': 'ueditor_textarea_' + editor.options.textarea,
+                'id': 'umeditor_textarea_' + editor.options.textarea,
                 'style': "display:none"
             }));
             //不要产生多个textarea
@@ -43,8 +43,8 @@
     }
     function loadPlugins(me){
         //初始化插件
-        for (var pi in UE.plugins) {
-            UE.plugins[pi].call(me);
+        for (var pi in UM.plugins) {
+            UM.plugins[pi].call(me);
         }
         me.langIsReady = true;
 
@@ -66,12 +66,12 @@
      * - ***body*** 编辑区域所在的body对象
      * - ***selection*** 编辑区域的选区对象
      */
-    var Editor = UE.Editor = function (options) {
+    var Editor = UM.Editor = function (options) {
         var me = this;
         me.uid = uid++;
         EventBase.call(me);
         me.commands = {};
-        me.options = utils.extend(utils.clone(options || {}), UEDITOR_CONFIG, true);
+        me.options = utils.extend(utils.clone(options || {}), UMEDITOR_CONFIG, true);
         me.shortcutkeys = {};
         me.inputRules = [];
         me.outputRules = [];
@@ -83,7 +83,7 @@
                 '.edui-editor-body .edui-body-container{border:0;outline:none;cursor:text;padding:0 10px 0;oveflow:auto;display:block;word-wrap:break-word;font-size:16px;font-family:sans-serif;}' +
                 '.edui-editor-body.focus{border:1px solid #5c9dff}',
             autoClearinitialContent: false,
-            iframeCssUrl: me.options.UEDITOR_HOME_URL + 'themes/iframe.css',
+            iframeCssUrl: me.options.UMEDITOR_HOME_URL + 'themes/iframe.css',
             textarea: 'editorValue',
             focus: false,
             focusInEnd: true,
@@ -95,19 +95,19 @@
             enterTag: 'p',
             customDomain: false,
             lang: 'zh-cn',
-            langPath: me.options.UEDITOR_HOME_URL + 'lang/',
+            langPath: me.options.UMEDITOR_HOME_URL + 'lang/',
             theme: 'default',
-            themePath: me.options.UEDITOR_HOME_URL + 'themes/',
+            themePath: me.options.UMEDITOR_HOME_URL + 'themes/',
             allHtmlEnabled: false,
             scaleEnabled: false,
             tableNativeEditInFF: false,
-            autoSyncData : true,
+            autoSyncData : true
 
         });
 
-        if(!utils.isEmptyObject(UE.I18N)){
+        if(!utils.isEmptyObject(UM.I18N)){
             //修改默认的语言类型
-            me.options.lang = checkCurLang(UE.I18N);
+            me.options.lang = checkCurLang(UM.I18N);
             loadPlugins(me)
         }else{
             utils.loadFile(document, {
@@ -120,7 +120,7 @@
             });
         }
 
-        UE.instants['ueditorInstant' + me.uid] = me;
+        UM.instants['umeditorInstant' + me.uid] = me;
     };
     Editor.prototype = {
         /**
@@ -129,7 +129,7 @@
          * @name ready
          * @grammar editor.ready(fn) fn是当编辑器渲染好后执行的function
          * @example
-         * var editor = new UE.ui.Editor();
+         * var editor = new UM.ui.Editor();
          * editor.render("myEditor");
          * editor.ready(function(){
          *     editor.setContent("欢迎使用UEditor！");
@@ -196,7 +196,7 @@
                     delete this[p];
                 }
             }
-            UE.clearCache(key)
+            UM.clearCache(key)
         },
         initialCont : function(holder){
 
@@ -205,7 +205,7 @@
                 if (holder && /script|textarea/ig.test(holder.tagName)) {
                     var newDiv = document.createElement('div');
                     holder.parentNode.insertBefore(newDiv, holder);
-                    this.options.initialContent = UE.htmlparser(holder.value || holder.innerHTML|| this.options.initialContent).toHtml();
+                    this.options.initialContent = UM.htmlparser(holder.value || holder.innerHTML|| this.options.initialContent).toHtml();
                     holder.className && (newDiv.className = holder.className);
                     holder.style.cssText && (newDiv.style.cssText = holder.style.cssText);
 
@@ -243,7 +243,7 @@
                 container = document.getElementById(container);
             }
             if (container) {
-                utils.cssRule('ueditor_body_css',me.options.initialStyle,document);
+                utils.cssRule('umeditor_body_css',me.options.initialStyle,document);
 
                 container = this.initialCont(container);
 
@@ -253,13 +253,13 @@
                     options.minFrameWidth = options.initialFrameWidth
                 }else{
                     //都没给值，先写死了
-                    options.minFrameWidth = options.initialFrameWidth = $(container).width() || UE.defaultWidth;
+                    options.minFrameWidth = options.initialFrameWidth = $(container).width() || UM.defaultWidth;
                 }
                 if(options.initialFrameHeight){
                     options.minFrameHeight = options.initialFrameHeight
                 }else{
 
-                    options.initialFrameHeight = options.minFrameHeight = $(container).height() || UE.defaultHeight;
+                    options.initialFrameHeight = options.minFrameHeight = $(container).height() || UM.defaultHeight;
                 }
 
                 container.style.width = /%$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth - getStyleValue("padding-left")- getStyleValue("padding-right")   +'px';
@@ -466,7 +466,7 @@
                 return '';
             }
             me.fireEvent('beforegetcontent');
-            var root = UE.htmlparser(me.body.innerHTML,ignoreBlank);
+            var root = UM.htmlparser(me.body.innerHTML,ignoreBlank);
             me.filterOutputRule(root);
             me.fireEvent('aftergetcontent',root);
             return  root.toHtml(formatter);
@@ -528,7 +528,7 @@
          * @name setContent
          * @grammar editor.setContent(html)
          * @example
-         * var editor = new UE.ui.Editor()
+         * var editor = new UM.ui.Editor()
          * editor.ready(function(){
          *     //需要ready后执行，否则可能报错
          *     editor.setContent("欢迎使用UEditor！");
@@ -538,7 +538,7 @@
             var me = this;
 
             me.fireEvent('beforesetcontent', html);
-            var root = UE.htmlparser(html);
+            var root = UM.htmlparser(html);
             me.filterInputRule(root);
             html = root.toHtml();
 
@@ -611,7 +611,7 @@
                 } else {
                     rng.select(true);
                 }
-                this.fireEvent('focus');
+//                this.fireEvent('focus');
             } catch (e) {
             }
         },
@@ -707,7 +707,7 @@
             args = Array.prototype.slice.call(args,0);
             var cmdName = args.shift().toLowerCase(),
                 cmd, cmdFn;
-            cmd = this.commands[cmdName] || UE.commands[cmdName];
+            cmd = this.commands[cmdName] || UM.commands[cmdName];
             cmdFn = cmd && cmd[fnName];
             //没有querycommandstate或者没有command的都默认返回0
             if ((!cmd || !cmdFn) && fnName == 'queryCommandState') {
@@ -730,7 +730,7 @@
             cmdName = cmdName.toLowerCase();
             var me = this,
                 result,
-                cmd = me.commands[cmdName] || UE.commands[cmdName];
+                cmd = me.commands[cmdName] || UM.commands[cmdName];
             if (!cmd || !cmd.execCommand) {
                 return null;
             }
@@ -967,7 +967,7 @@
          * editor.getLang('contextMenu.delete') //如果当前是中文，那返回是的是删除
          */
         getLang: function (path) {
-            var lang = UE.I18N[this.options.lang];
+            var lang = UM.I18N[this.options.lang];
             if (!lang) {
                 throw Error("not import language file");
             }

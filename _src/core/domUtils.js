@@ -1,6 +1,6 @@
 /**
  * @file
- * @name UE.dom.domUtils
+ * @name UM.dom.domUtils
  * @short DomUtils
  * @import editor.js, core/utils.js,core/browser.js,core/dom/dtd.js
  * @desc UEditor封装的底层dom操作库
@@ -100,7 +100,7 @@ var domUtils = dom.domUtils = {
     /**
      * 获取节点A相对于节点B的位置关系
      * @name getPosition
-     * @grammar UE.dom.domUtils.getPosition(nodeA,nodeB)  =>  Number
+     * @grammar UM.dom.domUtils.getPosition(nodeA,nodeB)  =>  Number
      * @example
      *  switch (returnValue) {
      *      case 0: //相等，同一节点
@@ -164,7 +164,7 @@ var domUtils = dom.domUtils = {
     /**
      * 返回节点node在父节点中的索引位置
      * @name getNodeIndex
-     * @grammar UE.dom.domUtils.getNodeIndex(node)  => Number  //索引值从0开始
+     * @grammar UM.dom.domUtils.getNodeIndex(node)  => Number  //索引值从0开始
      */
     getNodeIndex: function (node, ignoreTextNode) {
         var preNode = node,
@@ -184,7 +184,7 @@ var domUtils = dom.domUtils = {
     /**
      * 检测节点node是否在节点doc的树上，实质上是检测是否被doc包含
      * @name inDoc
-     * @grammar UE.dom.domUtils.inDoc(node,doc)   =>  true|false
+     * @grammar UM.dom.domUtils.inDoc(node,doc)   =>  true|false
      */
     inDoc: function (node, doc) {
         return domUtils.getPosition(node, doc) == 10;
@@ -192,9 +192,9 @@ var domUtils = dom.domUtils = {
     /**
      * 查找node节点的祖先节点
      * @name findParent
-     * @grammar UE.dom.domUtils.findParent(node)  => Element  // 直接返回node节点的父节点
-     * @grammar UE.dom.domUtils.findParent(node,filterFn)  => Element  //filterFn为过滤函数，node作为参数，返回true时才会将node作为符合要求的节点返回
-     * @grammar UE.dom.domUtils.findParent(node,filterFn,includeSelf)  => Element  //includeSelf指定是否包含自身
+     * @grammar UM.dom.domUtils.findParent(node)  => Element  // 直接返回node节点的父节点
+     * @grammar UM.dom.domUtils.findParent(node,filterFn)  => Element  //filterFn为过滤函数，node作为参数，返回true时才会将node作为符合要求的节点返回
+     * @grammar UM.dom.domUtils.findParent(node,filterFn,includeSelf)  => Element  //includeSelf指定是否包含自身
      */
     findParent: function (node, filterFn, includeSelf) {
         if (node && !domUtils.isBody(node)) {
@@ -211,9 +211,9 @@ var domUtils = dom.domUtils = {
     /**
      * 通过tagName查找node节点的祖先节点
      * @name findParentByTagName
-     * @grammar UE.dom.domUtils.findParentByTagName(node,tagNames)   =>  Element  //tagNames支持数组，区分大小写
-     * @grammar UE.dom.domUtils.findParentByTagName(node,tagNames,includeSelf)   =>  Element  //includeSelf指定是否包含自身
-     * @grammar UE.dom.domUtils.findParentByTagName(node,tagNames,includeSelf,excludeFn)   =>  Element  //excludeFn指定例外过滤条件，返回true时忽略该节点
+     * @grammar UM.dom.domUtils.findParentByTagName(node,tagNames)   =>  Element  //tagNames支持数组，区分大小写
+     * @grammar UM.dom.domUtils.findParentByTagName(node,tagNames,includeSelf)   =>  Element  //includeSelf指定是否包含自身
+     * @grammar UM.dom.domUtils.findParentByTagName(node,tagNames,includeSelf,excludeFn)   =>  Element  //excludeFn指定例外过滤条件，返回true时忽略该节点
      */
     findParentByTagName: function (node, tagNames, includeSelf, excludeFn) {
         tagNames = utils.listToMap(utils.isArray(tagNames) ? tagNames : [tagNames]);
@@ -224,10 +224,10 @@ var domUtils = dom.domUtils = {
     /**
      * 查找节点node的祖先节点集合
      * @name findParents
-     * @grammar UE.dom.domUtils.findParents(node)  => Array  //返回一个祖先节点数组集合，不包含自身
-     * @grammar UE.dom.domUtils.findParents(node,includeSelf)  => Array  //返回一个祖先节点数组集合，includeSelf指定是否包含自身
-     * @grammar UE.dom.domUtils.findParents(node,includeSelf,filterFn)  => Array  //返回一个祖先节点数组集合，filterFn指定过滤条件，返回true的node将被选取
-     * @grammar UE.dom.domUtils.findParents(node,includeSelf,filterFn,closerFirst)  => Array  //返回一个祖先节点数组集合，closerFirst为true的话，node的直接父亲节点是数组的第0个
+     * @grammar UM.dom.domUtils.findParents(node)  => Array  //返回一个祖先节点数组集合，不包含自身
+     * @grammar UM.dom.domUtils.findParents(node,includeSelf)  => Array  //返回一个祖先节点数组集合，includeSelf指定是否包含自身
+     * @grammar UM.dom.domUtils.findParents(node,includeSelf,filterFn)  => Array  //返回一个祖先节点数组集合，filterFn指定过滤条件，返回true的node将被选取
+     * @grammar UM.dom.domUtils.findParents(node,includeSelf,filterFn,closerFirst)  => Array  //返回一个祖先节点数组集合，closerFirst为true的话，node的直接父亲节点是数组的第0个
      */
     findParents: function (node, includeSelf, filterFn, closerFirst) {
         var parents = includeSelf && ( filterFn && filterFn(node) || !filterFn ) ? [node] : [];
@@ -240,7 +240,7 @@ var domUtils = dom.domUtils = {
     /**
      * 在节点node后面插入新节点newNode
      * @name insertAfter
-     * @grammar UE.dom.domUtils.insertAfter(node,newNode)  => newNode
+     * @grammar UM.dom.domUtils.insertAfter(node,newNode)  => newNode
      */
     insertAfter: function (node, newNode) {
         return node.parentNode.insertBefore(newNode, node.nextSibling);
@@ -249,8 +249,8 @@ var domUtils = dom.domUtils = {
     /**
      * 删除节点node，并根据keepChildren指定是否保留子节点
      * @name remove
-     * @grammar UE.dom.domUtils.remove(node)  =>  node
-     * @grammar UE.dom.domUtils.remove(node,keepChildren)  =>  node
+     * @grammar UM.dom.domUtils.remove(node)  =>  node
+     * @grammar UM.dom.domUtils.remove(node,keepChildren)  =>  node
      */
     remove: function (node, keepChildren) {
 
@@ -271,7 +271,7 @@ var domUtils = dom.domUtils = {
     /**
      * 检测节点node是否属于bookmark节点
      * @name isBookmarkNode
-     * @grammar UE.dom.domUtils.isBookmarkNode(node)  => true|false
+     * @grammar UM.dom.domUtils.isBookmarkNode(node)  => true|false
      */
     isBookmarkNode: function (node) {
         return node.nodeType == 1 && node.id && /^_baidu_bookmark_/i.test(node.id);
@@ -279,7 +279,7 @@ var domUtils = dom.domUtils = {
     /**
      * 获取节点node所在的window对象
      * @name  getWindow
-     * @grammar UE.dom.domUtils.getWindow(node)  => window对象
+     * @grammar UM.dom.domUtils.getWindow(node)  => window对象
      */
     getWindow: function (node) {
         var doc = node.ownerDocument || node;
@@ -290,7 +290,7 @@ var domUtils = dom.domUtils = {
     /**
      * 将一个文本节点node拆分成两个文本节点，offset指定拆分位置
      * @name split
-     * @grammar UE.dom.domUtils.split(node,offset)  =>  TextNode  //返回从切分位置开始的后一个文本节点
+     * @grammar UM.dom.domUtils.split(node,offset)  =>  TextNode  //返回从切分位置开始的后一个文本节点
      */
     split: function (node, offset) {
         var doc = node.ownerDocument;
@@ -311,7 +311,7 @@ var domUtils = dom.domUtils = {
     /**
      * 检测节点node是否为空节点（包括空格、换行、占位符等字符）
      * @name  isWhitespace
-     * @grammar  UE.dom.domUtils.isWhitespace(node)  => true|false
+     * @grammar  UM.dom.domUtils.isWhitespace(node)  => true|false
      */
     isWhitespace: function (node) {
         return !new RegExp('[^ \t\n\r' + domUtils.fillChar + ']').test(node.nodeValue);
@@ -319,7 +319,7 @@ var domUtils = dom.domUtils = {
     /**
      * 获取元素element相对于viewport的位置坐标
      * @name getXY
-     * @grammar UE.dom.domUtils.getXY(element)  => Object //返回坐标对象{x:left,y:top}
+     * @grammar UM.dom.domUtils.getXY(element)  => Object //返回坐标对象{x:left,y:top}
      */
     getXY: function (element) {
         var x = 0, y = 0;
@@ -333,13 +333,13 @@ var domUtils = dom.domUtils = {
     /**
      * 为元素element绑定原生DOM事件，type为事件类型，handler为处理函数
      * @name on
-     * @grammar UE.dom.domUtils.on(element,type,handler)   //type支持数组传入
+     * @grammar UM.dom.domUtils.on(element,type,handler)   //type支持数组传入
      * @example
-     * UE.dom.domUtils.on(document.body,"click",function(e){
+     * UM.dom.domUtils.on(document.body,"click",function(e){
      *     //e为事件对象，this为被点击元素对戏那个
      * })
      * @example
-     * UE.dom.domUtils.on(document.body,["click","mousedown"],function(evt){
+     * UM.dom.domUtils.on(document.body,["click","mousedown"],function(evt){
      *     //evt为事件对象，this为被点击元素对象
      * })
      */
@@ -377,7 +377,7 @@ var domUtils = dom.domUtils = {
     /**
      * 解除原生DOM事件绑定
      * @name un
-     * @grammar  UE.dom.donUtils.un(element,type,handler)  //参见<code><a href="#on">on</a></code>
+     * @grammar  UM.dom.donUtils.un(element,type,handler)  //参见<code><a href="#on">on</a></code>
      */
     un: function (element, type, handler) {
         var types = utils.isArray(type) ? type : [type],
@@ -405,7 +405,7 @@ var domUtils = dom.domUtils = {
     /**
      * 检查节点node是否是空inline节点
      * @name  isEmptyInlineElement
-     * @grammar   UE.dom.domUtils.isEmptyInlineElement(node)  => 1|0
+     * @grammar   UM.dom.domUtils.isEmptyInlineElement(node)  => 1|0
      * @example
      * <b><i></i></b> => 1
      * <b><i></i><u></u></b> => 1
@@ -437,7 +437,7 @@ var domUtils = dom.domUtils = {
     /**
      * 检查节点node是否为块元素
      * @name isBlockElm
-     * @grammar UE.dom.domUtils.isBlockElm(node)  => true|false
+     * @grammar UM.dom.domUtils.isBlockElm(node)  => true|false
      */
     isBlockElm: function (node) {
         return node.nodeType == 1 && (dtd.$block[node.tagName] || styleBlock[domUtils.getComputedStyle(node, 'display')]) && !dtd.$nonChild[node.tagName];
@@ -447,7 +447,7 @@ var domUtils = dom.domUtils = {
     /**
      * 原生方法getElementsByTagName的封装
      * @name getElementsByTagName
-     * @grammar UE.dom.domUtils.getElementsByTagName(node,tagName)  => Array  //节点集合数组
+     * @grammar UM.dom.domUtils.getElementsByTagName(node,tagName)  => Array  //节点集合数组
      */
     getElementsByTagName: function (node, name, filter) {
         if (filter && utils.isString(filter)) {
@@ -479,7 +479,7 @@ var domUtils = dom.domUtils = {
     /**
      * 设置节点node及其子节点不会被选中
      * @name unSelectable
-     * @grammar UE.dom.domUtils.unSelectable(node)
+     * @grammar UM.dom.domUtils.unSelectable(node)
      */
     unSelectable: ie || browser.opera ? function (node) {
         //for ie9
@@ -511,12 +511,12 @@ var domUtils = dom.domUtils = {
     /**
      * 删除节点node上的属性attrNames，attrNames为属性名称数组
      * @name  removeAttributes
-     * @grammar UE.dom.domUtils.removeAttributes(node,attrNames)
+     * @grammar UM.dom.domUtils.removeAttributes(node,attrNames)
      * @example
      * //Before remove
      * <span style="font-size:14px;" id="test" name="followMe">xxxxx</span>
      * //Remove
-     * UE.dom.domUtils.removeAttributes(node,["id","name"]);
+     * UM.dom.domUtils.removeAttributes(node,["id","name"]);
      * //After remove
      * <span style="font-size:14px;">xxxxx</span>
      */
@@ -538,7 +538,7 @@ var domUtils = dom.domUtils = {
     /**
      * 在doc下创建一个标签名为tag，属性为attrs的元素
      * @name createElement
-     * @grammar UE.dom.domUtils.createElement(doc,tag,attrs)  =>  Node  //返回创建的节点
+     * @grammar UM.dom.domUtils.createElement(doc,tag,attrs)  =>  Node  //返回创建的节点
      */
     createElement: function (doc, tag, attrs) {
         return domUtils.setAttributes(doc.createElement(tag), attrs)
@@ -546,7 +546,7 @@ var domUtils = dom.domUtils = {
     /**
      * 为节点node添加属性attrs，attrs为属性键值对
      * @name setAttributes
-     * @grammar UE.dom.domUtils.setAttributes(node,attrs)  => node
+     * @grammar UM.dom.domUtils.setAttributes(node,attrs)  => node
      */
     setAttributes: function (node, attrs) {
         for (var attr in attrs) {
@@ -577,7 +577,7 @@ var domUtils = dom.domUtils = {
     /**
      * 获取元素element的计算样式
      * @name getComputedStyle
-     * @grammar UE.dom.domUtils.getComputedStyle(element,styleName)  => String //返回对应样式名称的样式值
+     * @grammar UM.dom.domUtils.getComputedStyle(element,styleName)  => String //返回对应样式名称的样式值
      * @example
      * getComputedStyle(document.body,"font-size")  =>  "15px"
      * getComputedStyle(form,"color")  =>  "#ffccdd"
@@ -597,7 +597,7 @@ var domUtils = dom.domUtils = {
     /**
      * 获取元素element的某个样式值
      * @name getStyle
-     * @grammar UE.dom.domUtils.getStyle(element,name)  => String
+     * @grammar UM.dom.domUtils.getStyle(element,name)  => String
      */
     getStyle: function (element, name) {
         var value = element.style[ utils.cssStyleToDomStyle(name) ];
@@ -606,7 +606,7 @@ var domUtils = dom.domUtils = {
     /**
      * 为元素element设置样式属性值
      * @name setStyle
-     * @grammar UE.dom.domUtils.setStyle(element,name,value)
+     * @grammar UM.dom.domUtils.setStyle(element,name,value)
      */
     setStyle: function (element, name, value) {
         element.style[utils.cssStyleToDomStyle(name)] = value;

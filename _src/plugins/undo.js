@@ -7,7 +7,7 @@
  * @author zhanyi
  */
 
-UE.plugins['undo'] = function () {
+UM.plugins['undo'] = function () {
     var saveSceneTimer;
     var me = this,
         maxUndoCount = me.options.maxUndoCount || 20,
@@ -72,7 +72,7 @@ UE.plugins['undo'] = function () {
         this.restore = function () {
             var me = this.editor;
             var scene = this.list[this.index];
-            var root = UE.htmlparser(scene.content.replace(fillchar, ''));
+            var root = UM.htmlparser(scene.content.replace(fillchar, ''));
             me.options.autoClearEmptyNode = false;
             me.filterInputRule(root,true);
             me.options.autoClearEmptyNode = orgState;
@@ -111,7 +111,7 @@ UE.plugins['undo'] = function () {
             var rng = me.selection.getRange(),
                 rngAddress = rng.createAddress(false,true);
             me.fireEvent('beforegetscene');
-            var root = UE.htmlparser(me.body.innerHTML,true);
+            var root = UM.htmlparser(me.body.innerHTML,true);
             me.options.autoClearEmptyNode = false;
             me.filterOutputRule(root,true);
             me.options.autoClearEmptyNode = orgState;

@@ -6,7 +6,7 @@
 ///import core/dom/domUtils.js
 /**
  * @file
- * @name UE.dom.Range
+ * @name UM.dom.Range
  * @anthor zhanyi
  * @short Range
  * @import editor.js,core/utils.js,core/browser.js,core/dom/domUtils.js,core/dom/dtd.js
@@ -57,7 +57,7 @@
 
     /**
      * @name Range
-     * @grammar new UE.dom.Range(document)  => Range 实例
+     * @grammar new UM.dom.Range(document)  => Range 实例
      * @desc 创建一个跟document绑定的空的Range实例
      * - ***startContainer*** 开始边界的容器节点,可以是elementNode或者是textNode
      * - ***startOffset*** 容器节点中的偏移量，如果是elementNode就是childNodes中的第几个，如果是textNode就是nodeValue的第几个字符

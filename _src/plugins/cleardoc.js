@@ -6,11 +6,11 @@
  *
  * 清空文档
  * @function
- * @name UE.execCommand
+ * @name UM.execCommand
  * @param   {String}   cmdName     cleardoc清空文档
  */
 
-UE.commands['cleardoc'] = {
+UM.commands['cleardoc'] = {
     execCommand : function() {
         var me = this,
             range = me.selection.getRange();

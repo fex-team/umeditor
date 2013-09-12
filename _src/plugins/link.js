@@ -6,7 +6,7 @@
 /**
  * 超链接
  * @function
- * @name UE.execCommand
+ * @name UM.execCommand
  * @param   {String}   cmdName     link插入超链接
  * @param   {Object}  options         url地址，title标题，target是否打开新页
  * @author zhanyi
@@ -14,12 +14,12 @@
 /**
  * 取消链接
  * @function
- * @name UE.execCommand
+ * @name UM.execCommand
  * @param   {String}   cmdName     unlink取消链接
  * @author zhanyi
  */
 
-UE.plugins['link'] = function(){
+UM.plugins['link'] = function(){
     this.setOpt('autourldetectinie',false);
     //在ie下禁用autolink
     if(browser.ie && this.options.autourldetectinie === false){
@@ -64,7 +64,7 @@ UE.plugins['link'] = function(){
             a.setAttr('_href', utils.html(a.getAttr('href')));
         })
     });
-    UE.commands['link'] = {
+    UM.commands['link'] = {
         execCommand : function( cmdName, opt ) {
 
             var me = this;
@@ -80,12 +80,12 @@ UE.plugins['link'] = function(){
                 }
 
             }else{
-                me.document.execCommand('createlink',false,'_ueditor_link');
+                me.document.execCommand('createlink',false,'_umeditor_link');
                 utils.each(domUtils.getElementsByTagName(me.body,'a',function(n){
 
-                    return n.getAttribute('href') == '_ueditor_link'
+                    return n.getAttribute('href') == '_umeditor_link'
                 }),function(l){
-                    if($(l).text() == '_ueditor_link'){
+                    if($(l).text() == '_umeditor_link'){
                         $(l).text(opt.href);
                     }
                     domUtils.setAttributes(l,opt);
@@ -109,7 +109,7 @@ UE.plugins['link'] = function(){
             return result;
         }
     };
-    UE.commands['unlink'] = {
+    UM.commands['unlink'] = {
         execCommand : function() {
             this.document.execCommand('unlink');
         }

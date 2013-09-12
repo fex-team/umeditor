@@ -4,7 +4,7 @@
 ///commandsName InsertVideo
 ///commandsTitle  插入视频
 ///commandsDialog  dialogs\video
-UE.plugins['video'] = function (){
+UM.plugins['video'] = function (){
     var me =this,
         div;
 
@@ -21,7 +21,7 @@ UE.plugins['video'] = function (){
         return  !toEmbed ?
 
                 '<img ' + (id ? 'id="' + id+'"' : '') + ' width="'+ width +'" height="' + height + '" _url="'+url+'" class="edui-faked-video"'  +
-                ' src="' + me.options.UEDITOR_HOME_URL+'themes/default/images/spacer.gif" style="background:url('+me.options.UEDITOR_HOME_URL+'themes/default/images/videologo.gif) no-repeat center center; border:1px solid gray;'+(align ? 'float:' + align + ';': '')+'" />'
+                ' src="' + me.options.UMEDITOR_HOME_URL+'themes/default/images/spacer.gif" style="background:url('+me.options.UMEDITOR_HOME_URL+'themes/default/images/videologo.gif) no-repeat center center; border:1px solid gray;'+(align ? 'float:' + align + ';': '')+'" />'
 
                 :
                 '<embed type="application/x-shockwave-flash" class="edui-faked-video" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
@@ -34,7 +34,7 @@ UE.plugins['video'] = function (){
             if(node.getAttr('class') == 'edui-faked-video'){
 
                 var html = creatInsertStr( img2embed ? node.getAttr('_url') : node.getAttr('src'),node.getAttr('width'),node.getAttr('height'),null,node.getStyle('float') || '',img2embed);
-                node.parentNode.replaceChild(UE.uNode.createElement(html),node)
+                node.parentNode.replaceChild(UM.uNode.createElement(html),node)
             }
         })
     }

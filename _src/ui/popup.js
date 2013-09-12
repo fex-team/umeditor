@@ -1,5 +1,5 @@
 //popup 类
-UE.ui.define('popup', {
+UM.ui.define('popup', {
     tpl: '<div class="edui-dropdown-menu edui-popup"'+
         '<%if(!<%=stopprop%>){%>onmousedown="return false"<%}%>'+
         '><div class="edui-popup-body" unselectable="on" onmousedown="return false"><%=subtpl%></div>' +
