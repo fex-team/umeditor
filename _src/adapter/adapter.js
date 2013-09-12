@@ -10,7 +10,8 @@
         _readyFn = [],
         _activeWidget = null,
         _widgetData = {},
-        _widgetCallBack = {};
+        _widgetCallBack = {},
+        _cacheUI = {};
 
     utils.extend(UM, {
         defaultWidth : 500,
@@ -168,9 +169,13 @@
                 var $span = $('<span style="padding:0;margin:0;height:0;width:0"></span>');
                 $span.insertAfter($container);
             }
-
-
-
+            //初始化注册的ui组件
+            $.each(_editorUI,function(n,v){
+                var widget = v.call(editor,n);
+                if(widget){
+                    _cacheUI[n] = widget;
+                }
+            });
 
             $container.find('.edui-editor-body').append($editorCont).before(this.createToolbar(editor.options, editor));
 
@@ -191,7 +196,7 @@
                         if(name == '|'){
                                 $.eduiseparator && btns.push($.eduiseparator());
                         }else{
-                            var ui = me.getUI(editor,name);
+                            var ui = _cacheUI[name];
                             if(name=="fullscreen"){
                                 ui&&btns.unshift(ui);
                             }else{
