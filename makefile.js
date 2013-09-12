@@ -149,7 +149,7 @@ function addtheme(){
     copy('themes/' + theme,'umeditor/themes/' + theme,function(name){
         return /^_/.test(name)
     });
-    copy('themes/iframe.css','umeditor/themes/iframe.css');
+
 
     del('themes/default/css')
 }
