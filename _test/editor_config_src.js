@@ -2,8 +2,8 @@
  *  umeditor完整配置项
  *  可以在这里配置整个编辑器的特性
  */
-var UMDITOR_CONFIG = {
-    UEDITOR_HOME_URL: '../', //这里你可以配置成umeditor目录在您网站的绝对路径
+var UMEDITOR_CONFIG = {
+    UMEDITOR_HOME_URL: '../', //这里你可以配置成umeditor目录在您网站的绝对路径
     toolbars: [
         ['FullScreen','Source','|','Undo','Redo','|',
          'Bold','Italic','Underline','StrikeThrough','Superscript','Subscript','RemoveFormat','FormatMatch','|',
@@ -243,7 +243,7 @@ var UMDITOR_CONFIG = {
     indentValue : '2em',                                 //初始化时，首行缩进距离
     pageBreakTag : '_baidu_page_break_tag_',             //分页符
     autoSave:true,                                       //是否开启自动保存
-    autoSavePath:this.UEDITOR_HOME_URL+'auto-save.php',  //自动保存的地址
+    autoSavePath:this.UMEDITOR_HOME_URL+'auto-save.php',  //自动保存的地址
     autoSaveFrequency:5,                                 //自动保存频率
     minFrameHeight: 320,                                 //最小高度
     autoHeightEnabled: true,                             //是否自动长高

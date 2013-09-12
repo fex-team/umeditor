@@ -543,11 +543,11 @@ test('2个实例采用2个配置文件', function () {
         div2.id = 'div2';
         var editor1 = UM.getEditor('div1', {'UEDITOR_HOME_URL': '../../../', 'initialContent': '欢迎使用umeditor', 'autoFloatEnabled': false});
         editor1.ready(function () {
-            var editor2 = UM.getEditor('div2', UEDITOR_CONFIG2);
+            var editor2 = UM.getEditor('div2', UMEDITOR_CONFIG2);
             editor2.ready(function () {
                 equal(editor1.body.style.minHeight, '200px', '编辑器高度为200px');
                 equal(editor2.body.style.minHeight, '400px', '自定义div高度为400px');
-                var html = UEDITOR_CONFIG2.initialContent;
+                var html = UMEDITOR_CONFIG2.initialContent;
                 ua.checkHTMLSameStyle(html, editor2.document, editor2.body.firstChild, '初始内容为自定制的');
                 equal(editor2.options.enterTag, 'br', 'enterTag is br');
                 html = '欢迎使用umeditor';
