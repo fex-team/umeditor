@@ -1,4 +1,4 @@
-package ueditor;
+package com.baidu.ueditor.um;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
