@@ -17,6 +17,6 @@
     if( type != null &&  "ajax".equals( type ) ){
         response.getWriter().print( up.getUrl() );
     }else{
-        response.getWriter().print("<script>parent.UE.getWidgetCallback('image')('" + up.getUrl() + "','" + up.getState() + "')</script>");
+        response.getWriter().print("<script>parent.UM.getWidgetCallback('image')('" + up.getUrl() + "','" + up.getState() + "')</script>");
     }
     %>
