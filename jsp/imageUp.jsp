@@ -13,10 +13,11 @@
     up.upload();
 
     String type = request.getParameter("type");
+    String editorId = request.getParameter("editorid");
 
     if( type != null &&  "ajax".equals( type ) ){
         response.getWriter().print( up.getUrl() );
     }else{
-        response.getWriter().print("<script>parent.UM.getWidgetCallback('image')('" + up.getUrl() + "','" + up.getState() + "')</script>");
+        response.getWriter().print("<script>parent.UM.getEditor('"+ editorId +"').getWidgetCallback('image')('" + up.getUrl() + "','" + up.getState() + "')</script>");
     }
     %>
