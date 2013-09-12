@@ -40,7 +40,7 @@
             "for( var i = 1, len = scripts.length; i<len; i++ ) {" +
             "src.push( scripts[i].src );" +
             "}" +
-            "parent.UM.getWidgetData(\'map\').requestMapApi( src );" +
+            "parent.UM.getEditor(<<id>>).getWidgetData(\'map\').requestMapApi( src );" +
             "};" +
             "function mapReadyStateChange ( state ) { " +
             " if ( state === 'complete' || state === 'loaded' ) {" +
@@ -92,7 +92,7 @@
                 $ifr = $ifr[ 0 ].contentWindow.document;
 
                 $ifr.open();
-                $ifr.write( this.root().find(".edui-tpl-container").html().replace( /scr_ipt/g, 'script' ) );
+                $ifr.write( this.root().find(".edui-tpl-container").html().replace( /scr_ipt/g, 'script').replace('<<id>>',"'" + this.editor.id + "'") );
 
             }
 
@@ -222,7 +222,7 @@
         buttons: {
             ok: {
                 exec: function (editor) {
-                    var widget = UM.getWidgetData(widgetName),
+                    var widget = editor.getWidgetData(widgetName),
                         center = widget.map.getCenter(),
                         zoom = widget.map.zoomLevel,
                         size = widget.map.getSize(),
@@ -235,8 +235,8 @@
                 }
             },
             cancel: {
-                exec: function(){
-                    UM.getWidgetData(widgetName).reset();
+                exec: function(editor){
+                    editor.getWidgetData(widgetName).reset();
                 }
             }
         }

@@ -80,7 +80,7 @@
             isShow: true,
             initialContent: '',
             initialStyle:'.edui-editor-body .edui-body-container p{margin:5px 0;} ' +
-                '.edui-editor-body .edui-body-container{border:0;outline:none;cursor:text;padding:0 10px 0;oveflow:auto;display:block;word-wrap:break-word;font-size:16px;font-family:sans-serif;}' +
+                '.edui-editor-body .edui-body-container{border:0;outline:none;cursor:text;padding:0 10px 0;display:block;word-wrap:break-word;font-size:16px;font-family:sans-serif;}' +
                 '.edui-editor-body.focus{border:1px solid #5c9dff}',
             autoClearinitialContent: false,
             iframeCssUrl: me.options.UMEDITOR_HOME_URL + 'themes/iframe.css',
@@ -120,7 +120,6 @@
             });
         }
 
-        UM.instants['umeditorInstant' + me.uid] = me;
     };
     Editor.prototype = {
         /**
@@ -189,14 +188,14 @@
             container.innerHTML = '';
 
             domUtils.remove(container);
-            var key = me.key;
+            UM.clearCache(me.id);
             //trace:2004
             for (var p in me) {
                 if (me.hasOwnProperty(p)) {
                     delete this[p];
                 }
             }
-            UM.clearCache(key)
+
         },
         initialCont : function(holder){
 
@@ -243,6 +242,8 @@
                 container = document.getElementById(container);
             }
             if (container) {
+                this.id = container.getAttribute('id');
+                UM.setEditor(this);
                 utils.cssRule('umeditor_body_css',me.options.initialStyle,document);
 
                 container = this.initialCont(container);

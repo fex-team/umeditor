@@ -259,7 +259,7 @@
             ok: {
                 exec: function( editor ){
                     $("#eduiVideoPreview").html("");
-                    UM.getWidgetData(widgetName).insertSingle();
+                    editor.getWidgetData(widgetName).insertSingle();
                 }
             },
             cancel: {
