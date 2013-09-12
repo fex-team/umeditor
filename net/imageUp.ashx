@@ -33,7 +33,7 @@ public class  imageUp: IHttpHandler
             }
             else
             {
-                HttpContext.Current.Response.Write("<script>parent.UM.getEditor('"+ editorId +"')getWidgetCallback('image')('" + info["url"] + "','" + info["state"] + "')</script>");//回调函数
+                HttpContext.Current.Response.Write("<script>parent.UM.getEditor('"+ editorId +"').getWidgetCallback('image')('" + info["url"] + "','" + info["state"] + "')</script>");//回调函数
                 
             }
     }
