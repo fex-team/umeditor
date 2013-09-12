@@ -1,4 +1,4 @@
-UM.registerUI('bold italic redo undo source underline strikethrough superscript subscript insertorderedlist insertunorderedlist ' +
+UM.registerUI('bold italic redo undo underline strikethrough superscript subscript insertorderedlist insertunorderedlist ' +
     'cleardoc selectall link unlink print preview justifyleft justifycenter justifyright justifyfull removeformat horizontal',
     function(name) {
         var me = this;
