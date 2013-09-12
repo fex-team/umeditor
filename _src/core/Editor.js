@@ -80,7 +80,7 @@
             isShow: true,
             initialContent: '',
             initialStyle:'.edui-editor-body .edui-body-container p{margin:5px 0;} ' +
-                '.edui-editor-body .edui-body-container{border:0;outline:none;cursor:text;padding:0 10px 0;display:block;word-wrap:break-word;font-size:16px;font-family:sans-serif;}' +
+                '.edui-editor-body .edui-body-container{border:0;outline:none;cursor:text;padding:0 10px 0;overflow:auto;display:block;word-wrap:break-word;font-size:16px;font-family:sans-serif;}' +
                 '.edui-editor-body.focus{border:1px solid #5c9dff}',
             autoClearinitialContent: false,
             iframeCssUrl: me.options.UMEDITOR_HOME_URL + 'themes/iframe.css',
@@ -101,8 +101,8 @@
             allHtmlEnabled: false,
             scaleEnabled: false,
             tableNativeEditInFF: false,
-            autoSyncData : true
-
+            autoSyncData : true,
+            autoHeightEnabled : true
         });
 
         if(!utils.isEmptyObject(UM.I18N)){
@@ -265,14 +265,20 @@
 
                 container.style.width = /%$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth - getStyleValue("padding-left")- getStyleValue("padding-right")   +'px';
                 var height = /%$/.test(options.initialFrameHeight) ?  '100%' : (options.initialFrameHeight - getStyleValue("padding-top")- getStyleValue("padding-bottom") );
-                container.style.minHeight = height +'px';
-                container.style.height = '';
+                if(this.options.autoHeightEnabled){
+                    container.style.minHeight = height +'px';
+                    container.style.height = '';
+                    if(browser.ie && browser.version <= 6){
+                        container.style.height = height ;
+                        container.style.setExpression('height', 'this.scrollHeight <= ' + height + ' ? "' + height + 'px" : "auto"');
+                    }
+                }else{
+                    $(container).height(height)
+                }
+
                 container.style.zIndex = options.zIndex;
 
-                if(browser.ie && browser.version <= 6){
-                    container.style.height = height ;
-                    container.style.setExpression('height', 'this.scrollHeight <= ' + height + ' ? "' + height + 'px" : "auto"');
-                }
+
 
 
 
@@ -406,13 +412,18 @@
          */
         setHeight: function (height,notSetHeight) {
             !notSetHeight && (this.options.initialFrameHeight = height);
-            $(this.body).css({
-                'min-height':height + 'px'
-            });
-            if(browser.ie && browser.version <= 6 && this.container){
-                this.container.style.height = height ;
-                this.container.style.setExpression('height', 'this.scrollHeight <= ' + height + ' ? "' + height + 'px" : "auto"');
+            if(this.options.autoHeightEnabled){
+                $(this.body).css({
+                    'min-height':height + 'px'
+                });
+                if(browser.ie && browser.version <= 6 && this.container){
+                    this.container.style.height = height ;
+                    this.container.style.setExpression('height', 'this.scrollHeight <= ' + height + ' ? "' + height + 'px" : "auto"');
+                }
+            }else{
+                $(this.body).height(height)
             }
+
         },
         setWidth:function(width){
             this.$container && this.$container.width(width);
