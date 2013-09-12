@@ -8,7 +8,6 @@
     var _editorUI = {},
         _editors = {},
         _readyFn = [],
-        _activeEditor = null,
         _activeWidget = null,
         _widgetData = {},
         _widgetCallBack = {};
@@ -21,8 +20,9 @@
                 _editorUI[uiname] = fn;
             })
         },
-        getWidgetCallback : function(widgetName){
-            return _widgetCallBack[widgetName];
+
+        setEditor : function(editor){
+            !_editors[editor.id] && (_editors[editor.id] = editor);
         },
         registerWidget : function(name,pro,cb){
             _widgetData[name] = $.extend2(pro,{
@@ -46,6 +46,9 @@
         setWidgetBody : function(name,$widget,editor){
             if(!editor._widgetData){
                 editor._widgetData = {};
+                editor.getWidgetData = function(name){
+                    return this._widgetData[name];
+                }
             }
             var pro = _widgetData[name];
             if(!pro){
@@ -83,46 +86,11 @@
             }
             return null;
         },
-        setActiveEditor:function(editor){
-            _activeEditor = editor;
-        },
-        getActiveEditor: function ($widget) {
-
-            var ac;
-            utils.each(UM.instants, function (editor) {
-                if (editor.selection.isFocus()) {
-                    ac = editor;
-                    return false;
-                }
-            });
-
-            if(ac){
-                return ac;
-            }
-            var $container = $widget.parents('.edui-container');
-            if(_activeEditor){
-                if($container[0] === _activeEditor.container){
-                    return _activeEditor
-                }
-            }
-            $.each(_editors,function(id,val){
-                if(val.container === $container[0]){
-                    ac = val;
-                    return false;
-                }
-            });
-            return ac;
-
-        },
         setActiveWidget : function($widget){
             _activeWidget = $widget;
         },
-        getActiveWidget : function(){
-            return  _activeWidget
-        },
         getEditor: function (id, options) {
-            return _editors[id] || (_editors[id] = this.createEditor(id, options));
-
+            return _editors[id] || (_editors[id] = this.createEditor(id, options))
         },
         clearCache : function(id){
             if ( _editors[id]) {
@@ -132,7 +100,7 @@
         delEditor: function (id) {
             var editor;
             if (editor = _editors[id]) {
-                editor.key && editor.destroy();
+                editor.destroy();
             }
         },
         ready: function( fn ){

@@ -120,7 +120,6 @@
             });
         }
 
-        UM.instants['umeditorInstant' + me.uid] = me;
     };
     Editor.prototype = {
         /**
@@ -189,14 +188,14 @@
             container.innerHTML = '';
 
             domUtils.remove(container);
-            var key = me.key;
+            UM.clearCache(me.id);
             //trace:2004
             for (var p in me) {
                 if (me.hasOwnProperty(p)) {
                     delete this[p];
                 }
             }
-            UM.clearCache(key)
+
         },
         initialCont : function(holder){
 
@@ -243,6 +242,9 @@
                 container = document.getElementById(container);
             }
             if (container) {
+                debugger
+                this.id = container.getAttribute('id');
+                UM.setEditor(this);
                 utils.cssRule('umeditor_body_css',me.options.initialStyle,document);
 
                 container = this.initialCont(container);

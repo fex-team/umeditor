@@ -5,8 +5,6 @@ window.UM = {
 
     commands : {},
 
-    instants : {},
-
     I18N : {},
 
     version : "1.0.0"
