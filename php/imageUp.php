@@ -24,7 +24,7 @@
     if($type == "ajax"){
         echo $info[ "url" ];
     }else{
-        echo "<script>parent.UE.getWidgetCallback('image')('" . $info[ "url" ] . "','" . $info[ "state" ] . "')</script>";
+        echo "<script>parent.UM.getWidgetCallback('image')('" . $info[ "url" ] . "','" . $info[ "state" ] . "')</script>";
     }
 
 

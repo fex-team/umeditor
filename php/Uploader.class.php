@@ -30,7 +30,8 @@ class Uploader
         "DIR" => "目录创建失败" ,
         "IO" => "输入输出错误" ,
         "UNKNOWN" => "未知错误" ,
-        "MOVE" => "文件保存时出错"
+        "MOVE" => "文件保存时出错",
+        "DIR_ERROR" => "创建目录失败"
     );
 
     /**
@@ -88,7 +89,16 @@ class Uploader
             $this->stateInfo = $this->getStateInfo( "TYPE" );
             return;
         }
-        $this->fullName = $this->getFolder() . '/' . $this->getName();
+
+        $folder = $this->getFolder();
+
+        if ( $folder === false ) {
+            $this->stateInfo = $this->getStateInfo( "DIR_ERROR" );
+            return;
+        }
+
+        $this->fullName = $folder . '/' . $this->getName();
+
         if ( $this->stateInfo == $this->stateMap[ 0 ] ) {
             if ( !move_uploaded_file( $file[ "tmp_name" ] , $this->fullName ) ) {
                 $this->stateInfo = $this->getStateInfo( "MOVE" );
