@@ -73,9 +73,9 @@ test( '对现有的超链接修改超链接地址', function () {
     var a1 = body.firstChild.firstChild;
     range.selectNode( a1 ).select();
 
-    editor.execCommand( 'link', {href:'umeditor.baidu.com'} );
+    editor.execCommand( 'link', {href:'ueditor.baidu.com'} );
     a1 = body.firstChild.firstChild;
-    equal( a1.getAttribute( 'href' ), 'umeditor.baidu.com', 'check href' );
+    equal( a1.getAttribute( 'href' ), 'ueditor.baidu.com', 'check href' );
     //equal( a1.innerHTML, 'umeditor.baidu.com', 'innerHTML也相应变化' );  //ff下的超链接和取消都不好用   显示演示的是会改变  ie和chrome的是不会改变(有问题，要确认一下)
 
     var a2 = body.firstChild.getElementsByTagName( 'a' )[1];

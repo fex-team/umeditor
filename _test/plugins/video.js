@@ -20,13 +20,13 @@ test( '视频', function () {
         equal(img.length,1,'插入img');
         equal(img[0].width,"500");
         equal(img[0].height,"400");
-        equal(img[0].src,editor.options.UEDITOR_HOME_URL+'themes/default/images/spacer.gif');
+        equal(img[0].src,editor.options.UMEDITOR_HOME_URL+'themes/default/images/spacer.gif');
         if(ua.browser.gecko||ua.browser.ie>8){
-            ok(img[0].style.background.indexOf('url(\"'+editor.options.UEDITOR_HOME_URL+'themes/default/images/videologo.gif\")') > -1);
+            ok(img[0].style.background.indexOf('url(\"'+editor.options.UMEDITOR_HOME_URL+'themes/default/images/videologo.gif\")') > -1);
         }
         else
         {
-            ok(img[0].style.background.indexOf("url("+editor.options.UEDITOR_HOME_URL+"themes/default/images/videologo.gif)") > -1);
+            ok(img[0].style.background.indexOf("url("+editor.options.UMEDITOR_HOME_URL+"themes/default/images/videologo.gif)") > -1);
         }
         start();
     },100);

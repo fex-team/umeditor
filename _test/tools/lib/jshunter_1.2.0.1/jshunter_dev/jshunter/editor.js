@@ -1,4 +1,4 @@
-UEDITOR_CONFIG = window.UEDITOR_CONFIG || {};
+UMDITOR_CONFIG = window.UMDITOR_CONFIG || {};
 
 var baidu = window.baidu || {};
 

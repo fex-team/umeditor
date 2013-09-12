@@ -2,7 +2,7 @@
  *  umeditor完整配置项
  *  可以在这里配置整个编辑器的特性
  */
-var UEDITOR_CONFIG = {
+var UMDITOR_CONFIG = {
     UEDITOR_HOME_URL: '../', //这里你可以配置成umeditor目录在您网站的绝对路径
     toolbars: [
         ['FullScreen','Source','|','Undo','Redo','|',
