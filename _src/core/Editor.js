@@ -406,10 +406,18 @@
          */
         setHeight: function (height,notSetHeight) {
             !notSetHeight && (this.options.initialFrameHeight = height);
-
-            this.body.style.height = height + 'px';
+            $(this.body).css({
+                'min-height':height + 'px'
+            });
+            if(browser.ie && browser.version <= 6 && this.container){
+                this.container.style.height = height ;
+                this.container.style.setExpression('height', 'this.scrollHeight <= ' + height + ' ? "' + height + 'px" : "auto"');
+            }
         },
-
+        setWidth:function(width){
+            this.$container && this.$container.width(width);
+            $(this.body).width(width - $(this.body).css('padding-left').replace('px','') * 1 - $(this.body).css('padding-right').replace('px','') * 1)
+        },
         addshortcutkey: function (cmd, keys) {
             var obj = {};
             if (keys) {
