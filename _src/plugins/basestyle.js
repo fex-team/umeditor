@@ -45,7 +45,48 @@ UM.plugins['basestyle'] = function(){
                 return this.document.execCommand(cmdName)
             },
             queryCommandState : function(cmdName) {
-                return this.document.queryCommandState(cmdName)
+                var path = this.selection.getStartElementPath(),result = false;
+                $.each(path,function(i,n){
+                    switch (cmdName){
+                        case 'bold':
+                            if(n.nodeName == 'STRONG' || n.nodeName == 'B'){
+                                result = true;
+                                return false;
+                            }
+                            break;
+                        case 'underline':
+                            if(n.nodeName == 'U' || n.nodeName == 'SPAN' && $(n).css('text-decoration') == 'underline'){
+                                result = true;
+                                return false;
+                            }
+                            break;
+                        case 'superscript':
+                            if(n.nodeName == 'SUP'){
+                                result = true;
+                                return false;
+                            }
+                            break;
+                        case 'subscript':
+                            if(n.nodeName == 'SUB'){
+                                result = true;
+                                return false;
+                            }
+                            break;
+                        case 'italic':
+                            if(n.nodeName == 'EM' || n.nodeName == 'I'){
+                                result = true;
+                                return false;
+                            }
+                            break;
+                        case 'strikethrough':
+                            if(n.nodeName == 'S' || n.nodeName == 'STRIKE' || n.nodeName == 'SPAN' && $(n).css('text-decoration') == 'line-through'){
+                                result = true;
+                                return false;
+                            }
+                            break;
+                    }
+                })
+                return result
             }
         };
     })

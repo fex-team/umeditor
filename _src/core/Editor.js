@@ -746,9 +746,14 @@
          * @grammar editor.execCommand(cmdName)   => {*}
          */
         execCommand: function (cmdName) {
+            if(!this.isFocus()){
+                var bakRange = this.selection._bakRange;
+                if(bakRange){
+                    bakRange.select()
+                }else{
+                    this.focus(true)
+                }
 
-            if(!this.selection.hasNativeRange()){
-                this.focus(true)
             }
             cmdName = cmdName.toLowerCase();
             var me = this,

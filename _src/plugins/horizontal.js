@@ -16,7 +16,6 @@ UM.plugins['horizontal'] = function(){
             this.document.execCommand('insertHorizontalRule');
             var rng = me.selection.getRange().txtToElmBoundary(true),
                 start = rng.startContainer;
-
             if(domUtils.isBody(rng.startContainer)){
                 var next = rng.startContainer.childNodes[rng.startOffset];
                 if(!next){
@@ -32,8 +31,10 @@ UM.plugins['horizontal'] = function(){
                     parent.removeChild(start);
                     start = parent;
                 }
-
-                if(start.childNodes.length == 1){
+                while(dtd.$inline[start.tagName]){
+                    start = start.parentNode;
+                }
+                if(start.childNodes.length == 1 && start.lastChild.nodeName == 'HR'){
                     var hr = start.lastChild;
                     $(hr).insertBefore(start);
                     rng.setStart(start,0).setCursor();
