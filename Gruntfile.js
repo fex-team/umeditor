@@ -10,9 +10,7 @@ module.exports = function ( grunt ) {
 
             fetchScripts: function () {
 
-                var sources = fs.readFileSync( "_examples/editor_api.js", {
-                        encoding: 'utf-8'
-                    } );
+                var sources = fs.readFileSync( "_examples/editor_api.js" );
 
                 sources = /\[([^\]]+)\]/.exec( sources );
 
@@ -32,9 +30,7 @@ module.exports = function ( grunt ) {
 
             fetchStyles: function () {
 
-                var sources = fs.readFileSync( this.cssBasePath + "umeditor.css", {
-                        encoding: 'utf-8'
-                    } ),
+                var sources = fs.readFileSync( this.cssBasePath + "umeditor.css" ),
                     filepath = null,
                     pattern = /@import\s+([^;]+)*;/g,
                     src = [];
@@ -58,10 +54,10 @@ module.exports = function ( grunt ) {
     //init
     ( function () {
 
-        server = server.toLowerCase();
-        encode = encode.toLowerCase();
+        server = typeof server === "string" ? server.toLowerCase() : 'php';
+        encode = typeof encode === "string" ? encode.toLowerCase() : 'utf8';
 
-        disDir = 'dist-' + encode + '-' + server + '/';
+        disDir = 'dist/' + encode + '-' + server + '/';
 
     } )();
 
@@ -142,17 +138,13 @@ module.exports = function ( grunt ) {
 
             }
         },
-        'iconv': {
+        transcoding: {
 
-            'gbk': {
-                options: {
-                    from_charset: "utf8",
-                    to_charset: "GBK"
-                },
-                files: {
-                    'dist/test': [disDir + '**/*.js', disDir + '**/*.jsp', disDir + '**/*.java', disDir + '**/*.php', disDir + '**/*.ashx', disDir + '**/*.cs']
-                }
-            }
+            options: {
+                charset: encode
+            },
+            src: [disDir + '**/*.js', disDir + '**/*.css', disDir + '**/*.jsp', disDir + '**/*.java', disDir + '**/*.php', disDir + '**/*.ashx', disDir + '**/*.cs']
+
         }
 
     } );
@@ -161,17 +153,15 @@ module.exports = function ( grunt ) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-iconv');
+    grunt.loadNpmTasks('grunt-transcoding');
 
 
-    var tasks = [ 'concat', 'cssmin', 'uglify', 'copy:base', 'copy:'+server ];
+    grunt.registerTask('default', 'UEditor Mini build', function () {
 
-    if ( encode !== 'utf8' ) {
+        var tasks = [ 'concat', 'cssmin', 'uglify', 'copy:base', 'copy:'+server, 'transcoding' ];
 
-        tasks.push( 'iconv' );
+        grunt.task.run( tasks );
 
-    }
-
-    grunt.registerTask('default', tasks );
+    } );
 
 };
