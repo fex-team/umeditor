@@ -91,6 +91,7 @@
             }
         },
         callback: function (editor, $w, url, state) {
+
             Upload.toggleMask();
 
             if (state == "SUCCESS") {
@@ -113,7 +114,12 @@
                 });
 
             } else {
-                throw new Error(state)
+                currentDialog.showTip( state );
+                window.setTimeout( function () {
+
+                    currentDialog.hideTip();
+
+                }, 3000 );
             }
         }
     };
@@ -137,10 +143,7 @@
 
             me.render("#edui-image-Jlocal", 1);
             me.config("#edui-image-Jupload1");
-            me.submit("#edui-image-Jupload1", function () {
-                $("#edui-image-JdragTip", me.dialog).css("display", "none");
-                $("#edui-image-Jupload1", me.dialog).css("display", "none");
-            });
+            me.submit("#edui-image-Jupload1");
             me.drag();
 
             $("#edui-image-Jupload1").hover(function () {
@@ -179,6 +182,7 @@
                 $(this).parent()[0].submit();
                 me.toggleMask("Loading....");
                 callback && callback();
+
             });
 
             return me;
@@ -231,8 +235,12 @@
 
             var $mask = $("#edui-image-Jmask", me.dialog);
             if (html) {
+                $("#edui-image-JdragTip", me.dialog).css( "display", "none" );
+                $("#edui-image-Jupload1", me.dialog).css( "display", "none" );
                 $mask.addClass("active").html(html);
             } else {
+                $("#edui-image-JdragTip", me.dialog).css( "display", "block" );
+                $("#edui-image-Jupload1", me.dialog).css( "display", "block" );
                 $mask.removeClass("active").html();
             }
 
@@ -282,7 +290,8 @@
         }
     };
 
-    var $tab = null;
+    var $tab = null,
+        currentDialog = null;
 
     UM.registerWidget('image', {
         tpl: "<link rel=\"stylesheet\" type=\"text/css\" href=\"<%=image_url%>image.css\">" +
@@ -306,7 +315,7 @@
             "</div>" +
             "</div>" +
             "</div>",
-        initContent: function (editor) {
+        initContent: function (editor, $dialog) {
             var lang = editor.getLang('image')["static"],
                 opt = $.extend({}, lang, {
                     image_url: UMEDITOR_CONFIG.UMEDITOR_HOME_URL + 'dialogs/image/'
@@ -315,6 +324,8 @@
             if (lang) {
                 var html = $.parseTmpl(this.tpl, opt);
             }
+
+            currentDialog = $dialog.edui();
 
             this.root().html(html);
 
