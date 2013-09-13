@@ -8,6 +8,9 @@
             if (url.search(/http:\/\/|https:\/\//) !== 0) {
                 url += 'http://';
             }
+
+            url=url.replace(/\?[\s\S]*$/,"");
+
             if (!/(.gif|.jpg|.jpeg|.png)$/i.test(url)) {
                 return false;
             }
