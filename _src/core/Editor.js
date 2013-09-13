@@ -83,7 +83,6 @@
                 '.edui-editor-body .edui-body-container{border:0;outline:none;cursor:text;padding:0 10px 0;overflow:auto;display:block;word-wrap:break-word;font-size:16px;font-family:sans-serif;}' +
                 '.edui-editor-body.focus{border:1px solid #5c9dff}',
             autoClearinitialContent: false,
-            iframeCssUrl: me.options.UMEDITOR_HOME_URL + 'themes/iframe.css',
             textarea: 'editorValue',
             focus: false,
             focusInEnd: true,
@@ -91,16 +90,12 @@
             fullscreen: false,
             readonly: false,
             zIndex: 999,
-            imagePopup: true,
             enterTag: 'p',
-            customDomain: false,
             lang: 'zh-cn',
             langPath: me.options.UMEDITOR_HOME_URL + 'lang/',
             theme: 'default',
             themePath: me.options.UMEDITOR_HOME_URL + 'themes/',
             allHtmlEnabled: false,
-            scaleEnabled: false,
-            tableNativeEditInFF: false,
             autoSyncData : true,
             autoHeightEnabled : true
         });
@@ -1048,15 +1043,6 @@
                 ci.call(this, root)
             }
         }
-        /**
-         * 得到dialog实例对象
-         * @name getDialog
-         * @grammar editor.getDialog(dialogName) => Object
-         * @example
-         * var dialog = editor.getDialog("insertimage");
-         * dialog.open();   //打开dialog
-         * dialog.close();  //关闭dialog
-         */
     };
     utils.inherits(Editor, EventBase);
 })();

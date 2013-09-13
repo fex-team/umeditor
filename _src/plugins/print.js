@@ -17,9 +17,9 @@ UM.commands['print'] = {
             .css({
                 width:'0px',
                 height:'0px',
-                overflow:'hidden',
-                float:'left',
-                position:'absolute',
+                'overflow':'hidden',
+                'float':'left',
+                'position':'absolute',
                 top:'-10000px',
                 left:'-10000px'
             })
