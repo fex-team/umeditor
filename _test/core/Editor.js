@@ -87,6 +87,8 @@ test("hide,show", function () {
                 equal(ua.getChildHTML(editor.body), '<p>' + br + '</p>', '删除书签');
                 te.dom.push(editor.container);
                 UM.delEditor('ue_hide_show');
+                document.getElementById('ue_hide_show') && te.dom.push(document.getElementById('ue_hide_show'));
+
                 start();
             }, 200);
         }, 200);
@@ -195,7 +197,7 @@ test('destroy', function () {
         editor.destroy();
         equal(document.getElementById('edu').tagName.toLowerCase(), 'textarea', '容器被删掉了');
         UM.clearCache('edu');
-        document.getElementById('edu') && te.dom.push(document.getElementById('ed'));
+        document.getElementById('edu') && te.dom.push(document.getElementById('edu'));
     });
 });
 
@@ -270,7 +272,7 @@ test("setContent", function () {
         ua.haveSameAllChildAttribs(div2, div_new, 'check contents');
         setTimeout(function () {
             UM.clearCache('test1');
-            te.dom.push(editor.container);
+//            te.dom.push(editor.container);
             document.getElementById('test1') && te.dom.push(document.getElementById('test1'));
             setTimeout(function () {
                 start();

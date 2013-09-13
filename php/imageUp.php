@@ -15,7 +15,7 @@
     //背景保存在临时目录中
     $config[ "savePath" ] = $Path;
     $up = new Uploader( "upfile" , $config );
-    $type = $_POST['type'];
+    $type = $_REQUEST['type'];
     $editorId=$_GET['editorid'];
 
     $info = $up->getFileInfo();
