@@ -10,6 +10,7 @@ UM.ui.define('modal', {
         ' </div>' +
         '<% if(cancellabel || oklabel) {%>' +
         '<div class="edui-modal-footer">' +
+        '<div class="edui-modal-tip"></div>' +
         '<%if(oklabel){%><div class="edui-btn edui-btn-primary" data-ok="modal"><%=oklabel%></div><%}%>' +
         '<%if(cancellabel){%><div class="edui-btn" data-hide="modal"><%=cancellabel%></div><%}%>' +
         '</div>' +
@@ -66,6 +67,14 @@ UM.ui.define('modal', {
                 .focus()
                 .trigger('aftershow');
         })
+    },
+    showTip: function ( text ) {
+        $( '.edui-modal-tip', this.root() ).html( text ).fadeIn();
+    },
+    hideTip: function ( text ) {
+        $( '.edui-modal-tip', this.root() ).fadeOut( function (){
+            $(this).html('');
+        } );
     },
     autoCenter: function () {
         //ie6下不用处理了

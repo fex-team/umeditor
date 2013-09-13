@@ -41,4 +41,3 @@
 .edui-image-item .edui-image-close{position:absolute;right:0;background: url('images/close.png');width:17px;height:17px;
     display: none;cursor:pointer;}
 .edui-image-item.hover .edui-image-close{display: block;}
-

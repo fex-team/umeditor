@@ -70,3 +70,13 @@
     left: 0;
     background-color: #c6c6c6;
 }
+
+.edui-modal .edui-modal-tip {
+    color: red;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    height: 30px;
+    line-height: 30px;
+    display: none;
+}
