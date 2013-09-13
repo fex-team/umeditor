@@ -142,12 +142,12 @@ module.exports = function ( grunt ) {
 
             }
         },
-        'grunt-iconv-lite': {
+        'iconv': {
 
             'gbk': {
                 options: {
-                    fromEncoding: "utf8",
-                    toEncoding: "GBK"
+                    from_charset: "utf8",
+                    to_charset: "GBK"
                 },
                 files: {
                     'dist/test': [disDir + '**/*.js', disDir + '**/*.jsp', disDir + '**/*.java', disDir + '**/*.php', disDir + '**/*.ashx', disDir + '**/*.cs']
@@ -161,14 +161,14 @@ module.exports = function ( grunt ) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-iconv-lite');
+    grunt.loadNpmTasks('grunt-iconv');
 
 
     var tasks = [ 'concat', 'cssmin', 'uglify', 'copy:base', 'copy:'+server ];
 
     if ( encode !== 'utf8' ) {
 
-        tasks.push( 'grunt-iconv-lite' );
+        tasks.push( 'iconv' );
 
     }
 
