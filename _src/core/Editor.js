@@ -81,7 +81,9 @@
             initialContent: '',
             initialStyle:'.edui-editor-body .edui-body-container p{margin:5px 0;} ' +
                 '.edui-editor-body .edui-body-container{border:0;outline:none;cursor:text;padding:0 10px 0;overflow:auto;display:block;word-wrap:break-word;font-size:16px;font-family:sans-serif;}' +
-                '.edui-editor-body.focus{border:1px solid #5c9dff}',
+                '.edui-editor-body.focus{border:1px solid #5c9dff}'+
+                '.edui-editor-body table{margin:10px 0 10px;border-collapse:collapse;display:table;}' +
+                '.edui-editor-body td{padding: 5px 10px;border: 1px solid #DDD;}',
             autoClearinitialContent: false,
             textarea: 'editorValue',
             focus: false,
