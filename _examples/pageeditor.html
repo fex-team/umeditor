@@ -28,7 +28,7 @@
         .edui-container .edui-toolbar {
             width: 100%;
             position: absolute;
-            top: -100px;
+            /*top: -100px;*/
             left: 0;
         }
         .edui-container{
@@ -73,21 +73,24 @@
         //对编辑器的操作要放在ready后才能生效
         editor.ready( function () {
 
-            var $toolbar = $( ".edui-toolbar", editor.container );
-
-            $( editor.body ).stop().on( "focus", function ( evt ) {
+            var $toolbar = $( ".edui-toolbar", editor.container ),timer;
+            $toolbar.animate({top:-100},500);
+            $( editor.body ).on( "mousedown", function ( evt ) {
 
                 $toolbar.animate( {
                     top: 0
                 }, 500 );
 
-            }).on( "blur", function ( evt ) {
+            }).on( 'scroll', function ( evt ) {
+                clearTimeout(timer);
+                timer = setTimeout(function(){
+                    $toolbar.stop().animate( {
+                        top: -100
+                    }, 500 );
+                },50)
+               
 
-                $toolbar.stop().animate( {
-                    top: -100
-                }, 500 );
-
-            } );
+            } )
 
         } );
 
