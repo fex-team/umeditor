@@ -26,7 +26,7 @@ UM.ui.define('button', {
             if(!me.root().hasClass("disabled")){
                 me.root().toggleClass('hover')
             }
-        });
+        })
 
         return me;
     },
@@ -50,13 +50,17 @@ UM.ui.define('button', {
             return this.root().hasClass('disabled')
         }
         this.root().toggleClass('disabled', state);
+        if(this.root().hasClass('disabled')){
+            this.root().removeClass('hover')
+        }
         return this;
     },
     active: function (state) {
         if (state === undefined) {
             return this.root().hasClass('active')
         }
-        this.root().toggleClass('active', state);
+        this.root().toggleClass('active', state)
+
         return this;
     },
     mergeWith: function ($obj) {

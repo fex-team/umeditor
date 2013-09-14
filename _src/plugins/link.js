@@ -33,7 +33,7 @@ UM.plugins['link'] = function(){
                         var pre = start.previousSibling;
                         if(pre && pre.nodeType == 1){
                             var pre = pre.lastChild;
-                            if(pre && pre.nodeName == 'A'){
+                            if(pre && pre.nodeName == 'A' && !pre.getAttribute('_href')){
                                 domUtils.remove(pre,true);
                             }
                         }
@@ -41,7 +41,7 @@ UM.plugins['link'] = function(){
                 }else if(keyCode == 32){
                    if(start.nodeType == 3 && /^\s$/.test(start.nodeValue)){
                        start = start.previousSibling;
-                       if(start && start.nodeName == 'A'){
+                       if(start && start.nodeName == 'A' && !start.getAttribute('_href')){
                            domUtils.remove(start,true);
                        }
                    }

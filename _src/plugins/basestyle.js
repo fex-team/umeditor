@@ -42,7 +42,22 @@ UM.plugins['basestyle'] = function(){
     $.each(basestyles,function(i,cmd){
         me.commands[cmd] = {
             execCommand : function( cmdName ) {
-                return this.document.execCommand(cmdName)
+                var rng = this.selection.getRange();
+                if(rng.collapsed && this.queryCommandState(cmdName) != 1){
+                    var node = this.document.createElement({
+                        'bold':'strong',
+                        'underline':'u',
+                        'superscript':'sup',
+                        'subscript':'sub',
+                        'italic':'em',
+                        'strikethrough':'strike'
+                    }[cmdName]);
+                    rng.insertNode(node).setStart(node,0).setCursor(false);
+                    return true;
+                }else{
+                    return this.document.execCommand(cmdName)
+                }
+
             },
             queryCommandState : function(cmdName) {
                 var path = this.selection.getStartElementPath(),result = false;
@@ -50,37 +65,37 @@ UM.plugins['basestyle'] = function(){
                     switch (cmdName){
                         case 'bold':
                             if(n.nodeName == 'STRONG' || n.nodeName == 'B'){
-                                result = true;
+                                result = 1;
                                 return false;
                             }
                             break;
                         case 'underline':
                             if(n.nodeName == 'U' || n.nodeName == 'SPAN' && $(n).css('text-decoration') == 'underline'){
-                                result = true;
+                                result = 1;
                                 return false;
                             }
                             break;
                         case 'superscript':
                             if(n.nodeName == 'SUP'){
-                                result = true;
+                                result = 1;
                                 return false;
                             }
                             break;
                         case 'subscript':
                             if(n.nodeName == 'SUB'){
-                                result = true;
+                                result = 1;
                                 return false;
                             }
                             break;
                         case 'italic':
                             if(n.nodeName == 'EM' || n.nodeName == 'I'){
-                                result = true;
+                                result = 1;
                                 return false;
                             }
                             break;
                         case 'strikethrough':
                             if(n.nodeName == 'S' || n.nodeName == 'STRIKE' || n.nodeName == 'SPAN' && $(n).css('text-decoration') == 'line-through'){
-                                result = true;
+                                result = 1;
                                 return false;
                             }
                             break;
