@@ -37,6 +37,13 @@ UM.plugins['list'] = function () {
         }
     } );
 
+    this.addInputRule(function(root){
+        utils.each(root.getNodesByTagName('li'), function (node) {
+            if(node.children.length == 0){
+                node.parentNode.removeChild(node)
+            }
+        })
+    });
     me.commands['insertorderedlist'] =
     me.commands['insertunorderedlist'] = {
             execCommand:function (cmdName) {

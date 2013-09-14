@@ -55,8 +55,15 @@ UM.plugins['link'] = function(){
 
     this.addOutputRule(function(root){
         $.each(root.getNodesByTagName('a'),function(i,a){
-            a.setAttr('href', utils.html(a.getAttr('_href')));
+            var _href = utils.html(a.getAttr('_href'));
+            if(!/^(ftp|https?|\/|file)/.test(_href)){
+                _href = 'http://' + _href;
+            }
+            a.setAttr('href', _href);
             a.setAttr('_href')
+            if(a.getAttr('title')==''){
+                a.setAttr('title')
+            }
         })
     });
     this.addInputRule(function(root){
