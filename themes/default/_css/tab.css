@@ -16,6 +16,7 @@
     color: #0088cc;
     text-decoration: none;
     outline: 0;
+    _border:1px solid #fff ;
 }
 .edui-tab-nav .edui-tab-item .edui-tab-text:FOCUS {
     outline: none;
