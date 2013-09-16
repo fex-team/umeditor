@@ -114,6 +114,12 @@
                     Base.close($(this));
                 });
 
+                setTimeout(function(){
+                    if(UM.browser.ie&&UM.browser.version<=6){
+                        $("#edui-image-Jcontent", $w).css("display",'block');
+                    }
+                });
+
             } else {
                 currentDialog.showTip( state );
                 window.setTimeout( function () {
