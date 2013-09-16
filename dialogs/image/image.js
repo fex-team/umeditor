@@ -236,11 +236,15 @@
 
             var $mask = $("#edui-image-Jmask", me.dialog);
             if (html) {
-                $("#edui-image-JdragTip", me.dialog).css( "display", "none" );
+                if (!(UM.browser.ie && UM.browser.version <= 8)) {
+                    $("#edui-image-JdragTip", me.dialog).css( "display", "none" );
+                }
                 $("#edui-image-Jupload1", me.dialog).css( "display", "none" );
                 $mask.addClass("active").html(html);
             } else {
-                $("#edui-image-JdragTip", me.dialog).css( "display", "block" );
+                if (!(UM.browser.ie && UM.browser.version <= 8)) {
+                    $("#edui-image-JdragTip", me.dialog).css("display", "block");
+                }
                 $("#edui-image-Jupload1", me.dialog).css( "display", "block" );
                 $mask.removeClass("active").html();
             }
