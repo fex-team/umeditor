@@ -38,7 +38,7 @@ test( 'content is null', function () {
     range.setStart( editor.body.firstChild, 0 ).collapse( 1 ).select();
     editor.execCommand( "bold" );
     ua.manualDeleteFillData( editor.body );
-    equal( ua.getChildHTML( editor.body ), "<p><br></p>", "after calling command bold" );
+    equal( ua.getChildHTML( editor.body ), "<p><strong></strong><br></p>", "after calling command bold" );
 } );
 
 test( 'ctrl+a', function() {

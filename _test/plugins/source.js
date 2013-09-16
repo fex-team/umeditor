@@ -165,7 +165,7 @@ test('不以http://开头的超链接绝对路径网址', function () {
         editor.execCommand('source');
         setTimeout(function () {
             editor.execCommand('source');
-            equal(editor.getContent(), '<p><a href="www.baidu.com">绝对路径网址</a></p>');
+            equal(editor.getContent(), '<p><a href="http://www.baidu.com">绝对路径网址</a></p>');
             start();
         }, 100);
     }, 100);

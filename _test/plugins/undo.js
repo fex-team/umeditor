@@ -106,8 +106,9 @@ test('ctrl+z/y', function () {
 test('reset,index', function () {
     var editor = te.obj[0];
     var br = (ua.browser.ie&&ua.browser.ie<9)? '&nbsp;': '';
+    var range = te.obj[1];
     editor.setContent('<p></p>');
-    editor.focus();
+    range.setStart(editor.body.firstChild,0).collapse(true).select();
     editor.execCommand('horizontal');
     var listLength = editor.undoManger.list.length;
     ok(listLength>0,'检查undoManger.list');
