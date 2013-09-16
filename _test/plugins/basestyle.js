@@ -15,14 +15,6 @@ module( "plugins.basestyle" );
 ////    equal( ua.getChildHTML( body.firstChild ), "aa<strong>hello</strong>ssss", "新文本节点没有加粗" );
 //} );
 
-test( 'bold-不focus时，点击加粗，不会多出一行', function () {
-    var editor = te.obj[0];
-    var body = editor.body;
-    var range = te.obj[1];
-    editor.setContent( '' );
-    editor.execCommand( 'bold' );
-    ok( ua.getChildHTML( body ), "<stong></stong>", "editor不focus时点加粗，不会多一个空行" );
-} );
 
 test( 'bold-加粗状态反射', function () {
     var editor = te.obj[0];
@@ -56,7 +48,11 @@ test( 'bold-连续加粗2次', function () {
     equal( editor.queryCommandState( 'bold' ), 0, '不闭合选择，加粗不高亮' );
     ua.manualDeleteFillData( editor.body );
     editor.execCommand( 'bold' );       /*第二次加粗*/
+    stop();
+    setTimeout( function () {
     equal( editor.queryCommandState( 'bold' ), 1, '加粗高亮' );
+        start();
+    }, 100 )
 } );
 
 test( 'bold-2个单词，中间有空格第一个单词加粗，第二个单词加粗再去加粗', function () {
