@@ -196,7 +196,7 @@
 
             for ( var i = 0, ci; ci = ids[i++]; ) {
                 var floatContainer = $( "#" + ci ) [0],
-                    nameMaps = {"none":lang['default'], "left":lang.floatLeft, "right":lang.floatRight, "center":lang.block};
+                    nameMaps = {"none":lang['default'], "left":lang.floatLeft, "right":lang.floatRight};
                 for ( var j in nameMaps ) {
                     var div = document.createElement( "div" );
                     div.setAttribute( "name", j );
