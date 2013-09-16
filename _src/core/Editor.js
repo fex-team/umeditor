@@ -394,7 +394,7 @@
         sync: function (formId) {
             var me = this,
                 form = formId ? document.getElementById(formId) :
-                    domUtils.findParent(me.iframe.parentNode, function (node) {
+                    domUtils.findParent(me.body.parentNode, function (node) {
                         return node.tagName == 'FORM'
                     }, true);
             form && setValue(form, me);
