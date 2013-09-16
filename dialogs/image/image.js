@@ -151,7 +151,7 @@
                 $(".edui-image-icon", this).toggleClass("hover");
             });
 
-            if (!(UM.browser.ie && UM.browser.version <= 8)) {
+            if (!(UM.browser.ie && UM.browser.version <= 9)) {
                 $("#edui-image-JdragTip", me.dialog).css("display", "block");
             }
 
@@ -236,13 +236,13 @@
 
             var $mask = $("#edui-image-Jmask", me.dialog);
             if (html) {
-                if (!(UM.browser.ie && UM.browser.version <= 8)) {
+                if (!(UM.browser.ie && UM.browser.version <= 9)) {
                     $("#edui-image-JdragTip", me.dialog).css( "display", "none" );
                 }
                 $("#edui-image-Jupload1", me.dialog).css( "display", "none" );
                 $mask.addClass("active").html(html);
             } else {
-                if (!(UM.browser.ie && UM.browser.version <= 8)) {
+                if (!(UM.browser.ie && UM.browser.version <= 9) {
                     $("#edui-image-JdragTip", me.dialog).css("display", "block");
                 }
                 $("#edui-image-Jupload1", me.dialog).css( "display", "block" );
