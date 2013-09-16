@@ -32,6 +32,7 @@
     padding: 1px;
     position: relative;
     display: none;
+    background-color: #fff;
 }
 .edui-tab-content .edui-tab-pane.active{
     display: block;
