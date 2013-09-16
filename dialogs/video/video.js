@@ -1,6 +1,6 @@
 
 (function(){
-
+    var domUtils = UM.dom.domUtils;
     var widgetName = 'insertvideo';
 
     UM.registerWidget( widgetName,{

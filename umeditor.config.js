@@ -191,7 +191,8 @@
         //,zIndex : 900     //编辑器层级的基数,默认是900
 
         //如果自定义，最好给p标签如下的行高，要不输入中文时，会有跳动感
-        //,initialStyle:'p{line-height:1em}'//编辑器层级的基数,可以用来改变字体等
+        //注意这里添加的样式，最好放在.edui-editor-body .edui-body-container这两个的下边，防止跟页面上css冲突
+        //,initialStyle:'.edui-editor-body .edui-body-container p{line-height:1em}'
 
         //,autoSyncData:true //自动同步编辑器要提交的数据
 
