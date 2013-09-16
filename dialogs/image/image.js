@@ -2,9 +2,7 @@
     var Base = {
         checkURL: function (url) {
             if(!url)    return false;
-            if(url.trim){
-                url = url.trim();
-            }
+            url = utils.trim(url);
             if (url.length <= 0) {
                 return false;
             }
