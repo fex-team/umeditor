@@ -132,7 +132,7 @@
                 });
 
                 //ie6下缓存图片
-                UM.browser.ie && UM.browser.version === 6 && $container[0].ownerDocument.execCommand("BackgroundImageCache", false, true);
+                UM.browser.ie && UM.browser.version === 6 && document.execCommand("BackgroundImageCache", false, true);
 
                 editor.render(id);
 
