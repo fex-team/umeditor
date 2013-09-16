@@ -1,5 +1,7 @@
 (function () {
-    var Base = {
+
+    var utils = UM.utils,
+        Base = {
         checkURL: function (url) {
             if(!url)    return false;
             url = utils.trim(url);
