@@ -45,29 +45,10 @@
 <div id="editor">
     <div id="editor_toolbar_box">
         <div id="editor_toolbar">
-            <input id="bold" type="button" value="加粗" onclick="myeditor.execCommand('bold')" style="height:24px;line-height:20px"/>
-            <input id="italic" type="button" value="加斜" onclick="myeditor.execCommand('italic')" style="height:24px;line-height:20px"/>
-            <select id="fontfamily" onchange="myeditor.execCommand('fontfamily',this.value)">
-                <option value="宋体,simsun">宋体</option>
-                <option value="楷体,楷体_gb2312,simkai">楷体</option>
-                <option value="隶书,simli">隶书</option>
-                <option value="黑体,simhei">黑体</option>
-                <option value="andale mono,times">andale mono</option>
-                <option value="arial,helvetica,sans-serif">arial</option>
-                <option value="arial black,avant garde">arial black</option>
-                <option value="comic sans ms,sans-serif">comic sans ms</option>
-            </select>
-            <select id="fontsize" onchange="myeditor.execCommand('fontsize',this.value)">
-                <option value="10">10px</option>
-                <option value="12">12px</option>
-                <option value="16">16px</option>
-                <option value="18">18px</option>
-                <option value="24">24px</option>
-                <option value="32">32px</option>
-                <option value="48">48px</option>
-            </select>
-            <input type="button" value="插入html" onclick="insert()" style="height:24px;line-height:20px"/>
-            <input type="button" value="清除格式" onclick="myeditor.execCommand('removeformat')" style="height:24px;line-height:20px"/>
+            <input id="bold" type="button" value="加粗" onmousedown="myeditor.execCommand('bold');return false;" style="height:24px;line-height:20px"/>
+            <input id="italic" type="button" value="加斜" onmousedown="myeditor.execCommand('italic');return false;" style="height:24px;line-height:20px"/>
+            <input type="button" value="插入html" onmousedown="insert();return false;" style="height:24px;line-height:20px"/>
+            <input type="button" value="清除格式" onmousedown="myeditor.execCommand('removeformat');return false" style="height:24px;line-height:20px"/>
             <input type="button" value="获得编辑器内容" onclick="alert(myeditor.getContent())" style="height:24px;line-height:20px"/>
             <input type="button" value="获得编辑器纯文本内容" onclick="alert(myeditor.getContentTxt())" style="height:24px;line-height:20px"/>
         </div>
@@ -95,19 +76,10 @@
         var i =-1;
         while(i++ < cmdName.length-1){
             var state = myeditor.queryCommandState(cmdName[i]);
+            console.log(state)
             G(cmdName[i]).style.color = state == 1?"red":"";
         }
-        //依据当前光标所在的字体改变下拉列表的选中值
-        i = -1;
-        while(i++<fontName.length-1){
-            var fstate = myeditor.queryCommandValue(fontName[i]).toLowerCase();
-            var fselect = G(fontName[i]);
-            for(var j= 0;j<fselect.options.length;j++){
-                if(fselect.options[j].value.toLowerCase().indexOf(fstate.split(",")[0])!=-1){
-                    fselect.options[j].selected = "true";
-                }
-            }
-        }
+
     });
     //插入文本
     function insert(){
