@@ -1,6 +1,7 @@
 (function () {
     var Base = {
         checkURL: function (url) {
+            if(!url)    return false;
             url = url.trim();
             if (url.length <= 0) {
                 return false;
