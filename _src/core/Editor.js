@@ -232,7 +232,11 @@
             var me = this,
                 options = me.options,
                 getStyleValue=function(attr){
-                    return parseInt($(container).css(attr));
+                    var res=parseInt($(container).css(attr));
+                    if(isNaN(res)){
+                        res=0;
+                    }
+                    return res;
                 };
 
             if (utils.isString(container)) {
@@ -260,7 +264,12 @@
                     options.initialFrameHeight = options.minFrameHeight = $(container).height() || UM.defaultHeight;
                 }
 
-                container.style.width = /%$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth - getStyleValue("padding-left")- getStyleValue("padding-right")   +'px';
+                container.style.width = /%$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth -
+                    getStyleValue("border-left")-
+                    getStyleValue("border-right")-
+                    getStyleValue("padding-left")-
+                    getStyleValue("padding-right")  +'px';
+
                 var height = /%$/.test(options.initialFrameHeight) ?  '100%' : (options.initialFrameHeight - getStyleValue("padding-top")- getStyleValue("padding-bottom") );
                 if(this.options.autoHeightEnabled){
                     container.style.minHeight = height +'px';
