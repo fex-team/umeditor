@@ -232,11 +232,7 @@
             var me = this,
                 options = me.options,
                 getStyleValue=function(attr){
-                    var res=parseInt($(container).css(attr));
-                    if(isNaN(res)){
-                        res=0;
-                    }
-                    return res;
+                    return parseInt($(container).css(attr));
                 };
 
             if (utils.isString(container)) {
@@ -265,8 +261,6 @@
                 }
 
                 container.style.width = /%$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth -
-                    getStyleValue("border-left")-
-                    getStyleValue("border-right")-
                     getStyleValue("padding-left")-
                     getStyleValue("padding-right")  +'px';
 
