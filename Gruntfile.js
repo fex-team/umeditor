@@ -103,15 +103,8 @@ module.exports = function ( grunt ) {
                 files: [
                     {
 
-                        expand: true,
                         src: [ 'themes/default/images/**', 'dialogs/**', 'lang/**' ],
                         dest: disDir
-
-                    }, {
-
-                        src: 'umeditor.config.js',
-                        dest: disDir,
-                        filter: 'isFile'
 
                     }
                 ]
@@ -155,13 +148,36 @@ module.exports = function ( grunt ) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-transcoding');
 
-
     grunt.registerTask('default', 'UEditor Mini build', function () {
 
         var tasks = [ 'concat', 'cssmin', 'uglify', 'copy:base', 'copy:'+server, 'transcoding' ];
 
+        //config修改
+        updateConfigFile();
+
         grunt.task.run( tasks );
 
     } );
+
+
+    function updateConfigFile () {
+
+        var filename = 'umeditor.config.js',
+            file = grunt.file.read( filename ),
+            path = server + "/",
+            suffix = server === "net" ? ".ashx" : "."+server;
+
+        file = file.replace( /php\//ig, path ).replace( /\.php/ig, suffix );
+
+        //写入到dist
+        if ( grunt.file.write( disDir + filename, file ) ) {
+
+            grunt.log.writeln( 'config file update success' );
+
+        } else {
+            grunt.log.warn('config file update error');
+        }
+
+    }
 
 };
