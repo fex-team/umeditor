@@ -1,6 +1,7 @@
 (function () {
 
     var utils = UM.utils,
+        browser = UM.browser,
         Base = {
         checkURL: function (url) {
             if(!url)    return false;
