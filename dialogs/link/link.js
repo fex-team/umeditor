@@ -1,4 +1,5 @@
 (function(){
+    var utils = UM.utils;
     function hrefStartWith(href, arr) {
         href = href.replace(/^\s+|\s+$/g, '');
         for (var i = 0, ai; ai = arr[i++];) {
