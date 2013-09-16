@@ -253,7 +253,7 @@
             var range = new dom.Range( me.document,me.body );
             if ( browser.ie9below ) {
                 var nativeRange = me.getIERange();
-                if ( nativeRange ) {
+                if ( nativeRange  && this.rangeInBody(nativeRange)) {
 
                     try{
                         transformIERangeToRange( nativeRange, range );
@@ -275,12 +275,13 @@
                     }
                 } else {
                     //trace:1734 有可能已经不在dom树上了，标识的节点
-                    if ( this._bakRange && domUtils.inDoc( this._bakRange.startContainer, this.document ) ){
+                    if ( this._bakRange && (this._bakRange.startContainer === this.body || domUtils.inDoc( this._bakRange.startContainer, this.body )) ){
                         return this._bakRange;
                     }
                     optimze( range );
                 }
             }
+
             return this._bakRange = range;
         },
 
