@@ -279,12 +279,16 @@
 
                     $("<img src='" + url + "' class='edui-image-pic' />").on("load", function () {
 
-                        Base.scale(this, 120,120,80);
+
 
                         var $item = $("<div class='edui-image-item'><div class='edui-image-close'></div></div>").append(this);
 
                         $("#edui-image-JsearchRes", me.dialog).append($item);
+
+                        Base.scale(this, 120);
+
                         $item.width($(this).width());
+
                         Base.close($(this));
 
                         $ele.val("");
