@@ -6,10 +6,13 @@ test( '闭合在段落中设置对齐方式', function() {
     var body = editor.body;
     editor.focus();
     editor.setContent( '<p><em>hello1</em></p>' );
+    if(ua.browser.gecko){
+        range.setStart(editor.body.firstChild.firstChild,0).collapse(true).select();
+    }
     editor.execCommand( 'justifycenter' );
     setTimeout(function(){
         range.setStart( body.firstChild.firstChild.firstChild, 3 ).collapse( true ).select();
-        if(ua.browser.chrome)
+        if(ua.browser.webkit)
             equal( body.firstChild.style['textAlign'], 'center', 'p对齐方式为居中对齐' );
         else
         equal(editor.body.firstChild.align,'center','p对齐方式为居中对齐');

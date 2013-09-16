@@ -32,6 +32,7 @@ test( 'content is null', function () {
     editor.setContent( '<p><br></p>' );
     //TODO 现在必须先focus再selectall，trace1743
     editor.focus();
+    range.setStart(editor.body.firstChild,0).collapse(true).select();
     editor.execCommand( 'selectAll' );
     equal( ua.getChildHTML( editor.body ), "<p><br></p>", "content is null" );
     //equal(UM.plugins['selectall'].notNeedUndo, 1, "notNeedUndo==1" );
