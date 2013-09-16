@@ -282,7 +282,7 @@
                         var $item = $("<div class='edui-image-item'><div class='edui-image-close'></div></div>").append(this);
 
                         $("#edui-image-JsearchRes", me.dialog).append($item);
-
+                        $item.width($(this).width());
                         Base.close($(this));
 
                         $ele.val("");
@@ -313,8 +313,8 @@
             "</div>" +
             "<div id=\"edui-image-JimgSearch\" class=\"edui-tab-pane\">" +
             "<div class=\"edui-image-searchBar\">" +
-            "<input class=\"edui-image-searchTxt\" id=\"edui-image-JsearchTxt\" type=\"text\">" +
-            "<div class=\"edui-image-searchAdd\" id=\"edui-image-JsearchAdd\"><%=lang_btn_add%></div>" +
+            "<table><tr><td><input class=\"edui-image-searchTxt\" id=\"edui-image-JsearchTxt\" type=\"text\"></td>" +
+            "<td><div class=\"edui-image-searchAdd\" id=\"edui-image-JsearchAdd\"><%=lang_btn_add%></div></td></tr></table>" +
             "</div>" +
             "<div class=\"edui-image-searchRes\" id=\"edui-image-JsearchRes\"></div>" +
             "</div>" +
