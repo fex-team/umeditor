@@ -60,6 +60,9 @@ UM.plugins['basestyle'] = function(){
 
             },
             queryCommandState : function(cmdName) {
+                if(browser.gecko){
+                    return this.document.queryCommandState(cmdName)
+                }
                 var path = this.selection.getStartElementPath(),result = false;
                 $.each(path,function(i,n){
                     switch (cmdName){
