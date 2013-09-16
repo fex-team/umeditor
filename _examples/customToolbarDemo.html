@@ -76,7 +76,6 @@
         var i =-1;
         while(i++ < cmdName.length-1){
             var state = myeditor.queryCommandState(cmdName[i]);
-            console.log(state)
             G(cmdName[i]).style.color = state == 1?"red":"";
         }
 
