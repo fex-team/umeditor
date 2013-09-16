@@ -64,7 +64,7 @@
         close: function ($img) {
             $img.css({
                 top: ($img.parent().height() - $img.height()) / 2,
-                left: 0
+                left: ($img.parent().width()-$img.width())/2
             }).prev().on("click",function () {
                     $(this).parent().remove();
                 }).parent().hover(function () {
@@ -277,7 +277,7 @@
 
                     $("<img src='" + url + "' class='edui-image-pic' />").on("load", function () {
 
-                        Base.scale(this, 120);
+                        Base.scale(this, 100,120,80);
 
                         var $item = $("<div class='edui-image-item'><div class='edui-image-close'></div></div>").append(this);
 
