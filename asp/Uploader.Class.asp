@@ -3,9 +3,9 @@
 ' Author: techird
 ' Usage:
 ' 	up = new Uploader
-'   Set formValues = up.Process
+'   Set formValues = up.Process()
 '   filename = up.Item("filename")
-'   Set stream = up.Item("stream")
+'   Set stream = up.Item("file") // the name of the file input
 '   stream.SaveToFile "upload/" & filename
 '   stream.Close
 Class Uploader
