@@ -377,7 +377,6 @@
         width: 700,
         height: 408
     }, function (editor, $w, url, state) {
-        debugger
         Base.callback(editor, $w, url, state)
     })
 })();
