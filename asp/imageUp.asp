@@ -1,4 +1,5 @@
 <%@ LANGUAGE="VBSCRIPT" CODEPAGE="65001" %> 
+<!--#include file="Uploader.Class.asp"-->
 <%
 	Dim MAX_SIZE, ALLOW_FILES, UPLOAD_PATH
 
@@ -18,96 +19,17 @@
 
 	Sub Upload() 
 
-		Dim boundary, parts, contentBytes, url, state, formValues, filename, filebyte, savepath, instream, outstream
-
-		boundary = GetBoundary()
-		If boundary = False Then
-			SetResult "", "不正确的表单提交方式，请保证 enctype = ""multipart/form-data"""
-			Exit Sub
-		End If
+		Dim url, savepath, savename, up, formValues
 
 		If Request.TotalBytes > MAX_SIZE Then			
 			SetResult "", "文件大小超过服务器限制（" + (MAX_SIZE / 1024 / 1024) + "M）"
 			Exit Sub
 		End If
 
-		contentBytes = Request.BinaryRead( Request.TotalBytes )
-
-		ProcessBytes contentBytes, formValues
-
-		filename = formValues.Item("filename")
-		filebyte = formValues.Item("upfile")
-
-		savepath = GetSavePath()
-		CheckOrCreatePath( Server.MapPath(savepath) )
-		url = savepath + GetSaveName(filename)
-
-		Set instream = Server.CreateObject("ADODB.Stream")
-		instream.Type = 1
-		instream.Mode = 3
-		instream.Open
-		instream.Write contentBytes
-
-		Set outstream = Server.CreateObject("ADODB.Stream")
-		outstream.Type = 1
-		outstream.Mode = 3
-		outstream.Open
-
-		instream.Position = InStrB( contentBytes, filebyte ) - 1
-		instream.CopyTo outstream, LenB(filebyte)
-		Response.Write(url)
-		Response.End
-		outstream.SaveToFile Server.MapPath(url)
-
-		instream.Close
-		outstream.Close
+		Set up = new Uploader
+		Set formValues = up.Process()
 
 		SetResult url, "SUCCESS"
-	End Sub
-
-	Sub ProcessBytes( ByVal bytes, ByRef formValues)
-		Dim byteCrLf, bytePtr, byteBoundary, blocks, block, head, content
-    	byteCrLf = ChrB(13) + ChrB(10)
-    	bytePtr = InStrB( bytes, byteCrLf )
-    	byteBoundary = LeftB( bytes, bytePtr - 1 )
-	    'Response.BinaryWrite byteBoundary
-    	blocks = SplitB( bytes, byteBoundary, -1, vbBinaryCompare )    	
-    	Set formValues = Server.CreateObject("Scripting.Dictionary")
-    	For Each block In blocks
-    		If LenB(block) > 10 Then
-		    	block = MidB( block, 3, LenB(block) - 4 )
-    			ProcessBlock block, formValues
-	    	End If
-    	Next
-	End Sub
-
-	Sub ProcessBlock( ByRef block, ByRef formValues )
-		Dim bytePtr, head, content, byteCrLf		
-		Dim valuePtn, valueMatches, valueMatch, key, field, value
-
-    	byteCrLf = ChrB(13) + ChrB(10)
-
-		Set valuePtn = new RegExp
-    	valuePtn.Pattern = "(\w+?)=""(.+?)"""
-    	valuePtn.Global = True
-		bytePtr = InStrB( block, byteCrLf + byteCrLf )
-		If bytePtr > 0 Then     		
-    		head = LeftB( block, bytePtr - 1 )
-    		head = ByteToStr(head)
-    		content = MidB( block, bytePtr + 4 )
-    		Set valueMatches = valuePtn.Execute( head )
-			For Each valueMatch In valueMatches
-    			key = valueMatch.SubMatches(0)
-    			field = valueMatch.SubMatches(1)
-    			Select Case key
-	    			Case "name"
-	    				formValues.Add field, content 
-	    			Case "filename"
-	    				formValues.Add key, field
-    			End Select
-    		Next
-    		
-		End If
 	End Sub
 
 	Sub SetResult( url, state )	
@@ -120,22 +42,6 @@
 			Response.Write( "<script>parent.UM.getEditor('" + Request.QueryString("editorId") + "').getWidgetCallback('image')('" + url + "','" + state + "')</script>" )
 		End If
 	End Sub
-
-	Function GetBoundary()
-		Dim ct, regex, match
-		ct = Request.ServerVariables("CONTENT_TYPE")
-		Set regex = new RegExp
-		regex.Pattern = "boundary=(.+)"
-		regex.Global = True
-		regex.IgnoreCase = true
-		Set match = regex.Execute( ct )
-		If match.Count > 0 Then
-			Set match = match(0)
-			GetBoundary = match.SubMatches(0)
-			Exit Function
-		End If
-		GetBoundary = False
-	End Function
 
 	Function CheckExt( file )
 		For Each ext In allowfiles
@@ -203,42 +109,4 @@
 		Next
 	End Function
 
-	Function SplitB(ByVal expr, ByVal splitExpr, ByVal count, ByVal vbCompare) 
-	    Dim ubnd, lastel, arrTemp, begPtr, bytePtr 
-	    If IsEmpty(expr) Or IsNull(expr) Or IsEmpty(splitExpr) Or IsNull(splitExpr) Then 
-	        Exit Function 
-	    End If 
-	    
-	    ReDim arrTemp(16) 
-	    count = count - 1 
-	    lastel = 0 
-	    bytePtr = 1 
-	    ubnd = 16 
-	    Do 
-	        begPtr = InStrB(bytePtr, expr, splitExpr, vbCompare) 
-	        If begPtr = 0 Then 
-	            arrTemp(lastel) = MidB(expr, bytePtr) 
-	            Exit Do 
-	        Else 
-	            arrTemp(lastel) = MidB(expr, bytePtr, begPtr - bytePtr) 
-	        End If 
-	        bytePtr = begPtr + LenB(splitExpr) 
-	        If lastel = count Then Exit Do 
-	        lastel = lastel + 1 
-	        If (lastel Mod 16) = 0 Then 
-	            ubnd = ubnd + 16 
-	            ReDim Preserve arrTemp(ubnd) 
-	        End If 
-	    Loop 
-	    ReDim Preserve arrTemp(lastel) 
-	    SplitB = arrTemp 
-	End Function 
-
-	Function ByteToStr( ByRef bytes ) 
-	    Dim i, str
-	    For i = 1 To LenB(bytes)
-	        str = str & MidB(bytes, i, 1) & ChrB(0) 
-	    Next 
-	    ByteToStr = str
-	End Function
 %>
