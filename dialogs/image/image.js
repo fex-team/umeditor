@@ -70,10 +70,13 @@
                 top: ($img.parent().height() - $img.height()) / 2,
                 left: ($img.parent().width()-$img.width())/2
             }).prev().on("click",function () {
-                $(this).parent().remove();
-                //显示图片计数-1
-                Upload.showCount--;
-                Upload.updateView();
+
+                if ( $(this).parent().remove().hasClass("edui-image-upload-item") ) {
+                    //显示图片计数-1
+                    Upload.showCount--;
+                    Upload.updateView();
+                }
+
             });
 
             return this;
@@ -101,7 +104,7 @@
                 //显示图片计数+1
                 Upload.showCount++;
                 var $img = $("<img src='" + editor.options.imagePath + url + "' class='edui-image-pic' />"),
-                    $item = $("<div class='edui-image-item'><div class='edui-image-close'></div></div>").append($img);
+                    $item = $("<div class='edui-image-item edui-image-upload-item'><div class='edui-image-close'></div></div>").append($img);
 
                 if ($("#edui-image-Jupload2", $w).length < 1) {
                     $("#edui-image-Jcontent", $w).append($item);
