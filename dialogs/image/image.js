@@ -176,12 +176,15 @@
             return me;
         },
         submit: function (callback) {
-            var me = this;
+
+            var me = this,
+                input = $( '<input style="filter: alpha(opacity=0);" class="edui-image-file" type="file" hidefocus="" name="upfile" accept="image/gif,image/jpeg,image/png,image/jpg,image/bmp">'),
+                input = input[0];
 
             $(me.dialog).delegate( ".edui-image-file", "change", function ( e ) {
 
                 $(this).parent()[0].submit();
-                Upload.updateInput();
+                Upload.updateInput( input );
                 me.toggleMask("Loading....");
                 callback && callback();
 
@@ -190,14 +193,11 @@
             return me;
         },
         //更新input
-        updateInput: function () {
-
-            var input = $( '<input style="filter: alpha(opacity=0);" class="edui-image-file" type="file" hidefocus="" name="upfile" accept="image/gif,image/jpeg,image/png,image/jpg,image/bmp">' );
+        updateInput: function ( inputField ) {
 
             $( ".edui-image-file", this.dialog ).each( function ( index, ele ) {
 
-                var newInput = input[0].cloneNode( true );
-                ele.parentNode.replaceChild( newInput, ele );
+                ele.parentNode.replaceChild( inputField.cloneNode( true ), ele );
 
             } );
 
