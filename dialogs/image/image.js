@@ -65,13 +65,16 @@
             return this;
         },
         close: function ($img) {
+
             $img.css({
                 top: ($img.parent().height() - $img.height()) / 2,
                 left: ($img.parent().width()-$img.width())/2
             }).prev().on("click",function () {
                 $(this).parent().remove();
+                //显示图片计数-1
+                Upload.showCount--;
+                Upload.updateView();
             });
-
 
             return this;
         },
@@ -94,9 +97,9 @@
         },
         callback: function (editor, $w, url, state) {
 
-            Upload.toggleMask();
-
             if (state == "SUCCESS") {
+                //显示图片计数+1
+                Upload.showCount++;
                 var $img = $("<img src='" + editor.options.imagePath + url + "' class='edui-image-pic' />"),
                     $item = $("<div class='edui-image-item'><div class='edui-image-close'></div></div>").append($img);
 
@@ -106,7 +109,7 @@
                     Upload.render("#edui-image-Jcontent", 2)
                         .config("#edui-image-Jupload2");
                 } else {
-                    $("#edui-image-Jupload2", $w).before($item);
+                    $("#edui-image-Jupload2", $w).before($item).show();
                 }
 
                 $img.on("load", function () {
@@ -122,6 +125,9 @@
 
                 }, 3000 );
             }
+
+            Upload.toggleMask();
+
         }
     };
 
@@ -129,6 +135,7 @@
      * 本地上传
      * */
     var Upload = {
+        showCount: 0,
         uploadTpl: '<div class="edui-image-upload%%" id="edui-image-Jupload%%">' +
             '<span class="edui-image-icon"></span>' +
             '<form class="edui-image-form" method="post" enctype="multipart/form-data" target="up">' +
@@ -183,6 +190,10 @@
 
             $(me.dialog).delegate( ".edui-image-file", "change", function ( e ) {
 
+                if ( !this.parentNode ) {
+                    return;
+                }
+
                 $(this).parent()[0].submit();
                 Upload.updateInput( input );
                 me.toggleMask("Loading....");
@@ -200,6 +211,18 @@
                 ele.parentNode.replaceChild( inputField.cloneNode( true ), ele );
 
             } );
+
+        },
+        //更新上传框
+        updateView: function () {
+
+            if ( Upload.showCount !== 0 ) {
+                return;
+            }
+
+            $(".edui-image-upload2", this.dialog).hide();
+            $(".edui-image-dragTip", this.dialog).show();
+            $(".edui-image-upload1", this.dialog).show();
 
         },
         drag: function () {
@@ -256,11 +279,17 @@
                 $("#edui-image-Jupload1", me.dialog).css( "display", "none" );
                 $mask.addClass("active").html(html);
             } else {
+
+                $mask.removeClass("active").html();
+
+                if ( Upload.showCount > 0 ) {
+                    return me;
+                }
+
                 if (!(UM.browser.ie && UM.browser.version <= 9) ){
                     $("#edui-image-JdragTip", me.dialog).css("display", "block");
                 }
                 $("#edui-image-Jupload1", me.dialog).css( "display", "block" );
-                $mask.removeClass("active").html();
             }
 
             return me;
