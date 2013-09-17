@@ -45,7 +45,7 @@
             return arr;
         },
         scale: function (img, max, oWidth, oHeight) {
-            var width = 0, height = 0, percent, ow = img.width || oWidth, oh = img.height || oHeight;
+            var width = 0, height = 0, percent, ow = $(img).width() || oWidth, oh = $(img).height() || oHeight;
             if (ow > max || oh > max) {
                 if (ow >= oh) {
                     if (width = ow - max) {
@@ -73,6 +73,8 @@
                 }).parent().hover(function () {
                     $(this).toggleClass("hover");
                 });
+
+
 
 
             return this;
@@ -112,7 +114,8 @@
                     $("#edui-image-Jupload2", $w).before($item);
                 }
 
-                $img.on("load", function () {
+                $img.hide().on("load", function () {
+                    $(this).show();
                     Base.scale(this, 120);
                     Base.close($(this));
                 });
@@ -120,9 +123,7 @@
             } else {
                 currentDialog.showTip( state );
                 window.setTimeout( function () {
-
                     currentDialog.hideTip();
-
                 }, 3000 );
             }
         }
@@ -376,6 +377,7 @@
         width: 700,
         height: 408
     }, function (editor, $w, url, state) {
+        debugger
         Base.callback(editor, $w, url, state)
     })
 })();
