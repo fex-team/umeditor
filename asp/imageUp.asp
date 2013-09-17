@@ -17,17 +17,32 @@
 
 	Upload
 
-	Sub Upload() 
-
-		Dim url, savepath, savename, up, formValues
+	Sub Upload()
+		Dim url, filename, filestream, savepath, up, formValues
 
 		If Request.TotalBytes > MAX_SIZE Then			
-			SetResult "", "文件大小超过服务器限制（" + (MAX_SIZE / 1024 / 1024) + "M）"
+			SetResult "", "文件大小超过服务器限制（" & (MAX_SIZE / 1024 / 1024) & "M）"
 			Exit Sub
 		End If
 
 		Set up = new Uploader
 		Set formValues = up.Process()
+
+		filename = formValues.Item("filename")
+
+		If CheckExt(filename) = False Then
+			SetResult "","不允许的文件类型！"
+			Exit Sub
+		End If
+
+		savepath = GetSavePath()
+		CheckOrCreatePath(Server.MapPath(savepath))
+
+		url = savepath + GetSaveName(filename)
+
+		Set filestream = formValues.Item("upfile")
+		filestream.SaveToFile Server.MapPath(url)
+		filestream.Close
 
 		SetResult url, "SUCCESS"
 	End Sub
@@ -44,8 +59,7 @@
 	End Sub
 
 	Function CheckExt( file )
-		For Each ext In allowfiles
-				'Response.Write(ext & ", " & GetExt(file) & "<br>")
+		For Each ext In ALLOW_FILES
 			If GetExt(file) = ext Then 
 				CheckExt = true
 				Exit Function
@@ -102,7 +116,6 @@
 		path = ""
 		For Each part in parts
 			path = path + part + "\"
-			'Response.Write "Checking " + path + Chr(10)
 			If fs.FolderExists( path ) = False Then
 				fs.CreateFolder( path )
 			End If
