@@ -7,7 +7,7 @@
 '   filename = up.Item("filename")
 '   Set stream = up.Item("stream")
 '   stream.SaveToFile "upload/" & filename
-'	stream.Close
+'   stream.Close
 Class Uploader
 	Private adTypeBinary
 	Private adTypeText
