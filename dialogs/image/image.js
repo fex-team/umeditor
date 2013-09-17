@@ -373,6 +373,8 @@
                     image_url: UMEDITOR_CONFIG.UMEDITOR_HOME_URL + 'dialogs/image/'
                 });
 
+            Upload.showCount = 0;
+
             if (lang) {
                 var html = $.parseTmpl(this.tpl, opt);
             }
