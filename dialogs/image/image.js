@@ -45,7 +45,7 @@
             return arr;
         },
         scale: function (img, max, oWidth, oHeight) {
-            var width = 0, height = 0, percent, ow = $(img).width() || oWidth, oh = $(img).height() || oHeight;
+            var width = 0, height = 0, percent, ow = img.width || oWidth, oh = img.height || oHeight;
             if (ow > max || oh > max) {
                 if (ow >= oh) {
                     if (width = ow - max) {
@@ -69,12 +69,8 @@
                 top: ($img.parent().height() - $img.height()) / 2,
                 left: ($img.parent().width()-$img.width())/2
             }).prev().on("click",function () {
-                    $(this).parent().remove();
-                }).parent().hover(function () {
-                    $(this).toggleClass("hover");
-                });
-
-
+                $(this).parent().remove();
+            });
 
 
             return this;
@@ -108,14 +104,12 @@
                     $("#edui-image-Jcontent", $w).append($item);
 
                     Upload.render("#edui-image-Jcontent", 2)
-                        .config("#edui-image-Jupload2")
-                        .submit("#edui-image-Jupload2");
+                        .config("#edui-image-Jupload2");
                 } else {
                     $("#edui-image-Jupload2", $w).before($item);
                 }
 
-                $img.hide().on("load", function () {
-                    $(this).show();
+                $img.on("load", function () {
                     Base.scale(this, 120);
                     Base.close($(this));
                 });
@@ -123,7 +117,9 @@
             } else {
                 currentDialog.showTip( state );
                 window.setTimeout( function () {
+
                     currentDialog.hideTip();
+
                 }, 3000 );
             }
         }
@@ -148,7 +144,7 @@
 
             me.render("#edui-image-Jlocal", 1);
             me.config("#edui-image-Jupload1");
-            me.submit("#edui-image-Jupload1");
+            me.submit();
             me.drag();
 
             $("#edui-image-Jupload1").hover(function () {
@@ -179,18 +175,32 @@
 
             return me;
         },
-        submit: function (sel, callback) {
+        submit: function (callback) {
             var me = this;
 
-            $("input", $(sel, me.dialog)).on("change", function (e) {
+            $(me.dialog).delegate( ".edui-image-file", "change", function ( e ) {
 
                 $(this).parent()[0].submit();
+                Upload.updateInput();
                 me.toggleMask("Loading....");
                 callback && callback();
 
             });
 
             return me;
+        },
+        //更新input
+        updateInput: function () {
+
+            var input = $( '<input style="filter: alpha(opacity=0);" class="edui-image-file" type="file" hidefocus="" name="upfile" accept="image/gif,image/jpeg,image/png,image/jpg,image/bmp">' );
+
+            $( ".edui-image-file", this.dialog ).each( function ( index, ele ) {
+
+                var newInput = input[0].cloneNode( true );
+                ele.parentNode.replaceChild( newInput, ele );
+
+            } );
+
         },
         drag: function () {
             var me = this;
