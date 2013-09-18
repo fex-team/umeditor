@@ -1,11 +1,12 @@
 <%
 ' ASP 文件上传类
 ' Author: techird
+' Email: techird@qq.com
 ' Usage:
 '   up = new Uploader
 '   Set formValues = up.Process()
 '   filename = up.Item("filename")
-'   Set stream = up.Item("file") // the name of the file input
+'   Set stream = up.Item("file1") // the name of the file input
 '   stream.SaveToFile "upload/" & filename
 '   stream.Close
 Class Uploader
