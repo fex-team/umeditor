@@ -1,7 +1,7 @@
 <%@ LANGUAGE="VBSCRIPT" CODEPAGE="65001" %> 
 <!--#include file="Uploader.Class.asp"-->
 <%
-	Dim MAX_SIZE, ALLOW_FILES, UPLOAD_PATH
+	Dim MAX_SIZE, ALLOW_FILES, UPLOAD_PATH, DEBUG
 
 
 '配置
@@ -14,6 +14,7 @@
 	MAX_SIZE = 10 * 1024 * 1024 ' = 10M'
 	ALLOW_FILES = Array(".gif", ".png", ".jpg", ".jpeg", ".bmp")
 	UPLOAD_PATH = "upload/"
+	DEBUG = False
 
 	Upload
 
@@ -44,15 +45,22 @@
 		filestream.SaveToFile Server.MapPath(url)
 		filestream.Close
 
-		SetResult url, "SUCCESS"
+		SetResult url, "SUCCESS", formValues
 	End Sub
 
-	Sub SetResult( url, state )	
+	Sub SetResult( url, state, ByRef formValues )	
 		Session.CodePage = 65001
 		Response.AddHeader "Content-Type", "text/html;charset=utf-8"
 		SetLocale 2052
 		If Request.QueryString("type") = "ajax" Then
 			Response.Write( url )
+		ElseIf DEBUG Then
+			Response.Write( "<img src='" + url + "' /><br />")
+			For Each key In formValues.Keys
+				If key <> "upfile" Then
+					Response.Write( key & " = " & formValues.Item(key) & "<br />" )
+				End If
+			Next
 		Else
 			Response.Write( "<script>parent.UM.getEditor('" + Request.QueryString("editorId") + "').getWidgetCallback('image')('" + url + "','" + state + "')</script>" )
 		End If
