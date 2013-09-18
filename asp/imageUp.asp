@@ -51,7 +51,7 @@
 		Session.CodePage = 65001
 		Response.AddHeader "Content-Type", "text/html;charset=utf-8"
 		SetLocale 2052
-		If Request.QueryString("ajax") = "ajax" Then
+		If Request.QueryString("type") = "ajax" Then
 			Response.Write( url )
 		Else
 			Response.Write( "<script>parent.UM.getEditor('" + Request.QueryString("editorId") + "').getWidgetCallback('image')('" + url + "','" + state + "')</script>" )
