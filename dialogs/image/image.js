@@ -35,8 +35,6 @@
 //                }
 
                 return arr.push({
-                    width: node.width,
-                    height: node.height,
                     _src: node.src,
                     src: node.src
                 });
