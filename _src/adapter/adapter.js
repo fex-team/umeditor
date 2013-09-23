@@ -138,7 +138,7 @@
 
 
                 //添加tooltip;
-                $.eduitooltip && $.eduitooltip('attachTo').css('z-index',editor.getOpt('zIndex')+1);
+                $.eduitooltip && $.eduitooltip('attachTo', $("[data-original-title]",$container)).css('z-index',editor.getOpt('zIndex')+1);
 
                 $container.find('a').click(function(evt){
                     evt.preventDefault()
