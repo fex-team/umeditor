@@ -28,11 +28,11 @@
             $.each($imgs, function (index, node) {
                 $(node).removeAttr("width").removeAttr("height");
 
-                if (node.width > editor.options.initialFrameWidth) {
-                    me.scale(node, editor.options.initialFrameWidth -
-                        parseInt($(editor.body).css("padding-left"))  -
-                        parseInt($(editor.body).css("padding-right")));
-                }
+//                if (node.width > editor.options.initialFrameWidth) {
+//                    me.scale(node, editor.options.initialFrameWidth -
+//                        parseInt($(editor.body).css("padding-left"))  -
+//                        parseInt($(editor.body).css("padding-right")));
+//                }
 
                 return arr.push({
                     width: node.width,
