@@ -14,7 +14,7 @@
     MAX_SIZE = 10 * 1024 * 1024 ' = 10M'
     ALLOW_FILES = Array(".gif", ".png", ".jpg", ".jpeg", ".bmp")
     UPLOAD_PATH = "upload/"
-    DEBUG = True
+    DEBUG = False
 
     Upload
 
