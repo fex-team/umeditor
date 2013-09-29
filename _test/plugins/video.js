@@ -12,7 +12,7 @@ test( '视频', function () {
     var range = te.obj[1];
     editor.setContent( '<p>hello</p>' );
     range.setStart(editor.body.firstChild,0).collapse(true).select();
-    var videoObject  ={url: "http://player.youku.com/player.php/Type/Folder/Fid/19275705/Ob/1/sid/XNTU3Mjk4NzQ4/v.swf", width: "500", height: "400", align: "center"}
+    var videoObject  ={url: "http://player.youku.com/player.php/Type/Folder/Fid/19275705/Ob/1/sid/XNTU3Mjk4NzQ4/v.swf", width: "500", height: "400", align: "right"};
     editor.execCommand( 'insertvideo',videoObject);
     stop();
     setTimeout(function(){
@@ -21,6 +21,7 @@ test( '视频', function () {
         equal(img[0].width,"500");
         equal(img[0].height,"400");
         equal(img[0].src,editor.options.UMEDITOR_HOME_URL+'themes/default/images/spacer.gif');
+        equal(ua.getFloatStyle(img[0]),'right');//trace 3653
         if(ua.browser.gecko||ua.browser.ie>8){
             ok(img[0].style.background.indexOf('url(\"'+editor.options.UMEDITOR_HOME_URL+'themes/default/images/videologo.gif\")') > -1);
         }

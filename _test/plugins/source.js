@@ -1,5 +1,7 @@
 module('plugins.source');
 
+
+
 //test('', function () {
 //    stop()
 //});
@@ -20,7 +22,27 @@ test('插入表格，切源码再切回来',function(){
     }, 20);
     stop();
 });
-
+test('设定range，切源码再切回来',function(){//trace 3647
+    var editor = te.obj[0];
+    var div = te.dom[0];
+    editor.focus();
+    editor.setContent('<p>这里我可以写一些输入提示</p>');
+    var range = te.obj[1];
+    setTimeout(function () {
+        range.setStart(editor.body.firstChild.firstChild,0).setEnd(editor.body.firstChild.firstChild,2).select();
+        editor.execCommand('source');
+        setTimeout(function () {
+            editor.execCommand('source');
+            if (ua.browser.ie) {//todo range 判断
+                ua.checkResult(editor.selection.getRange(), editor.body.firstChild.firstChild, editor.body.firstChild.lastChild, 0, 0, false, '选区不变');
+            } else {
+                ua.checkResult(editor.selection.getRange(), editor.body.firstChild.firstChild, editor.body.firstChild.firstChild, 0, 2, false, '选区不变');
+            }
+            start();
+        }, 20);
+    }, 20);
+    stop();
+});
 test('chrome删除后切换源码再切换回来，光标没了', function () {
     //opera 取不到range值
     if (ua.browser.opera) return 0;
@@ -158,7 +180,7 @@ test('默认插入的占位符', function () {
 });
 
 test('不以http://开头的超链接绝对路径网址', function () {
-    if (ua.browser.ie == 9)return 0;//TODO 1.2.6
+    if (ua.browser.ie == 9)return 0;//TODO
     var editor = te.obj[0];
     editor.setContent('<p><a href="www.baidu.com">绝对路径网址</a></p>');
     setTimeout(function () {
