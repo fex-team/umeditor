@@ -10,7 +10,7 @@ UM.registerUI('imagescale',function () {
             var range = me.selection.getRange(),
                 img = range.getClosedNode();
 
-            if (img && img.tagName == 'IMG') {
+            if (img && img.tagName == 'IMG' && me.body.contentEditable!="false") {
 
                 if (!$imagescale) {
                     $imagescale = $.eduiscale({'$wrap':me.$container}).css('zIndex', me.options.zIndex);
@@ -64,7 +64,7 @@ UM.registerUI('imagescale',function () {
         });
 
         me.addListener('click', function (type, e) {
-            if (e.target.tagName == 'IMG') {
+            if (e.target.tagName == 'IMG' && me.body.contentEditable!="false") {
                 var range = new dom.Range(me.document, me.body);
                 range.selectNode(e.target).select();
             }
