@@ -29,14 +29,15 @@ test('设定range，切源码再切回来',function(){//trace 3647
     editor.setContent('<p>这里我可以写一些输入提示</p>');
     var range = te.obj[1];
     setTimeout(function () {
-        range.setStart(editor.body.firstChild.firstChild,0).setEnd(editor.body.firstChild.firstChild,2).select();
+        range.selectNode(editor.body.firstChild).select();
+//        range.setStart(editor.body.firstChild.firstChild,0).setEnd(editor.body.firstChild.firstChild,2).select();
         editor.execCommand('source');
         setTimeout(function () {
             editor.execCommand('source');
-            if (ua.browser.ie) {//todo range 判断
-                ua.checkResult(editor.selection.getRange(), editor.body.firstChild.firstChild, editor.body.firstChild.lastChild, 0, 0, false, '选区不变');
+            if (ua.browser.gecko) {//todo range 判断
+                ua.checkResult(editor.selection.getRange(), editor.body, editor.body, 0, 1, false, '选区不变');
             } else {
-                ua.checkResult(editor.selection.getRange(), editor.body.firstChild.firstChild, editor.body.firstChild.firstChild, 0, 2, false, '选区不变');
+                ua.checkResult(editor.selection.getRange(), editor.body.firstChild.firstChild, editor.body.firstChild.firstChild, 0, 12, false, '选区不变');
             }
             start();
         }, 20);

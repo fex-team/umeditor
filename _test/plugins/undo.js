@@ -1,4 +1,53 @@
 module("plugins.undo");
+//test('', function () {
+//    stop()
+//});
+test( 'trace 3643  更改部分内容,点击 undo,redo,undo,这时redo按钮高亮', function () {
+    var editor = te.obj[0];
+    var range = te.obj[1];
+    var body = editor.body;
+    editor.setContent('<p>hello1</p>');
+    setTimeout(function () {
+        range.selectNode(editor.body.firstChild).select();
+        editor.execCommand('underline');
+        equal(editor.queryCommandState('undo'), 0, 'undo按钮高亮');
+        equal(editor.queryCommandState('redo'), -1, 'redo按钮高亮');
+        editor.execCommand('Undo');
+        equal(editor.queryCommandState('undo'), -1, 'undo按钮高亮');
+        equal(editor.queryCommandState('redo'), 0, 'redo按钮高亮');
+        editor.execCommand('redo');
+        equal(editor.queryCommandState('undo'), 0, 'undo按钮高亮');
+        equal(editor.queryCommandState('redo'), -1, 'redo按钮高亮');
+        editor.execCommand('Undo');
+        equal(editor.queryCommandState('undo'), -1, 'undo按钮高亮');
+        equal(editor.queryCommandState('redo'), 0, 'redo按钮高亮');
+        start();
+    }, 50);
+    stop();
+} );
+
+test( 'trace 3645  设置一段文本为有序列表,再设成无序列表,undo', function () {
+    var editor = te.obj[0];
+    var range = te.obj[1];
+    var body = editor.body;
+    editor.setContent('<p>hello1</p><p>hello2</p>');
+    setTimeout(function () {
+        range.setStart(body.firstChild, 0).setEnd(body.lastChild, 1).select();
+        editor.execCommand('insertorderedlist');
+        equal(body.firstChild.tagName.toLowerCase(), 'ol', 'insertorderedlist-检查列表的类型');
+        equal(body.firstChild.childNodes.length, 2, '2个孩子');
+        editor.execCommand('insertunorderedlist');
+        equal(body.firstChild.tagName.toLowerCase(), 'ul', 'insertunorderedlist-检查列表的类型');
+        equal(body.firstChild.childNodes.length, 2, '2个孩子');
+        editor.execCommand('Undo');
+        //这个trace 出现问题的时候,undo之后,列表会变成4行
+        equal(body.firstChild.tagName.toLowerCase(), 'ol', 'Undo-检查列表的类型');
+        equal(body.firstChild.childNodes.length, 2, '2个孩子');
+        start();
+    }, 50);
+    stop();
+} );
+
 function getDiv(){
     var div = document.body.appendChild(document.createElement('div'));
     return div.appendChild(document.createElement('div'));
