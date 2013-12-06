@@ -230,7 +230,7 @@
         },
         insertSmiley: function( url, evt ) {
             var obj = {
-                src:editor.options.emotionLocalization ? editor.options.UMEDITOR_HOME_URL + "dialogs/emotion/" + url : url
+                src: url
             };
             obj._src = obj.src;
             editor.execCommand( 'insertimage', obj );
