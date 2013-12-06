@@ -102,7 +102,7 @@ UM.registerUI('autofloat',function(){
         },browser.ie ? 200 : 100,true);
 
         me.addListener('destroy',function(){
-            domUtils.un(window, ['scroll','resize'], updateFloating);
+            $(window).un('scroll resize',updateFloating);
             me.removeListener('keydown', defer_updateFloating);
         });
 
@@ -118,7 +118,8 @@ UM.registerUI('autofloat',function(){
             if(LteIE6){
                 fixIE6FixedPos();
             }
-            domUtils.on(window, ['scroll','resize'], updateFloating);
+
+            $(window).on('scroll resize',updateFloating);
             me.addListener('keydown', defer_updateFloating);
 
             me.addListener('beforefullscreenchange', function (t, enabled){

@@ -118,10 +118,9 @@
         me.document = doc;
         me.body = body;
         if ( browser.ie9below ) {
-            domUtils.on( body, 'beforedeactivate', function () {
+            $( body).on('beforedeactivate', function () {
                 me._bakIERange = me.getIERange();
-            } );
-            domUtils.on( body, 'activate', function () {
+            } ).on('activate', function () {
                 try {
                     var ieNativRng =  _getIERange( me );
                     if ( (!ieNativRng || !me.rangeInBody(ieNativRng)) && me._bakIERange ) {

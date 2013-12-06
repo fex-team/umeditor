@@ -335,123 +335,123 @@ test( 'split--offset=data.length', function() {
 //} );
 //
 
-test( 'on- 给不同的dom元素绑定相同的事件', function() {
-    var domUtils = te.obj[3];
-    expect( 2 );
-    var div2 = document.body.appendChild( document.createElement( 'div' ) );
-    div2.id = 'test2';
-    te.dom.push( div2 );
-    var handle = function( e ) {
-        ok( true, e.type + ' event triggered' );
-    };
-    domUtils.on( te.dom[2], 'mouseover', handle);
-    domUtils.on( te.dom[1], 'mouseover', handle );
-
-    ua.mouseover( te.dom[2] );
-    ua.mouseover( te.dom[1] );
-} );
-test( 'un- 给不同的dom元素绑定相同的事件,解除一个，另一个仍然有效', function() {
-    var domUtils = te.obj[3];
-    expect( 1 );
-    var div2 = document.body.appendChild( document.createElement( 'div' ) );
-    div2.id = 'test2';
-    te.dom.push( div2 );
-    var handle = function( e ) {
-        ok( true, e.type + ' event triggered' );
-    };
-    domUtils.on( te.dom[2], 'mouseover', handle);
-    domUtils.on( te.dom[1], 'mouseover', handle );
-    domUtils.un( te.dom[2],'mouseover', handle );
-    ua.mouseover( te.dom[2] );
-    ua.mouseover( te.dom[1] );
-} );
-/*绑定多个事件*/
-test( 'on', function() {
-    var domUtils = te.obj[3];
-    expect( 2 );
-    domUtils.on( te.dom[2], ['mouseover','keypress'], function( e ) {
-        ok( true, e.type + ' event triggered' );
-    } );
-    ua.mouseover( te.dom[2] );
-    ua.keypress( te.dom[2] );
-} );
-test( "test case sensitive", function() {
-    var div = te.dom[2];
-    var domUtils = te.obj[3];
-    if ( ua.browser.ie ) {
-        ok( true, 'IE下不支持诸如DOMNodeInserted等mutation事件' );
-        return;
-    }
-    // ok(false, 'TODO: 添加大小写敏感事件的on绑定和un取消用例,比如DOMMouseScroll');
-    expect( 2 );
-    domUtils.on( div, 'DOMNodeInserted', function() {
-        ok( true, '用DOMNodeInserted测试大小写敏感事件的on绑定' );
-        domUtils.un( div, 'DOMNodeInserted' );
-    } );
-    div.appendChild( document.createElement( 'div' ) );
-    div.appendChild( document.createElement( 'div' ) );
-} );
-
-test( "un--取消注册unload事件", function() {
-    expect( 1 );
-    var domUtils = te.obj[3];
-    var div = te.dom[2];
-    var handle_a = function() {
-        ok( true, "check unload" );
-    };
-    domUtils.on( div, "click", handle_a );
-    /* 直接调用ua提供的接口跨浏览器接口，屏蔽浏览器之间的差异 */
-    ua.click( div );
-    domUtils.un( div, "click", handle_a );
-    ua.click( div );
-} );
-
-
-test( "un--同一个回调注册多个事件，后面事件会将第一个事件dhandler覆盖掉", function() {
-    expect( 1 );
-    var domUtils = te.obj[3];
-    var div = te.dom[2];
-    var handle_a = function() {
-        ok( true, "应当只会执行一次" );
-    };
-    /* 直接调用ua提供的接口跨浏览器接口，屏蔽浏览器之间的差异 */
-    domUtils.on( div, "click", handle_a );
-    domUtils.on(div,'dbclick',handle_a);
-    ua.click( div );
-    domUtils.un( div, "click", handle_a );
-    ua.click( div );
-} );
-
-test( "un--同一个回调同一个事件注册2次", function() {
-    expect( 1 );
-    var domUtils = te.obj[3];
-    var div = te.dom[2];
-    var handle_a = function() {
-        ok( true, "check unload" );
-    };
-    /* 直接调用ua提供的接口跨浏览器接口，屏蔽浏览器之间的差异 */
-    domUtils.on( div, "click", handle_a );
-    domUtils.on(div,'click',handle_a);
-    ua.click( div );
-    domUtils.un( div, "click", handle_a );
-    ua.click( div );
-} );
-
-test( "un--同一个事件取消注册三次", function() {
-    expect( 1 );
-    var domUtils = te.obj[3];
-    var div = te.dom[2];
-    var handle_a = function() {
-        ok( true, "check unload" );
-    };
-    /* 直接调用ua提供的接口跨浏览器接口，屏蔽浏览器之间的差异 */
-    domUtils.on( div, "click", handle_a );
-    ua.click( div );
-    domUtils.un( div, "click", handle_a );
-    domUtils.un( div, "click", handle_a );
-    domUtils.un( div, "click", handle_a );
-    ua.click( div );
-} );
+//test( 'on- 给不同的dom元素绑定相同的事件', function() {
+//    var domUtils = te.obj[3];
+//    expect( 2 );
+//    var div2 = document.body.appendChild( document.createElement( 'div' ) );
+//    div2.id = 'test2';
+//    te.dom.push( div2 );
+//    var handle = function( e ) {
+//        ok( true, e.type + ' event triggered' );
+//    };
+//    domUtils.on( te.dom[2], 'mouseover', handle);
+//    domUtils.on( te.dom[1], 'mouseover', handle );
+//
+//    ua.mouseover( te.dom[2] );
+//    ua.mouseover( te.dom[1] );
+//} );
+//test( 'un- 给不同的dom元素绑定相同的事件,解除一个，另一个仍然有效', function() {
+//    var domUtils = te.obj[3];
+//    expect( 1 );
+//    var div2 = document.body.appendChild( document.createElement( 'div' ) );
+//    div2.id = 'test2';
+//    te.dom.push( div2 );
+//    var handle = function( e ) {
+//        ok( true, e.type + ' event triggered' );
+//    };
+//    domUtils.on( te.dom[2], 'mouseover', handle);
+//    domUtils.on( te.dom[1], 'mouseover', handle );
+//    domUtils.un( te.dom[2],'mouseover', handle );
+//    ua.mouseover( te.dom[2] );
+//    ua.mouseover( te.dom[1] );
+//} );
+///*绑定多个事件*/
+//test( 'on', function() {
+//    var domUtils = te.obj[3];
+//    expect( 2 );
+//    domUtils.on( te.dom[2], ['mouseover','keypress'], function( e ) {
+//        ok( true, e.type + ' event triggered' );
+//    } );
+//    ua.mouseover( te.dom[2] );
+//    ua.keypress( te.dom[2] );
+//} );
+//test( "test case sensitive", function() {
+//    var div = te.dom[2];
+//    var domUtils = te.obj[3];
+//    if ( ua.browser.ie ) {
+//        ok( true, 'IE下不支持诸如DOMNodeInserted等mutation事件' );
+//        return;
+//    }
+//    // ok(false, 'TODO: 添加大小写敏感事件的on绑定和un取消用例,比如DOMMouseScroll');
+//    expect( 2 );
+//    domUtils.on( div, 'DOMNodeInserted', function() {
+//        ok( true, '用DOMNodeInserted测试大小写敏感事件的on绑定' );
+//        domUtils.un( div, 'DOMNodeInserted' );
+//    } );
+//    div.appendChild( document.createElement( 'div' ) );
+//    div.appendChild( document.createElement( 'div' ) );
+//} );
+//
+//test( "un--取消注册unload事件", function() {
+//    expect( 1 );
+//    var domUtils = te.obj[3];
+//    var div = te.dom[2];
+//    var handle_a = function() {
+//        ok( true, "check unload" );
+//    };
+//    domUtils.on( div, "click", handle_a );
+//    /* 直接调用ua提供的接口跨浏览器接口，屏蔽浏览器之间的差异 */
+//    ua.click( div );
+//    domUtils.un( div, "click", handle_a );
+//    ua.click( div );
+//} );
+//
+//
+//test( "un--同一个回调注册多个事件，后面事件会将第一个事件dhandler覆盖掉", function() {
+//    expect( 1 );
+//    var domUtils = te.obj[3];
+//    var div = te.dom[2];
+//    var handle_a = function() {
+//        ok( true, "应当只会执行一次" );
+//    };
+//    /* 直接调用ua提供的接口跨浏览器接口，屏蔽浏览器之间的差异 */
+//    domUtils.on( div, "click", handle_a );
+//    domUtils.on(div,'dbclick',handle_a);
+//    ua.click( div );
+//    domUtils.un( div, "click", handle_a );
+//    ua.click( div );
+//} );
+//
+//test( "un--同一个回调同一个事件注册2次", function() {
+//    expect( 1 );
+//    var domUtils = te.obj[3];
+//    var div = te.dom[2];
+//    var handle_a = function() {
+//        ok( true, "check unload" );
+//    };
+//    /* 直接调用ua提供的接口跨浏览器接口，屏蔽浏览器之间的差异 */
+//    domUtils.on( div, "click", handle_a );
+//    domUtils.on(div,'click',handle_a);
+//    ua.click( div );
+//    domUtils.un( div, "click", handle_a );
+//    ua.click( div );
+//} );
+//
+//test( "un--同一个事件取消注册三次", function() {
+//    expect( 1 );
+//    var domUtils = te.obj[3];
+//    var div = te.dom[2];
+//    var handle_a = function() {
+//        ok( true, "check unload" );
+//    };
+//    /* 直接调用ua提供的接口跨浏览器接口，屏蔽浏览器之间的差异 */
+//    domUtils.on( div, "click", handle_a );
+//    ua.click( div );
+//    domUtils.un( div, "click", handle_a );
+//    domUtils.un( div, "click", handle_a );
+//    domUtils.un( div, "click", handle_a );
+//    ua.click( div );
+//} );
 
 test( 'isBlockElm', function() {
     var div = te.dom[2];

@@ -169,7 +169,9 @@
 </div>
 <script type="text/javascript">
     //实例化编辑器
-    var ue = UM.getEditor('myEditor');
+    var ue = UM.getEditor('myEditor',{
+        excludePlugins:'font justify'
+    });
     ue.addListener('blur',function(){
         $('#focush2').html('编辑器失去焦点了')
     });

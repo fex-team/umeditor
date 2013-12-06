@@ -151,15 +151,13 @@ UM.plugins['paste'] = function () {
 
 
     me.addListener('ready', function () {
-        domUtils.on(me.body, 'cut', function () {
+        $(me.body).on( 'cut', function () {
             var range = me.selection.getRange();
             if (!range.collapsed && me.undoManger) {
                 me.undoManger.save();
             }
-        });
-
-        //ie下beforepaste在点击右键时也会触发，所以用监控键盘才处理
-        domUtils.on(me.body, browser.ie || browser.opera ? 'keydown' : 'paste', function (e) {
+        }).on(browser.ie || browser.opera ? 'keydown' : 'paste', function (e) {
+            //ie下beforepaste在点击右键时也会触发，所以用监控键盘才处理
             if ((browser.ie || browser.opera) && ((!e.ctrlKey && !e.metaKey) || e.keyCode != '86')) {
                 return;
             }

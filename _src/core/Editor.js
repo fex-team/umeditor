@@ -44,7 +44,8 @@
     function loadPlugins(me){
         //初始化插件
         for (var pi in UM.plugins) {
-            UM.plugins[pi].call(me);
+            if(me.options.excludePlugins.indexOf(pi) == -1)
+                UM.plugins[pi].call(me);
         }
         me.langIsReady = true;
 
@@ -95,7 +96,8 @@
             themePath: me.options.UMEDITOR_HOME_URL + 'themes/',
             allHtmlEnabled: false,
             autoSyncData : true,
-            autoHeightEnabled : true
+            autoHeightEnabled : true,
+            excludePlugins:''
         });
 
         if(!utils.isEmptyObject(UM.I18N)){
@@ -309,13 +311,13 @@
                 if (form.tagName == 'FORM') {
                     me.form = form;
                     if(me.options.autoSyncData){
-                        domUtils.on(cont,'blur',function(){
+                        $(cont).on('blur',function(){
                             setValue(form,me);
-                        });
+                        })
                     }else{
-                        domUtils.on(form, 'submit', function () {
+                        $(form).on('submit', function () {
                             setValue(this, me);
-                        });
+                        })
                     }
                     break;
                 }
@@ -355,7 +357,7 @@
             options.onready && options.onready.call(me);
             if(!browser.ie || browser.ie9above){
 
-                domUtils.on(me.body, ['blur', 'focus'], function (e) {
+                $(me.body).on( 'blur focus', function (e) {
                     var nSel = me.selection.getNative();
                     //chrome下会出现alt+tab切换时，导致选区位置不对
                     if (e.type == 'blur') {
@@ -649,16 +651,17 @@
             var me = this,
                 cont = me.body;
             me._proxyDomEvent = utils.bind(me._proxyDomEvent, me);
-            domUtils.on(cont, ['click', 'contextmenu', 'mousedown', 'keydown', 'keyup', 'keypress', 'mouseup', 'mouseover', 'mouseout', 'selectstart'], me._proxyDomEvent);
-            domUtils.on(cont, ['focus', 'blur'], me._proxyDomEvent);
-            domUtils.on(cont, ['mouseup', 'keydown'], function (evt) {
-                //特殊键不触发selectionchange
-                if (evt.type == 'keydown' && (evt.ctrlKey || evt.metaKey || evt.shiftKey || evt.altKey)) {
-                    return;
-                }
-                if (evt.button == 2)return;
-                me._selectionChange(250, evt);
-            });
+            $(cont)
+                .on( 'click contextmenu mousedown keydown keyup keypress mouseup mouseover mouseout selectstart', me._proxyDomEvent)
+                .on( 'focus blur', me._proxyDomEvent)
+                .on('mouseup keydown', function (evt) {
+                    //特殊键不触发selectionchange
+                    if (evt.type == 'keydown' && (evt.ctrlKey || evt.metaKey || evt.shiftKey || evt.altKey)) {
+                        return;
+                    }
+                    if (evt.button == 2)return;
+                    me._selectionChange(250, evt);
+                });
         },
         /**
          * 触发事件代理

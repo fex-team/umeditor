@@ -202,10 +202,9 @@ UM.plugins['undo'] = function () {
     //输入法状态下不计算字符数
     var inputType = false;
     me.addListener('ready', function () {
-        domUtils.on(this.body, 'compositionstart', function () {
+        $(this.body).on('compositionstart', function () {
             inputType = true;
-        });
-        domUtils.on(this.body, 'compositionend', function () {
+        }).on('compositionend', function () {
             inputType = false;
         })
     });

@@ -424,57 +424,6 @@ var utils = UM.utils = {
         return val + (val ? 'px' : '');
     },
     /**
-     * DomReady方法，回调函数将在dom树ready完成后执行
-     * @name domReady
-     * @grammar UM.utils.domReady(fn)  => fn  //返回一个延迟执行的方法
-     */
-    domReady:function () {
-
-        var fnArr = [];
-
-        function doReady(doc) {
-            //确保onready只执行一次
-            doc.isReady = true;
-            for (var ci; ci = fnArr.pop(); ci()) {
-            }
-        }
-
-        return function (onready, win) {
-            win = win || window;
-            var doc = win.document;
-            onready && fnArr.push(onready);
-            if (doc.readyState === "complete") {
-                doReady(doc);
-            } else {
-                doc.isReady && doReady(doc);
-                if (browser.ie) {
-                    (function () {
-                        if (doc.isReady) return;
-                        try {
-                            doc.documentElement.doScroll("left");
-                        } catch (error) {
-                            setTimeout(arguments.callee, 0);
-                            return;
-                        }
-                        doReady(doc);
-                    })();
-                    win.attachEvent('onload', function () {
-                        doReady(doc)
-                    });
-                } else {
-                    doc.addEventListener("DOMContentLoaded", function () {
-                        doc.removeEventListener("DOMContentLoaded", arguments.callee, false);
-                        doReady(doc);
-                    }, false);
-                    win.addEventListener('load', function () {
-                        doReady(doc)
-                    }, false);
-                }
-            }
-
-        }
-    }(),
-    /**
      * 动态添加css样式
      * @name cssRule
      * @grammar UM.utils.cssRule('添加的样式的节点名称',['样式'，'放到哪个document上'])

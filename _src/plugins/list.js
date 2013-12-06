@@ -20,6 +20,7 @@
  */
 
 UM.plugins['list'] = function () {
+    debugger
     var me = this;
 
     me.setOpt( {
