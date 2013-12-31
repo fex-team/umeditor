@@ -4,20 +4,6 @@
 
     UM.registerWidget('formula', {
 
-//        tpl: "<link type=\"text/css\" rel=\"stylesheet\" href=\"<%=formula_url%>formula.css\">" +
-//            "<div id=\"edui-formula-tab-Jpanel\" class=\"edui-formula-wrapper\">" +
-//            "<ul id=\"edui-formula-Jtabnav\" class=\"edui-tab-nav\">" +
-//            "<li class=\"edui-tab-item\"><a href=\"#edui-formula-Jtab0\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_tab_common%></a></li>" +
-//            "<li class=\"edui-tab-item\"><a href=\"#edui-formula-Jtab1\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_tab_symbol%></a></li>" +
-//            "<li class=\"edui-tab-item\"><a href=\"#edui-formula-Jtab2\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_tab_letter%></a></li>" +
-//            "<li class=\"edui-formula-tabs\"></li>" +
-//            "</ul>" +
-//            "<div id=\"edui-formula-JtabBodys\" class=\"edui-tab-content\">" +
-//            "<div id=\"edui-formula-Jtab0\" class=\"edui-tab-pane\"></div>" +
-//            "<div id=\"edui-formula-Jtab1\" class=\"edui-tab-pane\"></div>" +
-//            "<div id=\"edui-formula-Jtab2\" class=\"edui-tab-pane\"></div>" +
-//            "</div>",
-
         tpl: "<link type=\"text/css\" rel=\"stylesheet\" href=\"<%=formula_url%>formula.css\">" +
             "<div class=\"edui-formula-wrapper\">" +
             "<ul class=\"edui-tab-nav\"></ul>" +
