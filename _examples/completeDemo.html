@@ -169,29 +169,29 @@
 </div>
 <script type="text/javascript">
     //实例化编辑器
-    var ue = UM.getEditor('myEditor',{
+    var um = UM.getEditor('myEditor',{
         excludePlugins:'font justify'
     });
-    ue.addListener('blur',function(){
+    um.addListener('blur',function(){
         $('#focush2').html('编辑器失去焦点了')
     });
-    ue.addListener('focus',function(){
+    um.addListener('focus',function(){
         $('#focush2').html('')
     });
     //按钮的操作
     function insertHtml() {
         var value = prompt('插入html代码', '');
-        ue.execCommand('insertHtml', value)
+        um.execCommand('insertHtml', value)
     }
     function isFocus(){
-        alert(ue.isFocus())
+        alert(um.isFocus())
     }
     function doBlur(){
-        ue.blur()
+        um.blur()
     }
     function createEditor() {
         enableBtn();
-        ue = UM.getEditor('myEditor');
+        um = UM.getEditor('myEditor');
     }
     function getAllHtml() {
         alert(UM.getEditor('myEditor').getAllHtml())

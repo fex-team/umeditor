@@ -34,11 +34,11 @@
     <button onclick="document.getElementById('form').submit()">通过js调用submit提交</button>
 </p>
 <script type="text/javascript">
-    var ue = UM.getEditor('myEditor');
+    var um = UM.getEditor('myEditor');
 
     //自动切换提交地址
     var doc=document,
-        version=ue.options.imageUrl||"php",
+        version=um.options.imageUrl||"php",
         form=doc.getElementById("form");
 
     if(version.match(/php/)){

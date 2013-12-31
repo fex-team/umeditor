@@ -31,11 +31,11 @@
 <p><input id="destroy" type="button" onclick="destroy()" value="销毁编辑器"></p>
 
 <script type="text/javascript">
-    var ue = UM.getEditor('simple');
+    var um = UM.getEditor('simple');
     function simple() {
-        if(ue){
-            ue.setContent("编辑器内部变量已经被重置!");
-            ue.reset();
+        if(um){
+            um.setContent("编辑器内部变量已经被重置!");
+            um.reset();
         }
     }
     function destroy(){
