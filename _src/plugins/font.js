@@ -10,7 +10,6 @@
  * @param {String}    value             传入的值
  */
 UM.plugins['font'] = function () {
-    debugger
     var me = this,
         fonts = {
             'forecolor': 'forecolor',

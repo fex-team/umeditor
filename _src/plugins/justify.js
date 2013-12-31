@@ -10,7 +10,6 @@
  * @author zhanyi
  */
 UM.plugins['justify']=function(){
-    debugger
     $.each('justifyleft justifyright justifycenter justifyfull'.split(' '),function(i,cmdName){
         UM.commands[cmdName] = {
             execCommand:function (cmdName) {
