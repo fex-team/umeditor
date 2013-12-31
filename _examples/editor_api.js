@@ -38,6 +38,7 @@
             'plugins/keystrokes.js',
             'plugins/dropfile.js',
             'plugins/autosave.js',
+            'plugins/formula.js',
             'ui/widget.js',
             'ui/button.js',
             'ui/toolbar.js',

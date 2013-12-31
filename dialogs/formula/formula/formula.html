@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../third-party/mathquill/mathquill.css"/>
+    <script src="../../_examples/jquery.js"></script>
+    <script src="../../third-party/mathquill/mathquill.min.js"></script>
+    <style>
+        html, body, .main{
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .main{
+            width:1024px;
+            height:1024px;
+        }
+        .mathquill-embedded-latex{
+            border: 0px;
+            padding: 0px;
+            margin:4px;
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <div class="mathquill-embedded-latex"></div>
+</div>
+<script>
+    $(function(){
+
+        var UM = parent.UM,
+            $iframe = $(getSelfIframe()),
+            editorId = $iframe.parents('.edui-body-container').attr('id'),
+            editor = UM.getEditor(editorId),
+            timer;
+
+        /* 获得当前公式所在的iframe节点 */
+        function getSelfIframe(){
+            var iframes = parent.document.getElementsByTagName('iframe');
+            for (var key in iframes) {
+                if (iframes[key].contentWindow == window) {
+                    return iframes[key];
+                }
+            }
+            return null;
+        };
+        /* 获得当前url上的hash存储的参数值 */
+        function getLatex() {
+            return $iframe.attr('data-latex') || '';
+        }
+        /* 保存场景 */
+        function saveScene(){
+            if(!timer) {
+                timer = setTimeout(function(){
+                    editor.fireEvent('saveScene');
+                }, 2000);
+            }
+        }
+
+        /* 公式 */
+        var Formula = function(){
+            var _this = this,
+                latex = getLatex();
+
+            this.$mathquill = $('.mathquill-embedded-latex').html(latex).mathquill('editable');
+            this.$mathquill.find('textarea').on('focus', function(){
+                _this.focus();
+            }).on('blur', function(){
+                _this.blur();
+            }).on('keydown', function(){
+                _this.updateIframe();
+            }).on('keyup', function(){
+                _this.updateIframe();
+            });
+
+            setTimeout(function(){
+                _this.updateIframe();
+            }, 300);
+        };
+        Formula.prototype = {
+            focus:function(){
+                $iframe.addClass('edui-formula-active');
+            },
+            blur:function(){
+                $iframe.removeClass('edui-formula-active');
+                this.removeCursor();
+            },
+            removeCursor: function(){
+                this.$mathquill.find('span.cursor').remove();
+            },
+            updateIframe: function(){
+                $iframe.width(this.$mathquill.width()+8).height(this.$mathquill.height()+8);
+                $iframe.attr('data-latex', this.getLatex());
+                saveScene();
+            },
+            insertLatex: function(latex){
+                this.$mathquill.mathquill('write', latex);
+                this.updateIframe();
+                this.removeCursor();
+                editor.blur();
+            },
+            setLatex: function(latex){
+                this.$mathquill.mathquill('latex', latex);
+                this.updateIframe();
+            },
+            getLatex: function(){
+                return this.$mathquill.mathquill('latex');
+            },
+            redraw: function(){
+                return this.$mathquill.mathquill('redraw');
+            }
+        }
+
+        /* 绑定到window上，给上级window调用 */
+        window.formula = new Formula();
+    });
+</script>
+</body>
+</html>

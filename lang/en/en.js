@@ -234,4 +234,11 @@ UM.I18N['en'] = {
         goToSource:'Visit source video ',
         noVideo:" &nbsp; &nbsp;Sorry,can't find the video,please try again!"
     },
+    formula:{
+    'static':{
+        'lang_tab_common':'Common',
+        'lang_tab_symbol':'Symbol',
+        'lang_tab_letter':'Letter'
+    }
+}
 };

@@ -359,6 +359,10 @@
 
             }
         },
+        hasAttr: function( attrName ){
+            var attrVal = this.getAttr( attrName );
+            return ( attrVal !== null ) && ( attrVal !== undefined );
+        },
         getIndex:function(){
             var parent = this.parentNode;
             for(var i= 0,ci;ci=parent.children[i];i++){
@@ -424,6 +428,63 @@
                 exec(name, val)
             }
             this.setAttr('style', utils.trim(cssStyle))
+        },
+        hasClass: function( className ){
+            if( this.hasAttr('class') ) {
+
+                var classNames = this.getAttr('class').split(/\s+/),
+                    hasClass = false;
+
+                classNames.forEach(function(item){
+
+                    if( item === className ) {
+
+                        hasClass = true;
+                        return;
+                    }
+
+                });
+
+                return hasClass;
+
+            } else {
+                return false;
+            }
+        },
+        addClass: function( className ){
+
+            var classes = null,
+                hasClass = false;
+
+            if( this.hasAttr('class') ) {
+
+                classes = this.getAttr('class');
+                classes = classes.split(/\s+/);
+
+                classes.forEach( function( item ){
+
+                    if( item===className ) {
+                        hasClass = true;
+                        return;
+                    }
+
+                } );
+
+                !hasClass && classes.push( className );
+
+                this.setAttr('class', classes.join(" "));
+
+            } else {
+                this.setAttr('class', className);
+            }
+
+        },
+        removeClass: function( className ){
+            if( this.hasAttr('class') ) {
+                var cl = this.getAttr('class');
+                cl = cl.replace(new RegExp('\\b' + className + '\\b', 'g'),'');
+                this.setAttr('class', utils.trim(cl).replace(/[ ]{2,}/g,' '));
+            }
         },
         traversal:function(fn){
             if(this.children && this.children.length){

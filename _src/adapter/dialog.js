@@ -1,4 +1,4 @@
-UM.registerUI('link image map insertvideo',function(name){
+UM.registerUI('link image map insertvideo formula',function(name){
 
     var me = this, currentRange, $dialog,
         dialogUrl = {

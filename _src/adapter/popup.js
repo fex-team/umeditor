@@ -1,4 +1,4 @@
-UM.registerUI( 'emotion', function( name ){
+UM.registerUI( 'emotion formula', function( name ){
     var me = this,
         url  = me.options.UMEDITOR_HOME_URL + 'dialogs/' +name+ '/'+name+'.js';
 
