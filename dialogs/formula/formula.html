@@ -54,8 +54,10 @@
         function saveScene(){
             if(!timer) {
                 timer = setTimeout(function(){
-                    editor.fireEvent('saveScene');
-                }, 2000);
+                    editor.fireEvent('savescene');
+                    editor.fireEvent('contentchange');
+                    timer = null;
+                }, 1000);
             }
         }
 
@@ -82,18 +84,24 @@
         Formula.prototype = {
             focus:function(){
                 $iframe.addClass('edui-formula-active');
+                editor.setDisabled('formula');
             },
             blur:function(){
                 $iframe.removeClass('edui-formula-active');
                 this.removeCursor();
+                editor.setEnabled();
             },
             removeCursor: function(){
                 this.$mathquill.find('span.cursor').remove();
             },
             updateIframe: function(){
                 $iframe.width(this.$mathquill.width()+8).height(this.$mathquill.height()+8);
-                $iframe.attr('data-latex', this.getLatex());
-                saveScene();
+                var latex = $iframe.attr('data-latex'),
+                    newLatex = this.getLatex();
+                if(latex != newLatex) {
+                    $iframe.attr('data-latex', this.getLatex());
+                    saveScene();
+                }
             },
             insertLatex: function(latex){
                 this.$mathquill.mathquill('write', latex);

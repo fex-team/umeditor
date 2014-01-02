@@ -38,7 +38,7 @@ UM.registerUI( 'emotion formula', function( name ){
                 caretTop:-8
             });
         me.addListener('selectionchange', function () {
-            var state = this.queryCommandState('emotion');
+            var state = this.queryCommandState(name);
             $btn.edui().disabled(state == -1).active(state == 1);
         });
     });

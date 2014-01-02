@@ -895,6 +895,8 @@
                 me.body.contentEditable = false;
                 me.bkqueryCommandState = me.queryCommandState;
                 me.queryCommandState = function (type) {
+                    console.log(type);
+                    debugger;
                     if (utils.indexOf(except, type) != -1) {
                         return me.bkqueryCommandState.apply(me, arguments);
                     }

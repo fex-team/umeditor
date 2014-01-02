@@ -13,8 +13,8 @@
         sourceData: {
             formula: {
                 'common': [
-                    "{/}frac{}{}", "^{}/_{}", "x^{}", "x_{}", "x^{}_{}", "{/}bar{}", "{/}sqrt{}", "{/}nthroot{}{}",
-                    "{/}sum^{}_{n=}", "{/}sum", "{/}log_{}", "{/}ln", "{/}int_{}^{}", "{/}oint_{}^{}"
+                    "{/}frac{ }{ }", "^{ }/_{ }", "x^{ }", "x_{ }", "x^{ }_{ }", "{/}bar{ }", "{/}sqrt{ }", "{/}nthroot{ }{ }",
+                    "{/}sum^{ }_{n=}", "{/}sum", "{/}log_{ }", "{/}ln", "{/}int_{ }^{ }", "{/}oint_{ }^{ }"
                 ],
                 'symbol': [
                     "+", "-", "{/}pm", "{/}times", "{/}ast", "{/}div", "/", "{/}bigtriangleup",
@@ -110,7 +110,7 @@
             /* 自动长高 */
             me.autoHeight(0);
         },
-        autoHeight: function (index) {
+        autoHeight: function () {
             this.$widget.height(this.root() + 2);
         },
         insertLatex: function (latex) {
