@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <title>Document</title>
     <link rel="stylesheet" href="../../third-party/mathquill/mathquill.css"/>
-    <script src="../../_examples/jquery.js"></script>
-    <script src="../../third-party/mathquill/mathquill.min.js"></script>
     <style>
         html, body, .main{
             margin: 0;
@@ -16,7 +14,7 @@
             width:1024px;
             height:1024px;
         }
-        .mathquill-embedded-latex{
+        .mathquill-editable{
             border: 0px;
             padding: 0px;
             margin:4px;
@@ -24,9 +22,13 @@
     </style>
 </head>
 <body>
+
 <div class="main">
-    <div class="mathquill-embedded-latex"></div>
+    <div class="mathquill-editable"></div>
 </div>
+
+<script src="../../_examples/jquery.js"></script>
+<script src="../../third-party/mathquill/mathquill.min.js"></script>
 <script>
     $(function(){
 
@@ -66,7 +68,7 @@
             var _this = this,
                 latex = getLatex();
 
-            this.$mathquill = $('.mathquill-embedded-latex').html(latex).mathquill('editable');
+            this.$mathquill = $('.mathquill-editable').mathquill('latex', latex);
             this.$mathquill.find('textarea').on('focus', function(){
                 _this.focus();
             }).on('blur', function(){
