@@ -14,7 +14,7 @@
             width:1024px;
             height:1024px;
         }
-        .mathquill-editable{
+        .mathquill-embedded-latex{
             border: 0px;
             padding: 0px;
             margin:4px;
@@ -28,7 +28,7 @@
 </div>
 
 <script src="../../_examples/jquery.js"></script>
-<script src="../../third-party/mathquill/mathquill.min.js"></script>
+<script src="../../third-party/mathquill/mathquill.js"></script>
 <script>
     $(function(){
 
@@ -71,11 +71,19 @@
             this.$mathquill = $('.mathquill-editable').mathquill('latex', latex);
             this.$mathquill.find('textarea').on('focus', function(){
                 _this.focus();
+                console.log('focus');
             }).on('blur', function(){
                 _this.blur();
-            }).on('keydown', function(){
+                console.log('blur');
+            });
+
+            this.$mathquill.on('keydown', function(){
                 _this.updateIframe();
+                console.log('keydown');
             }).on('keyup', function(){
+                _this.updateIframe();
+                console.log('keyup');
+            }).$mathquill.on('click', function(){
                 _this.updateIframe();
             });
 
@@ -84,9 +92,14 @@
             }, 300);
         };
         Formula.prototype = {
+            init: function(){
+
+            },
             focus:function(){
                 $iframe.addClass('edui-formula-active');
+                this.$mathquill.focus();
                 editor.setDisabled('formula');
+                editor.blur();
             },
             blur:function(){
                 $iframe.removeClass('edui-formula-active');
@@ -94,10 +107,11 @@
                 editor.setEnabled();
             },
             removeCursor: function(){
-                this.$mathquill.find('span.cursor').remove();
+                this.$mathquill.find('span.cursor').hide();
             },
             updateIframe: function(){
                 $iframe.width(this.$mathquill.width()+8).height(this.$mathquill.height()+8);
+                this.redraw();
                 var latex = $iframe.attr('data-latex'),
                     newLatex = this.getLatex();
                 if(latex != newLatex) {
@@ -109,6 +123,7 @@
                 this.$mathquill.mathquill('write', latex);
                 this.updateIframe();
                 this.removeCursor();
+//                this.refresh();
                 editor.blur();
             },
             setLatex: function(latex){
@@ -120,6 +135,10 @@
             },
             redraw: function(){
                 return this.$mathquill.mathquill('redraw');
+            },
+            refresh: function(){
+                var latex = this.getLatex();
+                return this.$mathquill.mathquill('revert').text(latex).mathquill('editable');
             }
         }
 

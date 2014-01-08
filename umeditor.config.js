@@ -228,6 +228,10 @@
         // 是否允许拖放图片到编辑区域，上传并插入,默认true
         //,dropFileEnabled:true
 
+        //pasteImageEnabled
+        // 是否允许粘贴QQ截屏，上传并插入,默认true
+        //,pasteImageEnabled:true
+
         //autoHeightEnabled
         // 是否自动长高,默认true
         //,autoHeightEnabled:true
