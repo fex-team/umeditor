@@ -14,7 +14,7 @@
             width:1024px;
             height:1024px;
         }
-        .mathquill-embedded-latex{
+        .mathquill-editable{
             border: 0px;
             padding: 0px;
             margin:4px;
@@ -83,7 +83,7 @@
             }).on('keyup', function(){
                 _this.updateIframe();
                 console.log('keyup');
-            }).$mathquill.on('click', function(){
+            }).on('click', function(){
                 _this.updateIframe();
             });
 
