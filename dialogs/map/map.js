@@ -8,23 +8,26 @@
             ".edui-map-content{width:530px; height: 350px;margin: 10px auto;}" +
             ".edui-map-content table{width: 100%}" +
             ".edui-map-content table td{vertical-align: middle;}" +
-            ".edui-map-button { float: left; cursor: default; height: 24px; width: 96px; margin: 0 10px; background-image: url(\"<%=theme_url%>/images/icons-all.gif\") ; background-position:0 0; font-size: 12px; line-height: 24px; text-align: center; }" +
-            ".edui-map-button:hover {background-position:0 -30px;}" +
-            "#eduiMapCity,#eduiMapAddress{height:21px;background: #FFF;border:1px solid #d7d7d7; line-height: 21px;}" +
-            "#eduiMapCity{width:90px}" +
-            "#eduiMapAddress{width:220px}" +
+            ".edui-map-button { border: 1px solid #ccc; float: left; cursor: default; height: 23px; width: 70px; cursor: pointer; margin: 0; font-size: 12px; line-height: 24px; text-align: center; }" +
+            ".edui-map-button:hover {background:#eee;}" +
+            ".edui-map-city,.edui-map-address{height:21px;background: #FFF;border:1px solid #d7d7d7; line-height: 21px;}" +
+            ".edui-map-city{width:90px}" +
+            ".edui-map-address{width:150px}" +
+            ".edui-map-dynamic-label span{vertical-align:middle;margin: 3px 0px 3px 3px;}" +
+            ".edui-map-dynamic-label input{vertical-align:middle;margin: 3px;}" +
             "</style>" +
             "<div class=\"edui-map-content\">" +
             "<table>" +
             "<tr>" +
             "<td><%=lang_city%>:</td>" +
-            "<td><input id=\"eduiMapCity\" type=\"text\" value=\"<%=city.value%>\"/></td>" +
+            "<td><input class=\"edui-map-city\" type=\"text\" value=\"<%=city.value%>\"/></td>" +
             "<td><%=lang_address%>:</td>" +
-            "<td><input id=\"eduiMapAddress\" type=\"text\" value=\"\" /></td>" +
-            "<td><a id=\"eduiMapSearchBtn\" class=\"edui-map-button\"><%=lang_search%></a></td>" +
+            "<td><input class=\"edui-map-address\" type=\"text\" value=\"\" /></td>" +
+            "<td><a class=\"edui-map-button\"><%=lang_search%></a></td>" +
+            "<td><label class=\"edui-map-dynamic-label\"><input class=\"edui-map-dynamic\" type=\"checkbox\" name=\"edui-map-dynamic\" /><span><%=lang_dynamicmap%></span></label></td>"+
             "</tr>" +
             "</table>" +
-            "<div style=\"width:100%;height:340px;margin:5px auto;border:1px solid gray\" id=\"eduiMapContainer\"></div>" +
+            "<div style=\"width:100%;height:340px;margin:5px auto;border:1px solid gray\" class=\"edui-map-container\"></div>" +
             "</div>" +
             "<script class=\"edui-tpl-container\" type=\"text/plain\">" +
             "<!DOCTYPE html>" +
@@ -125,7 +128,8 @@
         },
         initBaiduMap: function () {
 
-            var map = new BMap.Map($("#eduiMapContainer")[0]),
+            var $root = this.root(),
+                map = new BMap.Map($root.find(".edui-map-container")[0]),
                 me = this,
                 marker,
                 point,
@@ -160,8 +164,8 @@
         },
         doSearch: function () {
             var me = this,
-                city = $('#eduiMapCity').val(),
-                address = $('#eduiMapAddress').val();
+                city = me.root().find('.edui-map-city').val(),
+                address = me.root().find('.edui-map-address').val();
 
             if (!city) {
                 alert(me.lang.cityMsg);
@@ -196,9 +200,10 @@
             this.map && this.map.reset();
         },
         initEvent: function () {
-            var me = this;
+            var me = this,
+                $root = me.root();
 
-            $('#eduiMapAddress').on('keydown', function (evt) {
+            $root.find('.edui-map-address').on('keydown', function (evt) {
                 evt = evt || event;
                 if (evt.keyCode == 13) {
                     me.doSearch();
@@ -206,13 +211,13 @@
                 }
             });
 
-            $("#eduiMapSearchBtn").on('click', function (evt) {
+            $root.find(".edui-map-button").on('click', function (evt) {
                 me.doSearch();
             });
 
-            $("#eduiMapAddress").focus();
+            $root.find(".edui-map-address").focus();
 
-            me.root().on( "mousewheel DOMMouseScroll", function ( e ) {
+            $root.on( "mousewheel DOMMouseScroll", function ( e ) {
                 return false;
             } );
 
@@ -226,11 +231,23 @@
                         center = widget.map.getCenter(),
                         zoom = widget.map.zoomLevel,
                         size = widget.map.getSize(),
-                        point = widget.marker.getPoint(),
+                        point = widget.marker.getPoint();
+
+                    if (widget.root().find(".edui-map-dynamic")[0].checked) {
+                        var URL = editor.getOpt('UMEDITOR_HOME_URL'),
+                            url = [URL + (/\/$/.test(URL) ? '':'/') + "dialogs/map/map.html" +
+                                '#center=' + center.lng + ',' + center.lat,
+                                '&zoom=' + zoom,
+                                '&width=' + size.width,
+                                '&height=' + size.height,
+                                '&markers=' + point.lng + ',' + point.lat].join('');
+                        editor.execCommand('inserthtml', '<iframe class="ueditor_baidumap" src="' + url + '" frameborder="0" width="' + (size.width+4) + '" height="' + (size.height+4) + '"></iframe>');
+                    } else {
                         url = "http://api.map.baidu.com/staticimage?center=" + center.lng + ',' + center.lat +
                             "&zoom=" + zoom + "&width=" + size.width + '&height=' + size.height + "&markers=" + point.lng + ',' + point.lat;
+                        editor.execCommand('inserthtml', '<img width="' + size.width + '"height="' + size.height + '" src="' + url + '"' + (widget.imgcss ? ' style="' + widget.imgcss + '"' : '') + '/>', true);
+                    }
 
-                    editor.execCommand('inserthtml', '<img width="' + size.width + '"height="' + size.height + '" src="' + url + '"' + (widget.imgcss ? ' style="' + widget.imgcss + '"' : '') + '/>', true);
                     widget.reset();
                 }
             },

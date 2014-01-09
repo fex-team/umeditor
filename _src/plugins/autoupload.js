@@ -5,7 +5,7 @@
  * @author Jinqn
  * @date 2013-10-14
  */
-UM.plugins['autosave'] = function () {
+UM.plugins['autoupload'] = function () {
 
     var me = this;
 
