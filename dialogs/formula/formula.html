@@ -24,7 +24,7 @@
 <body>
 
 <div class="main">
-    <div class="mathquill-editable"></div>
+    <div class="mathquill-textbox mathquill-editable"></div>
 </div>
 
 <script src="../../_examples/jquery.js"></script>
@@ -69,13 +69,13 @@
                 latex = getLatex();
 
             this.$mathquill = $('.mathquill-editable').mathquill('latex', latex);
-            this.$mathquill.find('textarea').on('focus', function(){
-                _this.focus();
-                console.log('focus');
-            }).on('blur', function(){
-                _this.blur();
-                console.log('blur');
-            });
+//            this.$mathquill.find('textarea').on('focus', function(){
+//                _this.focus();
+//                console.log('focus');
+//            }).on('blur', function(){
+//                _this.blur();
+//                console.log('blur');
+//            });
 
             this.$mathquill.on('keydown', function(){
                 _this.updateIframe();
@@ -83,19 +83,26 @@
             }).on('keyup', function(){
                 _this.updateIframe();
                 console.log('keyup');
-            }).on('click', function(){
-                _this.updateIframe();
             });
+
+            $(document.body).on('click', function(){
+                _this.focus();
+            });
+            editor.$body.on('click', function(){
+                _this.blur();
+            });
+
+            this.$mathquill.parent().find('.hasCursor').removeClass('hasCursor');
 
             setTimeout(function(){
                 _this.updateIframe();
             }, 300);
         };
         Formula.prototype = {
-            init: function(){
-
-            },
             focus:function(){
+                editor.$body.find('iframe').not($iframe).each(function(k, v){
+                    v.contentWindow.formula.blur();
+                });
                 $iframe.addClass('edui-formula-active');
                 this.$mathquill.focus();
                 editor.setDisabled('formula');
@@ -108,6 +115,7 @@
             },
             removeCursor: function(){
                 this.$mathquill.find('span.cursor').hide();
+                this.$mathquill.parent().find('.hasCursor').removeClass('hasCursor');
             },
             updateIframe: function(){
                 $iframe.width(this.$mathquill.width()+8).height(this.$mathquill.height()+8);
@@ -123,7 +131,7 @@
                 this.$mathquill.mathquill('write', latex);
                 this.updateIframe();
                 this.removeCursor();
-//                this.refresh();
+                //this.refresh();
                 editor.blur();
             },
             setLatex: function(latex){
