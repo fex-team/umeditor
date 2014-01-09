@@ -24,7 +24,7 @@
 <body>
 
 <div class="main">
-    <div class="mathquill-editable"></div>
+    <div class="mathquill-textbox mathquill-editable"></div>
 </div>
 
 <script src="../../_examples/jquery.js"></script>
@@ -92,7 +92,7 @@
                 _this.blur();
             });
 
-            this.removeCursor();
+            this.$mathquill.parent().find('.hasCursor').removeClass('hasCursor');
 
             setTimeout(function(){
                 _this.updateIframe();
