@@ -92,14 +92,13 @@
                 _this.blur();
             });
 
+            this.removeCursor();
+
             setTimeout(function(){
                 _this.updateIframe();
             }, 300);
         };
         Formula.prototype = {
-            init: function(){
-
-            },
             focus:function(){
                 editor.$body.find('iframe').not($iframe).each(function(k, v){
                     v.contentWindow.formula.blur();
