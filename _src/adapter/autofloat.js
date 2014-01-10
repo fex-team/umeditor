@@ -102,7 +102,7 @@ UM.registerUI('autofloat',function(){
         },browser.ie ? 200 : 100,true);
 
         me.addListener('destroy',function(){
-            $(window).un('scroll resize',updateFloating);
+            $(window).off('scroll resize',updateFloating);
             me.removeListener('keydown', defer_updateFloating);
         });
 
