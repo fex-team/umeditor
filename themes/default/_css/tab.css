@@ -8,6 +8,7 @@
 .edui-tab-nav .edui-tab-item {
     float:left;
     margin-bottom: -1px;
+    margin-top: 1px;
 }
 .edui-tab-nav .edui-tab-item .edui-tab-text{
     display: block;
