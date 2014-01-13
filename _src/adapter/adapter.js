@@ -11,7 +11,8 @@
         _activeWidget = null,
         _widgetData = {},
         _widgetCallBack = {},
-        _cacheUI = {};
+        _cacheUI = {},
+        _maxZIndex = null;
 
     utils.extend(UM, {
         defaultWidth : 500,
@@ -88,7 +89,18 @@
             _activeWidget = $widget;
         },
         getEditor: function (id, options) {
-            return _editors[id] || (_editors[id] = this.createEditor(id, options))
+            var editor = _editors[id] || (_editors[id] = this.createEditor(id, options));
+            _maxZIndex = _maxZIndex ? Math.max(editor.getOpt('zIndex'), _maxZIndex):editor.getOpt('zIndex');
+            return editor;
+        },
+        activeEditor: function(editor){
+            $.each(_editors, function(i, o){
+                if(editor == o) {
+                    editor.$container.css('zIndex', _maxZIndex + 1);
+                } else {
+                    o.$container.css('zIndex', o.getOpt('zIndex'));
+                }
+            });
         },
         clearCache : function(id){
             if ( _editors[id]) {

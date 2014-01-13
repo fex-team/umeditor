@@ -82,6 +82,7 @@ UM.registerUI('link image map insertvideo formula',function(name){
 
                 }
                 UM.setWidgetBody(name,$dialog,me);
+                UM.activeEditor(me);
         }).on('afterbackdrop',function(){
             this.$backdrop.css('zIndex',me.getOpt('zIndex')+1).appendTo(me.$container.find('.edui-dialog-container'))
             $dialog.css('zIndex',me.getOpt('zIndex')+2)

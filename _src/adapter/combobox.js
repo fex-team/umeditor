@@ -41,6 +41,7 @@ UM.registerUI('paragraph fontfamily fontsize', function( name ) {
                         if( $combox.parent().length === 0 ) {
                             $combox.appendTo(  me.$container.find('.edui-dialog-container') );
                         }
+                        UM.activeEditor(me);
                     });
 
 
@@ -228,6 +229,7 @@ UM.registerUI('forecolor backcolor', function( name ) {
             caretLeft:11,
             caretTop:-8
         });
+        UM.activeEditor(me);
     }).register('click', $btn, function () {
             $colorPickerWidget.edui().hide()
         });

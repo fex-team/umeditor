@@ -31,6 +31,7 @@ UM.registerUI( 'emotion formula', function( name ){
                     me.$container.find('.edui-dialog-container').append($root);
                 }
                 UM.setWidgetBody(name,$root,me);
+                UM.activeEditor(me);
             }).attachTo($btn,{
                 offsetTop:-5,
                 offsetLeft:10,
