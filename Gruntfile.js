@@ -66,8 +66,8 @@ module.exports = function ( grunt ) {
         concat: {
             js: {
                 options: {
-                    banner: banner + '(function(){\n\n',
-                    footer: '\n\n})()'
+                    banner: banner + '(function($){\n\n',
+                    footer: '\n\n})(jQuery)'
                 },
                 src: Util.fetchScripts(),
                 dest: disDir + '<%= pkg.name %>.js'

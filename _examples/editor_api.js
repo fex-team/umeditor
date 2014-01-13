@@ -4,6 +4,7 @@
 (function (){
     var paths  = [
             'editor.js',
+            'jqueryapi.js',
             'core/browser.js',
             'core/utils.js',
             'core/EventBase.js',
