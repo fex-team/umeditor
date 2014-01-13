@@ -20,7 +20,9 @@
  */
 
 UM.plugins['link'] = function(){
-    this.setOpt('autourldetectinie',false);
+    var me = this;
+
+    me.setOpt('autourldetectinie',false);
     //在ie下禁用autolink
     if(browser.ie && this.options.autourldetectinie === false){
         this.addListener('keyup',function(cmd,evt){
@@ -71,7 +73,7 @@ UM.plugins['link'] = function(){
             a.setAttr('_href', utils.html(a.getAttr('href')));
         })
     });
-    UM.commands['link'] = {
+    me.commands['link'] = {
         execCommand : function( cmdName, opt ) {
 
             var me = this;
@@ -116,7 +118,7 @@ UM.plugins['link'] = function(){
             return result;
         }
     };
-    UM.commands['unlink'] = {
+    me.commands['unlink'] = {
         execCommand : function() {
             this.document.execCommand('unlink');
         }

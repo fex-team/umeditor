@@ -10,8 +10,9 @@
  * @author zhanyi
  */
 UM.plugins['justify']=function(){
+    var me = this;
     $.each('justifyleft justifyright justifycenter justifyfull'.split(' '),function(i,cmdName){
-        UM.commands[cmdName] = {
+        me.commands[cmdName] = {
             execCommand:function (cmdName) {
                 return this.document.execCommand(cmdName);
             },

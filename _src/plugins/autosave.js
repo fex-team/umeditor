@@ -192,7 +192,7 @@ UM.plugins['autosave'] = function() {
     })
 
 
-    UM.commands['clearlocaldata'] = {
+    me.commands['clearlocaldata'] = {
         execCommand:function (cmd, name) {
             if ( saveKey && LocalStorage.getLocalData( saveKey ) ) {
                 LocalStorage.removeItem( saveKey )
@@ -202,7 +202,7 @@ UM.plugins['autosave'] = function() {
         ignoreContentChange:true
     };
 
-    UM.commands['getlocaldata'] = {
+    me.commands['getlocaldata'] = {
         execCommand:function (cmd, name) {
             return saveKey ? LocalStorage.getLocalData( saveKey ) || '' : '';
         },
@@ -210,8 +210,9 @@ UM.plugins['autosave'] = function() {
         ignoreContentChange:true
     };
 
-    UM.commands['drafts'] = {
+    me.commands['drafts'] = {
         execCommand:function (cmd, name) {
+            console.log(me.id);
             if ( saveKey ) {
                 me.body.innerHTML = LocalStorage.getLocalData( saveKey ) || '<p>'+(browser.ie ? '&nbsp;' : '<br/>')+'</p>';
                 me.focus(true);
