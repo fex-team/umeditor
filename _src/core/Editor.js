@@ -44,9 +44,13 @@
     function loadPlugins(me){
         //初始化插件
         for (var pi in UM.plugins) {
-            if(me.options.excludePlugins.indexOf(pi) == -1)
+            if(me.options.excludePlugins.indexOf(pi) == -1){
                 UM.plugins[pi].call(me);
+
+                me.plugins[pi] = 1;
+            }
         }
+        console.log('loadPlugin')
         me.langIsReady = true;
 
         me.fireEvent("langReady");
@@ -99,7 +103,7 @@
             autoHeightEnabled : true,
             excludePlugins:''
         });
-
+        me.plugins = {};
         if(!utils.isEmptyObject(UM.I18N)){
             //修改默认的语言类型
             me.options.lang = checkCurLang(UM.I18N);

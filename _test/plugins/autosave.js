@@ -60,12 +60,10 @@ test('自动保存', function () {
             window.setTimeout(function () {
 
                 equal(count, 1, "触发事件次数");
+                UM.delEditor("container");
 
                 start();
             }, 500);
-
-            UM.delEditor("container");
-            UM.domUtils.remove(container);
 
         }, 50);
 
@@ -90,9 +88,13 @@ test('重建编辑器,加载草稿箱', function () {
                 equal(editor2.queryCommandState('drafts'), 0, '草稿箱可用');
                 editor2.execCommand('drafts');
                 ua.checkSameHtml(editor2.body.innerHTML, content, '内容加载正确');
-                UM.delEditor('ue');
+                setTimeout(function () {
+
+                    UM.delEditor('ue');
                 document.getElementById('ue') && document.getElementById('ue').parentNode.removeChild(document.getElementById('ue'));
                 start();
+                }, 500);
+
             }, 500);
         }, 200);
     }, 500);
