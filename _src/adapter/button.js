@@ -5,7 +5,7 @@ UM.registerUI('bold italic redo undo underline strikethrough superscript subscri
         var $btn = $.eduibutton({
             icon : name,
             click : function(){
-                me.execCommand(name)
+                me.execCommand(name);
             },
             title: this.getLang('labelMap')[name] || ''
         });
