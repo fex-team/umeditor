@@ -7,16 +7,16 @@
         tpl: "<link type=\"text/css\" rel=\"stylesheet\" href=\"<%=emotion_url%>emotion.css\">" +
             "<div class=\"edui-emotion-tab-Jpanel edui-emotion-wrapper\">" +
             "<ul class=\"edui-emotion-Jtabnav edui-tab-nav\">" +
-            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab0\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_choice%></a></li>" +
-            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab1\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_Tuzki%></a></li>" +
-            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab2\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_lvdouwa%></a></li>" +
-            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab3\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_BOBO%></a></li>" +
-            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab4\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_babyCat%></a></li>" +
-            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab5\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_bubble%></a></li>" +
-            "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab6\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_youa%></a></li>" +
+            "<li class=\"edui-tab-item\"><a data-context=\".edui-emotion-Jtab0\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_choice%></a></li>" +
+            "<li class=\"edui-tab-item\"><a data-context=\".edui-emotion-Jtab1\" class=\"edui-tab-text\"><%=lang_input_Tuzki%></a></li>" +
+            "<li class=\"edui-tab-item\"><a data-context=\".edui-emotion-Jtab2\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_lvdouwa%></a></li>" +
+            "<li class=\"edui-tab-item\"><a data-context=\".edui-emotion-Jtab3\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_BOBO%></a></li>" +
+            "<li class=\"edui-tab-item\"><a data-context=\".edui-emotion-Jtab4\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_babyCat%></a></li>" +
+            "<li class=\"edui-tab-item\"><a data-context=\".edui-emotion-Jtab5\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_bubble%></a></li>" +
+            "<li class=\"edui-tab-item\"><a data-context=\".edui-emotion-Jtab6\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_youa%></a></li>" +
             "<li class=\"edui-emotion-tabs\"></li>" +
             "</ul>" +
-            "<div class=\"edui-tab-content\">" +
+            "<div class=\"edui-tab-content edui-emotion-JtabBodys\">" +
             "<div class=\"edui-emotion-Jtab0 edui-tab-pane\"></div>" +
             "<div class=\"edui-emotion-Jtab1 edui-tab-pane\"></div>" +
             "<div class=\"edui-emotion-Jtab2 edui-tab-pane\"></div>" +
@@ -126,7 +126,7 @@
             //更新模板
             me.tabs.edui().on("beforeshow", function( evt ){
 
-                var contentId = evt.target.href.replace( /^.*#(?=[^\s]*$)/, '' );
+                var contentId = $(evt.target).attr('data-context').replace( /^.*\.(?=[^\s]*$)/, '' );
 
                 evt.stopPropagation();
 
@@ -178,34 +178,8 @@
             }
 
         },
-        autoHeight: function( contentBoxId ) {
-            var panel = this.widget[0],
-                index = +contentBoxId.replace( /[a-zA-Z-]+/, '' );
-            switch ( index ) {
-                case 0:
-                    panel.style.height = "400px";
-                    break;
-                case 1:
-                    panel.style.height = "248px";
-                    break;
-                case 2:
-                    panel.style.height = "286px";
-                    break;
-                case 3:
-                    panel.style.height = "324px";
-                    break;
-                case 4:
-                    panel.style.height = "172px";
-                    break;
-                case 5:
-                    panel.style.height = "236px";
-                    break;
-                case 6:
-                    panel.style.height = "248px";
-                    break;
-                default:
-
-            }
+        autoHeight: function( ) {
+            this.widget.height(this.root() + 2);
         },
         createTabList: function( tabNum ) {
             var obj = {};

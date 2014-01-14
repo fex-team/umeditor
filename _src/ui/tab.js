@@ -23,7 +23,7 @@ UM.ui.define('tab', {
             $target,
             e;
 
-        selector = $cur.attr('href');
+        selector = $cur.attr('data-context');
         selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '');
 
         var $tmp = $cur.parent('li');
