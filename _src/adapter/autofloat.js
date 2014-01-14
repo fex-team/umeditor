@@ -2,7 +2,8 @@ UM.registerUI('autofloat',function(){
     var me = this,
         lang = me.getLang();
     me.setOpt({
-        topOffset:0
+        autoFloatEnabled: true,
+        topOffset: 0
     });
     var optsAutoFloatEnabled = me.options.autoFloatEnabled !== false,
         topOffset = me.options.topOffset;
