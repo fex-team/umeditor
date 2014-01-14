@@ -5,8 +5,8 @@
     UM.registerWidget('emotion',{
 
         tpl: "<link type=\"text/css\" rel=\"stylesheet\" href=\"<%=emotion_url%>emotion.css\">" +
-            "<div id=\"edui-emotion-tab-Jpanel\" class=\"edui-emotion-wrapper\">" +
-            "<ul id=\"edui-emotion-Jtabnav\" class=\"edui-tab-nav\">" +
+            "<div class=\"edui-emotion-tab-Jpanel edui-emotion-wrapper\">" +
+            "<ul class=\"edui-emotion-Jtabnav edui-tab-nav\">" +
             "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab0\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_choice%></a></li>" +
             "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab1\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_Tuzki%></a></li>" +
             "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab2\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_lvdouwa%></a></li>" +
@@ -16,17 +16,17 @@
             "<li class=\"edui-tab-item\"><a href=\"#edui-emotion-Jtab6\" hideFocus=\"true\" class=\"edui-tab-text\"><%=lang_input_youa%></a></li>" +
             "<li class=\"edui-emotion-tabs\"></li>" +
             "</ul>" +
-            "<div id=\"edui-emotion-JtabBodys\" class=\"edui-tab-content\">" +
-            "<div id=\"edui-emotion-Jtab0\" class=\"edui-tab-pane\"></div>" +
-            "<div id=\"edui-emotion-Jtab1\" class=\"edui-tab-pane\"></div>" +
-            "<div id=\"edui-emotion-Jtab2\" class=\"edui-tab-pane\"></div>" +
-            "<div id=\"edui-emotion-Jtab3\" class=\"edui-tab-pane\"></div>" +
-            "<div id=\"edui-emotion-Jtab4\" class=\"edui-tab-pane\"></div>" +
-            "<div id=\"edui-emotion-Jtab5\" class=\"edui-tab-pane\"></div>" +
-            "<div id=\"edui-emotion-Jtab6\" class=\"edui-tab-pane\"></div>" +
+            "<div class=\"edui-tab-content\">" +
+            "<div class=\"edui-emotion-Jtab0 edui-tab-pane\"></div>" +
+            "<div class=\"edui-emotion-Jtab1 edui-tab-pane\"></div>" +
+            "<div class=\"edui-emotion-Jtab2 edui-tab-pane\"></div>" +
+            "<div class=\"edui-emotion-Jtab3 edui-tab-pane\"></div>" +
+            "<div class=\"edui-emotion-Jtab4 edui-tab-pane\"></div>" +
+            "<div class=\"edui-emotion-Jtab5 edui-tab-pane\"></div>" +
+            "<div class=\"edui-emotion-Jtab6 edui-tab-pane\"></div>" +
             "</div>" +
-            "<div id=\"edui-emotion-JtabIconReview\" class=\"edui-emotion-preview-box\">" +
-            "<img id=\'edui-emotion-JfaceReview\' src=\"<%=cover_img%>\" class=\'edui-emotion-preview-img\'/>" +
+            "<div class=\"edui-emotion-JtabIconReview edui-emotion-preview-box\">" +
+            "<img src=\"<%=cover_img%>\" class=\'edui-emotion-JfaceReview edui-emotion-preview-img\'/>" +
             "</div>",
 
         sourceData: {
@@ -55,7 +55,8 @@
                 emotionUrl = UMEDITOR_CONFIG.UMEDITOR_HOME_URL + 'dialogs/emotion/',
                 options = $.extend( {}, lang, {
                     emotion_url: emotionUrl
-                } );
+                }),
+                $root = me.root();
 
             if( me.inited ) {
                 me.preventDefault();
@@ -74,13 +75,13 @@
 
             options['cover_img'] = emotion.SmileyPath + (editor.options.emotionLocalization ? '0.gif' : 'default/0.gif');
 
-            me.root().html( $.parseTmpl( me.tpl, options ) );
+            $root.html( $.parseTmpl( me.tpl, options ) );
 
-            me.tabs = $.eduitab({selector:"#edui-emotion-tab-Jpanel"});
+            me.tabs = $.eduitab({selector:".edui-emotion-tab-Jpanel"});
 
             //缓存预览对象
-            me.previewBox = $("#edui-emotion-JtabIconReview");
-            me.previewImg = $("#edui-emotion-JfaceReview");
+            me.previewBox = $root.find(".edui-emotion-JtabIconReview");
+            me.previewImg = $root.find(".edui-emotion-JfaceReview");
 
             me.initImgName();
 
@@ -160,7 +161,7 @@
          * 切换到第一个tab
          */
         switchToFirst: function(){
-            $("#edui-emotion-Jtabnav .edui-tab-text:first").trigger('click');
+            this.root().find(".edui-emotion-Jtabnav .edui-tab-text:first").trigger('click');
         },
         updateTab: function( contentBoxId ) {
 
@@ -244,7 +245,7 @@
 
             var faceVersion = "?v=1.1", //版本号
                 me = this,
-                $contentBox = $("#"+contentBoxId),
+                $contentBox = this.root().find("."+contentBoxId),
                 emotion = me.sourceData.emotion,
                 imagePath = emotion.SmileyPath + emotion.imageFolders[ contentBoxId ], //获取显示表情和预览表情的路径
                 positionLine = 11 / 2, //中间数

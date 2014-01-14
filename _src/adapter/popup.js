@@ -24,6 +24,7 @@ UM.registerUI( 'emotion formula', function( name ){
         data.height && (opt.height = data.height);
 
         $.eduipopup(opt).css('zIndex',me.options.zIndex + 1)
+            .addClass('edui-popup-' + name)
             .edui()
             .on('beforeshow',function(){
                 var $root = this.root();
