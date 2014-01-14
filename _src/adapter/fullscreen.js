@@ -25,6 +25,7 @@
                 'click': function(){
                     //切换
                     me.execCommand( name );
+                    UM.setTopEditor(me);
                 }
             });
 
