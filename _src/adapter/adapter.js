@@ -93,7 +93,7 @@
             _maxZIndex = _maxZIndex ? Math.max(editor.getOpt('zIndex'), _maxZIndex):editor.getOpt('zIndex');
             return editor;
         },
-        activeEditor: function(editor){
+        setTopEditor: function(editor){
             $.each(_editors, function(i, o){
                 if(editor == o) {
                     editor.$container.css('zIndex', _maxZIndex + 1);
