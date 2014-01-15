@@ -7,8 +7,8 @@
 }
 .edui-tab-nav .edui-tab-item {
     float:left;
-    margin-bottom: -1px;
     margin-top: 1px;
+    margin-top: 0\9;
 }
 .edui-tab-nav .edui-tab-item .edui-tab-text{
     display: block;
@@ -36,6 +36,7 @@
     position: relative;
     display: none;
     background-color: #fff;
+    clear: both;
 }
 .edui-tab-content .edui-tab-pane.active{
     display: block;
