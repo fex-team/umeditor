@@ -212,7 +212,6 @@ UM.plugins['autosave'] = function() {
 
     me.commands['drafts'] = {
         execCommand:function (cmd, name) {
-            console.log(me.id);
             if ( saveKey ) {
                 me.body.innerHTML = LocalStorage.getLocalData( saveKey ) || '<p>'+(browser.ie ? '&nbsp;' : '<br/>')+'</p>';
                 me.focus(true);

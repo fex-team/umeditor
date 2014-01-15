@@ -50,7 +50,6 @@
                 me.plugins[pi] = 1;
             }
         }
-        console.log('loadPlugin')
         me.langIsReady = true;
 
         me.fireEvent("langReady");
