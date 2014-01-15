@@ -24,6 +24,7 @@ UM.registerUI( 'emotion formula', function( name ){
         data.height && (opt.height = data.height);
 
         $.eduipopup(opt).css('zIndex',me.options.zIndex + 1)
+            .addClass('edui-popup-' + name)
             .edui()
             .on('beforeshow',function(){
                 var $root = this.root();
@@ -31,7 +32,7 @@ UM.registerUI( 'emotion formula', function( name ){
                     me.$container.find('.edui-dialog-container').append($root);
                 }
                 UM.setWidgetBody(name,$root,me);
-                UM.activeEditor(me);
+                UM.setTopEditor(me);
             }).attachTo($btn,{
                 offsetTop:-5,
                 offsetLeft:10,

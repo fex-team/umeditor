@@ -1,13 +1,9 @@
-UM.registerUI('link image map insertvideo formula',function(name){
+UM.registerUI('link image video map formula',function(name){
 
     var me = this, currentRange, $dialog,
-        dialogUrl = {
-            insertvideo: 'video'
-        },
-        curDialogUrl = dialogUrl[ name ] || name,
         opt = {
             title: (me.options.labelMap && me.options.labelMap[name]) || me.getLang("labelMap." + name),
-            url: me.options.UMEDITOR_HOME_URL + 'dialogs/' + curDialogUrl + '/' + curDialogUrl + '.js'
+            url: me.options.UMEDITOR_HOME_URL + 'dialogs/' + name + '/' + name + '.js'
         };
 
     var $btn = $.eduibutton({
@@ -48,7 +44,7 @@ UM.registerUI('link image map insertvideo formula',function(name){
 
         $dialog = $.eduimodal(opt);
 
-        $dialog.attr('id', 'edui-dialog-' + name)
+        $dialog.attr('id', 'edui-dialog-' + name).addClass('edui-dialog-' + name)
             .find('.edui-modal-body').addClass('edui-dialog-' + name + '-body');
 
         $dialog.edui().on('beforehide',function () {
@@ -82,7 +78,7 @@ UM.registerUI('link image map insertvideo formula',function(name){
 
                 }
                 UM.setWidgetBody(name,$dialog,me);
-                UM.activeEditor(me);
+                UM.setTopEditor(me);
         }).on('afterbackdrop',function(){
             this.$backdrop.css('zIndex',me.getOpt('zIndex')+1).appendTo(me.$container.find('.edui-dialog-container'))
             $dialog.css('zIndex',me.getOpt('zIndex')+2)

@@ -1,26 +1,26 @@
-.edui-formula-wrapper {
+.edui-popup-formula .edui-formula-wrapper {
     padding: 15px;
 }
-.edui-formula-wrapper .edui-tab-nav{
+.edui-popup-formula .edui-formula-wrapper .edui-tab-nav{
     height: auto;
     *height: 31px;
 }
-.edui-formula-wrapper .edui-tab-text {
+.edui-popup-formula .edui-formula-wrapper .edui-tab-text {
     font-size: 12px;
 }
-.edui-formula-wrapper .edui-formula-clearboth {
+.edui-popup-formula .edui-formula-wrapper .edui-formula-clearboth {
     clear: both;
     width: 0;
     height: 0;
 }
-.edui-formula-wrapper .edui-tab-pane ul {
+.edui-popup-formula .edui-formula-wrapper .edui-tab-pane ul {
     margin: 0px;
     padding: 0px;
 }
-.edui-formula-wrapper .edui-tab-content {
+.edui-popup-formula .edui-formula-wrapper .edui-tab-content {
     padding: 5px 0px 0px 0px;
 }
-.edui-formula-wrapper .edui-tab-pane .edui-formula-latex-item {
+.edui-popup-formula .edui-formula-wrapper .edui-tab-pane .edui-formula-latex-item {
     display: block;
     float: left;
     margin: 0px 3px 3px 0px;

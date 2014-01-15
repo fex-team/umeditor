@@ -5,16 +5,16 @@
     UM.registerWidget(widgetName, {
 
         tpl: "<style type=\"text/css\">" +
-            ".edui-map-content{width:530px; height: 350px;margin: 10px auto;}" +
-            ".edui-map-content table{width: 100%}" +
-            ".edui-map-content table td{vertical-align: middle;}" +
-            ".edui-map-button { border: 1px solid #ccc; float: left; cursor: default; height: 23px; width: 70px; cursor: pointer; margin: 0; font-size: 12px; line-height: 24px; text-align: center; }" +
-            ".edui-map-button:hover {background:#eee;}" +
-            ".edui-map-city,.edui-map-address{height:21px;background: #FFF;border:1px solid #d7d7d7; line-height: 21px;}" +
-            ".edui-map-city{width:90px}" +
-            ".edui-map-address{width:150px}" +
-            ".edui-map-dynamic-label span{vertical-align:middle;margin: 3px 0px 3px 3px;}" +
-            ".edui-map-dynamic-label input{vertical-align:middle;margin: 3px;}" +
+            ".edui-dialog-map .edui-map-content{width:530px; height: 350px;margin: 10px auto;}" +
+            ".edui-dialog-map .edui-map-content table{width: 100%}" +
+            ".edui-dialog-map .edui-map-content table td{vertical-align: middle;}" +
+            ".edui-dialog-map .edui-map-button { border: 1px solid #ccc; float: left; cursor: default; height: 23px; width: 70px; cursor: pointer; margin: 0; font-size: 12px; line-height: 24px; text-align: center; }" +
+            ".edui-dialog-map .edui-map-button:hover {background:#eee;}" +
+            ".edui-dialog-map .edui-map-city,.edui-dialog-map .edui-map-address{height:21px;background: #FFF;border:1px solid #d7d7d7; line-height: 21px;}" +
+            ".edui-dialog-map .edui-map-city{width:90px}" +
+            ".edui-dialog-map .edui-map-address{width:150px}" +
+            ".edui-dialog-map .edui-map-dynamic-label span{vertical-align:middle;margin: 3px 0px 3px 3px;}" +
+            ".edui-dialog-map .edui-map-dynamic-label input{vertical-align:middle;margin: 3px;}" +
             "</style>" +
             "<div class=\"edui-map-content\">" +
             "<table>" +
