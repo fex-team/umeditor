@@ -14,7 +14,9 @@ UM.registerUI('paragraph fontfamily fontsize', function( name ) {
         },
         $combox = null,
         comboboxWidget = null;
-
+    if(options.items.length == 0){
+        return null;
+    }
     switch ( name ) {
 
         case 'paragraph':

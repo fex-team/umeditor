@@ -177,12 +177,9 @@
             }
             //初始化注册的ui组件
             $.each(_editorUI,function(n,v){
-                //有相关的插件或者是命令才添加ui
-                if(editor.plugins[n] || editor.commands[n] || UM.commands[n]){
-                    var widget = v.call(editor,n);
-                    if(widget){
-                        _cacheUI[n] = widget;
-                    }
+                var widget = v.call(editor,n);
+                if(widget){
+                    _cacheUI[n] = widget;
                 }
 
             });
