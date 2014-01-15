@@ -39,22 +39,22 @@
         }
     }
     function destroy(){
-        ue.destroy();
-        ue = null;
+        um.destroy();
+        um = null;
         clearInterval(timer);
         var button = document.getElementById("destroy");
 
         button.value = "重新渲染";
         button.onclick = function(){
-            ue = UM.getEditor('simple');
+            um = UM.getEditor('simple');
             this.value="销毁编辑器";
             this.onclick = destroy;
             timer = setInterval( setMsg, 100 );
         }
     }
     function setMsg() {
-        if(ue && ue.undoManger){
-            document.getElementById( "txt" ).innerHTML = "编辑器当前保存了 <span style='color: red'> " + ue.undoManger.list.length + " </span>次操作";
+        if(um && um.undoManger){
+            document.getElementById( "txt" ).innerHTML = "编辑器当前保存了 <span style='color: red'> " + um.undoManger.list.length + " </span>次操作";
         }
     }
     var timer = setInterval( setMsg, 100 );

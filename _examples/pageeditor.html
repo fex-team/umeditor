@@ -58,17 +58,13 @@
             withoutToolbar: true,
 
             //去掉全屏按钮
-            toolbar:[
-                'source | undo redo | bold italic underline strikethrough | superscript subscript | forecolor backcolor | removeformat |',
-                'insertorderedlist insertunorderedlist | selectall cleardoc paragraph | fontfamily fontsize' ,
-                '| justifyleft justifycenter justifyright justifyjustify |',
-                'link unlink | emotion image video  | map',
-                '| horizontal print preview'
-            ]
+            toolbar:(function(){
+                UMEDITOR_CONFIG.toolbars
+            })()
 
         });
 
-        window.ue = editor;
+        window.um = editor;
 
         //对编辑器的操作要放在ready后才能生效
         editor.ready( function () {
