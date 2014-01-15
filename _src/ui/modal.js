@@ -41,7 +41,7 @@ UM.ui.define('modal', {
             .delegate('[data-ok="modal"]', 'click', $.proxy(me.ok, me));
 
         $('[data-hide="modal"],[data-ok="modal"]',me.root()).hover(function(){
-            $(this).toggleClass('hover')
+            $(this).toggleClass('edui-hover')
         });
     },
     toggle: function () {

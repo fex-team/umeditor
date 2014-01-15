@@ -20,11 +20,12 @@ UM.ui.define('dropmenu', {
             mouseover: 1,
             mouseout: 1
         };
-        this.root($($.parseTmpl(this.tmpl, options))).on('click', 'li[class!="disabled divider dropdown-submenu"]',function (evt) {
+        debugger;
+        this.root($($.parseTmpl(this.tmpl, options))).on('click', 'li[class!="edui-disabled edui-divider edui-dropdown-submenu"]',function (evt) {
             $.proxy(options.click, me, evt, $(this).data('value'), $(this))()
         }).find('li').each(function (i, el) {
                 var $this = $(this);
-                if (!$this.hasClass("disabled divider dropdown-submenu")) {
+                if (!$this.hasClass("edui-disabled edui-divider edui-dropdown-submenu")) {
                     var data = options.data[i];
                     $.each(eventName, function (k) {
                         data[k] && $this[k](function (evt) {
@@ -36,21 +37,21 @@ UM.ui.define('dropmenu', {
 
     },
     disabled: function (cb) {
-        $('li[class!=divider]', this.root()).each(function () {
+        $('li[class!=edui-divider]', this.root()).each(function () {
             var $el = $(this);
             if (cb === true) {
-                $el.addClass('disabled')
+                $el.addClass('edui-disabled')
             } else if ($.isFunction(cb)) {
-                $el.toggleClass('disabled', cb(li))
+                $el.toggleClass('edui-disabled', cb(li))
             } else {
-                $el.removeClass('disabled')
+                $el.removeClass('edui-disabled')
             }
 
         });
     },
     val: function (val) {
         var currentVal;
-        $('li[class!="divider disabled dropdown-submenu"]', this.root()).each(function () {
+        $('li[class!="edui-divider edui-disabled edui-dropdown-submenu"]', this.root()).each(function () {
             var $el = $(this);
             if (val === undefined) {
                 if ($el.find('em.edui-dropmenu-checked').length) {
@@ -68,8 +69,8 @@ UM.ui.define('dropmenu', {
     addSubmenu: function (label, menu, index) {
         index = index || 0;
 
-        var $list = $('li[class!=divider]', this.root());
-        var $node = $('<li class="dropdown-submenu"><a tabindex="-1" href="#">' + label + '</a></li>').append(menu);
+        var $list = $('li[class!=edui-divider]', this.root());
+        var $node = $('<li class="edui-dropdown-submenu"><a tabindex="-1" href="#">' + label + '</a></li>').append(menu);
 
         if (index >= 0 && index < $list.length) {
             $node.insertBefore($list[index]);

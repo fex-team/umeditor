@@ -25,8 +25,8 @@ UM.ui.define('splitbutton',{
             }
         });
         me.root().hover(function () {
-            if(!me.root().hasClass("disabled")){
-                me.root().toggleClass('hover')
+            if(!me.root().hasClass("edui-disabled")){
+                me.root().toggleClass('edui-hover')
             }
         });
 
@@ -40,16 +40,16 @@ UM.ui.define('splitbutton',{
     },
     disabled : function(state){
         if(state === undefined){
-            return this.root().hasClass('disabled')
+            return this.root().hasClass('edui-disabled')
         }
-        this.root().toggleClass('disabled',state).find('.edui-btn').toggleClass('disabled',state);
+        this.root().toggleClass('edui-disabled',state).find('.edui-btn').toggleClass('edui-disabled',state);
         return this;
     },
     active:function(state){
         if(state === undefined){
-            return this.root().hasClass('active')
+            return this.root().hasClass('edui-active')
         }
-        this.root().toggleClass('active',state).find('.edui-btn:first').toggleClass('active',state);
+        this.root().toggleClass('edui-active',state).find('.edui-btn:first').toggleClass('edui-active',state);
         return this;
     },
     mergeWith:function($obj){
