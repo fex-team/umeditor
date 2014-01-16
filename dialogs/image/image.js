@@ -278,10 +278,10 @@
                     $(".edui-image-dragTip", me.dialog).css( "display", "none" );
                 }
                 $(".edui-image-upload1", me.dialog).css( "display", "none" );
-                $mask.addClass("active").html(html);
+                $mask.addClass("edui-active").html(html);
             } else {
 
-                $mask.removeClass("active").html();
+                $mask.removeClass("edui-active").html();
 
                 if ( Upload.showCount > 0 ) {
                     return me;
@@ -350,11 +350,11 @@
         tpl: "<link rel=\"stylesheet\" type=\"text/css\" href=\"<%=image_url%>image.css\">" +
             "<div class=\"edui-image-wrapper\">" +
             "<ul class=\"edui-tab-nav\">" +
-            "<li class=\"edui-tab-item active\"><a data-context=\".edui-image-local\" class=\"edui-tab-text\"><%=lang_tab_local%></a></li>" +
+            "<li class=\"edui-tab-item edui-active\"><a data-context=\".edui-image-local\" class=\"edui-tab-text\"><%=lang_tab_local%></a></li>" +
             "<li  class=\"edui-tab-item\"><a data-context=\".edui-image-JimgSearch\" class=\"edui-tab-text\"><%=lang_tab_imgSearch%></a></li>" +
             "</ul>" +
             "<div class=\"edui-tab-content\">" +
-            "<div class=\"edui-image-local edui-tab-pane active\">" +
+            "<div class=\"edui-image-local edui-tab-pane edui-active\">" +
             "<div class=\"edui-image-content\"></div>" +
             "<div class=\"edui-image-mask\"></div>" +
             "<div class=\"edui-image-dragTip\"><%=lang_input_dragTip%></div>" +
