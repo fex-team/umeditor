@@ -17,6 +17,7 @@
 5. dialog的样式，添加前缀选择器.edui-dialog-dialogName
 6. insertvideo dialog名称修改为video
 7. 解决bootstrap 命名冲突
+8. 通过参数传入jQuery的$变量，解决$变量冲突
 
 
 ## 1.0.0
