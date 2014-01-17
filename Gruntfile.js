@@ -152,10 +152,7 @@ module.exports = function ( grunt ) {
                     to: ''
                 },{
                     from: 'editor_api.js',
-                    to: '<%= pkg.name %>.js'
-                },{
-                    from: 'editor_api.js',
-                    to: '<%= pkg.name %>.js'
+                    to: '<%= pkg.name %>.min.js'
                 },{
                     from: '_css',
                     to: 'css'
