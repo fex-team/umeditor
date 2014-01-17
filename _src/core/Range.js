@@ -75,7 +75,6 @@
         me.document = document;
         me.collapsed = true;
         me.body = body;
-        me.native = null;
     };
 
     /**
