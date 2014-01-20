@@ -37,6 +37,7 @@
 ///import plugins/video;
 ///import plugins/dropfile;
 ///import plugins/autosave;
+///import plugins/formula;
 
 ///import adapter/adapter;
 ///import adapter/autofloat;

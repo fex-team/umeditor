@@ -8,7 +8,7 @@
         var div = document.body.appendChild(document.createElement('div'));
         div.id = 'test1';
         var utils = UM.utils;
-        var editor = new UM.Editor({'UEDITOR_HOME_URL':'../../../', 'autoFloatEnabled':false,initialContent:'tool'});
+        var editor = new UM.Editor({'UEDITOR_HOME_URL':'../../../', 'autoFloatEnabled':false});
         var iframe = document.createElement('iframe');
         document.body.appendChild(iframe);
         iframe.id = 'iframe';
