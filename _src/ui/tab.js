@@ -28,9 +28,9 @@ UM.ui.define('tab', {
 
         var $tmp = $cur.parent('li');
 
-        if (!$tmp.length || $tmp.hasClass('active')) return;
+        if (!$tmp.length || $tmp.hasClass('edui-active')) return;
 
-        previous = $ul.find('.active:last a')[0];
+        previous = $ul.find('.edui-active:last a')[0];
 
         e = $.Event('beforeshow', {
             target: $cur[0],
@@ -52,14 +52,14 @@ UM.ui.define('tab', {
     },
     activate: function (element, container, callback) {
         if (element === undefined) {
-            return $(".edui-tab-item.active",this.root()).index();
+            return $(".edui-tab-item.edui-active",this.root()).index();
         }
 
-        var $active = container.find('> .active');
+        var $active = container.find('> .edui-active');
 
-        $active.removeClass('active');
+        $active.removeClass('edui-active');
 
-        element.addClass('active');
+        element.addClass('edui-active');
 
         callback && callback();
     }

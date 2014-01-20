@@ -23,8 +23,8 @@ UM.ui.define('button', {
             });
 
         me.root().hover(function () {
-            if(!me.root().hasClass("disabled")){
-                me.root().toggleClass('hover')
+            if(!me.root().hasClass("edui-disabled")){
+                me.root().toggleClass('edui-hover')
             }
         })
 
@@ -47,19 +47,19 @@ UM.ui.define('button', {
     },
     disabled: function (state) {
         if (state === undefined) {
-            return this.root().hasClass('disabled')
+            return this.root().hasClass('edui-disabled')
         }
-        this.root().toggleClass('disabled', state);
-        if(this.root().hasClass('disabled')){
-            this.root().removeClass('hover')
+        this.root().toggleClass('edui-disabled', state);
+        if(this.root().hasClass('edui-disabled')){
+            this.root().removeClass('edui-hover')
         }
         return this;
     },
     active: function (state) {
         if (state === undefined) {
-            return this.root().hasClass('active')
+            return this.root().hasClass('edui-active')
         }
-        this.root().toggleClass('active', state)
+        this.root().toggleClass('edui-active', state)
 
         return this;
     },

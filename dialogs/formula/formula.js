@@ -249,8 +249,8 @@
                 $root = me.root(),
                 index = $.isNumeric(index) ? index:$.inArray(index, $root.find('.edui-tab-nav .edui-tab-item'));
 
-            $root.find('.edui-tab-nav .edui-tab-item').removeClass('active').eq(index).addClass('active');
-            $root.find('.edui-tab-content .edui-tab-pane').removeClass('active').eq(index).addClass('active');
+            $root.find('.edui-tab-nav .edui-tab-item').removeClass('edui-active').eq(index).addClass('edui-active');
+            $root.find('.edui-tab-content .edui-tab-pane').removeClass('edui-active').eq(index).addClass('edui-active');
 
             /* 自动长高 */
             me.autoHeight(0);

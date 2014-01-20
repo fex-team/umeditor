@@ -9,6 +9,7 @@
     float:left;
     margin-bottom: -1px;
     margin-top: 1px;
+    margin-top: 0\9;
 }
 .edui-tab-nav .edui-tab-item .edui-tab-text{
     display: block;
@@ -23,7 +24,7 @@
 .edui-tab-nav .edui-tab-item .edui-tab-text:FOCUS {
     outline: none;
 }
-.edui-tab-nav .edui-tab-item.active  .edui-tab-text{
+.edui-tab-nav .edui-tab-item.edui-active  .edui-tab-text{
     border: 1px solid #ddd;
     border-bottom-color: transparent;
     background-color: #fff;
@@ -36,8 +37,9 @@
     position: relative;
     display: none;
     background-color: #fff;
+    clear: both;
 }
-.edui-tab-content .edui-tab-pane.active{
+.edui-tab-content .edui-tab-pane.edui-active{
     display: block;
 }
 

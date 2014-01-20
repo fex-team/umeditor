@@ -27,11 +27,11 @@
 }
 
 /*状态反射*/
-.edui-btn-toolbar .edui-splitbutton.hover .edui-btn{
+.edui-btn-toolbar .edui-splitbutton.edui-hover .edui-btn{
     background-color: #d5e1f2;
 }
 
-.edui-btn-toolbar .edui-splitbutton.disabled{
+.edui-btn-toolbar .edui-splitbutton.edui-disabled{
     opacity: 0.3;
     filter: alpha(opacity = 30);
 }

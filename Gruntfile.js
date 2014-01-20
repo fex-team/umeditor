@@ -11,21 +11,14 @@ module.exports = function ( grunt ) {
             fetchScripts: function () {
 
                 var sources = fs.readFileSync( "_examples/editor_api.js" );
-
-                sources = /\[([^\]]+)\]/.exec( sources );
-
-                sources = sources[1].replace( /'|"|\n|\t|\s/g, '' );
-
+                sources = /\[([^\]]+\.js'[^\]]+)\]/.exec( sources );
+                sources = sources[1].replace( /\/\/.*[\n\r]/g, '\n' ).replace( /'|"|\n|\t|\s/g, '' );
                 sources = sources.split( "," );
-
                 sources.forEach( function ( filepath, index ) {
-
                     sources[ index ] = Util.jsBasePath + filepath;
-
                 } );
 
                 return sources;
-
             },
 
             fetchStyles: function () {
@@ -36,9 +29,7 @@ module.exports = function ( grunt ) {
                     src = [];
 
                 while ( filepath = pattern.exec( sources ) ) {
-
                     src.push( this.cssBasePath + filepath[ 1 ].replace( /'|"/g, "" ) );
-
                 }
 
                 return src;
@@ -89,11 +80,8 @@ module.exports = function ( grunt ) {
                 ext: '.min.css'
             }
         },
-        uglify: {
-            options: {
-                banner: banner
-            },
-            dest: {
+        closurecompiler: {
+            dist: {
                 src: disDir + '<%= pkg.name %>.js',
                 dest: disDir + '<%= pkg.name %>.min.js'
             }
@@ -102,10 +90,17 @@ module.exports = function ( grunt ) {
             base: {
                 files: [
                     {
-
-                        src: [ 'themes/default/images/**', 'dialogs/**', 'lang/**' ],
+                        src: [ 'themes/default/images/**', 'dialogs/**', 'third-party/**', 'lang/**' ],
                         dest: disDir
 
+                    }
+                ]
+            },
+            demo: {
+                files: [
+                    {
+                        src: '_examples/completeDemo.html',
+                        dest: disDir + 'index.html'
                     }
                 ]
             },
@@ -138,19 +133,52 @@ module.exports = function ( grunt ) {
             },
             src: [disDir + '**/*.html', disDir + '**/*.js', disDir + '**/*.css', disDir + '**/*.jsp', disDir + '**/*.java', disDir + '**/*.php', disDir + '**/*.ashx', disDir + '**/*.cs']
 
+        },
+        replace: {
+
+            fileEncode: {
+                src: [ disDir+'**/*.html', disDir+'**/*.css', disDir+'**/*.php', disDir+'**/*.jsp', disDir+'**/*.net', disDir+'**/*.asp' ],
+                overwrite: true,
+                replacements: [ {
+                    from: /utf-8/gi,
+                    to: 'gbk'
+                } ]
+            },
+            demo:{
+                src: disDir+'index.html',
+                overwrite: true,
+                replacements: [ {
+                    from: /\.\.\//gi,
+                    to: ''
+                },{
+                    from: 'editor_api.js',
+                    to: '<%= pkg.name %>.min.js'
+                },{
+                    from: '_css',
+                    to: 'css'
+                } ]
+            }
+
         }
 
     } );
 
+    grunt.loadNpmTasks('grunt-text-replace');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-closurecompiler');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-transcoding');
 
     grunt.registerTask('default', 'UEditor Mini build', function () {
 
-        var tasks = [ 'concat', 'cssmin', 'uglify', 'copy:base', 'copy:'+server, 'transcoding' ];
+        var tasks = [ 'concat', 'cssmin', 'closurecompiler', 'copy:base', 'copy:'+server, 'copy:demo', 'replace:demo' ];
+
+        if ( encode === 'gbk' ) {
+            tasks.push( 'replace:fileEncode' );
+        }
+
+        tasks.push( 'transcoding' );
 
         //config修改
         updateConfigFile();

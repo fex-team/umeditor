@@ -50,7 +50,6 @@
                 me.plugins[pi] = 1;
             }
         }
-        console.log('loadPlugin')
         me.langIsReady = true;
 
         me.fireEvent("langReady");
@@ -243,7 +242,7 @@
             if (container) {
                 this.id = container.getAttribute('id');
                 UM.setEditor(this);
-                utils.cssRule('umeditor_body_css',me.options.initialStyle,document);
+                utils.cssRule('edui-style-body',me.options.initialStyle,document);
 
                 container = this.initialCont(container);
 

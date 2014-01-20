@@ -16,7 +16,7 @@ UM.commands['preview'] = {
             path = this.getOpt('UMEDITOR_HOME_URL'),
             formula = c.indexOf('mathquill-embedded-latex')!=-1 ?
                 '<link rel="stylesheet" href="' + path + 'third-party/mathquill/mathquill.css"/>' +
-                '<script src="' + path + 'third-party/jquery-1.10.2.min.js"></script>' +
+                '<script src="' + path + 'third-party/jquery.min.js"></script>' +
                 '<script src="' + path + 'third-party/mathquill/mathquill.min.js"></script>':'';
         d.open();
         d.write('<html><head>' + formula + '</head><body><div>'+c+'</div></body></html>');
