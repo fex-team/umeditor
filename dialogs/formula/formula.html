@@ -27,6 +27,10 @@
     <div class="mathquill-editable"></div>
 </div>
 
+<div>
+    <input id="blurHelper" />
+</div>
+
 <script src="../../third-party/jquery.min.js"></script>
 <script src="../../third-party/mathquill/mathquill.js"></script>
 <script>
@@ -54,12 +58,23 @@
         }
         /* 保存场景 */
         function saveScene(){
-            if(!timer) {
-                timer = setTimeout(function(){
-                    editor.fireEvent('savescene');
-                    editor.fireEvent('contentchange');
-                    timer = null;
-                }, 1000);
+            timer && clearTimeout(timer);
+            timer = setTimeout(function(){
+                editor.fireEvent('savescene');
+                editor.fireEvent('contentchange');
+                timer = null;
+            }, 300);
+        }
+        /* 设置编辑器可编辑 */
+        function enableEditor(){
+            if(editor.body.contentEditable == 'false') {
+                editor.setEnabled();
+            }
+        }
+        /* 设置编辑器不可编辑 */
+        function disableEditor(){
+            if(editor.body.contentEditable == 'true') {
+                editor.setDisabled(['undo', 'redo', 'preview', 'formula']);
             }
         }
 
@@ -68,48 +83,52 @@
             var _this = this,
                 latex = getLatex();
 
+            /* 加载公式内容 */
             this.$mathquill = $('.mathquill-editable').mathquill('latex', latex);
-//            this.$mathquill.find('textarea').on('focus', function(){
-//                _this.focus();
-//                console.log('focus');
-//            }).on('blur', function(){
-//                _this.blur();
-//                console.log('blur');
-//            });
 
-            this.$mathquill.on('keydown', function(){
+            /* 设置活动状态的公式iframe */
+            $(document.body).on('click', function(){
+                if(!$iframe.hasClass('edui-formula-active')) {
+                    console.log('in');
+                    disableEditor();
+                    editor.blur();
+                    editor.$body.find('iframe').not($iframe).each(function(k, v){
+                        v.contentWindow.formula.blur();
+                    });
+                    if(_this.$mathquill.find('.cursor').css('display') == 'none') {
+                        _this.refresh();
+                        console.log('balabala~~~');
+                    }
+                }
+                _this.focus();
+            });
+            editor.$body.on('click', function(){
+                _this.blur();
+                enableEditor();
+            });
+
+            /* 设置更新外层iframe的大小和属性 */
+            $(document.body).on('keydown', function(){
                 _this.updateIframe();
             }).on('keyup', function(){
                 _this.updateIframe();
             });
 
-            $(document.body).on('click', function(){
-                _this.focus();
-            });
-            editor.$body.on('click', function(){
-                _this.blur();
-            });
+            /* 清除初始化的高亮状态 */
+            this.$mathquill.removeClass('hasCursor');
 
-            this.$mathquill.parent().find('.hasCursor').removeClass('hasCursor');
-
+            /* 初始化后延迟刷新外层iframe大小 */
             setTimeout(function(){
                 _this.updateIframe();
             }, 300);
         };
         Formula.prototype = {
             focus:function(){
-                editor.$body.find('iframe').not($iframe).each(function(k, v){
-                    v.contentWindow.formula.blur();
-                });
                 $iframe.addClass('edui-formula-active');
-                this.$mathquill.focus();
-                editor.setDisabled('formula');
-                editor.blur();
             },
             blur:function(){
                 $iframe.removeClass('edui-formula-active');
                 this.removeCursor();
-                editor.setEnabled();
             },
             removeCursor: function(){
                 this.$mathquill.find('span.cursor').hide();
@@ -117,7 +136,6 @@
             },
             updateIframe: function(){
                 $iframe.width(this.$mathquill.width()+8).height(this.$mathquill.height()+8);
-                this.redraw();
                 var latex = $iframe.attr('data-latex'),
                     newLatex = this.getLatex();
                 if(latex != newLatex) {
@@ -129,8 +147,6 @@
                 this.$mathquill.mathquill('write', latex);
                 this.updateIframe();
                 this.removeCursor();
-                //this.refresh();
-                editor.blur();
             },
             setLatex: function(latex){
                 this.$mathquill.mathquill('latex', latex);
@@ -140,11 +156,12 @@
                 return this.$mathquill.mathquill('latex');
             },
             redraw: function(){
-                return this.$mathquill.mathquill('redraw');
+                this.$mathquill.mathquill('redraw');
             },
             refresh: function(){
                 var latex = this.getLatex();
-                return this.$mathquill.mathquill('revert').text(latex).mathquill('editable');
+                this.$mathquill.mathquill('revert').text(latex).mathquill('editable');
+                this.updateIframe();
             }
         }
 
