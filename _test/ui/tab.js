@@ -10,7 +10,7 @@ module('ui.tab');
 test('tab--初始化 操作', function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.innerHTML = '<ul class="edui-tab-nav">' +
-        '<li class="edui-tab-item active"><a href="#edui-test1" class="edui-tab-text">1</a></li>' +
+        '<li class="edui-tab-item edui-active"><a href="#edui-test1" class="edui-tab-text">1</a></li>' +
         '<li class="edui-tab-item"><a href="#edui-test2" class="edui-tab-text">2</a></li>' +
         '</ul>' +
         '<div class="edui-tab-content" >' +

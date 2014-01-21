@@ -1,4 +1,6 @@
 <?php
+require_once 'config.php';
+
 /**
  * for case running
  *
@@ -145,8 +147,10 @@ class Kiss
         $srcpath = $projroot . '_src/';
         $testpath = $projroot . '_test/';
         require_once 'filehelper.php';
-        $caselist = getSameFile( $srcpath , $testpath , '' );
-        sort($caselist,SORT_STRING);
+        $caselist = getSameFile( $srcpath , $testpath , '' );//默认取src和test下的同名文件
+        foreach(Config::$special_Case as $s_caseitem => $s_source){//设置在源码路径下没有同名文件对应的测试文件
+            array_push($caselist,$s_caseitem);
+        }        sort($caselist,SORT_STRING);
         foreach ( $caselist as $caseitem ) {
             /*将文件名替换为域名方式，替换/为.，移除.js*/
             //$name = str_replace( '/' , '.' , substr( $caseitem , 0 , -3 ) );
@@ -162,6 +166,7 @@ class Kiss
                        . $newName . "</a>\n" );
             }
         }
+
     }
 
     public static function listSrcOnly( $print = true , $projroot = '../../../' )
