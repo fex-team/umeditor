@@ -36,7 +36,7 @@
     }
 
     var _d = function () {
-        UM.clearCache('testeditor');
+        UM.delEditor('testeditor');
         te.dom.push(te.obj[0].container);
         document.getElementById('testeditor')&&te.dom.push(document.getElementById('testeditor'));
         if (te) {

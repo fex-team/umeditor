@@ -11,6 +11,7 @@ UM.ui.define('dropmenu', {
     defaultOpt: {
         data: [],
         click: function () {
+
         }
     },
     init: function (options) {
@@ -20,7 +21,7 @@ UM.ui.define('dropmenu', {
             mouseover: 1,
             mouseout: 1
         };
-        debugger;
+
         this.root($($.parseTmpl(this.tmpl, options))).on('click', 'li[class!="edui-disabled edui-divider edui-dropdown-submenu"]',function (evt) {
             $.proxy(options.click, me, evt, $(this).data('value'), $(this))()
         }).find('li').each(function (i, el) {

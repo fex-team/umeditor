@@ -8,6 +8,9 @@
 module('ui.dropmenu');
 
 test('dropmenu--初始化', function () {
+    UM.delEditor('testeditor');
+    document.getElementById('testeditor')&&document.getElementById('testeditor').parentNode.removeChild(document.getElementById('testeditor'));
+
     var div = document.body.appendChild(document.createElement('div'));
     $(div).attr('id', 'test');
 
@@ -26,10 +29,19 @@ test('dropmenu--初始化', function () {
             equal($dropMenuWidget.edui().val(), 'upper-alpha', '检查设置菜单值是否正常');
 
             $dropMenuWidget.edui().disabled(true);
-            equal($dropMenuWidget.find("li").hasClass('disabled'), true, '检查选项失效后，菜单项是否有disabled的class');
+            equal($dropMenuWidget.find("li").hasClass('edui-disabled'), true, '检查选项失效后，菜单项是否有disabled的class');
 
             $dropMenuWidget.edui().disabled(false);
-            equal($dropMenuWidget.find("li").hasClass('disabled'), false, '检查选项失效后，菜单项是否没有disabled的class');
+            equal($dropMenuWidget.find("li").hasClass('edui-disabled'), false, '检查选项失效后，菜单项是否没有disabled的class');
+            var $subMenuWidget = $.eduidropmenu({data:[
+                {"value":"decimal","label":"1,2,3..."},
+                {"value":"lower-alpha","label":"a,b,c..."},
+                {"value":"lower-roman","label":"i,ii,iii..."},
+                {"value":"upper-alpha","label":"A,B,C..."},
+                {"value":"upper-roman","label":"I,II,III..."}
+            ]});
+            $dropMenuWidget.edui().addSubmenu('subMenu', $subMenuWidget, 5);
+            equal($dropMenuWidget.find(".edui-dropdown-menu").length!=0, true, '检查是否已插入子节点');
             $(div).remove();
             start();
         }}).appendTo(div);
@@ -42,16 +54,9 @@ test('dropmenu--初始化', function () {
     $dropMenuWidget.edui().show($btn);
     $item = $dropMenuWidget.find("li").eq(0);
     value = $item.data('value');
+
+
     $item.trigger('click');
 
-    var $subMenuWidget = $.eduidropmenu({data:[
-        {"value":"decimal","label":"1,2,3..."},
-        {"value":"lower-alpha","label":"a,b,c..."},
-        {"value":"lower-roman","label":"i,ii,iii..."},
-        {"value":"upper-alpha","label":"A,B,C..."},
-        {"value":"upper-roman","label":"I,II,III..."}
-    ]});
-    $dropMenuWidget.edui().addSubmenu('subMenu', $subMenuWidget, 5);
-    equal($dropMenuWidget.find(".edui-dropdown-menu").length!=0, true, '检查是否已插入子节点');
     stop();
 });
