@@ -635,6 +635,9 @@ var domUtils = dom.domUtils = {
     },
     isFillChar: function (node, isInStart) {
         return node.nodeType == 3 && !node.nodeValue.replace(new RegExp((isInStart ? '^' : '' ) + domUtils.fillChar), '').length
+    },
+    isBody: function(node){
+        return $(node).hasClass('edui-body-container');
     }
 };
 var fillCharReg = new RegExp(domUtils.fillChar, 'g');

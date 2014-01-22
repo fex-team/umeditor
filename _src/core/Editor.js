@@ -298,10 +298,6 @@
             me.window = document.defaultView || document.parentWindow;
             me.body = cont;
             me.$body = $(cont);
-            //扩展isBody方法
-            domUtils.isBody = function (node) {
-                return  node === cont;
-            };
             me.selection = new dom.Selection(document,me.body);
             //gecko初始化就能得到range,无法判断isFocus了
             var geckoSel;
