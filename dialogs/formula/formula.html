@@ -62,6 +62,7 @@
             timer = setTimeout(function(){
                 editor.fireEvent('savescene');
                 editor.fireEvent('contentchange');
+                editor.fireEvent('selectionchange');
                 timer = null;
             }, 300);
         }
@@ -89,7 +90,6 @@
             /* 设置活动状态的公式iframe */
             $(document.body).on('click', function(){
                 if(!$iframe.hasClass('edui-formula-active')) {
-                    console.log('in');
                     disableEditor();
                     editor.blur();
                     editor.$body.find('iframe').not($iframe).each(function(k, v){
@@ -97,7 +97,6 @@
                     });
                     if(_this.$mathquill.find('.cursor').css('display') == 'none') {
                         _this.refresh();
-                        console.log('balabala~~~');
                     }
                 }
                 _this.focus();
