@@ -431,22 +431,14 @@
         },
         hasClass: function( className ){
             if( this.hasAttr('class') ) {
-
                 var classNames = this.getAttr('class').split(/\s+/),
                     hasClass = false;
-
-                classNames.forEach(function(item){
-
+                $.each(classNames, function(key, item){
                     if( item === className ) {
-
                         hasClass = true;
-                        return;
                     }
-
                 });
-
                 return hasClass;
-
             } else {
                 return false;
             }

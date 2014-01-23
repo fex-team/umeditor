@@ -1,5 +1,5 @@
 /**
- * 自动保存草稿
+ * 公式插件
  */
 UM.plugins['formula'] = function () {
     var me = this;
