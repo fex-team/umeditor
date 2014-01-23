@@ -75,7 +75,7 @@
         /* 设置编辑器不可编辑 */
         function disableEditor(){
             if(editor.body.contentEditable == 'true') {
-                editor.setDisabled(['undo', 'redo', 'preview', 'formula']);
+                editor.setDisabled(['undo', 'redo', 'formula']);
             }
         }
 
@@ -88,7 +88,7 @@
             this.$mathquill = $('.mathquill-editable').mathquill('latex', latex);
 
             /* 设置活动状态的公式iframe */
-            $(document.body).on('click', function(){
+            this.$mathquill.on('mousedown', function(){
                 if(!$iframe.hasClass('edui-formula-active')) {
                     disableEditor();
                     editor.blur();
