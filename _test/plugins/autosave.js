@@ -2,11 +2,9 @@ module( "plugins.autosave" );
 
 test('自动保存', function () {
 
-    var editor = te.obj[0],
-        count = 0;
-
-    UM.delEditor(te.obj[0]);
-
+    var count = 0;
+    UM.clearCache('testDefault');
+    $('.edui-body-container')[0].parentNode.removeChild($('.edui-body-container')[0]);
     var container = document.createElement("div");
     container.id = "container";
     document.body.appendChild(container);
@@ -40,11 +38,11 @@ test('自动保存', function () {
 
         data.content = data.content.toLowerCase();
         equal(data.content, "<p>http://www.baidu.com</p>", "成功触发afterautosave事件");
-
+        window.setTimeout(function () {
         equal(editor.execCommand("getlocaldata") !== null, true, "getlocaldata命令正常");
         editor.execCommand("clearlocaldata");
         equal(editor.execCommand("getlocaldata") === "", true, "clearlocaldata命令正常");
-
+        }, 50);
     });
 
     stop();
@@ -61,7 +59,7 @@ test('自动保存', function () {
 
                 equal(count, 1, "触发事件次数");
                 UM.delEditor("container");
-
+                document.getElementById('container') && document.getElementById('container').parentNode.removeChild(document.getElementById('container'));
                 start();
             }, 500);
 
@@ -71,7 +69,8 @@ test('自动保存', function () {
 
 });
 test('重建编辑器,加载草稿箱', function () {
-    UM.delEditor(te.obj[0]);
+    UM.clearCache('testDefault');
+    $('.edui-body-container')[0].parentNode.removeChild($('.edui-body-container')[0]);
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'ue';
     var editor = UM.getEditor('ue', {saveInterval: 0});

@@ -33,7 +33,7 @@ test( '检测全屏操作是否正常', function() {
             equal( newState.width, $( window ).width(), '切换至全屏状态后宽度正常' );
             equal( newState.height, $( window ).height(), '切换至全屏状态后高度正常' );
 
-            equal( $fullscreenBtn.hasClass( "active" ), true, '切换至全屏状态后按钮状态正常' );
+            equal( $fullscreenBtn.hasClass( "edui-active" ), true, '切换至全屏状态后按钮状态正常' );
 
             //模拟resize
             $( window ).trigger( "resize" );

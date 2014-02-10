@@ -10,6 +10,7 @@
         var div = document.body.appendChild(document.createElement('div'));
         $(div).css('width', '500px').css('height', '500px').css('border', '1px solid #ccc');
         var editor = new UM.Editor({'initialContent':'<p>欢迎使用umeditor</p>', 'autoFloatEnabled':false,webAppKey:'Qr0M9yTEoLIiUSXXQTtq7yFt'});
+        div.id = "testDefault";
         var ue = new UM.Editor({'UEDITOR_HOME_URL':'../../../', 'autoFloatEnabled':true,webAppKey:'Qr0M9yTEoLIiUSXXQTtq7yFt'});
         QUnit.readyFlag =0;
         editor.render(div);
