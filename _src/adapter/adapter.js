@@ -47,13 +47,20 @@
         },
         setWidgetBody : function(name,$widget,editor){
             if(!editor._widgetData){
-                editor._widgetData = {};
-                editor.getWidgetData = function(name){
-                    return this._widgetData[name];
-                };
-                editor.getWidgetCallback = function(widgetName){
-                    return _widgetCallBack[widgetName];
-                }
+
+                utils.extend(editor,{
+                    _widgetData : {},
+                    getWidgetData : function(name){
+                        return this._widgetData[name];
+                    },
+                    getWidgetCallback : function(widgetName){
+                        var me = this;
+                        return function(){
+                            return  _widgetCallBack[widgetName].apply(me,[me,$widget].concat(Array.prototype.slice.call(arguments,0)))
+                        }
+                    }
+                })
+
             }
             var pro = _widgetData[name];
             if(!pro){
@@ -74,15 +81,6 @@
 
             pro.width &&  $widget.width(pro.width);
 
-            //为回调进行参数绑定
-            var cb = _widgetCallBack[name];
-            if(cb && !cb.init){
-                _widgetCallBack[name] = function(){
-                   var args = Array.prototype.slice.call(arguments,0);
-                   cb.apply(editor,[editor,$widget].concat(args));
-                }
-                _widgetCallBack[name].init = true;
-            }
 
         },
         setActiveWidget : function($widget){
