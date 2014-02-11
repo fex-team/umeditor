@@ -135,7 +135,7 @@
     function getEditor(){
         var parentNode = iframe.parentNode;
         while (parentNode && parentNode.tagName && parentNode.tagName.toLowerCase() != 'body') {
-            if (parentNode.className && parentNode.className.indexOf('edui-body-container')) {
+            if (parentNode.className && parentNode.className.indexOf('edui-body-container')!=-1) {
                 return UM.getEditor(parentNode.id);
             }
             parentNode = parentNode.parentNode;
