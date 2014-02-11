@@ -111,6 +111,13 @@ module.exports = function ( grunt ) {
                 dest: disDir
 
             },
+            asp: {
+
+                expand: true,
+                src: 'asp/**',
+                dest: disDir
+
+            },
             jsp: {
 
                 expand: true,
@@ -131,7 +138,7 @@ module.exports = function ( grunt ) {
             options: {
                 charset: encode
             },
-            src: [disDir + '**/*.html', disDir + '**/*.js', disDir + '**/*.css', disDir + '**/*.jsp', disDir + '**/*.java', disDir + '**/*.php', disDir + '**/*.ashx', disDir + '**/*.cs']
+            src: [disDir + '**/*.html', disDir + '**/*.js', disDir + '**/*.css', disDir + '**/*.jsp', disDir + '**/*.java', disDir + '**/*.php', disDir + '**/*.asp', disDir + '**/*.ashx', disDir + '**/*.cs']
 
         },
         replace: {
@@ -157,6 +164,15 @@ module.exports = function ( grunt ) {
                     from: '_css',
                     to: 'css'
                 } ]
+            },
+            gbkasp:{
+
+                src: [ disDir+'asp/*.asp' ],
+                overwrite: true,
+                replacements: [ {
+                    from: /65001/gi,
+                    to: '936'
+                } ]
             }
 
         }
@@ -176,6 +192,9 @@ module.exports = function ( grunt ) {
 
         if ( encode === 'gbk' ) {
             tasks.push( 'replace:fileEncode' );
+            if(server === 'asp') {
+                tasks.push( 'replace:gbkasp' );
+            }
         }
 
         tasks.push( 'transcoding' );
