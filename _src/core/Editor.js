@@ -414,11 +414,17 @@
             }else{
                 $(this.body).height(height)
             }
-
+            this.fireEvent('resize');
         },
+        /**
+         * 设置编辑器宽度
+         * @name setWidth
+         * @grammar editor.setWidth(number);  //纯数值，不带单位
+         */
         setWidth:function(width){
             this.$container && this.$container.width(width);
-            $(this.body).width(width - $(this.body).css('padding-left').replace('px','') * 1 - $(this.body).css('padding-right').replace('px','') * 1)
+            $(this.body).width(width - $(this.body).css('padding-left').replace('px','') * 1 - $(this.body).css('padding-right').replace('px','') * 1);
+            this.fireEvent('resize');
         },
         addshortcutkey: function (cmd, keys) {
             var obj = {};

@@ -122,6 +122,11 @@ UM.registerUI('autofloat',function(){
 
             $(window).on('scroll resize',updateFloating);
             me.addListener('keydown', defer_updateFloating);
+            me.addListener('resize', function(){
+                unsetFloating();
+                placeHolder.style.height = toolbarBox.offsetHeight + 'px';
+                updateFloating();
+            });
 
             me.addListener('beforefullscreenchange', function (t, enabled){
                 if (enabled) {
@@ -150,4 +155,4 @@ UM.registerUI('autofloat',function(){
     })
 
 
-})
+});
