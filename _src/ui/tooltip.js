@@ -1,6 +1,9 @@
 /*tooltip 类*/
 UM.ui.define('tooltip', {
-    tpl: '<div class="edui-tooltip" unselectable="on" onmousedown="return false"><div class="edui-tooltip-arrow" unselectable="on" onmousedown="return false"></div><div class="edui-tooltip-inner" unselectable="on" onmousedown="return false"></div></div>',
+    tpl: '<div class="edui-tooltip" unselectable="on" onmousedown="return false">' +
+        '<div class="edui-tooltip-arrow" unselectable="on" onmousedown="return false"></div>' +
+        '<div class="edui-tooltip-inner" unselectable="on" onmousedown="return false"></div>' +
+        '</div>',
     init: function (options) {
         var me = this;
         me.root($($.parseTmpl(me.tpl, options || {})));

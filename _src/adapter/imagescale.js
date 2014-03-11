@@ -6,11 +6,13 @@ UM.registerUI('imagescale',function () {
 
     if (browser.webkit && me.getOpt('imageScaleEnabled')) {
 
-        me.addListener('click', function () {
+        me.addListener('click', function (type, e) {
             var range = me.selection.getRange(),
-                img = range.getClosedNode();
+                img = range.getClosedNode(),
+                target = e.target;
 
-            if (img && img.tagName == 'IMG') {
+            /* 点击第一个图片的后面,八个角不消失 fix:3652 */
+            if (img && img.tagName == 'IMG' && target == img) {
 
                 if (!$imagescale) {
                     $imagescale = $.eduiscale({'$wrap':me.$container}).css('zIndex', me.options.zIndex);

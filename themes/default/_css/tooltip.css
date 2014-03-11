@@ -9,11 +9,12 @@
 .edui-tooltip .edui-tooltip-arrow{
     position: absolute;
     top: 0;
-    _top: -19px;
+    _top: -2px;
     left: 50%;
     width: 0;
     height: 0;
     padding: 0;
+    font-size:0;
     margin-left: -5px;
     border-color: transparent;
     border-style: dashed dashed solid dashed;
