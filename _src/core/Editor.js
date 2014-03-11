@@ -46,7 +46,6 @@
         for (var pi in UM.plugins) {
             if(me.options.excludePlugins.indexOf(pi) == -1){
                 UM.plugins[pi].call(me);
-
                 me.plugins[pi] = 1;
             }
         }
