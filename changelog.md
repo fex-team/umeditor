@@ -11,13 +11,13 @@
 
 ### 问题修复
 1. 修复表情本地化出错问题
-2. 修复excludeplugin配置项的问题
+2. 通过参数传入jQuery的$变量，解决$变量冲突
 3. 修复多编辑器，dialog弹层被其他编辑器遮住的问题
 4. 修复dialog的使用id选择元素，导致多编辑器dialog出错的问题
 5. dialog的样式，添加前缀选择器.edui-dialog-dialogName
 6. insertvideo dialog名称修改为video
 7. 解决bootstrap 命名冲突
-8. 通过参数传入jQuery的$变量，解决$变量冲突
+8. 粘贴内容到段落中,光标定位在最后面
 
 
 ## 1.0.0
