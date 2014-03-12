@@ -59,6 +59,14 @@ UM.plugins['formula'] = function () {
                 iframe.contentWindow.formula.insertLatex(latex);
             } else {
                 me.execCommand('inserthtml', '<span class="mathquill-embedded-latex">' + latex + '</span>');
+                browser.ie && browser.ie9below && setTimeout(function(){
+                    var rng = me.selection.getRange(),
+                        startContainer = rng.startContainer;
+                    if(startContainer.nodeType == 1 && !startContainer.childNodes[rng.startOffset]){
+                        rng.insertNode(me.document.createTextNode(' '));
+                        rng.setCursor()
+                    }
+                },100)
             }
         },
         queryCommandState: function (cmd) {
