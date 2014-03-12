@@ -40,7 +40,7 @@ UM.plugins['list'] = function () {
     this.addInputRule(function(root){
         utils.each(root.getNodesByTagName('li'), function (node) {
             if(node.children.length == 0){
-                node.parentNode.removeChild(node)
+                node.parentNode.removeChild(node);
             }
         })
     });
@@ -57,17 +57,44 @@ UM.plugins['list'] = function () {
                         $(n).children().each(function(j,li){
                             var p = parent.cloneNode(false);
                             $(p).append(li.innerHTML);
-                            $(li).html('').append(p)
-                        })
+                            $(li).html('').append(p);
+                        });
                         $(n).insertBefore(parent);
                         $(parent).remove();
                     }
+
+                    if(dtd.$inline[parent.tagName]){
+                        if(parent.tagName == 'SPAN'){
+
+                            $(n).children().each(function(k,li){
+                                var span = parent.cloneNode(false);
+                                if(li.firstChild.nodeName != 'P'){
+
+                                    while(li.firstChild){
+                                        span.appendChild(li.firstChild)
+                                    };
+                                    $('<p></p>').appendTo(li).append(span);
+                                }else{
+                                    while(li.firstChild){
+                                        span.appendChild(li.firstChild)
+                                    };
+                                    $(li.firstChild).append(span);
+                                }
+                            })
+
+                        }
+                        domUtils.remove(parent,true)
+                    }
                 });
+
+
+
+
                 rng.moveToBookmark(bk).select();
                 return true;
             },
             queryCommandState:function (cmdName) {
-                return this.document.queryCommandState(cmdName)
+                return this.document.queryCommandState(cmdName);
             }
         };
 };

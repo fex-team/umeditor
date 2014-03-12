@@ -14,10 +14,10 @@
             width:1024px;
             height:1024px;
         }
-        .mathquill-editable{
+        .mathquill-editable,
+        .mathquill-rendered-math{
             border: 0px;
             padding: 0px;
-            margin:4px;
         }
     </style>
 </head>
@@ -51,7 +51,7 @@
                 }
             }
             return null;
-        };
+        }
         /* 获得当前url上的hash存储的参数值 */
         function getLatex() {
             return $iframe.attr('data-latex') || '';
@@ -84,11 +84,18 @@
             var _this = this,
                 latex = getLatex();
 
+            this.isFocus = false;
+            this.isDisabled = false;
+
             /* 加载公式内容 */
             this.$mathquill = $('.mathquill-editable').mathquill('latex', latex);
 
             /* 设置活动状态的公式iframe */
             this.$mathquill.on('mousedown', function(){
+                /* 编辑器不可用时,公式也不可用 */
+                if(_this.disabled) return false;
+
+                /* 第一次点击当前公式,设置公式活动 */
                 if(!$iframe.hasClass('edui-formula-active')) {
                     disableEditor();
                     editor.blur();
@@ -97,6 +104,7 @@
                     });
                     if(_this.$mathquill.find('.cursor').css('display') == 'none') {
                         _this.refresh();
+                        _this.$mathquill.addClass('hasCursor');
                     }
                 }
                 _this.focus();
@@ -104,6 +112,24 @@
             editor.$body.on('click', function(){
                 _this.blur();
                 enableEditor();
+            });
+
+            /* 里面focus,编辑器也判断为focus */
+            editor.addListener('isFocus', function(){
+                return _this.isfocus;
+            });
+            /* um不可用,公式也不可编辑 */
+            editor.addListener('setDisabled', function(type, except){
+                if (except.indexOf('formula') == -1 && _this.isDisabled != true ) {
+                    _this.isDisabled = true;
+                    _this.setDisabled();
+                }
+            });
+            editor.addListener('setEnabled', function(){
+                if (_this.isDisabled != false) {
+                    _this.isDisabled = false;
+                    _this.setEnabled();
+                }
             });
 
             /* 设置更新外层iframe的大小和属性 */
@@ -124,10 +150,12 @@
         Formula.prototype = {
             focus:function(){
                 $iframe.addClass('edui-formula-active');
+                this.isfocus = true;
             },
             blur:function(){
                 $iframe.removeClass('edui-formula-active');
                 this.removeCursor();
+                this.isfocus = false;
             },
             removeCursor: function(){
                 this.$mathquill.find('span.cursor').hide();
@@ -156,6 +184,15 @@
             },
             redraw: function(){
                 this.$mathquill.mathquill('redraw');
+            },
+            setDisabled: function(){
+                var latex = this.getLatex();
+                this.$mathquill.mathquill('revert').text(latex).mathquill();
+                this.updateIframe();
+            },
+            setEnabled: function(){
+                this.$mathquill.removeClass('mathquill-rendered-math');
+                this.refresh();
             },
             refresh: function(){
                 var latex = this.getLatex();

@@ -643,7 +643,10 @@
          * 判断编辑器当前是否获得了焦点
          */
         isFocus : function(){
-            return this.selection.isFocus()
+            if(this.fireEvent('isfocus')===true){
+                return true;
+            }
+            return this.selection.isFocus();
         },
 
         /**
@@ -878,7 +881,7 @@
                     me.queryCommandState = me.bkqueryCommandState;
                     delete me.bkqueryCommandState;
                 }
-                me.fireEvent('selectionchange');
+                me.fireEvent('setEnabled');
             }
         },
         /**
@@ -905,6 +908,7 @@
                     return -1;
                 };
                 me.fireEvent('selectionchange');
+                me.fireEvent('setDisabled', except);
             }
         },
         /** 设置当前编辑区域不可编辑,except中的命令除外

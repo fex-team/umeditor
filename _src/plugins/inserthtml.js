@@ -184,7 +184,10 @@ UM.commands['inserthtml'] = {
                     range.insertNode(txt).setStart(txt,0).collapse(true);
                 }
             }
-            range.select(true);
+            setTimeout(function(){
+                range.select(true);
+            })
+
         }catch(e){}
 
 
