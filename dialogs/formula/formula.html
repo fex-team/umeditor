@@ -14,10 +14,10 @@
             width:1024px;
             height:1024px;
         }
-        .mathquill-editable{
+        .mathquill-editable,
+        .mathquill-rendered-math{
             border: 0px;
             padding: 0px;
-            margin:4px;
         }
     </style>
 </head>
@@ -191,6 +191,7 @@
                 this.updateIframe();
             },
             setEnabled: function(){
+                this.$mathquill.removeClass('mathquill-rendered-math');
                 this.refresh();
             },
             refresh: function(){
