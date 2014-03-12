@@ -62,7 +62,34 @@ UM.plugins['list'] = function () {
                         $(n).insertBefore(parent);
                         $(parent).remove();
                     }
+
+                    if(dtd.$inline[parent.tagName]){
+                        if(parent.tagName == 'SPAN'){
+
+                            $(n).children().each(function(k,li){
+                                var span = parent.cloneNode(false);
+                                if(li.firstChild.nodeName != 'P'){
+
+                                    while(li.firstChild){
+                                        span.appendChild(li.firstChild)
+                                    };
+                                    $('<p></p>').appendTo(li).append(span);
+                                }else{
+                                    while(li.firstChild){
+                                        span.appendChild(li.firstChild)
+                                    };
+                                    $(li.firstChild).append(span);
+                                }
+                            })
+
+                        }
+                        domUtils.remove(parent,true)
+                    }
                 });
+
+
+
+
                 rng.moveToBookmark(bk).select();
                 return true;
             },
