@@ -773,6 +773,7 @@
             if (!cmd || !cmd.execCommand) {
                 return null;
             }
+            me._ignoreContentChange = me._ignoreContentChange || cmd.ignoreContentChange;
             if (!cmd.notNeedUndo && !me.__hasEnterExecCommand) {
                 me.__hasEnterExecCommand = true;
                 if (me.queryCommandState.apply(me,arguments) != -1) {
