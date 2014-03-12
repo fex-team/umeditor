@@ -40,7 +40,7 @@ UM.plugins['list'] = function () {
     this.addInputRule(function(root){
         utils.each(root.getNodesByTagName('li'), function (node) {
             if(node.children.length == 0){
-                node.parentNode.removeChild(node)
+                node.parentNode.removeChild(node);
             }
         })
     });
@@ -57,8 +57,8 @@ UM.plugins['list'] = function () {
                         $(n).children().each(function(j,li){
                             var p = parent.cloneNode(false);
                             $(p).append(li.innerHTML);
-                            $(li).html('').append(p)
-                        })
+                            $(li).html('').append(p);
+                        });
                         $(n).insertBefore(parent);
                         $(parent).remove();
                     }
@@ -67,7 +67,7 @@ UM.plugins['list'] = function () {
                 return true;
             },
             queryCommandState:function (cmdName) {
-                return this.document.queryCommandState(cmdName)
+                return this.document.queryCommandState(cmdName);
             }
         };
 };
