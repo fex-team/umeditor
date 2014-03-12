@@ -908,7 +908,7 @@
                     return -1;
                 };
                 me.fireEvent('selectionchange');
-                me.fireEvent('setDisabled');
+                me.fireEvent('setDisabled', except);
             }
         },
         /** 设置当前编辑区域不可编辑,except中的命令除外

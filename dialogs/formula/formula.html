@@ -117,9 +117,11 @@
             editor.addListener('isFocus', function(){
                 return _this.isfocus;
             });
-            /*  */
-            editor.addListener('setDisabled', function(){
-                _this.isDisabled = true;
+            /* um不可用,公式也不可编辑 */
+            editor.addListener('setDisabled', function(type, except){
+                if(except.indexOf('formula') != -1) {
+                    _this.isDisabled = true;
+                }
             });
             editor.addListener('setEnabled', function(){
                 _this.isDisabled = false;
