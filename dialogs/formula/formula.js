@@ -114,16 +114,9 @@
             this.$widget.height(this.root() + 2);
         },
         insertLatex: function (latex) {
-            function getActiveIframe() {
-                return editor.$body.find('iframe.edui-formula-active')[0] || null;
-            }
 
-            var iframe = getActiveIframe();
-            if (iframe) {
-                iframe.contentWindow.formula.insertLatex(latex);
-            } else {
-                editor.execCommand('inserthtml', '<span class="mathquill-embedded-latex">' + latex + '</span>');
-            }
+
+            editor.execCommand('formula', latex );
         },
         width: 350,
         height: 400

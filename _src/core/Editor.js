@@ -644,7 +644,10 @@
          * 判断编辑器当前是否获得了焦点
          */
         isFocus : function(){
-            return this.selection.isFocus()
+            if(this.fireEvent('isfocus')===true){
+                return true;
+            }
+            return this.selection.isFocus();
         },
 
         /**
