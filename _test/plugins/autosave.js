@@ -24,7 +24,6 @@ test('自动保存', function () {
     });
 
     editor.addListener("beforeautosave", function (type, data) {
-
         data.content = data.content.toLowerCase();
         if (data.content === "<p>disable</p>") {
             return false;
@@ -90,9 +89,9 @@ test('重建编辑器,加载草稿箱', function () {
                 setTimeout(function () {
 
                     UM.delEditor('ue');
-                document.getElementById('ue') && document.getElementById('ue').parentNode.removeChild(document.getElementById('ue'));
+                    document.getElementById('ue') && document.getElementById('ue').parentNode.removeChild(document.getElementById('ue'));
                 start();
-                }, 500);
+                }, 1000);
 
             }, 500);
         }, 200);

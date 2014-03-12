@@ -142,7 +142,7 @@ test(' range的更新/特殊符号的转换', function () {
                 editor.execCommand('source');
                 setTimeout(function () {
                     editor.execCommand('source');
-                    equal(editor.getContent(), "<p>&#39;<img src=\"http://nsclick.baidu.com/u.gif?&amp;asdf=&quot;sdf&amp;asdfasdfs;asdf\"/></p>");
+                    equal(editor.getContent(), "<p>&#39;<img src=\"http://nsclick.baidu.com/u.gif?&asdf=&quot;sdf&asdfasdfs;asdf\"/></p>");
                     start();
                 }, 100);
             }, 100);
