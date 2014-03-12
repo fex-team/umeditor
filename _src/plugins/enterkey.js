@@ -117,4 +117,12 @@ UM.plugins['enterkey'] = function() {
 
         }
     });
+
+    browser.ie && me.addListener('setDisabled',function(){
+        $(me.body).find('p').each(function(i,p){
+            if(domUtils.isEmptyBlock(p)){
+                p.innerHTML = '&nbsp;'
+            }
+        })
+    })
 };
