@@ -120,7 +120,7 @@
             });
             /* um不可用,公式也不可编辑 */
             editor.addListener('setDisabled', function(type, except){
-                if (except.indexOf('formula') == -1 && _this.isDisabled != true ) {
+                if (!(except && except.indexOf('formula') != -1) && _this.isDisabled != true ) {
                     _this.isDisabled = true;
                     _this.setDisabled();
                 }
