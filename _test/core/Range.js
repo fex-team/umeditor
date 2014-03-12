@@ -729,6 +729,9 @@ test('range.createAddress,range.moveAddress', function () {
         range1.moveToAddress(addr);
 
         editor.body.innerHTML = 'aaaaaabbb<b>sss</b>';
+        if(div.lastChild.nodeName == '#text' && domUtils.isWhitespace(div.lastChild)){
+            domUtils.remove(div.lastChild)
+        }
         addr = range.setStartAfter(div.lastChild.firstChild).collapse(true).createAddress(false);
         range1.moveToAddress(addr);
         ok(equalRange(range, range1));
