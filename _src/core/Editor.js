@@ -881,7 +881,7 @@
                     me.queryCommandState = me.bkqueryCommandState;
                     delete me.bkqueryCommandState;
                 }
-                me.fireEvent('selectionchange');
+                me.fireEvent('setEnabled');
             }
         },
         /**
@@ -908,6 +908,7 @@
                     return -1;
                 };
                 me.fireEvent('selectionchange');
+                me.fireEvent('setDisabled');
             }
         },
         /** 设置当前编辑区域不可编辑,except中的命令除外
