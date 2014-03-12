@@ -35,4 +35,8 @@
     opacity: 0.3;
     filter: alpha(opacity = 30);
 }
+.edui-btn-toolbar .edui-splitbutton.edui-disabled .edui-caret{
+    opacity: 0.3 \0;
+    filter: alpha(opacity = 30)\0;
+}
 

@@ -46,3 +46,8 @@
     opacity: 0.2;
     filter: alpha(opacity = 20);
 }
+.edui-btn-toolbar .edui-combobox.edui-disabled .edui-button-label,
+.edui-btn-toolbar .edui-combobox.edui-disabled .edui-caret{
+    opacity: 0.2 \0;
+    filter: alpha(opacity = 20)\0;
+}
