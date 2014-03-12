@@ -91,7 +91,7 @@ test('重建编辑器,加载草稿箱', function () {
                     UM.delEditor('ue');
                     document.getElementById('ue') && document.getElementById('ue').parentNode.removeChild(document.getElementById('ue'));
                 start();
-                }, 1000);
+                }, 2000);
 
             }, 500);
         }, 200);
