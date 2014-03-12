@@ -36,7 +36,7 @@ UM.plugins['autosave'] = function() {
             },
 
             getLocalData: function ( key ) {
-debugger;
+
                 if ( storage ) {
                     return storage.getItem( key );
                 }
