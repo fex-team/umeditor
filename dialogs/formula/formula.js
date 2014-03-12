@@ -114,8 +114,6 @@
             this.$widget.height(this.root() + 2);
         },
         insertLatex: function (latex) {
-
-
             editor.execCommand('formula', latex );
         },
         width: 350,

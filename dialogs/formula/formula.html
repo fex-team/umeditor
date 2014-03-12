@@ -85,7 +85,7 @@
                 latex = getLatex();
 
             this.isFocus = false;
-            this.isDiasbled = false;
+            this.isDisabled = false;
 
             /* 加载公式内容 */
             this.$mathquill = $('.mathquill-editable').mathquill('latex', latex);
@@ -119,10 +119,10 @@
             });
             /*  */
             editor.addListener('setDisabled', function(){
-                _this.isDiasbled = true;
+                _this.isDisabled = true;
             });
             editor.addListener('setEnabled', function(){
-                _this.isDiasbled = false;
+                _this.isDisabled = false;
             });
 
             /* 设置更新外层iframe的大小和属性 */
