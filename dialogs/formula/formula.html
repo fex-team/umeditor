@@ -104,6 +104,7 @@
                     });
                     if(_this.$mathquill.find('.cursor').css('display') == 'none') {
                         _this.refresh();
+                        _this.$mathquill.addClass('hasCursor');
                     }
                 }
                 _this.focus();
@@ -119,12 +120,16 @@
             });
             /* um不可用,公式也不可编辑 */
             editor.addListener('setDisabled', function(type, except){
-                if(except.indexOf('formula') != -1) {
+                if (except.indexOf('formula') == -1 && _this.isDisabled != true ) {
                     _this.isDisabled = true;
+                    _this.setDisabled();
                 }
             });
             editor.addListener('setEnabled', function(){
-                _this.isDisabled = false;
+                if (_this.isDisabled != false) {
+                    _this.isDisabled = false;
+                    _this.setEnabled();
+                }
             });
 
             /* 设置更新外层iframe的大小和属性 */
@@ -179,6 +184,14 @@
             },
             redraw: function(){
                 this.$mathquill.mathquill('redraw');
+            },
+            setDisabled: function(){
+                var latex = this.getLatex();
+                this.$mathquill.mathquill('revert').text(latex).mathquill();
+                this.updateIframe();
+            },
+            setEnabled: function(){
+                this.refresh();
             },
             refresh: function(){
                 var latex = this.getLatex();
