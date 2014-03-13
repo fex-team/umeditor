@@ -34,7 +34,7 @@
 
             var me = this,
                 formula = me.sourceData.formula,
-                lang = _editor.getLang('formula')['static'],
+                lang = _editor.getLang('formula').static,
                 formulaUrl = UMEDITOR_CONFIG.UMEDITOR_HOME_URL + 'dialogs/formula/',
                 options = $.extend({}, lang, { 'formula_url': formulaUrl }),
                 $root = me.root();
