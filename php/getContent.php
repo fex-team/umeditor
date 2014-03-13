@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <?php
 
+    header('X-XSS-Protection: 0');
     //获取数据
     error_reporting(E_ERROR|E_WARNING);
     $content =  htmlspecialchars($_POST['myEditor']);
