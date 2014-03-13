@@ -87,23 +87,14 @@
         createPreviewVideo: function(url){
 
             if ( !url )return;
-            var matches = url.match(/youtu.be\/(\w+)$/) || url.match(/youtube\.com\/watch\?v=(\w+)/) || url.match(/youtube.com\/v\/(\w+)/),
-                youku = url.match(/youku\.com\/v_show\/id_(\w+)/),
-                youkuPlay = /player\.youku\.com/ig.test(url),
-                me = this,
-                lang = me.lang;
 
-            if(!youkuPlay){
-                if (matches){
-                    url = "https://www.youtube.com/v/" + matches[1] + "?version=3&feature=player_embedded";
-                }else if(youku){
-                    url = "http://player.youku.com/player.php/sid/"+youku[1]+"/v.swf"
-                }else if(!me.endWith(url,[".swf",".flv",".wmv"])){
-                    $("#eduiVideoPreview").html( lang.urlError );
-                    return;
-                }
-            }else{
-                url = url.replace(/\?f=.*/,"");
+            var me = this,
+                lang = me.lang,
+                conUrl = me.convert_url(url);
+
+            if(!me.endWith(conUrl,[".swf",".flv",".wmv"])){
+                $("#eduiVideoPreview").html( lang.urlError );
+                return;
             }
             $("#eduiVideoPreview")[0].innerHTML = '<embed type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
                 ' src="' + url + '"' +
@@ -136,13 +127,30 @@
         /**
          * URL转换
          */
-        convert_url: function(s){
-            return s.replace(/http:\/\/www\.tudou\.com\/programs\/view\/([\w\-]+)\/?/i,"http://www.tudou.com/v/$1")
-                .replace(/http:\/\/www\.youtube\.com\/watch\?v=([\w\-]+)/i,"http://www.youtube.com/v/$1")
-                .replace(/http:\/\/v\.youku\.com\/v_show\/id_([\w\-=]+)\.html/i,"http://player.youku.com/player.php/sid/$1")
-                .replace(/http:\/\/www\.56\.com\/u\d+\/v_([\w\-]+)\.html/i, "http://player.56.com/v_$1.swf")
-                .replace(/http:\/\/www.56.com\/w\d+\/play_album\-aid\-\d+_vid\-([^.]+)\.html/i, "http://player.56.com/v_$1.swf")
-                .replace(/http:\/\/v\.ku6\.com\/.+\/([^.]+)\.html/i, "http://player.ku6.com/refer/$1/v.swf");
+        convert_url: function(url){
+            if ( !url ) return '';
+            var matches = url.match(/youtu.be\/(\w+)$/) ||
+                    url.match(/youtube\.com\/watch\?v=(\w+)/) ||
+                    url.match(/youtube.com\/v\/(\w+)/),
+                youku = url.match(/youku\.com\/v_show\/id_(\w+)/),
+                youkuPlay = /player\.youku\.com/ig.test(url);
+
+            if(youkuPlay){
+                url = url.replace(/\?f=.*/, "");
+            } else if (matches){
+                url = "https://www.youtube.com/v/" + matches[1] + "?version=3&feature=player_embedded";
+            }else if(youku){
+                url = "http://player.youku.com/player.php/sid/"+youku[1]+"/v.swf"
+            } else {
+                url = url.replace(/http:\/\/www\.tudou\.com\/programs\/view\/([\w\-]+)\/?/i, "http://www.tudou.com/v/$1")
+                    .replace(/http:\/\/www\.youtube\.com\/watch\?v=([\w\-]+)/i, "http://www.youtube.com/v/$1")
+                    .replace(/http:\/\/v\.youku\.com\/v_show\/id_([\w\-=]+)\.html/i, "http://player.youku.com/player.php/sid/$1")
+                    .replace(/http:\/\/www\.56\.com\/u\d+\/v_([\w\-]+)\.html/i, "http://player.56.com/v_$1.swf")
+                    .replace(/http:\/\/www.56.com\/w\d+\/play_album\-aid\-\d+_vid\-([^.]+)\.html/i, "http://player.56.com/v_$1.swf")
+                    .replace(/http:\/\/v\.ku6\.com\/.+\/([^.]+)\.html/i, "http://player.ku6.com/refer/$1/v.swf")
+                    .replace(/\?f=.*/, "");
+            }
+            return url;
         },
         /**
          * 检测传入的所有input框中输入的长宽是否是正数
