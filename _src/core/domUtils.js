@@ -580,7 +580,7 @@ var domUtils = dom.domUtils = {
      * @name unSelectable
      * @grammar UM.dom.domUtils.unSelectable(node)
      */
-    unSelectable: ie || browser.opera ? function (node) {
+    unSelectable: ie && browser.ie9below || browser.opera ? function (node) {
         //for ie9
         node.onselectstart = function () {
             return false;
@@ -605,7 +605,8 @@ var domUtils = dom.domUtils = {
     } : function (node) {
         node.style.MozUserSelect =
             node.style.webkitUserSelect =
-                node.style.KhtmlUserSelect = 'none';
+                    node.style.msUserSelect =
+                        node.style.KhtmlUserSelect = 'none';
     },
     /**
      * 删除节点node上的属性attrNames，attrNames为属性名称数组
