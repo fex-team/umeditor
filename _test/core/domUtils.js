@@ -504,7 +504,7 @@ test( 'unselectable--检查赋值是否成功', function() {
     var domUtils = UM.dom.domUtils;
     div.innerHTML = '<div><p>xxxx<span><b><i>xxx</i></b>xxxx</span></p>dddd<p><img /><a>aaaa</a></p></div>';
     domUtils.unSelectable( div );
-    if ( UM.browser.gecko || UM.browser.webkit ) {
+    if ( UM.browser.gecko || UM.browser.webkit || (UM.browser.ie &&UM.browser.version==11) ) {
         equal( div.style.MozUserSelect || div.style.KhtmlUserSelect, 'none', 'webkit or gecko unselectable' );
     } else {
         equal( div.unselectable, 'on', '检查unselectable属性' );

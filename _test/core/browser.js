@@ -8,7 +8,7 @@ test( 'browser', function() {
         ok(true, 'is ie' );
         var version = ua.browser.ie;
         if(browser.version == 11){
-            ok(true,'ie 11');
+            equal( browser.version, ua.browser.ie, 'check ie version' );
         }
         if ( browser.version < 7 ) {
             ok( browser.ie6Compat, 'ie6 compat mode' );
