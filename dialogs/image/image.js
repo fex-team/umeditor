@@ -116,6 +116,7 @@
                 $img.on("load", function () {
                     Base.scale(this, 120);
                     Base.close($(this));
+                    $(".edui-image-content", $w).focus();
                 });
 
             } else {
