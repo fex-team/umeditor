@@ -431,7 +431,7 @@ var utils = UM.utils = {
      * @grammar UM.utils.cssRule('body') =>样式的字符串  //取得key值为body的样式的内容,如果没有找到key值先关的样式将返回空，例如刚才那个背景颜色，将返回 body{background:#ccc}
      * @grammar UM.utils.cssRule('body','') =>null //清空给定的key值的背景颜色
      */
-    cssRule:browser.ie ? function (key, style, doc) {
+    cssRule:browser.ie && browser.version != 11 ? function (key, style, doc) {
         var indexList, index;
         doc = doc || document;
         if (doc.indexList) {
