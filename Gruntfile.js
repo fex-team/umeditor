@@ -138,7 +138,23 @@ module.exports = function ( grunt ) {
             options: {
                 charset: encode
             },
-            src: [disDir + '**/*.html', disDir + '**/*.js', disDir + '**/*.css', disDir + '**/*.jsp', disDir + '**/*.java', disDir + '**/*.php', disDir + '**/*.asp', disDir + '**/*.ashx', disDir + '**/*.cs']
+            src: [
+                disDir + '*.js',
+                disDir + 'dialogs/*.js',
+                disDir + 'lang/*.js',
+                disDir + '**/*.js',
+                disDir + '**/*.js',
+                disDir + '**/*.js',
+                disDir + '**/*.js',
+                disDir + '**/*.html',
+                disDir + '**/*.css',
+                disDir + '**/*.jsp',
+                disDir + '**/*.java',
+                disDir + '**/*.php',
+                disDir + '**/*.asp',
+                disDir + '**/*.ashx',
+                disDir + '**/*.cs'
+            ]
 
         },
         replace: {
