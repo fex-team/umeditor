@@ -147,11 +147,12 @@ UM.I18N['zh-cn'] = {
     //===============dialog i18N=======================
     'image':{
         'static':{
-            lang_tab_local:"本地上传",
-            lang_tab_imgSearch:"网络图片",
-            lang_input_dragTip:"支持图片拖拽上传",
-            lang_btn_add:"添加"
-        }
+            'lang_tab_local':"本地上传",
+            'lang_tab_imgSearch':"网络图片",
+            'lang_input_dragTip':"支持图片拖拽上传",
+            'lang_btn_add':"添加"
+        },
+        'uploadError': '上传出错'
     },
     'emotion':{
         'static':{
