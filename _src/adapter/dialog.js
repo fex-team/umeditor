@@ -19,6 +19,7 @@ UM.registerUI('link image video map formula',function(name){
     },function(){
         //调整数据
         var data = UM.getWidgetData(name);
+        if(data) return;
         if(data.buttons){
             var ok = data.buttons.ok;
             if(ok){
