@@ -189,8 +189,10 @@ UM.plugins['removeformat'] = function(){
 
 
             range = this.selection.getRange();
-            doRemove( range );
-            range.select();
+            if(!range.collapsed) {
+                doRemove( range );
+                range.select();
+            }
 
         }
 
