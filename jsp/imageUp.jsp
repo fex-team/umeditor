@@ -13,13 +13,12 @@
     up.upload();
 
     String callback = request.getParameter("callback");
-    String editorId = request.getParameter("callback");
 
     String result = "{\"name\":\""+ up.getFileName() +"\", \"originalName\": \""+ up.getOriginalName() +"\", \"size\": "+ up.getSize() +", \"state\": \""+ up.getState() +"\", \"type\": \""+ up.getType() +"\", \"url\": \""+ up.getUrl() +"\"}";
 
     result = result.replaceAll( "\\\\", "\\\\" );
 
-    if( type != null &&  "ajax".equals( type ) ){
+    if( callback == null ){
         response.getWriter().print( result );
     }else{
         response.getWriter().print("<script>"+ callback +"(" + result + ")</script>");
