@@ -911,6 +911,9 @@
                 };
                 me.fireEvent('selectionchange');
                 me.fireEvent('setDisabled', except);
+            } else if(me.isFocus() == true) {
+                me.setEnabled();
+                me.setDisabled(except);
             }
         },
         /** 设置当前编辑区域不可编辑,except中的命令除外
