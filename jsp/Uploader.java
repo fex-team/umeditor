@@ -30,7 +30,7 @@ public class Uploader {
 	// 原始文件名
 	private String originalName = "";
 	// 文件大小
-	private String size = "";
+	private long size = 0;
 
 	private HttpServletRequest request = null;
 	private String title = "";
@@ -56,7 +56,7 @@ public class Uploader {
 		tmp.put("IO", "IO异常");
 		tmp.put("DIR", "目录创建失败");
 		tmp.put("UNKNOWN", "未知错误");
-	
+		
 	}
 
 	public void upload() throws Exception {
@@ -85,10 +85,12 @@ public class Uploader {
 					this.type = this.getFileExt(this.fileName);
 					this.url = savePath + "/" + this.fileName;
 					BufferedInputStream in = new BufferedInputStream(fis.openStream());
-					FileOutputStream out = new FileOutputStream(new File(this.getPhysicalPath(this.url)));
+					File file = new File(this.getPhysicalPath(this.url));
+					FileOutputStream out = new FileOutputStream( file );
 					BufferedOutputStream output = new BufferedOutputStream(out);
 					Streams.copy(in, output, true);
 					this.state=this.errorInfo.get("SUCCESS");
+					this.size = file.length();
 					//UE中只会处理单张上传，完成后即退出
 					break;
 				} else {
@@ -228,7 +230,7 @@ public class Uploader {
 		this.maxSize = size;
 	}
 
-	public String getSize() {
+	public long getSize() {
 		return this.size;
 	}
 
