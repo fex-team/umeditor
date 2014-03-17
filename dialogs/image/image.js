@@ -150,7 +150,6 @@
 
             me.editor = editor;
             me.dialog = $w;
-
             me.render(".edui-image-local", 1);
             me.config(".edui-image-upload1");
             me.submit();
@@ -184,6 +183,16 @@
 
             return me;
         },
+        uploadComplete: function(r){
+            var me = this;
+            try{
+                var json = JSON ? JSON.parse(r):eval('('+r+')');
+                Base.callback(me.editor, me.dialog, json.url, json.state);
+            }catch (e){
+                var lang = me.editor.getLang('image');
+                Base.callback(me.editor, me.dialog, '', (lang && lang.uploadError) || 'Error!');
+            }
+        },
         submit: function (callback) {
 
             var me = this,
@@ -195,6 +204,11 @@
                 if ( !this.parentNode ) {
                     return;
                 }
+
+                $('iframe[name="up"]', me.dialog).unbind('load').on('load', function(){
+                    var r = this.contentDocument.body.innerHTML;
+                    me.uploadComplete(r);
+                });
 
                 $(this).parent()[0].submit();
                 Upload.updateInput( input );
@@ -252,7 +266,8 @@
 
                             xhr.send(fd);
                             xhr.addEventListener('load', function (e) {
-                                Base.callback(me.editor, me.dialog, e.target.response, "SUCCESS");
+                                var r = e.target.response, json;
+                                me.uploadComplete(r);
                                 if (i == fileList.length - 1) {
                                     $(img).remove()
                                 }

@@ -8,16 +8,16 @@ using System.Collections;
 /// <summary>
 /// UEditor编辑器通用上传类
 /// </summary>
-public  class Uploader
+public class Uploader
 {
-     string state = "SUCCESS";
+    string state = "SUCCESS";
 
-     string URL = null;
-     string currentType = null;
-     string uploadpath = null;
-     string filename = null;
-     string originalName = null;
-     HttpPostedFile uploadFile = null;
+    string URL = null;
+    string currentType = null;
+    string uploadpath = null;
+    string filename = null;
+    string originalName = null;
+    HttpPostedFile uploadFile = null;
 
     /**
   * 上传文件的主处理方法
@@ -27,7 +27,7 @@ public  class Uploader
   *@param int
   * @return Hashtable
   */
-    public  Hashtable upFile(HttpContext cxt, string pathbase, string[] filetype, int size)
+    public Hashtable upFile(HttpContext cxt, string pathbase, string[] filetype, int size)
     {
         pathbase = pathbase + DateTime.Now.ToString("yyyy-MM-dd") + "/";
         uploadpath = cxt.Server.MapPath(pathbase);//获取文件上传路径
@@ -74,7 +74,7 @@ public  class Uploader
   *@param string
   * @return Hashtable
  */
-    public  Hashtable upScrawl(HttpContext cxt, string pathbase, string tmppath, string base64Data)
+    public Hashtable upScrawl(HttpContext cxt, string pathbase, string tmppath, string base64Data)
     {
         pathbase = pathbase + DateTime.Now.ToString("yyyy-MM-dd") + "/";
         uploadpath = cxt.Server.MapPath(pathbase);//获取文件上传路径
@@ -110,7 +110,7 @@ public  class Uploader
 * @param string
 * @return string
 */
-    public  string getOtherInfo(HttpContext cxt, string field)
+    public string getOtherInfo(HttpContext cxt, string field)
     {
         string info = null;
         if (cxt.Request.Form[field] != null && !String.IsNullOrEmpty(cxt.Request.Form[field]))
@@ -124,17 +124,17 @@ public  class Uploader
      * 获取上传信息
      * @return Hashtable
      */
-    private  Hashtable getUploadInfo()
+    private Hashtable getUploadInfo()
     {
         Hashtable infoList = new Hashtable();
 
         infoList.Add("state", state);
         infoList.Add("url", URL);
+        infoList.Add("originalName", originalName);
+        infoList.Add("name", Path.GetFileName(URL));
+        infoList.Add("size", uploadFile.ContentLength);
+        infoList.Add("type", Path.GetExtension(originalName));
 
-        if (currentType != null)
-            infoList.Add("currentType", currentType);
-        if (originalName != null)
-            infoList.Add("originalName", originalName);
         return infoList;
     }
 
@@ -142,7 +142,7 @@ public  class Uploader
      * 重命名文件
      * @return string
      */
-    private  string reName()
+    private string reName()
     {
         return System.Guid.NewGuid() + getFileExt();
     }
@@ -151,7 +151,7 @@ public  class Uploader
      * 文件类型检测
      * @return bool
      */
-    private  bool checkType(string[] filetype)
+    private bool checkType(string[] filetype)
     {
         currentType = getFileExt();
         return Array.IndexOf(filetype, currentType) == -1;
@@ -162,16 +162,16 @@ public  class Uploader
      * @param int
      * @return bool
      */
-    private  bool checkSize(int size)
+    private bool checkSize(int size)
     {
-        return uploadFile.ContentLength >= (size * 1024*1024);
+        return uploadFile.ContentLength >= (size * 1024 * 1024);
     }
 
     /**
      * 获取文件扩展名
      * @return string
      */
-    private  string getFileExt()
+    private string getFileExt()
     {
         string[] temp = uploadFile.FileName.Split('.');
         return "." + temp[temp.Length - 1].ToLower();
@@ -180,7 +180,7 @@ public  class Uploader
     /**
      * 按照日期自动创建存储文件夹
      */
-    private  void createFolder()
+    private void createFolder()
     {
         if (!Directory.Exists(uploadpath))
         {
@@ -192,7 +192,7 @@ public  class Uploader
      * 删除存储文件夹
      * @param string
      */
-    public  void deleteFolder(string path)
+    public void deleteFolder(string path)
     {
         //if (Directory.Exists(path))
         //{

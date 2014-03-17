@@ -164,11 +164,12 @@ UM.I18N['en'] = {
     //===============dialog i18N=======================
     image:{
         'static':{
-            lang_tab_local:"Local Upload",
-            lang_tab_imgSearch:"Network Pictures",
-            lang_input_dragTip:"Support drag upload",
-            lang_btn_add:"Add"
-        }
+            'lang_tab_local':"Local Upload",
+            'lang_tab_imgSearch':"Network Pictures",
+            'lang_input_dragTip':"Support drag upload",
+            'lang_btn_add':"Add"
+        },
+        'uploadError': 'Upload Error'
     },
     emotion:{
         'static':{
