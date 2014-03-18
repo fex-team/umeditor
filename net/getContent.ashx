@@ -1,4 +1,4 @@
-<%@ WebHandler  Language="C#"  Class="getContent" %>
+﻿<%@ WebHandler  Language="C#"  Class="getContent" %>
 /**
  * Created by visual studio 2010
  * User: xuheng
@@ -15,7 +15,7 @@ public class getContent : IHttpHandler {
         context.Response.ContentType = "text/html";
 
         //获取数据
-        string content = context.Server.HtmlEncode(context.Request.Form["myEditor"]);
+        string content = context.Request.Form["myEditor"];
 
         
         //存入数据库或者其他操作
@@ -28,7 +28,7 @@ public class getContent : IHttpHandler {
         context.Response.Write("<script src='../third-party/mathquill/mathquill.min.js'></script>");
         context.Response.Write("<link rel='stylesheet' href='../third-party/mathquill/mathquill.css'/>");
         context.Response.Write("第1个编辑器的值");
-        context.Response.Write("<div class='content'>" + context.Server.HtmlDecode(content) + "</div>");
+        context.Response.Write("<div class='content'>" + content + "</div>");
 
     }
  

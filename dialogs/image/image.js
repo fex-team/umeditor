@@ -143,7 +143,7 @@
             '<form class="edui-image-form" method="post" enctype="multipart/form-data" target="up">' +
             '<input style=\"filter: alpha(opacity=0);\" class="edui-image-file" type="file" hidefocus name="upfile" accept="image/gif,image/jpeg,image/png,image/jpg,image/bmp"/>' +
             '</form>' +
-            '<iframe name="up" style="display: none"></iframe>' +
+
             '</div>',
         init: function (editor, $w) {
             var me = this;
@@ -205,9 +205,14 @@
                     return;
                 }
 
-                $('iframe[name="up"]', me.dialog).unbind('load').on('load', function(){
+                $('<iframe name="up"  style="display: none"></iframe>').insertBefore(me.dialog).on('load', function(){
+
                     var r = this.contentDocument.body.innerHTML;
+                    if(r == '')return;
                     me.uploadComplete(r);
+                    $(this).unbind('load');
+                    $(this).remove();
+
                 });
 
                 $(this).parent()[0].submit();
