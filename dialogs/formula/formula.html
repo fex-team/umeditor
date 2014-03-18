@@ -76,7 +76,7 @@
         /* 设置编辑器不可编辑 */
         function disableEditor(){
             if(editor.body.contentEditable == 'true') {
-                editor.setDisabled(['undo', 'redo', 'formula'], true);
+                editor.setDisabled(['undo', 'redo', 'preview', 'formula'], true);
             }
         }
 
@@ -117,18 +117,16 @@
 
             /* 里面focus,编辑器也判断为focus */
             editor.addListener('isFocus', function(){
-                return _this.isfocus;
+                return _this.isFocus;
             });
             /* um不可用,公式也不可编辑 */
             editor.addListener('setDisabled', function(type, except){
                 if (!(except && except.join(' ').indexOf('formula') != -1) && _this.isDisabled != true ) {
-                    _this.isDisabled = true;
                     _this.setDisabled();
                 }
             });
             editor.addListener('setEnabled', function(){
                 if (_this.isDisabled != false) {
-                    _this.isDisabled = false;
                     _this.setEnabled();
                 }
             });
@@ -148,15 +146,16 @@
                 _this.updateIframe();
             }, 300);
         };
+
         Formula.prototype = {
             focus:function(){
                 $iframe.addClass('edui-formula-active');
-                this.isfocus = true;
+                this.isFocus = true;
             },
             blur:function(){
                 $iframe.removeClass('edui-formula-active');
                 this.removeCursor();
-                this.isfocus = false;
+                this.isFocus = false;
             },
             removeCursor: function(){
                 this.$mathquill.find('span.cursor').hide();
@@ -187,20 +186,23 @@
                 this.$mathquill.mathquill('redraw');
             },
             setDisabled: function(){
+                this.blur();
                 var latex = this.getLatex();
                 this.$mathquill.mathquill('revert').text(latex).mathquill();
                 this.updateIframe();
+                this.isDisabled = true;
             },
             setEnabled: function(){
                 this.$mathquill.removeClass('mathquill-rendered-math');
                 this.refresh();
+                this.isDisabled = false;
             },
             refresh: function(){
                 var latex = this.getLatex();
                 this.$mathquill.mathquill('revert').text(latex).mathquill('editable');
                 this.updateIframe();
             }
-        }
+        };
 
         /* 绑定到window上，给上级window调用 */
         window.formula = new Formula();

@@ -298,6 +298,7 @@
             me.body = cont;
             me.$body = $(cont);
             me.selection = new dom.Selection(document,me.body);
+            me._isEnabled = false;
             //gecko初始化就能得到range,无法判断isFocus了
             var geckoSel;
             if (browser.gecko && (geckoSel = this.selection.getNative())) {
@@ -869,12 +870,18 @@
         reset: function () {
             this.fireEvent('reset');
         },
+        isEnabled: function(){
+            return this._isEnabled != true;
+        },
+
         setEnabled: function () {
             var me = this, range;
-            if (me.body.contentEditable == 'false') {
-                me.body.contentEditable = true;
+
+            me.body.contentEditable = true;
+
+            /* 恢复选区 */
+            if (me.lastBk) {
                 range = me.selection.getRange();
-                //有可能内容丢失了
                 try {
                     range.moveToBookmark(me.lastBk);
                     delete me.lastBk
@@ -882,20 +889,22 @@
                     range.setStartAtFirst(me.body).collapse(true)
                 }
                 range.select(true);
-
-                /* 恢复query函数 */
-                if (me.bkqueryCommandState) {
-                    me.queryCommandState = me.bkqueryCommandState;
-                    delete me.bkqueryCommandState;
-                }
-                /* 恢复原生事件 */
-                if (me._bkproxyDomEvent) {
-                    me._proxyDomEvent = me._bkproxyDomEvent;
-                    delete me._bkproxyDomEvent;
-                }
-
-                me.fireEvent('setEnabled');
             }
+
+            /* 恢复query函数 */
+            if (me.bkqueryCommandState) {
+                me.queryCommandState = me.bkqueryCommandState;
+                delete me.bkqueryCommandState;
+            }
+
+            /* 恢复原生事件 */
+            if (me._bkproxyDomEvent) {
+                me._proxyDomEvent = me._bkproxyDomEvent;
+                delete me._bkproxyDomEvent;
+            }
+
+            /* 触发事件 */
+            me.fireEvent('setEnabled');
         },
         /**
          * 设置当前编辑区域可以编辑
@@ -907,37 +916,37 @@
         },
         setDisabled: function (except, keepDomEvent) {
             var me = this;
-            except = except ? utils.isArray(except) ? except : [except] : [];
-            if (me.body.contentEditable == 'true') {
-                if (!me.lastBk) {
-                    me.lastBk = me.selection.getRange().createBookmark(true);
-                }
-                me.body.contentEditable = false;
 
-                /* 备份并重置query函数 */
+            me.body.contentEditable = false;
+            me._except = except ? utils.isArray(except) ? except : [except] : [];
+
+            /* 备份最后的选区 */
+            if (!me.lastBk) {
+                me.lastBk = me.selection.getRange().createBookmark(true);
+            }
+
+            /* 备份并重置query函数 */
+            if(!me.bkqueryCommandState) {
                 me.bkqueryCommandState = me.queryCommandState;
                 me.queryCommandState = function (type) {
-                    if (utils.indexOf(except, type) != -1) {
+                    if (utils.indexOf(me._except, type) != -1) {
                         return me.bkqueryCommandState.apply(me, arguments);
                     }
                     return -1;
                 };
-
-                /* 备份并墙原生事件 */
-                if(!keepDomEvent) {
-                    me._bkproxyDomEvent = me._proxyDomEvent;
-                    me._proxyDomEvent = function () {
-                        return false;
-                    };
-                }
-
-                /* 触发事件 */
-                me.fireEvent('selectionchange');
-                me.fireEvent('setDisabled', except);
-            } else if(me.isFocus() == true) {
-                me.setEnabled();
-                me.setDisabled(except);
             }
+
+            /* 备份并墙原生事件 */
+            if(!keepDomEvent && !me._bkproxyDomEvent) {
+                me._bkproxyDomEvent = me._proxyDomEvent;
+                me._proxyDomEvent = function () {
+                    return false;
+                };
+            }
+
+            /* 触发事件 */
+            me.fireEvent('selectionchange');
+            me.fireEvent('setDisabled', me._except);
         },
         /** 设置当前编辑区域不可编辑,except中的命令除外
          * @name disable
