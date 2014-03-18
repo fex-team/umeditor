@@ -1,8 +1,27 @@
 {
+
     "name": "umeditor",
-    "description": "UEditor Mini版",
+    "title": "umeditor",
+    "description": "umeditor",
     "version": "1.2.1",
-    "homepage": "http://ueditor.baidu.com/",
+    "homepage": "https://github.com/fex-team/umeditor",
+    "author": {
+        "name": "f-cube @ FEX",
+        "url": "http://fex.baidu.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/fex-team/umeditor.git"
+    },
+    "keywords": [
+        "umeditor",
+        "web editor",
+        "ueditor",
+        "javascript"
+    ],
+    "bugs": {
+        "url": "https://github.com/fex-team/umeditor/issues"
+    },
     "dependencies": {
         "grunt": "~0.4.1",
         "grunt-contrib-concat": "~0.3.0",
