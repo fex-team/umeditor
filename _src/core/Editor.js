@@ -656,11 +656,14 @@
          */
         _initEvents: function () {
             var me = this,
-                cont = me.body;
-            me._proxyDomEvent = utils.bind(me._proxyDomEvent, me);
+                cont = me.body,
+                _proxyDomEvent = function(){
+                    me._proxyDomEvent.apply(me, arguments);
+                };
+
             $(cont)
-                .on( 'click contextmenu mousedown keydown keyup keypress mouseup mouseover mouseout selectstart', me._proxyDomEvent)
-                .on( 'focus blur', me._proxyDomEvent)
+                .on( 'click contextmenu mousedown keydown keyup keypress mouseup mouseover mouseout selectstart', _proxyDomEvent)
+                .on( 'focus blur', _proxyDomEvent)
                 .on('mouseup keydown', function (evt) {
                     //特殊键不触发selectionchange
                     if (evt.type == 'keydown' && (evt.ctrlKey || evt.metaKey || evt.shiftKey || evt.altKey)) {
@@ -879,10 +882,18 @@
                     range.setStartAtFirst(me.body).collapse(true)
                 }
                 range.select(true);
+
+                /* 恢复query函数 */
                 if (me.bkqueryCommandState) {
                     me.queryCommandState = me.bkqueryCommandState;
                     delete me.bkqueryCommandState;
                 }
+                /* 恢复原生事件 */
+                if (me._bkproxyDomEvent) {
+                    me._proxyDomEvent = me._bkproxyDomEvent;
+                    delete me._bkproxyDomEvent;
+                }
+
                 me.fireEvent('setEnabled');
             }
         },
@@ -894,7 +905,7 @@
         enable: function () {
             return this.setEnabled();
         },
-        setDisabled: function (except) {
+        setDisabled: function (except, keepDomEvent) {
             var me = this;
             except = except ? utils.isArray(except) ? except : [except] : [];
             if (me.body.contentEditable == 'true') {
@@ -902,6 +913,8 @@
                     me.lastBk = me.selection.getRange().createBookmark(true);
                 }
                 me.body.contentEditable = false;
+
+                /* 备份并重置query函数 */
                 me.bkqueryCommandState = me.queryCommandState;
                 me.queryCommandState = function (type) {
                     if (utils.indexOf(except, type) != -1) {
@@ -909,6 +922,16 @@
                     }
                     return -1;
                 };
+
+                /* 备份并墙原生事件 */
+                if(!keepDomEvent) {
+                    me._bkproxyDomEvent = me._proxyDomEvent;
+                    me._proxyDomEvent = function () {
+                        return false;
+                    };
+                }
+
+                /* 触发事件 */
                 me.fireEvent('selectionchange');
                 me.fireEvent('setDisabled', except);
             } else if(me.isFocus() == true) {

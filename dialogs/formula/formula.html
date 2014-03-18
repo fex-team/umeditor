@@ -76,7 +76,7 @@
         /* 设置编辑器不可编辑 */
         function disableEditor(){
             if(editor.body.contentEditable == 'true') {
-                editor.setDisabled(['undo', 'redo', 'formula']);
+                editor.setDisabled(['undo', 'redo', 'formula'], true);
             }
         }
 
@@ -110,7 +110,7 @@
                 }
                 _this.focus();
             });
-            editor.$body.on('click', function(){
+            editor.addListener('click', function(){
                 _this.blur();
                 enableEditor();
             });
