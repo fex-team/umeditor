@@ -10,7 +10,6 @@ String content = request.getParameter("myEditor");
 
 
 
-response.getWriter().print("第1个编辑器的值");
 response.getWriter().print("<div class='content'>"+content+"</div>");
 
 %>

@@ -27,7 +27,6 @@ public class getContent : IHttpHandler {
         context.Response.Write("<script src='../third-party/jquery.min.js'></script>");
         context.Response.Write("<script src='../third-party/mathquill/mathquill.min.js'></script>");
         context.Response.Write("<link rel='stylesheet' href='../third-party/mathquill/mathquill.css'/>");
-        context.Response.Write("第1个编辑器的值");
         context.Response.Write("<div class='content'>" + content + "</div>");
 
     }
