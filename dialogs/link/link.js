@@ -48,6 +48,7 @@
                 $('#edui-link-Jtitle',$w).val($(link).attr('title'));
                 $(link).attr('target') == '_blank' && $('#edui-link-Jtarget').attr('checked',true)
             }
+            $('#edui-link-Jhref',$w).focus();
         },
         buttons: {
             'ok': {

@@ -8,11 +8,6 @@
     <link href="../themes/default/_css/umeditor.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="../third-party/jquery.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="../umeditor.config.js"></script>
-
-    <!--使用版-->
-    <!--<script type="text/javascript" charset="utf-8" src="../umeditor.all.js"></script>-->
-
-    <!--开发版-->
     <script type="text/javascript" charset="utf-8" src="editor_api.js"></script>
     <script type="text/javascript" src="../lang/zh-cn/zh-cn.js"></script>
     <style type="text/css">
@@ -47,6 +42,8 @@
         form.action="../net/getContent.ashx";
     }else if(version.match(/jsp/)){
         form.action="../jsp/getContent.jsp";
+    }else if(version.match(/asp/)){
+        form.action="../asp/getContent.asp";
     }
 </script>
 
