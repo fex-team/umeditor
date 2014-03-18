@@ -1,7 +1,7 @@
 {
     "name": "umeditor",
     "description": "UEditor Mini版",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "homepage": "http://ueditor.baidu.com/",
     "dependencies": {
         "grunt": "~0.4.1",
