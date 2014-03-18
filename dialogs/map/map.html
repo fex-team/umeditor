@@ -59,6 +59,8 @@
 
         if(iframe && UM && editor) { //在编辑状态下
             setMapListener();//地图改变修改外层的iframe标签src属性
+        } else {
+            document.focus();
         }
     }
 

@@ -11,5 +11,4 @@
     //存入数据库或者其他操作
 
     //显示
-    echo "第1个编辑器的值";
     echo  "<div class='content'>".htmlspecialchars_decode($content)."</div>";
