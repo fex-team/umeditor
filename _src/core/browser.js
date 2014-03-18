@@ -89,11 +89,11 @@ var browser = UM.browser = function(){
 
         var v1 =  agent.match(/(?:msie\s([\w.]+))/);
         var v2 = agent.match(/(?:trident.*rv:([\w.]+))/);
-        if(v1[1] && v2[1]){
+        if(v1 && v2 && v1[1] && v2[1]){
             version = Math.max(v1[1]*1,v2[1]*1);
-        }else if(v1[1]){
+        }else if(v1 && v1[1]){
             version = v1[1]*1;
-        }else if(v2[1]){
+        }else if(v2 && v2[1]){
             version = v2[1]*1;
         }else{
             version = 0;
