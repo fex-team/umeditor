@@ -51,7 +51,7 @@ module.exports = function ( grunt ) {
         encode = typeof encode === "string" ? encode.toLowerCase() : 'utf8';
 
         disDir = disDir + encode + '-' + server + '/';
-        zipName = zipName + pkg.name + pkg.version.replace(/\./g, '_') +encode + '-' + server + '.zip';
+        zipName = zipName + pkg.name + pkg.version.replace(/\./g, '_') + '-' + encode + '-' + server + '.zip';
 
     } )();
 
