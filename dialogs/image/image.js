@@ -186,7 +186,7 @@
         uploadComplete: function(r){
             var me = this;
             try{
-                var json = JSON ? JSON.parse(r):eval('('+r+')');
+                var json = window.JSON ? JSON.parse(r):eval('('+r+')');
                 Base.callback(me.editor, me.dialog, json.url, json.state);
             }catch (e){
                 var lang = me.editor.getLang('image');
@@ -206,8 +206,7 @@
                 }
 
                 $('<iframe name="up"  style="display: none"></iframe>').insertBefore(me.dialog).on('load', function(){
-
-                    var r = this.contentDocument.body.innerHTML;
+                    var r = this.contentWindow.document.body.innerHTML;
                     if(r == '')return;
                     me.uploadComplete(r);
                     $(this).unbind('load');
