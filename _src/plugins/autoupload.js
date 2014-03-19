@@ -21,7 +21,7 @@ UM.plugins['autoupload'] = function () {
         xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         xhr.addEventListener('load', function (e) {
             try {
-                var json = JSON ? JSON.parse(e.target.response):eval('('+e.target.response+')'),
+                var json = eval('('+e.target.response+')'),
                     link = json.url,
                     picLink = me.options.imagePath + link;
                 editor.execCommand('insertimage', {

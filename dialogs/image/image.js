@@ -186,7 +186,7 @@
         uploadComplete: function(r){
             var me = this;
             try{
-                var json = window.JSON ? JSON.parse(r):eval('('+r+')');
+                var json = eval('('+r+')');
                 Base.callback(me.editor, me.dialog, json.url, json.state);
             }catch (e){
                 var lang = me.editor.getLang('image');
