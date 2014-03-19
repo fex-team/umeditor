@@ -44,7 +44,10 @@
     function loadPlugins(me){
         //初始化插件
         for (var pi in UM.plugins) {
-            UM.plugins[pi].call(me);
+            if(me.options.excludePlugins.indexOf(pi) == -1){
+                UM.plugins[pi].call(me);
+                me.plugins[pi] = 1;
+            }
         }
         me.langIsReady = true;
 
@@ -95,9 +98,10 @@
             themePath: me.options.UMEDITOR_HOME_URL + 'themes/',
             allHtmlEnabled: false,
             autoSyncData : true,
-            autoHeightEnabled : true
+            autoHeightEnabled : true,
+            excludePlugins:''
         });
-
+        me.plugins = {};
         if(!utils.isEmptyObject(UM.I18N)){
             //修改默认的语言类型
             me.options.lang = checkCurLang(UM.I18N);
@@ -237,7 +241,7 @@
             if (container) {
                 this.id = container.getAttribute('id');
                 UM.setEditor(this);
-                utils.cssRule('umeditor_body_css',me.options.initialStyle,document);
+                utils.cssRule('edui-style-body',me.options.initialStyle,document);
 
                 container = this.initialCont(container);
 
@@ -293,11 +297,8 @@
             me.window = document.defaultView || document.parentWindow;
             me.body = cont;
             me.$body = $(cont);
-            //扩展isBody方法
-            domUtils.isBody = function (node) {
-                return  node === cont;
-            };
             me.selection = new dom.Selection(document,me.body);
+            me._isEnabled = false;
             //gecko初始化就能得到range,无法判断isFocus了
             var geckoSel;
             if (browser.gecko && (geckoSel = this.selection.getNative())) {
@@ -309,13 +310,13 @@
                 if (form.tagName == 'FORM') {
                     me.form = form;
                     if(me.options.autoSyncData){
-                        domUtils.on(cont,'blur',function(){
+                        $(cont).on('blur',function(){
                             setValue(form,me);
-                        });
+                        })
                     }else{
-                        domUtils.on(form, 'submit', function () {
+                        $(form).on('submit', function () {
                             setValue(this, me);
-                        });
+                        })
                     }
                     break;
                 }
@@ -355,7 +356,7 @@
             options.onready && options.onready.call(me);
             if(!browser.ie || browser.ie9above){
 
-                domUtils.on(me.body, ['blur', 'focus'], function (e) {
+                $(me.body).on( 'blur focus', function (e) {
                     var nSel = me.selection.getNative();
                     //chrome下会出现alt+tab切换时，导致选区位置不对
                     if (e.type == 'blur') {
@@ -413,11 +414,17 @@
             }else{
                 $(this.body).height(height)
             }
-
+            this.fireEvent('resize');
         },
+        /**
+         * 设置编辑器宽度
+         * @name setWidth
+         * @grammar editor.setWidth(number);  //纯数值，不带单位
+         */
         setWidth:function(width){
             this.$container && this.$container.width(width);
-            $(this.body).width(width - $(this.body).css('padding-left').replace('px','') * 1 - $(this.body).css('padding-right').replace('px','') * 1)
+            $(this.body).width(width - $(this.body).css('padding-left').replace('px','') * 1 - $(this.body).css('padding-right').replace('px','') * 1);
+            this.fireEvent('resize');
         },
         addshortcutkey: function (cmd, keys) {
             var obj = {};
@@ -637,7 +644,10 @@
          * 判断编辑器当前是否获得了焦点
          */
         isFocus : function(){
-            return this.selection.isFocus()
+            if(this.fireEvent('isfocus')===true){
+                return true;
+            }
+            return this.selection.isFocus();
         },
 
         /**
@@ -647,18 +657,22 @@
          */
         _initEvents: function () {
             var me = this,
-                cont = me.body;
-            me._proxyDomEvent = utils.bind(me._proxyDomEvent, me);
-            domUtils.on(cont, ['click', 'contextmenu', 'mousedown', 'keydown', 'keyup', 'keypress', 'mouseup', 'mouseover', 'mouseout', 'selectstart'], me._proxyDomEvent);
-            domUtils.on(cont, ['focus', 'blur'], me._proxyDomEvent);
-            domUtils.on(cont, ['mouseup', 'keydown'], function (evt) {
-                //特殊键不触发selectionchange
-                if (evt.type == 'keydown' && (evt.ctrlKey || evt.metaKey || evt.shiftKey || evt.altKey)) {
-                    return;
-                }
-                if (evt.button == 2)return;
-                me._selectionChange(250, evt);
-            });
+                cont = me.body,
+                _proxyDomEvent = function(){
+                    me._proxyDomEvent.apply(me, arguments);
+                };
+
+            $(cont)
+                .on( 'click contextmenu mousedown keydown keyup keypress mouseup mouseover mouseout selectstart', _proxyDomEvent)
+                .on( 'focus blur', _proxyDomEvent)
+                .on('mouseup keydown', function (evt) {
+                    //特殊键不触发selectionchange
+                    if (evt.type == 'keydown' && (evt.ctrlKey || evt.metaKey || evt.shiftKey || evt.altKey)) {
+                        return;
+                    }
+                    if (evt.button == 2)return;
+                    me._selectionChange(250, evt);
+                });
         },
         /**
          * 触发事件代理
@@ -766,17 +780,19 @@
             if (!cmd.notNeedUndo && !me.__hasEnterExecCommand) {
                 me.__hasEnterExecCommand = true;
                 if (me.queryCommandState.apply(me,arguments) != -1) {
+                    me.fireEvent('saveScene');
                     me.fireEvent('beforeexeccommand', cmdName);
                     result = this._callCmdFn('execCommand', arguments);
-                    !me._ignoreContentChange && me.fireEvent('contentchange');
+                    (!cmd.ignoreContentChange && !me._ignoreContentChange) && me.fireEvent('contentchange');
                     me.fireEvent('afterexeccommand', cmdName);
+                    me.fireEvent('saveScene');
                 }
                 me.__hasEnterExecCommand = false;
             } else {
                 result = this._callCmdFn('execCommand', arguments);
-                !me._ignoreContentChange && me.fireEvent('contentchange')
+                (!me.__hasEnterExecCommand && !cmd.ignoreContentChange && !me._ignoreContentChange) && me.fireEvent('contentchange')
             }
-            !me._ignoreContentChange && me._selectionChange();
+            (!me.__hasEnterExecCommand && !cmd.ignoreContentChange && !me._ignoreContentChange) && me._selectionChange();
             return result;
         },
         /**
@@ -854,12 +870,18 @@
         reset: function () {
             this.fireEvent('reset');
         },
+        isEnabled: function(){
+            return this._isEnabled != true;
+        },
+
         setEnabled: function () {
             var me = this, range;
-            if (me.body.contentEditable == 'false') {
-                me.body.contentEditable = true;
+
+            me.body.contentEditable = true;
+
+            /* 恢复选区 */
+            if (me.lastBk) {
                 range = me.selection.getRange();
-                //有可能内容丢失了
                 try {
                     range.moveToBookmark(me.lastBk);
                     delete me.lastBk
@@ -867,12 +889,22 @@
                     range.setStartAtFirst(me.body).collapse(true)
                 }
                 range.select(true);
-                if (me.bkqueryCommandState) {
-                    me.queryCommandState = me.bkqueryCommandState;
-                    delete me.bkqueryCommandState;
-                }
-                me.fireEvent('selectionchange');
             }
+
+            /* 恢复query函数 */
+            if (me.bkqueryCommandState) {
+                me.queryCommandState = me.bkqueryCommandState;
+                delete me.bkqueryCommandState;
+            }
+
+            /* 恢复原生事件 */
+            if (me._bkproxyDomEvent) {
+                me._proxyDomEvent = me._bkproxyDomEvent;
+                delete me._bkproxyDomEvent;
+            }
+
+            /* 触发事件 */
+            me.fireEvent('setEnabled');
         },
         /**
          * 设置当前编辑区域可以编辑
@@ -882,23 +914,39 @@
         enable: function () {
             return this.setEnabled();
         },
-        setDisabled: function (except) {
+        setDisabled: function (except, keepDomEvent) {
             var me = this;
-            except = except ? utils.isArray(except) ? except : [except] : [];
-            if (me.body.contentEditable == 'true') {
-                if (!me.lastBk) {
-                    me.lastBk = me.selection.getRange().createBookmark(true);
-                }
-                me.body.contentEditable = false;
+
+            me.body.contentEditable = false;
+            me._except = except ? utils.isArray(except) ? except : [except] : [];
+
+            /* 备份最后的选区 */
+            if (!me.lastBk) {
+                me.lastBk = me.selection.getRange().createBookmark(true);
+            }
+
+            /* 备份并重置query函数 */
+            if(!me.bkqueryCommandState) {
                 me.bkqueryCommandState = me.queryCommandState;
                 me.queryCommandState = function (type) {
-                    if (utils.indexOf(except, type) != -1) {
+                    if (utils.indexOf(me._except, type) != -1) {
                         return me.bkqueryCommandState.apply(me, arguments);
                     }
                     return -1;
                 };
-                me.fireEvent('selectionchange');
             }
+
+            /* 备份并墙原生事件 */
+            if(!keepDomEvent && !me._bkproxyDomEvent) {
+                me._bkproxyDomEvent = me._proxyDomEvent;
+                me._proxyDomEvent = function () {
+                    return false;
+                };
+            }
+
+            /* 触发事件 */
+            me.fireEvent('selectionchange');
+            me.fireEvent('setDisabled', me._except);
         },
         /** 设置当前编辑区域不可编辑,except中的命令除外
          * @name disable

@@ -16,17 +16,14 @@
     $config[ "savePath" ] = $Path;
     $up = new Uploader( "upfile" , $config );
     $type = $_REQUEST['type'];
-    $editorId=$_GET['editorid'];
+    $callback=$_GET['callback'];
 
     $info = $up->getFileInfo();
     /**
-     * 返回数据，调用父页面的ue_callback回调
+     * 返回数据
      */
-    if($type == "ajax"){
-        echo $info[ "url" ];
-    }else{
-        echo "<script>parent.UM.getEditor('". $editorId ."').getWidgetCallback('image')('" . $info[ "url" ] . "','" . $info[ "state" ] . "')</script>";
+    if($callback) {
+        echo '<script>'.$callback.'('.json_encode($info).')</script>';
+    } else {
+        echo json_encode($info);
     }
-
-
-

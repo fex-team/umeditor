@@ -21,11 +21,10 @@ test('splitbutton--初始化', function () {
             this.root().addClass('afterBtnClick');
         }
     }).appendTo(div);
-
     $btn.edui().disabled(true);
-    equal($btn.hasClass('disabled'), true, '检查是否有disabled的class');
+    equal($btn.hasClass('edui-disabled'), true, '检查是否有disabled的class');
     $btn.edui().disabled(false);
-    equal($btn.hasClass('disabled'), false, '检查是否没有disabled的class');
+    equal($btn.hasClass('edui-disabled'), false, '检查是否没有disabled的class');
 
     $btn.edui().active(true);
     equal($btn.edui().active(), true, '检查是否有disabled的class');

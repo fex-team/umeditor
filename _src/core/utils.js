@@ -424,57 +424,6 @@ var utils = UM.utils = {
         return val + (val ? 'px' : '');
     },
     /**
-     * DomReady方法，回调函数将在dom树ready完成后执行
-     * @name domReady
-     * @grammar UM.utils.domReady(fn)  => fn  //返回一个延迟执行的方法
-     */
-    domReady:function () {
-
-        var fnArr = [];
-
-        function doReady(doc) {
-            //确保onready只执行一次
-            doc.isReady = true;
-            for (var ci; ci = fnArr.pop(); ci()) {
-            }
-        }
-
-        return function (onready, win) {
-            win = win || window;
-            var doc = win.document;
-            onready && fnArr.push(onready);
-            if (doc.readyState === "complete") {
-                doReady(doc);
-            } else {
-                doc.isReady && doReady(doc);
-                if (browser.ie) {
-                    (function () {
-                        if (doc.isReady) return;
-                        try {
-                            doc.documentElement.doScroll("left");
-                        } catch (error) {
-                            setTimeout(arguments.callee, 0);
-                            return;
-                        }
-                        doReady(doc);
-                    })();
-                    win.attachEvent('onload', function () {
-                        doReady(doc)
-                    });
-                } else {
-                    doc.addEventListener("DOMContentLoaded", function () {
-                        doc.removeEventListener("DOMContentLoaded", arguments.callee, false);
-                        doReady(doc);
-                    }, false);
-                    win.addEventListener('load', function () {
-                        doReady(doc)
-                    }, false);
-                }
-            }
-
-        }
-    }(),
-    /**
      * 动态添加css样式
      * @name cssRule
      * @grammar UM.utils.cssRule('添加的样式的节点名称',['样式'，'放到哪个document上'])
@@ -482,7 +431,7 @@ var utils = UM.utils = {
      * @grammar UM.utils.cssRule('body') =>样式的字符串  //取得key值为body的样式的内容,如果没有找到key值先关的样式将返回空，例如刚才那个背景颜色，将返回 body{background:#ccc}
      * @grammar UM.utils.cssRule('body','') =>null //清空给定的key值的背景颜色
      */
-    cssRule:browser.ie ? function (key, style, doc) {
+    cssRule:browser.ie && browser.version != 11 ? function (key, style, doc) {
         var indexList, index;
         doc = doc || document;
         if (doc.indexList) {

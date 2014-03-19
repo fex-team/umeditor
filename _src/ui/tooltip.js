@@ -1,6 +1,9 @@
 /*tooltip 类*/
 UM.ui.define('tooltip', {
-    tpl: '<div class="edui-tooltip" unselectable="on" onmousedown="return false"><div class="edui-tooltip-arrow" unselectable="on" onmousedown="return false"></div><div class="edui-tooltip-inner" unselectable="on" onmousedown="return false"></div></div>',
+    tpl: '<div class="edui-tooltip" unselectable="on" onmousedown="return false">' +
+        '<div class="edui-tooltip-arrow" unselectable="on" onmousedown="return false"></div>' +
+        '<div class="edui-tooltip-inner" unselectable="on" onmousedown="return false"></div>' +
+        '</div>',
     init: function (options) {
         var me = this;
         me.root($($.parseTmpl(me.tpl, options || {})));
@@ -21,17 +24,17 @@ UM.ui.define('tooltip', {
         } : {}))
     },
     show: function (e) {
-        if ($(e.currentTarget).hasClass('disabled')) return;
+        if ($(e.currentTarget).hasClass('edui-disabled')) return;
 
         var me = this;
         me.content(e);
         me.root().appendTo($(e.currentTarget));
         me.position(e);
-        me.root().css('display', 'block').addClass("in bottom")
+        me.root().css('display', 'block');
     },
     hide: function () {
         var me = this;
-        me.root().removeClass("in bottom").css('display', 'none')
+        me.root().css('display', 'none')
     },
     attachTo: function ($obj) {
         var me = this;

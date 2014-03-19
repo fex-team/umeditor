@@ -1,11 +1,11 @@
 UM.registerUI('bold italic redo undo underline strikethrough superscript subscript insertorderedlist insertunorderedlist ' +
-    'cleardoc selectall link unlink print preview justifyleft justifycenter justifyright justifyfull removeformat horizontal',
+    'cleardoc selectall link unlink print preview justifyleft justifycenter justifyright justifyfull removeformat horizontal drafts',
     function(name) {
         var me = this;
         var $btn = $.eduibutton({
             icon : name,
             click : function(){
-                me.execCommand(name)
+                me.execCommand(name);
             },
             title: this.getLang('labelMap')[name] || ''
         });

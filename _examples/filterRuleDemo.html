@@ -6,13 +6,8 @@
     <title>UMEDITOR 过滤规则定制化</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="../themes/default/_css/umeditor.css" type="text/css" rel="stylesheet">
-    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="../third-party/jquery.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="../umeditor.config.js"></script>
-
-    <!--使用版-->
-    <!--<script type="text/javascript" charset="utf-8" src="../umeditor.all.js"></script>-->
-
-    <!--开发版-->
     <script type="text/javascript" charset="utf-8" src="editor_api.js"></script>
     <script type="text/javascript" src="../lang/zh-cn/zh-cn.js"></script>
     <style type="text/css">
@@ -32,7 +27,7 @@
     <p>这里我可以写一些输入提示</p>
 </script>
 <script type="text/javascript">
-    var ue = UM.getEditor('myEditor', {
+    var um = UM.getEditor('myEditor', {
         filterRules: function () {
             return{
                 span:function(node){

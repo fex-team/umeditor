@@ -14,7 +14,9 @@ UM.registerUI('paragraph fontfamily fontsize', function( name ) {
         },
         $combox = null,
         comboboxWidget = null;
-
+    if(options.items.length == 0){
+        return null;
+    }
     switch ( name ) {
 
         case 'paragraph':
@@ -41,6 +43,7 @@ UM.registerUI('paragraph fontfamily fontsize', function( name ) {
                         if( $combox.parent().length === 0 ) {
                             $combox.appendTo(  me.$container.find('.edui-dialog-container') );
                         }
+                        UM.setTopEditor(me);
                     });
 
 
@@ -228,6 +231,7 @@ UM.registerUI('forecolor backcolor', function( name ) {
             caretLeft:11,
             caretTop:-8
         });
+        UM.setTopEditor(me);
     }).register('click', $btn, function () {
             $colorPickerWidget.edui().hide()
         });

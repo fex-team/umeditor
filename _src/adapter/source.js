@@ -7,7 +7,8 @@ UM.registerUI('source',function(name){
     var $btn = $.eduibutton({
         icon : name,
         click : function(){
-            me.execCommand(name)
+            me.execCommand(name);
+            UM.setTopEditor(me);
         },
         title: this.getLang('labelMap')[name] || ''
     });

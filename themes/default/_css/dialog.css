@@ -22,7 +22,7 @@
     background: url("../images/close.png") no-repeat center center;
     cursor: pointer;
 }
-.edui-modal-header .edui-close.hover {
+.edui-modal-header .edui-close.edui-hover {
     background-color: #d5e1f2;
     padding:0;
     border: 1px solid #a3bde3;
@@ -56,7 +56,7 @@
     text-align: center;
     cursor: pointer;
 }
-.edui-modal-footer .edui-btn.hover{
+.edui-modal-footer .edui-btn.edui-hover{
     background-color: #d5e1f2;
     border: 1px solid #a3bde3;
 }

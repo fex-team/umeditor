@@ -42,7 +42,12 @@
     background: url(../images/icons.png) -741px 0;
     _background: url(../images/icons.gif) -741px 0;
 }
-.edui-btn-toolbar .edui-combobox.disabled{
+.edui-btn-toolbar .edui-combobox.edui-disabled{
     opacity: 0.2;
     filter: alpha(opacity = 20);
+}
+.edui-btn-toolbar .edui-combobox.edui-disabled .edui-button-label,
+.edui-btn-toolbar .edui-combobox.edui-disabled .edui-caret{
+    opacity: 0.2 \0;
+    filter: alpha(opacity = 20)\0;
 }

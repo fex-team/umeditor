@@ -6,6 +6,21 @@
  * @desc UEditor封装的底层dom操作库
  */
 
+function getDomNode(node, start, ltr, startFromChild, fn, guard) {
+    var tmpNode = startFromChild && node[start],
+        parent;
+    !tmpNode && (tmpNode = node[ltr]);
+    while (!tmpNode && (parent = (parent || node).parentNode)) {
+        if (parent.tagName == 'BODY' || guard && !guard(parent)) {
+            return null;
+        }
+        tmpNode = parent[ltr];
+    }
+    if (tmpNode && fn && !fn(tmpNode)) {
+        return  getDomNode(tmpNode, start, ltr, false, fn);
+    }
+    return tmpNode;
+}
 var attrFix = ie && browser.version < 9 ? {
         tabindex: "tabIndex",
         readonly: "readOnly",
@@ -269,6 +284,63 @@ var domUtils = dom.domUtils = {
 
 
     /**
+     * 取得node节点的下一个兄弟节点， 如果该节点其后没有兄弟节点， 则递归查找其父节点之后的第一个兄弟节点，
+     * 直到找到满足条件的节点或者递归到BODY节点之后才会结束。
+     * @method getNextDomNode
+     * @param { Node } node 需要获取其后的兄弟节点的节点对象
+     * @return { Node | NULL } 如果找满足条件的节点， 则返回该节点， 否则返回NULL
+     * @example
+     * ```html
+     *     <body>
+     *      <div id="test">
+     *          <span></span>
+     *      </div>
+     *      <i>xxx</i>
+     * </body>
+     * <script>
+     *
+     *     //output: i节点
+     *     console.log( UE.dom.domUtils.getNextDomNode( document.getElementById( "test" ) ) );
+     *
+     * </script>
+     * ```
+     * @example
+     * ```html
+     * <body>
+     *      <div>
+     *          <span></span>
+     *          <i id="test">xxx</i>
+     *      </div>
+     *      <b>xxx</b>
+     * </body>
+     * <script>
+     *
+     *     //由于id为test的i节点之后没有兄弟节点， 则查找其父节点（div）后面的兄弟节点
+     *     //output: b节点
+     *     console.log( UE.dom.domUtils.getNextDomNode( document.getElementById( "test" ) ) );
+     *
+     * </script>
+     * ```
+     */
+
+    /**
+     * 取得node节点的下一个兄弟节点， 如果startFromChild的值为ture，则先获取其子节点，
+     * 如果有子节点则直接返回第一个子节点；如果没有子节点或者startFromChild的值为false，
+     * 则执行<a href="#UE.dom.domUtils.getNextDomNode(Node)">getNextDomNode(Node node)</a>的查找过程。
+     * @method getNextDomNode
+     * @param { Node } node 需要获取其后的兄弟节点的节点对象
+     * @param { Boolean } startFromChild 查找过程是否从其子节点开始
+     * @return { Node | NULL } 如果找满足条件的节点， 则返回该节点， 否则返回NULL
+     * @see UE.dom.domUtils.getNextDomNode(Node)
+     */
+    getNextDomNode:function (node, startFromChild, filterFn, guard) {
+        return getDomNode(node, 'firstChild', 'nextSibling', startFromChild, filterFn, guard);
+    },
+    getPreDomNode:function (node, startFromChild, filterFn, guard) {
+        return getDomNode(node, 'lastChild', 'previousSibling', startFromChild, filterFn, guard);
+    },
+
+    /**
      * 检测节点node是否属于bookmark节点
      * @name isBookmarkNode
      * @grammar UM.dom.domUtils.isBookmarkNode(node)  => true|false
@@ -286,6 +358,105 @@ var domUtils = dom.domUtils = {
         return doc.defaultView || doc.parentWindow;
     },
 
+    /**
+     * 获取离nodeA与nodeB最近的公共的祖先节点
+     * @method  getCommonAncestor
+     * @param { Node } nodeA 第一个节点
+     * @param { Node } nodeB 第二个节点
+     * @remind 如果给定的两个节点是同一个节点， 将直接返回该节点。
+     * @return { Node | NULL } 如果未找到公共节点， 返回NULL， 否则返回最近的公共祖先节点。
+     * @example
+     * ```javascript
+     * var commonAncestor = UE.dom.domUtils.getCommonAncestor( document.body, document.body.firstChild );
+     * //output: true
+     * console.log( commonAncestor.tagName.toLowerCase() === 'body' );
+     * ```
+     */
+    getCommonAncestor:function (nodeA, nodeB) {
+        if (nodeA === nodeB)
+            return nodeA;
+        var parentsA = [nodeA] , parentsB = [nodeB], parent = nodeA, i = -1;
+        while (parent = parent.parentNode) {
+            if (parent === nodeB) {
+                return parent;
+            }
+            parentsA.push(parent);
+        }
+        parent = nodeB;
+        while (parent = parent.parentNode) {
+            if (parent === nodeA)
+                return parent;
+            parentsB.push(parent);
+        }
+        parentsA.reverse();
+        parentsB.reverse();
+        while (i++, parentsA[i] === parentsB[i]) {
+        }
+        return i == 0 ? null : parentsA[i - 1];
+
+    },
+    /**
+     * 清除node节点左右连续为空的兄弟inline节点
+     * @method clearEmptySibling
+     * @param { Node } node 执行的节点对象， 如果该节点的左右连续的兄弟节点是空的inline节点，
+     * 则这些兄弟节点将被删除
+     * @grammar UE.dom.domUtils.clearEmptySibling(node,ignoreNext)  //ignoreNext指定是否忽略右边空节点
+     * @grammar UE.dom.domUtils.clearEmptySibling(node,ignoreNext,ignorePre)  //ignorePre指定是否忽略左边空节点
+     * @example
+     * ```html
+     * <body>
+     *     <div></div>
+     *     <span id="test"></span>
+     *     <i></i>
+     *     <b></b>
+     *     <em>xxx</em>
+     *     <span></span>
+     * </body>
+     * <script>
+     *
+     *      UE.dom.domUtils.clearEmptySibling( document.getElementById( "test" ) );
+     *
+     *      //output: <div></div><span id="test"></span><em>xxx</em><span></span>
+     *      console.log( document.body.innerHTML );
+     *
+     * </script>
+     * ```
+     */
+
+    /**
+     * 清除node节点左右连续为空的兄弟inline节点， 如果ignoreNext的值为true，
+     * 则忽略对右边兄弟节点的操作。
+     * @method clearEmptySibling
+     * @param { Node } node 执行的节点对象， 如果该节点的左右连续的兄弟节点是空的inline节点，
+     * @param { Boolean } ignoreNext 是否忽略忽略对右边的兄弟节点的操作
+     * 则这些兄弟节点将被删除
+     * @see UE.dom.domUtils.clearEmptySibling(Node)
+     */
+
+    /**
+     * 清除node节点左右连续为空的兄弟inline节点， 如果ignoreNext的值为true，
+     * 则忽略对右边兄弟节点的操作， 如果ignorePre的值为true，则忽略对左边兄弟节点的操作。
+     * @method clearEmptySibling
+     * @param { Node } node 执行的节点对象， 如果该节点的左右连续的兄弟节点是空的inline节点，
+     * @param { Boolean } ignoreNext 是否忽略忽略对右边的兄弟节点的操作
+     * @param { Boolean } ignorePre 是否忽略忽略对左边的兄弟节点的操作
+     * 则这些兄弟节点将被删除
+     * @see UE.dom.domUtils.clearEmptySibling(Node)
+     */
+    clearEmptySibling:function (node, ignoreNext, ignorePre) {
+        function clear(next, dir) {
+            var tmpNode;
+            while (next && !domUtils.isBookmarkNode(next) && (domUtils.isEmptyInlineElement(next)
+                //这里不能把空格算进来会吧空格干掉，出现文字间的空格丢掉了
+                || !new RegExp('[^\t\n\r' + domUtils.fillChar + ']').test(next.nodeValue) )) {
+                tmpNode = next[dir];
+                domUtils.remove(next);
+                next = tmpNode;
+            }
+        }
+        !ignoreNext && clear(node.nextSibling, 'nextSibling');
+        !ignorePre && clear(node.previousSibling, 'previousSibling');
+    },
 
     /**
      * 将一个文本节点node拆分成两个文本节点，offset指定拆分位置
@@ -329,78 +500,6 @@ var domUtils = dom.domUtils = {
             element = element.offsetParent;
         }
         return { 'x': x, 'y': y};
-    },
-    /**
-     * 为元素element绑定原生DOM事件，type为事件类型，handler为处理函数
-     * @name on
-     * @grammar UM.dom.domUtils.on(element,type,handler)   //type支持数组传入
-     * @example
-     * UM.dom.domUtils.on(document.body,"click",function(e){
-     *     //e为事件对象，this为被点击元素对戏那个
-     * })
-     * @example
-     * UM.dom.domUtils.on(document.body,["click","mousedown"],function(evt){
-     *     //evt为事件对象，this为被点击元素对象
-     * })
-     */
-    on: function (element, type, handler) {
-        var types = utils.isArray(type) ? type : [type],
-            k = types.length;
-        if (k) while (k--) {
-            type = types[k];
-            if (element.addEventListener) {
-                element.addEventListener(type, handler, false);
-            } else {
-                if (!handler._d) {
-                    handler._d = {
-                        els: []
-                    };
-                }
-                var key = type + handler.toString(), index = utils.indexOf(handler._d.els, element);
-                if (!handler._d[key] || index == -1) {
-                    if (index == -1) {
-                        handler._d.els.push(element);
-                    }
-                    if (!handler._d[key]) {
-                        handler._d[key] = function (evt) {
-                            return handler.call(evt.srcElement, evt || window.event);
-                        };
-                    }
-
-
-                    element.attachEvent('on' + type, handler._d[key]);
-                }
-            }
-        }
-        element = null;
-    },
-    /**
-     * 解除原生DOM事件绑定
-     * @name un
-     * @grammar  UM.dom.donUtils.un(element,type,handler)  //参见<code><a href="#on">on</a></code>
-     */
-    un: function (element, type, handler) {
-        var types = utils.isArray(type) ? type : [type],
-            k = types.length;
-        if (k) while (k--) {
-            type = types[k];
-            if (element.removeEventListener) {
-                element.removeEventListener(type, handler, false);
-            } else {
-                var key = type + handler.toString();
-                try {
-                    element.detachEvent('on' + type, handler._d ? handler._d[key] : handler);
-                } catch (e) {
-                }
-                if (handler._d && handler._d[key]) {
-                    var index = utils.indexOf(handler._d.els, element);
-                    if (index != -1) {
-                        handler._d.els.splice(index, 1);
-                    }
-                    handler._d.els.length == 0 && delete handler._d[key];
-                }
-            }
-        }
     },
     /**
      * 检查节点node是否是空inline节点
@@ -481,7 +580,7 @@ var domUtils = dom.domUtils = {
      * @name unSelectable
      * @grammar UM.dom.domUtils.unSelectable(node)
      */
-    unSelectable: ie || browser.opera ? function (node) {
+    unSelectable: ie && browser.ie9below || browser.opera ? function (node) {
         //for ie9
         node.onselectstart = function () {
             return false;
@@ -506,7 +605,8 @@ var domUtils = dom.domUtils = {
     } : function (node) {
         node.style.MozUserSelect =
             node.style.webkitUserSelect =
-                node.style.KhtmlUserSelect = 'none';
+                    node.style.msUserSelect =
+                        node.style.KhtmlUserSelect = 'none';
     },
     /**
      * 删除节点node上的属性attrNames，attrNames为属性名称数组
@@ -592,6 +692,48 @@ var domUtils = dom.domUtils = {
      */
     preventDefault: function (evt) {
         evt.preventDefault ? evt.preventDefault() : (evt.returnValue = false);
+    },
+
+    /**
+     * 删除元素element指定的样式
+     * @method removeStyle
+     * @param { Element } element 需要删除样式的元素
+     * @param { String } styleName 需要删除的样式名
+     * @example
+     * ```html
+     * <span id="test" style="color: red; background: blue;"></span>
+     *
+     * <script>
+     *
+     *     var testNode = document.getElementById("test");
+     *
+     *     UE.dom.domUtils.removeStyle( testNode, 'color' );
+     *
+     *     //output: background: blue;
+     *     console.log( testNode.style.cssText );
+     *
+     * </script>
+     * ```
+     */
+    removeStyle:function (element, name) {
+        if(browser.ie ){
+            //针对color先单独处理一下
+            if(name == 'color'){
+                name = '(^|;)' + name;
+            }
+            element.style.cssText = element.style.cssText.replace(new RegExp(name + '[^:]*:[^;]+;?','ig'),'')
+        }else{
+            if (element.style.removeProperty) {
+                element.style.removeProperty (name);
+            }else {
+                element.style.removeAttribute (utils.cssStyleToDomStyle(name));
+            }
+        }
+
+
+        if (!element.style.cssText) {
+            domUtils.removeAttributes(element, ['style']);
+        }
     },
 
     /**
@@ -707,6 +849,9 @@ var domUtils = dom.domUtils = {
     },
     isFillChar: function (node, isInStart) {
         return node.nodeType == 3 && !node.nodeValue.replace(new RegExp((isInStart ? '^' : '' ) + domUtils.fillChar), '').length
+    },
+    isBody: function(node){
+        return $(node).hasClass('edui-body-container');
     }
 };
 var fillCharReg = new RegExp(domUtils.fillChar, 'g');

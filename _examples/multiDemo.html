@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <title>UMEDITOR 完整demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="../themes/default/_css/umeditor.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="../third-party/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../umeditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="editor_api.js"></script>
+    <script type="text/javascript" src="../lang/zh-cn/zh-cn.js"></script>
+</head>
+<body>
+<h1>UMEDITOR 多编辑器demo</h1>
+
+
+<script type="text/plain" id="myEditor1" style="width:1000px;height:240px;">
+    <p>这里我可以写一些输入提示</p>
+</script>
+<script type="text/plain" id="myEditor2" style="width:1000px;height:240px;">
+    <p>这里我可以写一些输入提示</p>
+</script>
+<script type="text/plain" id="myEditor3" style="width:1000px;height:240px;">
+    <p>这里我可以写一些输入提示</p>
+</script>
+
+<script type="text/javascript">
+    var um1 = UM.getEditor('myEditor1');
+    var um2 = UM.getEditor('myEditor2');
+    var um3 = UM.getEditor('myEditor3');
+</script>
+
+</body>
+</html>

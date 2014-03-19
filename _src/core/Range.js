@@ -936,6 +936,12 @@
 
             }
             $span.remove();
+        },
+        getOffset : function(){
+            var bk = this.createBookmark();
+            var offset = $(bk.start).css('display','inline-block').offset();
+            this.moveToBookmark(bk);
+            return offset
         }
     };
 })();

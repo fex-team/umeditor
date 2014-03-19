@@ -96,7 +96,7 @@ UM.plugins['font'] = function () {
     });
     for(var p in fonts){
         (function (cmd) {
-            UM.commands[cmd] = {
+            me.commands[cmd] = {
                 execCommand: function (cmdName,value) {
                     if(value == 'transparent'){
                         return;

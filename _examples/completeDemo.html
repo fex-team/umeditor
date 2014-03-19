@@ -6,7 +6,7 @@
     <title>UMEDITOR 完整demo</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="../themes/default/_css/umeditor.css" type="text/css" rel="stylesheet">
-    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="../third-party/jquery.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="../umeditor.config.js"></script>
     <script type="text/javascript" charset="utf-8" src="editor_api.js"></script>
     <script type="text/javascript" src="../lang/zh-cn/zh-cn.js"></script>
@@ -169,27 +169,27 @@
 </div>
 <script type="text/javascript">
     //实例化编辑器
-    var ue = UM.getEditor('myEditor');
-    ue.addListener('blur',function(){
+    var um = UM.getEditor('myEditor');
+    um.addListener('blur',function(){
         $('#focush2').html('编辑器失去焦点了')
     });
-    ue.addListener('focus',function(){
+    um.addListener('focus',function(){
         $('#focush2').html('')
     });
     //按钮的操作
     function insertHtml() {
         var value = prompt('插入html代码', '');
-        ue.execCommand('insertHtml', value)
+        um.execCommand('insertHtml', value)
     }
     function isFocus(){
-        alert(ue.isFocus())
+        alert(um.isFocus())
     }
     function doBlur(){
-        ue.blur()
+        um.blur()
     }
     function createEditor() {
         enableBtn();
-        ue = UM.getEditor('myEditor');
+        um = UM.getEditor('myEditor');
     }
     function getAllHtml() {
         alert(UM.getEditor('myEditor').getAllHtml())

@@ -11,7 +11,8 @@
         _activeWidget = null,
         _widgetData = {},
         _widgetCallBack = {},
-        _cacheUI = {};
+        _cacheUI = {},
+        _maxZIndex = null;
 
     utils.extend(UM, {
         defaultWidth : 500,
@@ -46,13 +47,20 @@
         },
         setWidgetBody : function(name,$widget,editor){
             if(!editor._widgetData){
-                editor._widgetData = {};
-                editor.getWidgetData = function(name){
-                    return this._widgetData[name];
-                };
-                editor.getWidgetCallback = function(widgetName){
-                    return _widgetCallBack[widgetName];
-                }
+
+                utils.extend(editor,{
+                    _widgetData : {},
+                    getWidgetData : function(name){
+                        return this._widgetData[name];
+                    },
+                    getWidgetCallback : function(widgetName){
+                        var me = this;
+                        return function(){
+                            return  _widgetCallBack[widgetName].apply(me,[me,$widget].concat(Array.prototype.slice.call(arguments,0)))
+                        }
+                    }
+                })
+
             }
             var pro = _widgetData[name];
             if(!pro){
@@ -73,22 +81,24 @@
 
             pro.width &&  $widget.width(pro.width);
 
-            //为回调进行参数绑定
-            var cb = _widgetCallBack[name];
-            if(cb && !cb.init){
-                _widgetCallBack[name] = function(){
-                   var args = Array.prototype.slice.call(arguments,0);
-                   cb.apply(editor,[editor,$widget].concat(args));
-                }
-                _widgetCallBack[name].init = true;
-            }
 
         },
         setActiveWidget : function($widget){
             _activeWidget = $widget;
         },
         getEditor: function (id, options) {
-            return _editors[id] || (_editors[id] = this.createEditor(id, options))
+            var editor = _editors[id] || (_editors[id] = this.createEditor(id, options));
+            _maxZIndex = _maxZIndex ? Math.max(editor.getOpt('zIndex'), _maxZIndex):editor.getOpt('zIndex');
+            return editor;
+        },
+        setTopEditor: function(editor){
+            $.each(_editors, function(i, o){
+                if(editor == o) {
+                    editor.$container && editor.$container.css('zIndex', _maxZIndex + 1);
+                } else {
+                    o.$container && o.$container.css('zIndex', o.getOpt('zIndex'));
+                }
+            });
         },
         clearCache : function(id){
             if ( _editors[id]) {
@@ -169,6 +179,7 @@
                 if(widget){
                     _cacheUI[n] = widget;
                 }
+
             });
 
             $container.find('.edui-editor-body').append($editorCont).before(this.createToolbar(editor.options, editor));

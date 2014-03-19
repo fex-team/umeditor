@@ -279,15 +279,6 @@ test( "fixColor", function () {
     var utils = te.obj[0];
     equal( '#953734', utils.fixColor("color", 'rgb(149, 55, 52)' ),'fixColor' );
 } );
-
-test( "domReady", function () {
-    var utils = te.obj[0];
-    expect(1);
-    utils.domReady(function(){ok(1,'domReady')});
-} );
-
-
-
 test( 'each 遍历方法', function () {
    var div =  te.dom[0];
    div.innerHTML = '<span></span><span></span><span id="a"></span><span></span>';

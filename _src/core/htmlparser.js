@@ -1,6 +1,8 @@
 //html字符串转换成uNode节点
 //by zhanyi
 var htmlparser = UM.htmlparser = function (htmlstr,ignoreBlank) {
+    //todo 原来的方式  [^"'<>\/] 有\/就不能配对上 <TD vAlign=top background=../AAA.JPG> 这样的标签了
+    //先去掉了，加上的原因忘了，这里先记录
     var re_tag = /<(?:(?:\/([^>]+)>)|(?:!--([\S|\s]*?)-->)|(?:([^\s\/>]+)\s*((?:(?:"[^"]*")|(?:'[^']*')|[^"'<>])*)\/?>))/g,
         re_attr = /([\w\-:.]+)(?:(?:\s*=\s*(?:(?:"([^"]*)")|(?:'([^']*)')|([^\s>]+)))|(?=\s|$))/g;
 
@@ -20,7 +22,10 @@ var htmlparser = UM.htmlparser = function (htmlstr,ignoreBlank) {
         });
     }
 
-
+    var notTransAttrs = {
+        'href':1,
+        'src':1
+    };
 
     var uNode = UM.uNode,
         needParentNode = {
@@ -84,7 +89,7 @@ var htmlparser = UM.htmlparser = function (htmlstr,ignoreBlank) {
         if (htmlattr) {
             var attrs = {}, match;
             while (match = re_attr.exec(htmlattr)) {
-                attrs[match[1].toLowerCase()] = utils.unhtml(match[2] || match[3] || match[4])
+                attrs[match[1].toLowerCase()] = notTransAttrs[match[1].toLowerCase()] ? (match[2] || match[3] || match[4]) : utils.unhtml(match[2] || match[3] || match[4])
             }
             elm.attrs = attrs;
         }

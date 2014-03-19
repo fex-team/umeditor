@@ -22,14 +22,14 @@
 }
 
 /*状态反射*/
-.edui-btn-toolbar .edui-btn.hover,
-.edui-btn-toolbar .edui-btn.active{
+.edui-btn-toolbar .edui-btn.edui-hover,
+.edui-btn-toolbar .edui-btn.edui-active{
     background-color: #d5e1f2;
     padding: 0;
     border: 1px solid #a3bde3;
     _z-index: 1;
 }
-.edui-btn-toolbar .edui-btn.disabled{
+.edui-btn-toolbar .edui-btn.edui-disabled{
     opacity: 0.3;
     filter: alpha(opacity = 30);
 }

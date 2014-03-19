@@ -1,4 +1,4 @@
-UM.registerUI( 'emotion', function( name ){
+UM.registerUI( 'emotion formula', function( name ){
     var me = this,
         url  = me.options.UMEDITOR_HOME_URL + 'dialogs/' +name+ '/'+name+'.js';
 
@@ -24,6 +24,7 @@ UM.registerUI( 'emotion', function( name ){
         data.height && (opt.height = data.height);
 
         $.eduipopup(opt).css('zIndex',me.options.zIndex + 1)
+            .addClass('edui-popup-' + name)
             .edui()
             .on('beforeshow',function(){
                 var $root = this.root();
@@ -31,6 +32,7 @@ UM.registerUI( 'emotion', function( name ){
                     me.$container.find('.edui-dialog-container').append($root);
                 }
                 UM.setWidgetBody(name,$root,me);
+                UM.setTopEditor(me);
             }).attachTo($btn,{
                 offsetTop:-5,
                 offsetLeft:10,
@@ -38,7 +40,7 @@ UM.registerUI( 'emotion', function( name ){
                 caretTop:-8
             });
         me.addListener('selectionchange', function () {
-            var state = this.queryCommandState('emotion');
+            var state = this.queryCommandState(name);
             $btn.edui().disabled(state == -1).active(state == 1);
         });
     });

@@ -28,7 +28,6 @@
 ///import plugins/preview;
 ///import plugins/print;
 ///import plugins/basestyle;
-
 ///import plugins/undo;
 ///import plugins/paste;
 ///import plugins/source;
@@ -37,6 +36,9 @@
 ///import plugins/list;
 ///import plugins/video;
 ///import plugins/dropfile;
+///import plugins/autosave;
+///import plugins/formula;
+
 ///import adapter/adapter;
 ///import adapter/autofloat;
 ///import adapter/autoheight;

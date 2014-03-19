@@ -37,3 +37,13 @@
 .edui-editor-body.focus{border:1px solid #5c9dff}
 .edui-editor-body table{margin:10px 0 10px;border-collapse:collapse;display:table;}
 .edui-editor-body td{padding: 5px 10px;border: 1px solid #DDD;}
+.edui-editor-body iframe.mathquill-embedded-latex{
+    border: 0px;
+    padding: 0px;
+    display: inline;
+    margin: 0px;
+    background: none;
+    vertical-align: middle;
+    width: 0px;
+    height: 0px;
+}

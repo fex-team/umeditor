@@ -2,7 +2,8 @@ UM.registerUI('autofloat',function(){
     var me = this,
         lang = me.getLang();
     me.setOpt({
-        topOffset:0
+        autoFloatEnabled: true,
+        topOffset: 0
     });
     var optsAutoFloatEnabled = me.options.autoFloatEnabled !== false,
         topOffset = me.options.topOffset;
@@ -102,7 +103,7 @@ UM.registerUI('autofloat',function(){
         },browser.ie ? 200 : 100,true);
 
         me.addListener('destroy',function(){
-            domUtils.un(window, ['scroll','resize'], updateFloating);
+            $(window).off('scroll resize',updateFloating);
             me.removeListener('keydown', defer_updateFloating);
         });
 
@@ -118,8 +119,14 @@ UM.registerUI('autofloat',function(){
             if(LteIE6){
                 fixIE6FixedPos();
             }
-            domUtils.on(window, ['scroll','resize'], updateFloating);
+
+            $(window).on('scroll resize',updateFloating);
             me.addListener('keydown', defer_updateFloating);
+            me.addListener('resize', function(){
+                unsetFloating();
+                placeHolder.style.height = toolbarBox.offsetHeight + 'px';
+                updateFloating();
+            });
 
             me.addListener('beforefullscreenchange', function (t, enabled){
                 if (enabled) {
@@ -148,4 +155,4 @@ UM.registerUI('autofloat',function(){
     })
 
 
-})
+});

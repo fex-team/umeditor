@@ -89,7 +89,7 @@
 .edui-btn-toolbar .edui-btn .edui-icon-emotion {
     background-position: -60px -20px;
 }
-.edui-btn-toolbar .edui-btn .edui-icon-insertvideo {
+.edui-btn-toolbar .edui-btn .edui-icon-video {
     background-position: -320px -20px;
 }
 
@@ -120,4 +120,10 @@
 
 .edui-btn-toolbar .edui-btn .edui-icon-removeformat {
     background-position: -580px 0;
+}
+.edui-btn-toolbar .edui-btn .edui-icon-drafts {
+    background-position: -560px 0;
+}
+.edui-btn-toolbar .edui-btn .edui-icon-formula {
+    background-position: -80px -20px;
 }

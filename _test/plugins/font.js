@@ -420,7 +420,7 @@ test('background--不同字号', function () {
                     var html = '<font style="background-color: rgb(255, 0, 0)">你好<span style="font-size: 30px;">hello</span></font>';
                 else
                     var html = '<span style="background-color: rgb(255, 0, 0)">你好<span style="font-size: 30px;">hello</span></span>';
-                ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, '检查不同字号的文本背景色是否一致');
+                ua.checkSameHtml(editor.body.firstChild.innerHTML,html,'检查不同字号的文本背景色是否一致');
                 div.parentNode.removeChild(div);
                 start();
             }, 50);

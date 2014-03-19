@@ -1030,7 +1030,6 @@ UserAction = {
 
     browser:(function () {
         var win = window;
-
         var numberify = function (s) {
                 var c = 0;
                 return parseFloat(s.replace(/\./g, function () {
@@ -1258,6 +1257,8 @@ UserAction = {
                     m = ua.match(/MSIE\s([^;]*)/);
                     if (m && m[1]) {
                         o.ie = numberify(m[1]);
+                    }else if (ua.match(/Gecko([^\s]*)/)&&ua.match(/rv:11/)){//todo
+                        o.ie = 11;
                     } else { // not opera, webkit, or ie
                         m = ua.match(/Gecko\/([^\s]*)/);
                         if (m) {

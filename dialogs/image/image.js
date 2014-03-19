@@ -104,18 +104,19 @@
                 var $img = $("<img src='" + editor.options.imagePath + url + "' class='edui-image-pic' />"),
                     $item = $("<div class='edui-image-item edui-image-upload-item'><div class='edui-image-close'></div></div>").append($img);
 
-                if ($("#edui-image-Jupload2", $w).length < 1) {
-                    $("#edui-image-Jcontent", $w).append($item);
+                if ($(".edui-image-upload2", $w).length < 1) {
+                    $(".edui-image-content", $w).append($item);
 
-                    Upload.render("#edui-image-Jcontent", 2)
-                        .config("#edui-image-Jupload2");
+                    Upload.render(".edui-image-content", 2)
+                        .config(".edui-image-upload2");
                 } else {
-                    $("#edui-image-Jupload2", $w).before($item).show();
+                    $(".edui-image-upload2", $w).before($item).show();
                 }
 
                 $img.on("load", function () {
                     Base.scale(this, 120);
                     Base.close($(this));
+                    $(".edui-image-content", $w).focus();
                 });
 
             } else {
@@ -137,30 +138,29 @@
      * */
     var Upload = {
         showCount: 0,
-        uploadTpl: '<div class="edui-image-upload%%" id="edui-image-Jupload%%">' +
+        uploadTpl: '<div class="edui-image-upload%%">' +
             '<span class="edui-image-icon"></span>' +
             '<form class="edui-image-form" method="post" enctype="multipart/form-data" target="up">' +
             '<input style=\"filter: alpha(opacity=0);\" class="edui-image-file" type="file" hidefocus name="upfile" accept="image/gif,image/jpeg,image/png,image/jpg,image/bmp"/>' +
             '</form>' +
-            '<iframe name="up" style="display: none"></iframe>' +
+
             '</div>',
         init: function (editor, $w) {
             var me = this;
 
             me.editor = editor;
             me.dialog = $w;
-
-            me.render("#edui-image-Jlocal", 1);
-            me.config("#edui-image-Jupload1");
+            me.render(".edui-image-local", 1);
+            me.config(".edui-image-upload1");
             me.submit();
             me.drag();
 
-            $("#edui-image-Jupload1").hover(function () {
+            $(".edui-image-upload1").hover(function () {
                 $(".edui-image-icon", this).toggleClass("hover");
             });
 
             if (!(UM.browser.ie && UM.browser.version <= 9)) {
-                $("#edui-image-JdragTip", me.dialog).css("display", "block");
+                $(".edui-image-dragTip", me.dialog).css("display", "block");
             }
 
 
@@ -183,6 +183,16 @@
 
             return me;
         },
+        uploadComplete: function(r){
+            var me = this;
+            try{
+                var json = eval('('+r+')');
+                Base.callback(me.editor, me.dialog, json.url, json.state);
+            }catch (e){
+                var lang = me.editor.getLang('image');
+                Base.callback(me.editor, me.dialog, '', (lang && lang.uploadError) || 'Error!');
+            }
+        },
         submit: function (callback) {
 
             var me = this,
@@ -194,6 +204,15 @@
                 if ( !this.parentNode ) {
                     return;
                 }
+
+                $('<iframe name="up"  style="display: none"></iframe>').insertBefore(me.dialog).on('load', function(){
+                    var r = this.contentWindow.document.body.innerHTML;
+                    if(r == '')return;
+                    me.uploadComplete(r);
+                    $(this).unbind('load');
+                    $(this).remove();
+
+                });
 
                 $(this).parent()[0].submit();
                 Upload.updateInput( input );
@@ -230,7 +249,7 @@
             var me = this;
             //做拽上传的支持
             if (!UM.browser.ie9below) {
-                me.dialog.find('#edui-image-Jcontent').on('drop',function (e) {
+                me.dialog.find('.edui-image-content').on('drop',function (e) {
 
                     //获取文件列表
                     var fileList = e.originalEvent.dataTransfer.files;
@@ -251,7 +270,8 @@
 
                             xhr.send(fd);
                             xhr.addEventListener('load', function (e) {
-                                Base.callback(me.editor, me.dialog, e.target.response, "SUCCESS");
+                                var r = e.target.response, json;
+                                me.uploadComplete(r);
                                 if (i == fileList.length - 1) {
                                     $(img).remove()
                                 }
@@ -272,25 +292,25 @@
         toggleMask: function (html) {
             var me = this;
 
-            var $mask = $("#edui-image-Jmask", me.dialog);
+            var $mask = $(".edui-image-mask", me.dialog);
             if (html) {
                 if (!(UM.browser.ie && UM.browser.version <= 9)) {
-                    $("#edui-image-JdragTip", me.dialog).css( "display", "none" );
+                    $(".edui-image-dragTip", me.dialog).css( "display", "none" );
                 }
-                $("#edui-image-Jupload1", me.dialog).css( "display", "none" );
-                $mask.addClass("active").html(html);
+                $(".edui-image-upload1", me.dialog).css( "display", "none" );
+                $mask.addClass("edui-active").html(html);
             } else {
 
-                $mask.removeClass("active").html();
+                $mask.removeClass("edui-active").html();
 
                 if ( Upload.showCount > 0 ) {
                     return me;
                 }
 
                 if (!(UM.browser.ie && UM.browser.version <= 9) ){
-                    $("#edui-image-JdragTip", me.dialog).css("display", "block");
+                    $(".edui-image-dragTip", me.dialog).css("display", "block");
                 }
-                $("#edui-image-Jupload1", me.dialog).css( "display", "block" );
+                $(".edui-image-upload1", me.dialog).css( "display", "block" );
             }
 
             return me;
@@ -312,9 +332,9 @@
         initEvt: function () {
             var me = this,
                 url,
-                $ele = $("#edui-image-JsearchTxt", me.dialog);
+                $ele = $(".edui-image-searchTxt", me.dialog);
 
-            $("#edui-image-JsearchAdd", me.dialog).on("click", function () {
+            $(".edui-image-searchAdd", me.dialog).on("click", function () {
                 url = Base.checkURL($ele.val());
 
                 if (url) {
@@ -325,7 +345,7 @@
 
                         var $item = $("<div class='edui-image-item'><div class='edui-image-close'></div></div>").append(this);
 
-                        $("#edui-image-JsearchRes", me.dialog).append($item);
+                        $(".edui-image-searchRes", me.dialog).append($item);
 
                         Base.scale(this, 120);
 
@@ -348,23 +368,23 @@
 
     UM.registerWidget('image', {
         tpl: "<link rel=\"stylesheet\" type=\"text/css\" href=\"<%=image_url%>image.css\">" +
-            "<div id=\"edui-image-Jwrapper\" class=\"edui-image-wrapper\">" +
+            "<div class=\"edui-image-wrapper\">" +
             "<ul class=\"edui-tab-nav\">" +
-            "<li class=\"edui-tab-item active\"><a href=\"#edui-image-Jlocal\" class=\"edui-tab-text\"><%=lang_tab_local%></a></li>" +
-            "<li  class=\"edui-tab-item\"><a href=\"#edui-image-JimgSearch\" class=\"edui-tab-text\"><%=lang_tab_imgSearch%></a></li>" +
+            "<li class=\"edui-tab-item edui-active\"><a data-context=\".edui-image-local\" class=\"edui-tab-text\"><%=lang_tab_local%></a></li>" +
+            "<li  class=\"edui-tab-item\"><a data-context=\".edui-image-JimgSearch\" class=\"edui-tab-text\"><%=lang_tab_imgSearch%></a></li>" +
             "</ul>" +
             "<div class=\"edui-tab-content\">" +
-            "<div id=\"edui-image-Jlocal\" class=\"edui-tab-pane active\">" +
-            "<div class=\"edui-image-content\" id=\"edui-image-Jcontent\"></div>" +
-            "<div class=\"edui-image-mask\" id=\"edui-image-Jmask\"></div>" +
-            "<div id=\"edui-image-JdragTip\" class=\"edui-image-dragTip\"><%=lang_input_dragTip%></div>" +
+            "<div class=\"edui-image-local edui-tab-pane edui-active\">" +
+            "<div class=\"edui-image-content\"></div>" +
+            "<div class=\"edui-image-mask\"></div>" +
+            "<div class=\"edui-image-dragTip\"><%=lang_input_dragTip%></div>" +
             "</div>" +
-            "<div id=\"edui-image-JimgSearch\" class=\"edui-tab-pane\">" +
+            "<div class=\"edui-image-JimgSearch edui-tab-pane\">" +
             "<div class=\"edui-image-searchBar\">" +
-            "<table><tr><td><input class=\"edui-image-searchTxt\" id=\"edui-image-JsearchTxt\" type=\"text\"></td>" +
-            "<td><div class=\"edui-image-searchAdd\" id=\"edui-image-JsearchAdd\"><%=lang_btn_add%></div></td></tr></table>" +
+            "<table><tr><td><input class=\"edui-image-searchTxt\" type=\"text\"></td>" +
+            "<td><div class=\"edui-image-searchAdd\"><%=lang_btn_add%></div></td></tr></table>" +
             "</div>" +
-            "<div class=\"edui-image-searchRes\" id=\"edui-image-JsearchRes\"></div>" +
+            "<div class=\"edui-image-searchRes\"></div>" +
             "</div>" +
             "</div>" +
             "</div>",
@@ -386,7 +406,7 @@
 
         },
         initEvent: function (editor, $w) {
-            $tab = $.eduitab({selector: "#edui-image-Jwrapper"})
+            $tab = $.eduitab({selector: ".edui-image-wrapper"})
                 .edui().on("beforeshow", function (e) {
                     e.stopPropagation();
                 });
@@ -402,9 +422,9 @@
                         index = $tab.activate();
 
                     if (index == 0) {
-                        sel = "#edui-image-Jcontent .edui-image-pic";
+                        sel = ".edui-image-content .edui-image-pic";
                     } else if (index == 1) {
-                        sel = "#edui-image-JsearchRes .edui-image-pic";
+                        sel = ".edui-image-searchRes .edui-image-pic";
                     }
 
                     var list = Base.getAllPic(sel, $w, editor);

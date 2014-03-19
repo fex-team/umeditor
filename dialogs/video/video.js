@@ -1,7 +1,7 @@
 
 (function(){
     var domUtils = UM.dom.domUtils;
-    var widgetName = 'insertvideo';
+    var widgetName = 'video';
 
     UM.registerWidget( widgetName,{
 
@@ -40,6 +40,7 @@
 
             me.lang = lang;
             me.editor = editor;
+            me.$widget = $widget;
             me.root().html( $.parseTmpl( me.tpl, $.extend( { video_url: video_url }, lang['static'] ) ) );
 
             me.initController( lang );
@@ -48,7 +49,7 @@
         initEvent:function(){
 
             var me = this,
-                url = $("#eduiVideoUrl")[0];
+                url = $("#eduiVideoUrl", me.$widget)[0];
 
             if( 'oninput' in url ) {
                 url.oninput = function(){
@@ -71,9 +72,9 @@
 
             //编辑视频时初始化相关信息
             if(img && img.className == "edui-faked-video"){
-                $("#eduiVideoUrl")[0].value = url = img.getAttribute("_url");
-                $("#eduiVideoWidth")[0].value = img.width;
-                $("#eduiVideoHeight")[0].value = img.height;
+                $("#eduiVideoUrl", me.$widget)[0].value = url = img.getAttribute("_url");
+                $("#eduiVideoWidth", me.$widget)[0].value = img.width;
+                $("#eduiVideoHeight", me.$widget)[0].value = img.height;
                 var align = domUtils.getComputedStyle(img,"float"),
                     parentAlign = domUtils.getComputedStyle(img.parentNode,"text-align");
                 me.updateAlignButton(parentAlign==="center"?"center":align);
@@ -87,25 +88,16 @@
         createPreviewVideo: function(url){
 
             if ( !url )return;
-            var matches = url.match(/youtu.be\/(\w+)$/) || url.match(/youtube\.com\/watch\?v=(\w+)/) || url.match(/youtube.com\/v\/(\w+)/),
-                youku = url.match(/youku\.com\/v_show\/id_(\w+)/),
-                youkuPlay = /player\.youku\.com/ig.test(url),
-                me = this,
-                lang = me.lang;
 
-            if(!youkuPlay){
-                if (matches){
-                    url = "https://www.youtube.com/v/" + matches[1] + "?version=3&feature=player_embedded";
-                }else if(youku){
-                    url = "http://player.youku.com/player.php/sid/"+youku[1]+"/v.swf"
-                }else if(!me.endWith(url,[".swf",".flv",".wmv"])){
-                    $("#eduiVideoPreview").html( lang.urlError );
-                    return;
-                }
-            }else{
-                url = url.replace(/\?f=.*/,"");
+            var me = this,
+                lang = me.lang,
+                conUrl = me.convert_url(url);
+
+            if(!me.endWith(conUrl,[".swf",".flv",".wmv"])){
+                $("#eduiVideoPreview", me.$widget).html( lang.urlError );
+                return;
             }
-            $("#eduiVideoPreview")[0].innerHTML = '<embed type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
+            $("#eduiVideoPreview", me.$widget)[0].innerHTML = '<embed type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
                 ' src="' + url + '"' +
                 ' width="' + 420  + '"' +
                 ' height="' + 280  + '"' +
@@ -118,9 +110,9 @@
         insertSingle: function(){
 
             var me = this,
-                width = $("#eduiVideoWidth")[0],
-                height = $("#eduiVideoHeight")[0],
-                url=$('#eduiVideoUrl')[0].value,
+                width = $("#eduiVideoWidth", me.$widget)[0],
+                height = $("#eduiVideoHeight", me.$widget)[0],
+                url=$('#eduiVideoUrl', me.$widget)[0].value,
                 align = this.findFocus("eduiVideoFloat","name");
 
             if(!url) return false;
@@ -136,13 +128,30 @@
         /**
          * URL转换
          */
-        convert_url: function(s){
-            return s.replace(/http:\/\/www\.tudou\.com\/programs\/view\/([\w\-]+)\/?/i,"http://www.tudou.com/v/$1")
-                .replace(/http:\/\/www\.youtube\.com\/watch\?v=([\w\-]+)/i,"http://www.youtube.com/v/$1")
-                .replace(/http:\/\/v\.youku\.com\/v_show\/id_([\w\-=]+)\.html/i,"http://player.youku.com/player.php/sid/$1")
-                .replace(/http:\/\/www\.56\.com\/u\d+\/v_([\w\-]+)\.html/i, "http://player.56.com/v_$1.swf")
-                .replace(/http:\/\/www.56.com\/w\d+\/play_album\-aid\-\d+_vid\-([^.]+)\.html/i, "http://player.56.com/v_$1.swf")
-                .replace(/http:\/\/v\.ku6\.com\/.+\/([^.]+)\.html/i, "http://player.ku6.com/refer/$1/v.swf");
+        convert_url: function(url){
+            if ( !url ) return '';
+            var matches = url.match(/youtu.be\/(\w+)$/) ||
+                    url.match(/youtube\.com\/watch\?v=(\w+)/) ||
+                    url.match(/youtube.com\/v\/(\w+)/),
+                youku = url.match(/youku\.com\/v_show\/id_(\w+)/),
+                youkuPlay = /player\.youku\.com/ig.test(url);
+
+            if(youkuPlay){
+                url = url.replace(/\?f=.*/, "");
+            } else if (matches){
+                url = "https://www.youtube.com/v/" + matches[1] + "?version=3&feature=player_embedded";
+            }else if(youku){
+                url = "http://player.youku.com/player.php/sid/"+youku[1]+"/v.swf"
+            } else {
+                url = url.replace(/http:\/\/www\.tudou\.com\/programs\/view\/([\w\-]+)\/?/i, "http://www.tudou.com/v/$1")
+                    .replace(/http:\/\/www\.youtube\.com\/watch\?v=([\w\-]+)/i, "http://www.youtube.com/v/$1")
+                    .replace(/http:\/\/v\.youku\.com\/v_show\/id_([\w\-=]+)\.html/i, "http://player.youku.com/player.php/sid/$1")
+                    .replace(/http:\/\/www\.56\.com\/u\d+\/v_([\w\-]+)\.html/i, "http://player.56.com/v_$1.swf")
+                    .replace(/http:\/\/www.56.com\/w\d+\/play_album\-aid\-\d+_vid\-([^.]+)\.html/i, "http://player.56.com/v_$1.swf")
+                    .replace(/http:\/\/v\.ku6\.com\/.+\/([^.]+)\.html/i, "http://player.ku6.com/refer/$1/v.swf")
+                    .replace(/\?f=.*/, "");
+            }
+            return url;
         },
         /**
          * 检测传入的所有input框中输入的长宽是否是正数
@@ -170,7 +179,7 @@
             return /(0|^[1-9]\d*$)/.test( value );
         },
         updateAlignButton: function( align ) {
-            var aligns = $( "#eduiVideoFloat" )[0].children;
+            var aligns = $( "#eduiVideoFloat", this.$widget )[0].children;
 
             for ( var i = 0, ci; ci = aligns[i++]; ) {
                 if ( ci.getAttribute( "name" ) == align ) {
@@ -190,12 +199,11 @@
          * @param ids
          */
         createAlignButton: function( ids ) {
-
             var lang = this.lang,
                 vidoe_home = UMEDITOR_CONFIG.UMEDITOR_HOME_URL + 'dialogs/video/';
 
             for ( var i = 0, ci; ci = ids[i++]; ) {
-                var floatContainer = $( "#" + ci ) [0],
+                var floatContainer = $( "#" + ci, this.$widget ) [0],
                     nameMaps = {"none":lang['default'], "left":lang.floatLeft, "right":lang.floatRight};
                 for ( var j in nameMaps ) {
                     var div = document.createElement( "div" );
@@ -212,9 +220,9 @@
          * 选择切换
          */
         switchSelect: function( selectParentId ) {
-            var selects = $( "#" + selectParentId )[0].children;
+            var selects = $( "#" + selectParentId, this.$widget )[0].children;
             for ( var i = 0, ci; ci = selects[i++]; ) {
-                domUtils.on( ci, "click", function () {
+               $(ci).on("click", function () {
                     for ( var j = 0, cj; cj = selects[j++]; ) {
                         cj.className = "";
                         cj.removeAttribute && cj.removeAttribute( "class" );
@@ -229,7 +237,7 @@
          * @param returnProperty
          */
         findFocus: function( id, returnProperty ) {
-            var tabs = $( "#" + id )[0].children,
+            var tabs = $( "#" + id , this.$widget)[0].children,
                 property;
             for ( var i = 0, ci; ci = tabs[i++]; ) {
                 if ( ci.className=="edui-video-focus" ) {
@@ -257,8 +265,8 @@
         height:498,
         buttons: {
             ok: {
-                exec: function( editor ){
-                    $("#eduiVideoPreview").html("");
+                exec: function( editor, $w ){
+                    $("#eduiVideoPreview", $w).html("");
                     editor.getWidgetData(widgetName).insertSingle();
                 }
             },

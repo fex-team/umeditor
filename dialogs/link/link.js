@@ -12,8 +12,8 @@
 
     UM.registerWidget('link', {
         tpl: "<style type=\"text/css\">" +
-            ".edui-link-table{font-size: 12px;margin: 10px;line-height: 30px}" +
-            ".edui-link-txt{width:300px;height:21px;line-height:21px;border:1px solid #d7d7d7;}" +
+            ".edui-dialog-link .edui-link-table{font-size: 12px;margin: 10px;line-height: 30px}" +
+            ".edui-dialog-link .edui-link-txt{width:300px;height:21px;line-height:21px;border:1px solid #d7d7d7;}" +
             "</style>" +
             "<table class=\"edui-link-table\">" +
             "<tr>" +
@@ -48,6 +48,7 @@
                 $('#edui-link-Jtitle',$w).val($(link).attr('title'));
                 $(link).attr('target') == '_blank' && $('#edui-link-Jtarget').attr('checked',true)
             }
+            $('#edui-link-Jhref',$w).focus();
         },
         buttons: {
             'ok': {

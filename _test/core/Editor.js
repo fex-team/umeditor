@@ -1,8 +1,60 @@
 module("core.Editor");
-
 //test('', function () {
 //    stop()
 //});
+var pluginsList = {
+    'autosave': ['clearlocaldata', 'getlocaldata', 'drafts'],
+    'basestyle': ['bold', 'underline', 'superscript', 'subscript', 'italic', 'strikethrough'],
+    'font': ['forecolor', 'backcolor', 'fontsize', 'fontfamily'],
+    'formula': ['formula'],
+    'horizontal': ['horizontal'],
+    'justify': ['justifyleft', 'justifyright', 'justifycenter' , 'justifyfull'],
+    'link': ['link', 'unlink'],
+    'list': ['insertorderedlist', 'insertunorderedlist'],
+    'paragraph': ['paragraph'],
+    'removeformat': ['removeformat'],
+    'selectall': ['selectall'],
+    'source': ['source'],
+    'undo': ['undo', 'redo'],
+    'video': ['insertvideo']
+    //    'autoupload':[],
+    //    'cleardoc':['cleardoc'],
+//    'enterkey':[],
+    //    'paste':[],
+//    'preview':['preview'],
+//    'print':['print'],
+//    'image':['insertimage'],
+//    'inserthtml':['inserthtml'],
+};
+
+test('某一个插件不加载', function () {
+    if(ua.browser.ie)return;
+    var i = 0;
+    for (var p in pluginsList) {
+        var e = new UM.Editor({excludePlugins: p});
+        e.addListener("langReady", function () {
+            var flag = true;
+            var msg = '';
+            for (var p2 in pluginsList) {
+                if (p2 == e.options['excludePlugins'])
+                    continue;
+                for (var c in pluginsList[p2]) {
+                    if (e.commands[pluginsList[p2][c]] === undefined) {
+                        flag = false;
+                        msg += pluginsList[p2][c] + ' ';
+                    }
+                }
+            }
+            equal(flag, true, 'exclude' + p + '未加载:' + msg);
+            i++;
+            if (i == Object.keys(pluginsList).length) {
+                start();
+            }
+        });
+        //todo ie下这里需要个延迟 加 e = null;
+    }
+    stop();
+});
 test("autoSyncData:true,textarea容器(由setcontent触发的)", function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.innerHTML = '<form id="form" method="post" target="_blank"><textarea id="myEditor" name="myEditor">这里的内容将会和html，body等标签一块提交</textarea></form>';
@@ -69,10 +121,55 @@ test("sync", function () {
         }, 100);
     });
 });
-test("hide,show", function () {
+
+test('默认加载全部插件', function () {
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    editor.render(div);
+    var flag = true;
+    var msg = '';
+    editor.ready(function () {
+        for (var p in pluginsList) {
+            for (var c in pluginsList[p]) {
+                if (editor.commands[pluginsList[p][c]] === undefined) {
+                    flag = false;
+                    msg += pluginsList[p][c] + ' ';
+                }
+            }
+        }
+        equal(flag, true, '未加载:' + msg);
+        start();
+    });
+    stop();
+});
+test('多个插件不加载', function () {
     var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue_hide_show';
-    var editor = UM.getEditor('ue_hide_show');
+    div.id = 'ex';
+    var editor = UM.getEditor('ex',{excludePlugins: 'font undo source'});
+    editor.ready( function () {
+        var flag = true;
+        var msg = '';
+        for (var p in pluginsList) {
+            if (editor.options['excludePlugins'].indexOf(p) > -1)
+                continue;
+            for (var c in pluginsList[p]) {
+                if (editor.commands[pluginsList[p][c]] === undefined) {
+                    flag = false;
+                    msg += pluginsList[p][c] + ' ';
+                }
+            }
+        }
+        equal(flag, true, 'exclude' + p + '未加载:' + msg);
+        UM.delEditor('ex');
+        document.getElementById('ex')&&document.getElementById('ex').parentNode.removeChild(document.getElementById('ex'));
+        start();
+    });
+    stop();
+});
+test("hide,show", function () {
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    editor.render(div);
     editor.ready(function () {
         equal(editor.body.getElementsByTagName('span').length, 0, '初始没有书签');
         editor.hide();
@@ -85,10 +182,6 @@ test("hide,show", function () {
                 equal($(te.dom[0]).css('display'), 'block', '显示编辑器');
                 var br = ua.browser.ie ? '' : '<br>';
                 equal(ua.getChildHTML(editor.body), '<p>' + br + '</p>', '删除书签');
-                te.dom.push(editor.container);
-                UM.delEditor('ue_hide_show');
-                document.getElementById('ue_hide_show') && te.dom.push(document.getElementById('ue_hide_show'));
-
                 start();
             }, 200);
         }, 200);
@@ -97,50 +190,47 @@ test("hide,show", function () {
 });
 
 test("_setDefaultContent--focus", function () {
-    var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue_setDefaultContent_focus';
-    var editor = UM.getEditor('ue_setDefaultContent_focus');
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    editor.render(div);
     editor.ready(function () {
         editor._setDefaultContent('hello');
         editor.fireEvent('focus');
-        setTimeout(function(){
+        setTimeout(function () {
             var br = ua.browser.ie ? '' : '<br>';
             equal(ua.getChildHTML(editor.body), '<p>' + br + '</p>', 'focus');
-            te.dom.push(editor.container);
             start();
-        },200);
+        }, 200);
     });
     stop();
 });
 
 test("_setDefaultContent--firstBeforeExecCommand", function () {
-    var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue_setDefaultContent_firstBef';
-    var editor = UM.getEditor('ue_setDefaultContent_firstBef');
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    editor.render(div);
     editor.ready(function () {
         editor._setDefaultContent('hello');
         editor.fireEvent('firstBeforeExecCommand');
         var br = ua.browser.ie ? '' : '<br>';
         equal(ua.getChildHTML(editor.body), '<p>' + br + '</p>', 'firstBeforeExecCommand');
-        te.dom.push(editor.container);
-
         start();
     });
     stop();
 });
 test("trace 3610 setDisabled,setEnabled", function () {
-    var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue_setDisabled';
-    var editor = UM.getEditor('ue_setDisabled');
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    editor.render(div);
     editor.ready(function () {
         editor.setContent('<p>欢迎使用umeditor!</p>');
         editor.focus();
-        if(ua.browser.ie&&ua.browser.ie<9){//trace 3628 ie8 focus 设置无效,手动设range
-            var range = new UM.dom.Range(editor.document,editor.body);
-            range.setStart(editor.body.firstChild,0).collapse(true).select();
+        if (ua.browser.ie && ua.browser.ie < 9) {//trace 3628 ie8 focus 设置无效,手动设range
+            var range = new UM.dom.Range(editor.document, editor.body);
+            range.setStart(editor.body.firstChild, 0).collapse(true).select();
         }
         setTimeout(function () {
-            if(ua.browser.ie&&ua.browser.ie<9){//trace 3628 ie8 focus 设置无效,手动设range
+            if (ua.browser.ie && ua.browser.ie < 9) {//trace 3628 ie8 focus 设置无效,手动设range
                 ua.manualDeleteFillData(editor.body);
             }
             var startContainer = editor.selection.getRange().startContainer.outerHTML;
@@ -162,11 +252,7 @@ test("trace 3610 setDisabled,setEnabled", function () {
                     }
                     equal(editor.selection.getRange().startOffset, startOffset, '检查range');
                     equal(editor.selection.getRange().collapsed, collapse, '检查range');
-                    setTimeout(function () {
-                        te.dom.push(editor.container);
-
-                        start();
-                    }, 100);
+                    start();
                 }, 50);
             }, 50);
         }, 50);
@@ -252,7 +338,9 @@ test('getContent--2个参数，第一个参数为参数为函数', function () {
 });
 
 test("setContent", function () {
-    var editor = UM.getEditor('test1');
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    editor.render(div);
     stop();
     editor.ready(function () {
         editor.focus();
@@ -271,20 +359,15 @@ test("setContent", function () {
         div2.innerHTML = editor.body.innerHTML;
         ua.haveSameAllChildAttribs(div2, div_new, 'check contents');
         setTimeout(function () {
-            UM.clearCache('test1');
-//            te.dom.push(editor.container);
-            document.getElementById('test1') && te.dom.push(document.getElementById('test1'));
-            setTimeout(function () {
-                start();
-            }, 100);
+            start();
         }, 1000);
     });
 });
 
 test("setContent 追加", function () {
-    var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue_setContent';
-    var editor = UM.getEditor('ue_setContent');
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    editor.render(div);
     stop();
     editor.ready(function () {
         editor.focus();
@@ -302,76 +385,69 @@ test("setContent 追加", function () {
         var div2 = document.createElement('div');
         div2.innerHTML = editor.body.innerHTML;
         ua.haveSameAllChildAttribs(div2, div_new, 'check contents');
-        te.dom.push(editor.container);
-        document.getElementById('ue_setContent') && te.dom.push(document.getElementById('ue_setContent'));
         start();
     });
 });
 
 test("focus(false)", function () {
-    if(ua.browser.ie&&ua.browser.ie<9)return;//trace 3628 ie8 focus
-    var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue_focus_false';
-    var editor = UM.getEditor('ue_focus_false');
+    if (ua.browser.ie && ua.browser.ie < 9)return;//trace 3628 ie8 focus
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    editor.render(div);
     stop();
     editor.ready(function () {
-        var range = new UM.dom.Range(editor.document,editor.body);
         editor.setContent("<p>hello1</p><p>hello2</p>");
         editor.focus(false);
-        setTimeout(function(){
-        if (ua.browser.gecko) {
-            equal(editor.selection.getRange().startContainer, editor.body.firstChild, "focus(false)焦点在最前面");
-            equal(editor.selection.getRange().endContainer, editor.body.firstChild, "focus(false)焦点在最前面");
-        }
-        else {
-            equal(editor.selection.getRange().startContainer, editor.body.firstChild.firstChild, "focus(false)焦点在最前面");
-            equal(editor.selection.getRange().endContainer, editor.body.firstChild.firstChild, "focus(false)焦点在最前面");
-        }
-        equal(editor.selection.getRange().startOffset, 0, "focus(false)焦点在最前面");
-        equal(editor.selection.getRange().endOffset, 0, "focus(false)焦点在最前面");
-        setTimeout(function(){
-            te.dom.push(editor.container);
-            UM.delEditor('ue_focus_false');
-            document.getElementById('ue_focus_false') && te.dom.push(document.getElementById('ue_focus_false'));
-            start();
-        },100);
-        },100);
-    });
-});
+        setTimeout(function () {
+            var rng = editor.selection.getRange();
+            var start = rng.startContainer;
+            if(start.nodeName == 'P' && rng.startOffset == 0){
+                if(start = start.childNodes[rng.startOffset]){
+                    if(start.nodeType == 3){
+                        rng.setStart(start,0).collapse(true);
+                    }
+                }
+            }
+            equal(rng.collapsed,true);
+            equal(rng.startContainer,editor.body.firstChild.firstChild,"focus(false)焦点在最前面");
+            equal(rng.startOffset,0,"focus(false)焦点在最前面");
 
-test("focus(true)", function () {
-    var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue_focus_true';
-    var editor = UM.getEditor('ue_focus_true');
-    stop();
-    editor.ready(function () {
-        var range = new UM.dom.Range(editor.document);
-        editor.setContent("<p>hello1</p><p>hello2</p>");
-        editor.focus(true);
-        if (ua.browser.gecko) {
-            equal(editor.selection.getRange().startContainer, editor.body.lastChild, "focus( true)焦点在最后面");
-            equal(editor.selection.getRange().endContainer, editor.body.lastChild, "focus( true)焦点在最后面");
-            equal(editor.selection.getRange().startOffset, editor.body.lastChild.childNodes.length, "focus( true)焦点在最后面");
-            equal(editor.selection.getRange().endOffset, editor.body.lastChild.childNodes.length, "focus( true)焦点在最后面");
-        }
-        else {
-            equal(editor.selection.getRange().startContainer, editor.body.lastChild.lastChild, "focus( true)焦点在最后面");
-            equal(editor.selection.getRange().endContainer, editor.body.lastChild.lastChild, "focus( true)焦点在最后面");
-            equal(editor.selection.getRange().startOffset, editor.body.lastChild.lastChild.length, "focus( true)焦点在最后面");
-            equal(editor.selection.getRange().endOffset, editor.body.lastChild.lastChild.length, "focus( true)焦点在最后面");
-        }
-        te.dom.push(editor.container);
-        document.getElementById('ue_focus_true') && te.dom.push(document.getElementById('ue_focus_true'));
+        }, 100);
         start();
     });
 });
 
+test("focus(true)", function () {
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    editor.render(div);
+
+    stop();
+    editor.ready(function () {
+        editor.setContent("<p>hello1</p><p>hello2</p>");
+        editor.focus(true);
+        var rng = editor.selection.getRange();
+        var start = rng.startContainer;
+        if(start.nodeName == 'P' && rng.startOffset == start.childNodes.length){
+            if(start = start.lastChild){
+                if(start.nodeType == 3){
+                    rng.setStartAtLast(start).collapse(true);
+                }
+            }
+        }
+        equal(rng.collapsed,true);
+        equal(rng.startContainer,editor.body.lastChild.lastChild,"focus( true)焦点在最后面");
+        equal(rng.endOffset, editor.body.lastChild.lastChild.nodeValue.length, "focus( true)焦点在最后面");
+
+    });
+    start();
+});
 
 /*按钮高亮、正常和灰色*/
 test("queryCommandState", function () {
-    var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue_queryCommandState';
-    var editor = UM.getEditor('ue_queryCommandState');
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    editor.render(div);
     stop();
     editor.ready(function () {
         editor.focus();
@@ -382,36 +458,30 @@ test("queryCommandState", function () {
         equal(editor.queryCommandState('bold'), 1, '加粗状态为1');
         r.setStart(p, 1).setEnd(p, 2).select();
         equal(editor.queryCommandState('bold'), 0, '加粗状态为0');
-        UM.clearCache(div.id);
-        te.dom.push(editor.container);
-        document.getElementById('ue_queryCommandState') && te.dom.push(document.getElementById('ue_queryCommandState'));
         start();
     });
 });
 test("trace 3581 queryCommandValue", function () {
-    if(ua.browser.gecko)return;//todo trace 3581
-    var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue_queryCommandValue';
-    var editor = UM.getEditor('ue_queryCommandValue');
+    if (ua.browser.gecko)return;//todo trace 3581
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    editor.render(div);
     stop();
     editor.ready(function () {
         editor.focus();
-        var html = ua.browser.ie ? '<p align="left">xxx</p>' : '<p style="text-align:left">xxx</p>';
-        editor.setContent(html);
+        editor.setContent('<p>xxx</p>');
         var range = new UM.dom.Range(editor.document, editor.body);
         var p = editor.document.getElementsByTagName("p")[0];
         range.selectNode(p).select();
+        editor.execCommand('justifyleft');
         equal(editor.queryCommandValue('justifyleft'), 'left', 'text align is left');
-        UM.clearCache(div.id);
-        te.dom.push(editor.container);
-        document.getElementById('ue_queryCommandValue') && te.dom.push(document.getElementById('ue_queryCommandValue'));
         start();
     });
 });
 test("execCommand", function () {
-    var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue';
-    var editor = UM.getEditor('ue');
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    editor.render(div);
     stop();
     editor.ready(function () {
         editor.focus();
@@ -432,17 +502,14 @@ test("execCommand", function () {
         var html = '<p>xx</p><p style=\"text-align: right;\"><font color=\"#ff0000\">xxx</font></p>';
         var html_1 = "<p>xx</p><p align=\"right\"><font color=\"red\">xxx</font></p>";
         ua.checkSameHtml(editor.body.innerHTML, ua.browser.webkit ? html : html_1, 'check style')
-        UM.clearCache(div.id);
-        te.dom.push(editor.container);
-        document.getElementById('ue') && te.dom.push(document.getElementById('ue'));
         start();
     });
 });
 
 test("hasContents", function () {
-    var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue';
-    var editor = UM.getEditor('ue');
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    editor.render(div);
     stop();
     editor.ready(function () {
         editor.focus();
@@ -452,9 +519,6 @@ test("hasContents", function () {
         ok(editor.hasContents(), "has contents");
         editor.setContent('<p><br/></p>');
         ok(!editor.hasContents(), '空p认为是空');
-        UM.clearCache(div.id);
-        te.dom.push(editor.container);
-        document.getElementById('ue') && te.dom.push(document.getElementById('ue'));
         start();
     });
 });
@@ -462,9 +526,9 @@ test("hasContents", function () {
 
 /*参数是对原有认为是空的标签的一个扩展，即原来的dtd认为br为空，加上这个参数可以认为br存在时body也不是空*/
 test("hasContents--有参数", function () {
-    var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue';
-    var editor = UM.getEditor('ue');
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    editor.render(div);
     stop();
     editor.ready(function () {
         editor.focus();
@@ -474,57 +538,46 @@ test("hasContents--有参数", function () {
         editor.setContent('<p><br></p>');
         ok(!editor.hasContents(['']), "为空");
         ok(editor.hasContents(['br']), "不为空");
-        UM.clearCache(div.id);
-        te.dom.push(editor.container);
-        document.getElementById('ue') && te.dom.push(document.getElementById('ue'));
         start();
     });
 });
 
 test('trace 1964 getPlainTxt--得到有格式的编辑器的纯文本内容', function () {
     if (ua.browser.ie > 0 && ua.browser.ie < 9)return;//TODO 1.2.6
-
-    var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue';
-    var editor = UM.getEditor('ue');
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    editor.render(div);
     stop();
     editor.ready(function () {
         editor.focus();
         editor.setContent('<p>&nbsp;</p><p>&nbsp; hell\no<br/>hello</p>');
         equal(editor.getPlainTxt(), "\n  hello\nhello\n", '得到编辑器的纯文本内容，但会保留段落格式');
-        te.dom.push(editor.container);
-        document.getElementById('ue') && te.dom.push(document.getElementById('ue'));
         start();
     });
 });
 
 test('getContentTxt--文本前后的空格,&nbs p转成空格', function () {
-    var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue';
-    var editor = UM.getEditor('ue');
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    editor.render(div);
     stop();
     editor.ready(function () {
         editor.focus();
         editor.setContent('&nbsp;&nbsp;你 好&nbsp;&nbsp; ');
         equal(editor.getContentTxt(), '  你 好   ');
         equal(editor.getContentTxt().length, 8, '8个字符，空格不被过滤');
-        te.dom.push(editor.container);
-        document.getElementById('ue') && te.dom.push(document.getElementById('ue'));
         start();
     });
 });
 test('getAllHtml', function () {
-
-    var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue_getAllHtml';
-    var editor = UM.getEditor('ue_getAllHtml');
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    editor.render(div);
     stop();
     editor.ready(function () {
         editor.focus();
         var html = editor.getAllHtml();
         ok(/umeditor.css/.test(html), '引入样式');
-        te.dom.push(editor.container);
-        document.getElementById('ue_getAllHtml') && te.dom.push(document.getElementById('ue_getAllHtml'));
         start();
     });
 });
@@ -562,12 +615,12 @@ test('2个实例采用2个配置文件', function () {
                 start();
             });
         });
-    },300);
+    }, 300);
 });
 test("_initEvents,_proxyDomEvent--click", function () {
-    var div = document.body.appendChild(document.createElement('div'));
-    div.id = 'ue_initEvents';
-    var editor = UM.getEditor('ue_initEvents');
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    editor.render(div);
     stop();
     editor.ready(function () {
         editor.focus();
@@ -575,8 +628,7 @@ test("_initEvents,_proxyDomEvent--click", function () {
         stop();
         editor.addListener('click', function () {
             ok(true, 'click event dispatched');
-            te.dom.push(editor.container);
-            document.getElementById('ue_initEvents') && te.dom.push(document.getElementById('ue_initEvents'));
+
             start();
         });
         ua.click(editor.body);
@@ -589,9 +641,9 @@ test('绑定事件', function () {
     document.onmousedown = function (event) {
         ok(true, "mousedown is fired");
     };
-    document.onmouseover = function (event) {
-        ok(true, "mouseover is fired");
-    };
+//    document.onmouseover = function (event) {
+//        ok(true, "mouseover is fired");
+//    };
     document.onkeydown = function (event) {
         ok(true, "keydown is fired");
     };
@@ -602,13 +654,13 @@ test('绑定事件', function () {
     var div = document.body.appendChild(document.createElement('div'));
     div.id = 'event';
     editor.render('event');
-    expect(5);
+    expect(4);
     editor.ready(function () {
         setTimeout(function () {
             editor.focus();
             ua.mousedown(document.body);
             ua.mouseup(document.body);
-            ua.mouseover(document.body);
+//            ua.mouseover(document.body);
             ua.keydown(document.body, {'keyCode': 13});
             ua.keyup(document.body, {'keyCode': 13});
             setTimeout(function () {

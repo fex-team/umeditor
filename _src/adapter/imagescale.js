@@ -6,11 +6,13 @@ UM.registerUI('imagescale',function () {
 
     if (browser.webkit && me.getOpt('imageScaleEnabled')) {
 
-        me.addListener('click', function () {
+        me.addListener('click', function (type, e) {
             var range = me.selection.getRange(),
-                img = range.getClosedNode();
+                img = range.getClosedNode(),
+                target = e.target;
 
-            if (img && img.tagName == 'IMG' && me.body.contentEditable!="false") {
+            /* 点击第一个图片的后面,八个角不消失 fix:3652 */
+            if (img && img.tagName == 'IMG' && target == img) {
 
                 if (!$imagescale) {
                     $imagescale = $.eduiscale({'$wrap':me.$container}).css('zIndex', me.options.zIndex);
@@ -64,7 +66,7 @@ UM.registerUI('imagescale',function () {
         });
 
         me.addListener('click', function (type, e) {
-            if (e.target.tagName == 'IMG' && me.body.contentEditable!="false") {
+            if (e.target.tagName == 'IMG') {
                 var range = new dom.Range(me.document, me.body);
                 range.selectNode(e.target).select();
             }
