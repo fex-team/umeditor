@@ -37,9 +37,11 @@ module.exports = function ( grunt ) {
             }
 
         },
+        pkg = grunt.file.readJSON('package.json'),
         server = grunt.option('server') || 'php',
         encode = grunt.option('encode') || 'utf8',
         disDir = "dist/",
+        zipName = disDir,
         banner = '/*!\n * UEditor Mini版本\n * version: <%= pkg.version %>\n * build: <%= new Date() %>\n */\n\n';
 
     //init
@@ -48,12 +50,13 @@ module.exports = function ( grunt ) {
         server = typeof server === "string" ? server.toLowerCase() : 'php';
         encode = typeof encode === "string" ? encode.toLowerCase() : 'utf8';
 
-        disDir = 'dist/' + encode + '-' + server + '/';
+        disDir = disDir + encode + '-' + server + '/';
+        zipName = zipName + pkg.name + pkg.version.replace(/\./g, '_') +encode + '-' + server + '.zip';
 
     } )();
 
     grunt.initConfig( {
-        pkg: grunt.file.readJSON('package.json'),
+        pkg: pkg,
         concat: {
             js: {
                 options: {
@@ -191,6 +194,16 @@ module.exports = function ( grunt ) {
                 } ]
             }
 
+        },
+        compress: {
+            main: {
+                options: {
+                    archive: zipName
+                },
+                expand: true,
+                cwd: disDir,
+                src: ['**/*']
+            }
         }
 
     } );
@@ -201,6 +214,7 @@ module.exports = function ( grunt ) {
     grunt.loadNpmTasks('grunt-closurecompiler');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-transcoding');
+    grunt.loadNpmTasks('grunt-contrib-compress');
 
     grunt.registerTask('default', 'UEditor Mini build', function () {
 
