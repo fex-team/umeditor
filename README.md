@@ -53,7 +53,7 @@ UMeditor，简称UM，是 [ueditor](http://ueditor.baidu.com) 的简版。是为
 </script>
 ```
 4. 这时候你再浏览器打开你的页面，看到下面这样的编辑器，说明你已部署成功。
-![部署成功](http://www.ueditorbbs.com/data/attachment/forum/201403/20/180450l46xeeonhr4zesx3.png)
+![部署成功](_doc/images/render-editor.png)
 
 ### 第三步：获取和设置编辑器的内容 ###
 
