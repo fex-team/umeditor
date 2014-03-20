@@ -22,15 +22,15 @@ UMeditor，简称UM，是 [ueditor](http://ueditor.baidu.com) 的简版。是为
 
 ### 第二步：部署编辑器到页面 ###
 
-1. 解压下载的包，放到你的项目中。
-2. 在你的页面要插入编辑器的位置，插入代码：
+* 解压下载的包，放到你的项目中。
+* 在你的页面要插入编辑器的位置，插入代码：
 ```html
 <!-- 加载编辑器的容器 -->
 <script id="container" name="content" type="text/plain" style="width:600px;height:200px;">
     这里写你的初始化内容
 </script>
 ```
-3. 在```<head></head>```标签最后，插入需要引用的文件和实例化编辑器的代码(注意修改引用文件的路径)：
+* 在```<head></head>```标签最后，插入需要引用的文件和实例化编辑器的代码(注意修改引用文件的路径)：
 ```html
 <!-- 样式文件 -->
 <link rel="stylesheet" href="./umeditor/themes/default/css/umeditor.css">
@@ -52,7 +52,7 @@ UMeditor，简称UM，是 [ueditor](http://ueditor.baidu.com) 的简版。是为
     });
 </script>
 ```
-4. 这时候你再浏览器打开你的页面，看到下面这样的编辑器，说明你已部署成功。
+* 这时候你再浏览器打开你的页面，看到下面这样的编辑器，说明你已部署成功。
 ![部署成功](_doc/images/render-editor.png)
 
 ### 第三步：获取和设置编辑器的内容 ###
