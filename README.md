@@ -26,7 +26,9 @@ UMeditor，简称UM，是 [ueditor](http://ueditor.baidu.com) 的简版。是为
 2. 在你的页面要插入编辑器的位置，插入代码：
 ```html
 	<!-- 加载编辑器的容器 -->
-	<script id="container" name="content" type="text/plain" style="width:600px;height:200px;">这里写你的初始化内容</script>
+	<script id="container" name="content" type="text/plain" style="width:600px;height:200px;">
+	    这里写你的初始化内容
+	</script>
 ```
 
 在<head></head>标签最后，插入需要引用的文件和实例化编辑器的代码(注意修改引用文件的路径)：
