@@ -15,7 +15,43 @@ module( "plugins.basestyle" );
 ////    equal( ua.getChildHTML( body.firstChild ), "aa<strong>hello</strong>ssss", "新文本节点没有加粗" );
 //} );
 
-
+test('removeformat-清除格式',function(){
+    var editor = te.obj[0];
+    var body = editor.body;
+    var range = te.obj[1];
+    editor.setContent( '<table><tbody><tr><td><b>hello1</b></td><td ></td></tr><tr><td >hello2</td><td ></td></tr></tbody></table>' );
+    var ttt = body.firstChild.firstChild.firstChild.firstChild;
+    range.selectNode(ttt).select();
+    editor.execCommand('removeformat');//清除格式
+    equal( ua.getChildHTML( ttt ), 'hello1' ,'不闭合光标，清除格式');//不闭合光标
+    editor.execCommand('bold');
+    range.setStart(ttt,0).collapse(true).select();//闭合光标
+    editor.execCommand('removeformat');//清除格式
+    var tar='<b>hello1</b>';
+    if(ua.browser.ie){
+        tar = '<strong>hello1</strong>';
+    }
+    equal( ua.getChildHTML(ttt),tar,'闭合光标，清除格式');
+});
+test( 'trace:3940:bold-加粗图标状态',function(){
+    var editor = te.obj[0];
+    var body = editor.body;
+    var range = te.obj[1];
+    editor.setContent('<p>This is a test word</p>');
+    var text = body.firstChild.firstChild;
+    range.setStart(text,0).collapse(true).select();//闭合选择
+    editor.execCommand('bold');//第一次加粗
+    equal(editor.queryCommandState( 'bold' ), 1, '闭合选择，加粗高亮' );
+    editor.execCommand('bold');//第二次加粗
+    equal(editor.queryCommandState( 'bold' ), 0,'闭合选择,取消加粗高亮' );
+    editor.setContent('<p>This is a test word</p>');
+    text = body.firstChild.firstChild;
+    range.setStart(text,0).setEnd(text,1).select();//不闭合选择
+    editor.execCommand('bold');//第一次加粗
+    equal(editor.queryCommandState( 'bold' ), 1, '不闭合选择，加粗高亮' );
+    editor.execCommand('bold');//第二次加粗
+    equal(editor.queryCommandState( 'bold' ), 0,'不闭合选择,取消加粗高亮' );
+});
 test( 'bold-加粗状态反射', function () {
     var editor = te.obj[0];
     var body = editor.body;
