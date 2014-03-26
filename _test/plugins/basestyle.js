@@ -20,18 +20,18 @@ test('removeformat-清除格式',function(){
     var body = editor.body;
     var range = te.obj[1];
     editor.setContent( '<table><tbody><tr><td><b>hello1</b></td><td ></td></tr><tr><td >hello2</td><td ></td></tr></tbody></table>' );
-    var ttt = body.firstChild.firstChild.firstChild.firstChild;
-    range.selectNode(ttt).select();
+    var tttt = body.firstChild.firstChild.firstChild.firstChild;
+    range.selectNode(tttt).select();
     editor.execCommand('removeformat');//清除格式
-    equal( ua.getChildHTML( ttt ), 'hello1' ,'不闭合光标，清除格式');//不闭合光标
+    equal( ua.getChildHTML( tttt ), 'hello1' ,'不闭合光标，清除格式');//不闭合光标
     editor.execCommand('bold');
-    range.setStart(ttt,0).collapse(true).select();//闭合光标
+    range.setStart(tttt,0).collapse(true).select(); //闭合光标
     editor.execCommand('removeformat');//清除格式
     var tar='<b>hello1</b>';
     if(ua.browser.ie){
         tar = '<strong>hello1</strong>';
     }
-    equal( ua.getChildHTML(ttt),tar,'闭合光标，清除格式');
+    equal( ua.getChildHTML(tttt),tar,'闭合光标，清除格式');
 });
 test( 'trace:3940:bold-加粗图标状态',function(){
     var editor = te.obj[0];
