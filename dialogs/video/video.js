@@ -93,16 +93,17 @@
                 lang = me.lang,
                 conUrl = me.convert_url(url);
 
-            if(!me.endWith(conUrl,[".swf",".flv",".wmv"])){
+            if (me.endWith(conUrl,[".swf",".flv",".wmv"]) || utils.trim(url) != conUrl) {
+                $("#eduiVideoPreview", me.$widget).load(function(){
+                    console.log('loaded');
+                }).html('<embed type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
+                    ' src="' + conUrl + '"' +
+                    ' width="' + 420  + '"' +
+                    ' height="' + 280  + '"' +
+                    ' wmode="transparent" play="true" loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" ></embed>');
+            } else {
                 $("#eduiVideoPreview", me.$widget).html( lang.urlError );
-                return;
             }
-            $("#eduiVideoPreview", me.$widget)[0].innerHTML = '<embed type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
-                ' src="' + url + '"' +
-                ' width="' + 420  + '"' +
-                ' height="' + 280  + '"' +
-                ' wmode="transparent" play="true" loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" ></embed>';
-
         },
         /**
          * 将单个视频信息插入编辑器中
@@ -126,31 +127,24 @@
 
         },
         /**
-         * URL转换
+         * URL转换规则
          */
         convert_url: function(url){
-            if ( !url ) return '';
-            var matches = url.match(/youtu.be\/(\w+)$/) ||
-                    url.match(/youtube\.com\/watch\?v=(\w+)/) ||
-                    url.match(/youtube.com\/v\/(\w+)/),
-                youku = url.match(/youku\.com\/v_show\/id_(\w+)/),
-                youkuPlay = /player\.youku\.com/ig.test(url);
 
-            if(youkuPlay){
-                url = url.replace(/\?f=.*/, "");
-            } else if (matches){
-                url = "https://www.youtube.com/v/" + matches[1] + "?version=3&feature=player_embedded";
-            }else if(youku){
-                url = "http://player.youku.com/player.php/sid/"+youku[1]+"/v.swf"
-            } else {
-                url = url.replace(/http:\/\/www\.tudou\.com\/programs\/view\/([\w\-]+)\/?/i, "http://www.tudou.com/v/$1")
-                    .replace(/http:\/\/www\.youtube\.com\/watch\?v=([\w\-]+)/i, "http://www.youtube.com/v/$1")
-                    .replace(/http:\/\/v\.youku\.com\/v_show\/id_([\w\-=]+)\.html/i, "http://player.youku.com/player.php/sid/$1")
-                    .replace(/http:\/\/www\.56\.com\/u\d+\/v_([\w\-]+)\.html/i, "http://player.56.com/v_$1.swf")
-                    .replace(/http:\/\/www.56.com\/w\d+\/play_album\-aid\-\d+_vid\-([^.]+)\.html/i, "http://player.56.com/v_$1.swf")
-                    .replace(/http:\/\/v\.ku6\.com\/.+\/([^.]+)\.html/i, "http://player.ku6.com/refer/$1/v.swf")
-                    .replace(/\?f=.*/, "");
-            }
+            if ( !url ) return '';
+            url = utils.trim(url)
+                .replace(/v\.youku\.com\/v_show\/id_([\w\-=]+)\.html/i, 'player.youku.com/player.php/sid/$1/v.swf')
+                .replace(/(www\.)?youtube\.com\/watch\?v=([\w\-]+)/i, "www.youtube.com/v/$2")
+                .replace(/youtu.be\/(\w+)$/i, "www.youtube.com/v/$1")
+                .replace(/v\.ku6\.com\/.+\/([\w\.]+)\.html.*$/i, "player.ku6.com/refer/$1/v.swf")
+                .replace(/www\.56\.com\/u\d+\/v_([\w\-]+)\.html/i, "player.56.com/v_$1.swf")
+                .replace(/www.56.com\/w\d+\/play_album\-aid\-\d+_vid\-([^.]+)\.html/i, "player.56.com/v_$1.swf")
+                .replace(/v\.pps\.tv\/play_([\w]+)\.html.*$/i, "player.pps.tv/player/sid/$1/v.swf")
+                .replace(/www\.tudou\.com\/programs\/view\/([\w\-]+)\/?/i, "www.tudou.com/v/$1")
+                .replace(/v\.qq\.com\/cover\/[\w]+\/[\w]+\/([\w]+)\.html/i, "static.video.qq.com/TPout.swf?vid=$1")
+                .replace(/v\.qq\.com\/.+[\?\&]vid=([^&]+).*$/i, "static.video.qq.com/TPout.swf?vid=$1")
+                .replace(/my\.tv\.sohu\.com\/[\w]+\/[\d]+\/([\d]+)\.shtml.*$/i, "share.vrs.sohu.com/my/v.swf&id=$1");
+
             return url;
         },
         /**
