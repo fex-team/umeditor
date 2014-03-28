@@ -942,9 +942,7 @@
             /* 备份并墙原生事件 */
             if(!keepDomEvent && !me._bkproxyDomEvent) {
                 me._bkproxyDomEvent = me._proxyDomEvent;
-                me._proxyDomEvent = function () {
-                    return false;
-                };
+                me._proxyDomEvent = function () {};
             }
 
             /* 触发事件 */
