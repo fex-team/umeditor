@@ -184,7 +184,7 @@
                             me.map.centerAndZoom(points[0], 13);
                         }
                         point = me.map.getCenter();
-                        me.marker.setPoint(point);
+                        me.marker.setPosition(point);
                     } else {
                         alert(me.lang.errorMsg);
                     }
