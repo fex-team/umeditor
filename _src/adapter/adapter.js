@@ -20,7 +20,7 @@
         registerUI: function (name, fn) {
             utils.each(name.split(/\s+/), function (uiname) {
                 _editorUI[uiname] = fn;
-            })
+            });
         },
 
         setEditor : function(editor){
@@ -43,7 +43,7 @@
             }
         },
         getWidgetData : function(name){
-            return _widgetData[name]
+            return _widgetData[name];
         },
         setWidgetBody : function(name,$widget,editor){
             if(!editor._widgetData){
@@ -56,10 +56,10 @@
                     getWidgetCallback : function(widgetName){
                         var me = this;
                         return function(){
-                            return  _widgetCallBack[widgetName].apply(me,[me,$widget].concat(Array.prototype.slice.call(arguments,0)))
-                        }
+                            return  _widgetCallBack[widgetName].apply(me,[me,$widget].concat(Array.prototype.slice.call(arguments,0)));
+                        };
                     }
-                })
+                });
 
             }
             var pro = _widgetData[name];
@@ -102,7 +102,7 @@
         },
         clearCache : function(id){
             if ( _editors[id]) {
-                delete  _editors[id]
+                delete  _editors[id];
             }
         },
         delEditor: function (id) {
@@ -131,9 +131,13 @@
                 });
                 var options = editor.options;
                 if(options.initialFrameWidth){
-                    options.minFrameWidth = options.initialFrameWidth
+                    options.minFrameWidth = options.initialFrameWidth;
                 }else{
                     options.minFrameWidth = options.initialFrameWidth = editor.$body.width() || UM.defaultWidth;
+                    var styleWidth = editor.$body[0].style.width;
+                    if(styleWidth.match(/%$/)) {
+                        options.initialFrameWidth = styleWidth;
+                    }
                 }
 
                 $container.css({
@@ -151,7 +155,7 @@
                 $.eduitooltip && $.eduitooltip('attachTo', $("[data-original-title]",$container)).css('z-index',editor.getOpt('zIndex')+1);
 
                 $container.find('a').click(function(evt){
-                    evt.preventDefault()
+                    evt.preventDefault();
                 });
 
                 editor.fireEvent("afteruiready");
@@ -212,12 +216,12 @@
                     btns.length && toolbar.appendToBtnmenu(btns);
                 });
             } else {
-                $toolbar.find('.edui-btn-toolbar').remove()
+                $toolbar.find('.edui-btn-toolbar').remove();
             }
             return $toolbar;
         }
 
-    })
+    });
 
 
 })();
