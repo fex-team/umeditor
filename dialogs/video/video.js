@@ -1,7 +1,8 @@
-
 (function(){
-    var domUtils = UM.dom.domUtils;
-    var widgetName = 'video';
+
+    var utils = UM.utils,
+        domUtils = UM.dom.domUtils,
+        widgetName = 'video';
 
     UM.registerWidget( widgetName,{
 
@@ -93,17 +94,13 @@
                 lang = me.lang,
                 conUrl = me.convert_url(url);
 
-            if (me.endWith(conUrl,[".swf",".flv",".wmv"]) || utils.trim(url) != conUrl) {
-                $("#eduiVideoPreview", me.$widget).load(function(){
-                    console.log('loaded');
-                }).html('<embed type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
-                    ' src="' + conUrl + '"' +
-                    ' width="' + 420  + '"' +
-                    ' height="' + 280  + '"' +
-                    ' wmode="transparent" play="true" loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" ></embed>');
-            } else {
-                $("#eduiVideoPreview", me.$widget).html( lang.urlError );
-            }
+            $("#eduiVideoPreview", me.$widget).html('<div class="previewMsg"><span>'+lang.urlError+'</span></div>'+
+                '<embed class="previewVideo" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
+                ' src="' + conUrl + '"' +
+                ' width="' + 420  + '"' +
+                ' height="' + 280  + '"' +
+                ' wmode="transparent" play="true" loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" >' +
+                '</embed>');
         },
         /**
          * 将单个视频信息插入编辑器中
@@ -140,6 +137,7 @@
                 .replace(/www\.56\.com\/u\d+\/v_([\w\-]+)\.html/i, "player.56.com/v_$1.swf")
                 .replace(/www.56.com\/w\d+\/play_album\-aid\-\d+_vid\-([^.]+)\.html/i, "player.56.com/v_$1.swf")
                 .replace(/v\.pps\.tv\/play_([\w]+)\.html.*$/i, "player.pps.tv/player/sid/$1/v.swf")
+                .replace(/www\.letv\.com\/ptv\/vplay\/([\d]+)\.html.*$/i, "i7.imgs.letv.com/player/swfPlayer.swf?id=$1&autoplay=0")
                 .replace(/www\.tudou\.com\/programs\/view\/([\w\-]+)\/?/i, "www.tudou.com/v/$1")
                 .replace(/v\.qq\.com\/cover\/[\w]+\/[\w]+\/([\w]+)\.html/i, "static.video.qq.com/TPout.swf?vid=$1")
                 .replace(/v\.qq\.com\/.+[\?\&]vid=([^&]+).*$/i, "static.video.qq.com/TPout.swf?vid=$1")
@@ -245,6 +243,7 @@
          * 末尾字符检测
          */
         endWith: function(str,endStrArr){
+            // str = str.replace(/\?.*$/, '');
             for(var i=0,len = endStrArr.length;i<len;i++){
                 var tmp = endStrArr[i];
                 if(str.length - tmp.length<0) return false;
