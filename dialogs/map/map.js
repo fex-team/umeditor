@@ -1,4 +1,4 @@
-(function () {
+(function(){
 
     var widgetName = 'map';
 
@@ -183,8 +183,7 @@
                         } else {
                             me.map.centerAndZoom(points[0], 13);
                         }
-                        point = me.map.getCenter();
-                        me.marker.setPoint(point);
+                        me.marker.setPosition(me.map.getCenter());
                     } else {
                         alert(me.lang.errorMsg);
                     }
