@@ -43,6 +43,7 @@ test('trace:3878:地图dialog显示',function(){
         var map_body = String($('.edui-map-city')[0].value);
         i.trigger('click');
     equal(map_body,'北京','地图dialog正常显示');
+    $(div).remove();
         start();
     }, 200);
     });

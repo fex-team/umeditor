@@ -39,6 +39,7 @@ test('trace:3886:多实例插入图片',function(){
     });
     equal($('img')[0].src,'http://img.baidu.com/hi/jx2/j_0001.gif','实例1，插入图片成功');
     equal($('img')[1].src,'http://img.baidu.com/hi/jx2/j_0002.gif','实例2，插入图片成功');
+    $(div2).remove();
 });
 
 test('trace:3941:超链接设置标题',function(){
@@ -59,9 +60,15 @@ test('trace:3881:输入空行，内容不可编辑',function(){
     var editor = te.obj[0];
     var body = editor.body;
     var range = te.obj[1];
-    editor.setContent('<p><br><br><br><p>123</p></p>');
-    var text = $('p')[1].innerHTML='456';
-    equal(text,'456','内容可编辑');
+    editor.setContent('<div><br/><br/><br/><h1>123</h1></div>');
+    var text = body.firstChild.lastChild.firstChild;
+    range.setStart(text,0).collapse(1).select();
+    editor.execCommand('formula','\\int{x}{y}');
+    editor.setDisabled();
+    var t = $('div').find('br').length;
+    equal(t,3,'不可编辑状态显示正确');
+    console.log(body.firstChild.children.length,'++++');
+    console.log(body.firstChild,'===');
 });
 
 test('trace:3880:插入公式',function(){
@@ -84,12 +91,18 @@ test('trace:3873:无序列表转换',function(){
     var text = body.firstChild.firstChild.nextSibling.firstChild;
     range.setStart(text,1).collapse(true).select();
     editor.execCommand('insertunorderedlist');
-    var text2 = body.firstChild.firstChild.firstChild;
-    range.setStart(text2,1).collapse(true).select();
-    equal(editor.queryCommandState('insertorderedlist'),true,'检测一：有序列表的某一行转无序，未影响其它行');
-    var text3 = document.getElementById('3').firstChild;
-    range.setStart(text3,1).collapse(true).select();
-    equal(editor.queryCommandState('insertorderedlist'),true,'检测二：有序列表的某一行转无序，未影响其它行');
+    var text2 = body.children;
+    if(text2.length==1){
+        console.log(text2,'----==');
+        ok(false,'列表转换失败，影响到其他行的状态');
+    }else{
+    var f = body.firstChild;
+    equal(f.tagName,'OL','检测一：有序列表的某一行转无序，未影响其它行');
+    var fff = body.firstChild.nextSibling;
+    equal(fff.tagName,'UL','检测三：有序列表的某一行转无序，未影响其它行');
+    var ff = body.lastChild;
+    equal(ff.tagName,'OL','检测二：有序列表的某一行转无序，未影响其它行');
+    }
 });
 
 test('trace:3869:多次切换源码，保留选区',function(){
