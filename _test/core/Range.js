@@ -9,6 +9,30 @@ var checkBookmark = function (bookmark, pre, latter, id) {
     equal(bookmark['id'], id, '检查id');
 };
 
+test('trace:3869:多次切换源码，保留选区',function(){
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    var range = te.obj[2];
+    editor.render(div);
+    editor.setContent('<p>This is a test word</p>');
+    var text = editor.body.firstChild.firstChild;
+    range.setStart(text,0).setEnd(text,4).select();
+    var text2 = editor.selection.getText();
+    editor.execCommand('bold');//加粗
+    editor.execCommand('italic');//字体倾斜
+    editor.execCommand('source');//切换到源码状态
+    stop();
+    setTimeout(function(){
+        editor.execCommand('source');
+        var text3 = editor.selection.getText();
+        editor.execCommand('source');//第二次切换到源码状态
+        editor.execCommand('source');//第二次从源码切换到编辑状态
+        var text4 = editor.selection.getText();
+        equal(text2,text4,'源码和编辑状态切换，保留选区');
+        start();
+    },100);
+});
+
 test('init', function () {
     expect(6);
     var div = te.dom[2];
