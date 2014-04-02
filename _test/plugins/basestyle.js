@@ -15,6 +15,106 @@ module( "plugins.basestyle" );
 ////    equal( ua.getChildHTML( body.firstChild ), "aa<strong>hello</strong>ssss", "新文本节点没有加粗" );
 //} );
 
+
+test('trace:3886:多实例插入图片',function(){
+    var editor = te.obj[0];
+    var body = editor.body;
+    var range = te.obj[1];
+    editor.setContent("<p>123</p>");
+    var text = body.firstChild.firstChild;
+    range.setStart(text,'0').collapse(true).select();
+    var div2 = document.body.appendChild(document.createElement('div'));
+    $(div2).css('width', '500px').css('height', '200px').css('border', '1px solid #ccc');
+    div2.id = 'testDefault2';
+    te.obj[2].render(div2);
+    editor.execCommand('insertimage',{
+        src:'http://img.baidu.com/hi/jx2/j_0001.gif',
+        width:50,
+        height:52
+    });
+    te.obj[2].execCommand('insertimage',{
+        src:'http://img.baidu.com/hi/jx2/j_0002.gif',
+        width:50,
+        height:52
+    });
+    equal($('img')[0].src,'http://img.baidu.com/hi/jx2/j_0001.gif','实例1，插入图片成功');
+    equal($('img')[1].src,'http://img.baidu.com/hi/jx2/j_0002.gif','实例2，插入图片成功');
+});
+
+test('trace:3941:超链接设置标题',function(){
+    var editor = te.obj[0];
+    var body = editor.body;
+    var range = te.obj[1];
+    editor.setContent('<p id="my">university</p>');
+    var text = body.firstChild.firstChild;
+    range.setStart(text,0).setEnd(text,10).select();
+    editor.execCommand('link',{
+        url:'www.baidu.com',
+        title:'myUniversity'});
+    var title = $('a').attr('title');
+    equal(title,'myUniversity','设置超链接标题');
+});
+
+test('trace:3881:输入空行，内容不可编辑',function(){
+    var editor = te.obj[0];
+    var body = editor.body;
+    var range = te.obj[1];
+    editor.setContent('<p><br><br><br><p>123</p></p>');
+    var text = $('p')[1].innerHTML='456';
+    equal(text,'456','内容可编辑');
+});
+
+test('trace:3880:插入公式',function(){
+    var editor = te.obj[0];
+    var body = editor.body;
+    var range = te.obj[1];
+    editor.setContent('<ol><li>x</li><li>hello2</li><li id="3">hello3</li></ol>');
+    var text = body.firstChild.firstChild.firstChild;
+    range.setStart(text,0).collapse(true).select();
+    editor.execCommand('formula','\\int{x}{y}');
+    var text3 = $(".mathquill-embedded-latex").attr("data-latex");
+    equal(text3,'\\int{x}{y}','公式插入成功');
+});
+
+test('trace:3873:无序列表转换',function(){
+    var editor = te.obj[0];
+    var body = editor.body;
+    var range = te.obj[1];
+    editor.setContent('<ol><li>hello1</li><li>hello2</li><li id="3">hello3</li></ol>');
+    var text = body.firstChild.firstChild.nextSibling.firstChild;
+    range.setStart(text,1).collapse(true).select();
+    editor.execCommand('insertunorderedlist');
+    var text2 = body.firstChild.firstChild.firstChild;
+    range.setStart(text2,1).collapse(true).select();
+    equal(editor.queryCommandState('insertorderedlist'),true,'检测一：有序列表的某一行转无序，未影响其它行');
+    var text3 = document.getElementById('3').firstChild;
+    range.setStart(text3,1).collapse(true).select();
+    equal(editor.queryCommandState('insertorderedlist'),true,'检测二：有序列表的某一行转无序，未影响其它行');
+});
+
+test('trace:3869:多次切换源码，保留选区',function(){
+    var editor = te.obj[0];
+    var body = editor.body;
+    var range = te.obj[1];
+    editor.setContent('<p>This is a test word</p>');
+    var text = body.firstChild.firstChild;
+    range.setStart(text,0).setEnd(text,4).select();
+    var text2 = editor.selection.getText();
+    editor.execCommand('bold');//加粗
+    editor.execCommand('italic');//字体倾斜
+    editor.execCommand('source');//切换到源码状态
+    stop();
+    setTimeout(function(){
+        editor.execCommand('source');
+        var text3 = editor.selection.getText();
+        editor.execCommand('source');//第二次切换到源码状态
+        editor.execCommand('source');//第二次从源码切换到编辑状态
+        var text4 = editor.selection.getText();
+        equal(text2,text4,'源码和编辑状态切换，保留选区');
+        start();
+    },100);
+});
+
 test('removeformat-清除格式',function(){
     var editor = te.obj[0];
     var body = editor.body;
@@ -33,6 +133,7 @@ test('removeformat-清除格式',function(){
     }
     equal( ua.getChildHTML(tttt),tar,'闭合光标，清除格式');
 });
+
 test( 'trace:3940:bold-加粗图标状态',function(){
     var editor = te.obj[0];
     var body = editor.body;
@@ -52,6 +153,7 @@ test( 'trace:3940:bold-加粗图标状态',function(){
     editor.execCommand('bold');//第二次加粗
     equal(editor.queryCommandState( 'bold' ), 0,'不闭合选择,取消加粗高亮' );
 });
+
 test( 'bold-加粗状态反射', function () {
     var editor = te.obj[0];
     var body = editor.body;
