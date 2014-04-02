@@ -73,5 +73,4 @@ UMeditor官网: [http://ueditor.baidu.com](http://ueditor.baidu.com/website/umed
 百度FEX-Team: [http://fex.baidu.com](http://fex.baidu.com "umeditor github 地址")
 
 ## 联系我们 ##
-
 邮件: [ueditor@baidu.com](mailto://email:ueditor@baidu.com "发邮件给百度f3开发组")
