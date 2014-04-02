@@ -67,8 +67,6 @@ test('trace:3881:输入空行，内容不可编辑',function(){
     editor.setDisabled();
     var t = $('div').find('br').length;
     equal(t,3,'不可编辑状态显示正确');
-    console.log(body.firstChild.children.length,'++++');
-    console.log(body.firstChild,'===');
 });
 
 test('trace:3880:插入公式',function(){
@@ -93,7 +91,6 @@ test('trace:3873:无序列表转换',function(){
     editor.execCommand('insertunorderedlist');
     var text2 = body.children;
     if(text2.length==1){
-        console.log(text2,'----==');
         ok(false,'列表转换失败，影响到其他行的状态');
     }else{
     var f = body.firstChild;
