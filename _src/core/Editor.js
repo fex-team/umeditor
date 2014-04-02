@@ -252,10 +252,6 @@
                 }else{
                     //都没给值，先写死了
                     options.minFrameWidth = options.initialFrameWidth = $(container).width() || UM.defaultWidth;
-                    var styleWidth = this.$body[0].style.width;
-                    if(styleWidth.match(/%$/)) {
-                        options.initialFrameWidth = styleWidth;
-                    }
                 }
                 if(options.initialFrameHeight){
                     options.minFrameHeight = options.initialFrameHeight;
