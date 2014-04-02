@@ -1,4 +1,4 @@
-UM.registerUI('link image video map formula',function(name){
+UM.registerUI('link image video map',function(name){
 
     var me = this, currentRange, $dialog,
         opt = {
@@ -26,8 +26,8 @@ UM.registerUI('link image video map formula',function(name){
                 opt.oklabel = ok.label || me.getLang('ok');
                 if(ok.exec){
                     opt.okFn = function(){
-                        return $.proxy(ok.exec,null,me,$dialog)()
-                    }
+                        return $.proxy(ok.exec,null,me,$dialog)();
+                    };
                 }
             }
             var cancel = data.buttons.cancel;
@@ -35,8 +35,8 @@ UM.registerUI('link image video map formula',function(name){
                 opt.cancellabel = cancel.label || me.getLang('cancel');
                 if(cancel.exec){
                     opt.cancelFn = function(){
-                        return $.proxy(cancel.exec,null,me,$dialog)()
-                    }
+                        return $.proxy(cancel.exec,null,me,$dialog)();
+                    };
                 }
             }
         }
@@ -51,7 +51,7 @@ UM.registerUI('link image video map formula',function(name){
         $dialog.edui().on('beforehide',function () {
             var rng = me.selection.getRange();
             if (rng.equals(currentRange)) {
-                rng.select()
+                rng.select();
             }
         }).on('beforeshow', function () {
                 var $root = this.root(),
@@ -81,21 +81,19 @@ UM.registerUI('link image video map formula',function(name){
                 UM.setWidgetBody(name,$dialog,me);
                 UM.setTopEditor(me);
         }).on('afterbackdrop',function(){
-            this.$backdrop.css('zIndex',me.getOpt('zIndex')+1).appendTo(me.$container.find('.edui-dialog-container'))
-            $dialog.css('zIndex',me.getOpt('zIndex')+2)
+            this.$backdrop.css('zIndex',me.getOpt('zIndex')+1).appendTo(me.$container.find('.edui-dialog-container'));
+            $dialog.css('zIndex',me.getOpt('zIndex')+2);
         }).on('beforeok',function(){
             try{
-                currentRange.select()
+                currentRange.select();
             }catch(e){}
-        }).attachTo($btn)
+        }).attachTo($btn);
     });
-
-
 
 
     me.addListener('selectionchange', function () {
         var state = this.queryCommandState(name);
-        $btn.edui().disabled(state == -1).active(state == 1)
+        $btn.edui().disabled(state == -1).active(state == 1);
     });
     return $btn;
 });

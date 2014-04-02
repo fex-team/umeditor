@@ -85,7 +85,7 @@
                 var me = this,
                     labelClass = "."+labelClassName;
 
-                me.root().delegate('.' + itemClassName, 'click', function(){
+                me.root().delegate('.' + itemClassName, 'click', function(evt){
 
                     var $li = $(this),
                         index = $li.attr('data-item-index');
@@ -98,7 +98,7 @@
 
                     me.hide();
 
-                    return false;
+                    evt.preventDefault();
 
                 });
 

@@ -42,20 +42,29 @@ UM.plugins['basestyle'] = function(){
     $.each(basestyles,function(i,cmd){
         me.commands[cmd] = {
             execCommand : function( cmdName ) {
-                var rng = this.selection.getRange();
-                if(rng.collapsed && this.queryCommandState(cmdName) != 1){
-                    var node = this.document.createElement({
-                        'bold':'strong',
-                        'underline':'u',
-                        'superscript':'sup',
-                        'subscript':'sub',
-                        'italic':'em',
-                        'strikethrough':'strike'
-                    }[cmdName]);
-                    rng.insertNode(node).setStart(node,0).setCursor(false);
-                    return true;
+                var node, rng = this.selection.getRange();
+                if(rng.collapsed) {
+                    if (this.queryCommandState(cmdName) == 1) {
+                        node = this.document.createElement('span');
+                        node.appendChild(this.document.createTextNode(domUtils.fillChar));
+                        rng.insertNode(node);
+                        rng.selectNode(node).select();
+                        this.document.execCommand(cmdName);
+                        return true;
+                    } else if (this.queryCommandState(cmdName) != 1) {
+                        node = this.document.createElement({
+                            'bold':'strong',
+                            'underline':'u',
+                            'superscript':'sup',
+                            'subscript':'sub',
+                            'italic':'em',
+                            'strikethrough':'strike'
+                        }[cmdName]);
+                        rng.insertNode(node).setStart(node,0).setCursor(false);
+                        return true;
+                    }
                 }else{
-                    return this.document.execCommand(cmdName)
+                    return this.document.execCommand(cmdName);
                 }
 
             },
@@ -103,7 +112,7 @@ UM.plugins['basestyle'] = function(){
                             }
                             break;
                     }
-                })
+                });
                 return result
             }
         };
