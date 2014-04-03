@@ -1,5 +1,19 @@
 module( "plugins.link" );
 
+test('trace:3941:超链接设置标题',function(){
+    var editor = te.obj[0];
+    var body = editor.body;
+    var range = te.obj[1];
+    editor.setContent('<p id="my">university</p>');
+    var text = body.firstChild.firstChild;
+    range.setStart(text,0).setEnd(text,10).select();
+    editor.execCommand('link',{
+        url:'www.baidu.com',
+        title:'myUniversity'});
+    var title = $('a').attr('title');
+    equal(title,'myUniversity','设置超链接标题');
+});
+
 /*trace 879*/
 test( '同时去多个超链接', function () {
     var editor = te.obj[0];

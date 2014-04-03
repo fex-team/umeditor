@@ -39,3 +39,15 @@ test( '更新公式', function () {
     }, 200);
     stop();
 } );
+
+test('trace:3880:插入公式',function(){
+    var editor = te.obj[0];
+    var body = editor.body;
+    var range = te.obj[1];
+    editor.setContent('<ol><li>x</li><li>hello2</li><li id="3">hello3</li></ol>');
+    var text = body.firstChild.firstChild.firstChild;
+    range.setStart(text,0).collapse(true).select();
+    editor.execCommand('formula','\\int{x}{y}');
+    var text3 = $(".mathquill-embedded-latex").attr("data-latex");
+    equal(text3,'\\int{x}{y}','公式插入成功');
+});

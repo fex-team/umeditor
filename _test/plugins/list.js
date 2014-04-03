@@ -11,6 +11,26 @@ module("plugins.list");
  *
  * */
 
+test('trace:3873:无序列表转换',function(){
+    var editor = te.obj[0];
+    var body = editor.body;
+    var range = te.obj[1];
+    editor.setContent('<ol><li>hello1</li><li>hello2</li><li id="3">hello3</li></ol>');
+    var text = body.firstChild.firstChild.nextSibling.firstChild;
+    range.setStart(text,1).collapse(true).select();
+    editor.execCommand('insertunorderedlist');
+    var text2 = body.children;
+    if(text2.length==1){
+        ok(false,'列表转换失败，影响到其他行的状态');
+    }else{
+        var f = body.firstChild;
+        equal(f.tagName,'OL','检测一：有序列表的某一行转无序，未影响其它行');
+        var fff = body.firstChild.nextSibling;
+        equal(fff.tagName,'UL','检测三：有序列表的某一行转无序，未影响其它行');
+        var ff = body.lastChild;
+        equal(ff.tagName,'OL','检测二：有序列表的某一行转无序，未影响其它行');
+    }
+});
 
 test('列表复制粘贴', function () {
     var div = document.body.appendChild(document.createElement('div'));
