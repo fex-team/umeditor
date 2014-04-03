@@ -1,5 +1,24 @@
 module( "plugins.removeformat" );
 
+test('removeformat-清除格式',function(){
+    var editor = te.obj[0];
+    var body = editor.body;
+    var range = te.obj[1];
+    editor.setContent( '<table><tbody><tr><td><b>hello1</b></td><td ></td></tr><tr><td >hello2</td><td ></td></tr></tbody></table>' );
+    var tttt = body.firstChild.firstChild.firstChild.firstChild;
+    range.selectNode(tttt).select();
+    editor.execCommand('removeformat');//清除格式
+    equal( ua.getChildHTML( tttt ), 'hello1' ,'不闭合光标，清除格式');//不闭合光标
+    editor.execCommand('bold');
+    range.setStart(tttt,0).collapse(true).select(); //闭合光标
+    editor.execCommand('removeformat');//清除格式
+    var tar='<b>hello1</b>';
+    if(ua.browser.ie){
+        tar = '<strong>hello1</strong>';
+    }
+    equal( ua.getChildHTML(tttt),tar,'闭合光标，清除格式');
+});
+
 /*trace 3570*/
 test( 'trace 3570:对包含超链接的文本清除样式', function () {
     if(ua.browser.gecko||ua.browser.ie)return;//todo trace 3570

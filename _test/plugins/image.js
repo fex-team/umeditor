@@ -5,6 +5,32 @@ module( 'plugins.image' );
  * 选区闭合和不闭合
  * 表格中插入图像
  */
+test('trace:3886:多实例插入图片',function(){
+    var editor = te.obj[0];
+    var body = editor.body;
+    var range = te.obj[1];
+    editor.setContent("<p>123</p>");
+    var text = body.firstChild.firstChild;
+    range.setStart(text,'0').collapse(true).select();
+    var div2 = document.body.appendChild(document.createElement('div'));
+    $(div2).css('width', '500px').css('height', '200px').css('border', '1px solid #ccc');
+    div2.id = 'testDefault2';
+    te.obj[2].render(div2);
+    editor.execCommand('insertimage',{
+        src:'http://img.baidu.com/hi/jx2/j_0001.gif',
+        width:50,
+        height:52
+    });
+    te.obj[2].execCommand('insertimage',{
+        src:'http://img.baidu.com/hi/jx2/j_0002.gif',
+        width:50,
+        height:52
+    });
+    equal($('img')[0].src,'http://img.baidu.com/hi/jx2/j_0001.gif','实例1，插入图片成功');
+    equal($('img')[1].src,'http://img.baidu.com/hi/jx2/j_0002.gif','实例2，插入图片成功');
+    $(div2).remove();
+});
+
 test( '插入新图像', function () {
     var editor = te.obj[0];
     var range = te.obj[1];
