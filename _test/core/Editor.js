@@ -440,11 +440,11 @@ test("focus(true)", function () {
         editor.setContent("<p>hello1</p><p>hello2</p>");
         editor.focus(true);
         var rng = editor.selection.getRange();
-        var start = rng.startContainer;
-        if(start.nodeName == 'P' && rng.startOffset == start.childNodes.length){
-            if(start = start.lastChild){
-                if(start.nodeType == 3){
-                    rng.setStartAtLast(start).collapse(true);
+        var startNode = rng.startContainer;
+        if(startNode.nodeName == 'P' && rng.startOffset == startNode.childNodes.length){
+            if(startNode = startNode.lastChild){
+                if(startNode.nodeType == 3){
+                    rng.setStartAtLast(startNode).collapse(true);
                 }
             }
         }
