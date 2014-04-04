@@ -12,6 +12,7 @@ module("plugins.list");
  * */
 
 test('trace:3873:无序列表转换',function(){
+    if(ua.browser.ie)return;
     var editor = te.obj[0];
     var body = editor.body;
     var range = te.obj[1];

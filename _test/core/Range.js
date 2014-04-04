@@ -10,6 +10,9 @@ var checkBookmark = function (bookmark, pre, latter, id) {
 };
 
 test('trace:3869:多次切换源码，保留选区',function(){
+    if(UM.browser.ie){
+        if(UM.browser.version==11)return;
+    }
     var editor = te.obj[1];
     var div = te.dom[0];
     var range = te.obj[2];
