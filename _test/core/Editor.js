@@ -27,6 +27,19 @@ var pluginsList = {
 //    'inserthtml':['inserthtml'],
 };
 
+test('trace:3881:输入空行，内容不可编辑',function(){
+    var editor = te.obj[1];
+    var div = te.dom[0];
+    var range = te.obj[2];
+    editor.render(div);
+    editor.setContent('<div><br/><br/><br/><p>123</p></div>');
+    var node = editor.body.getElementsByTagName('p')[0];
+    range.selectNode(node).select();
+    editor.execCommand('formula','\\int{x}{y}');
+    var t = $('div').find('br').length;
+    equal(t,3,'不可编辑状态显示正确');
+});
+
 test('某一个插件不加载', function () {
     if(ua.browser.ie)return;
     var i = 0;
