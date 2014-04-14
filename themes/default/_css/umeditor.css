@@ -1,4 +1,5 @@
 @import "editor.css";
+@import "reset.css";
 @import "button.css";
 @import "buttonicon.css";
 @import "splitbutton.css";
@@ -10,4 +11,5 @@
 @import "tab.css";
 @import "tooltip.css";
 @import "colorpicker.css";
+@import "imagescale.css";
 @import "separator.css";
