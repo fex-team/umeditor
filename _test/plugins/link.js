@@ -1,4 +1,26 @@
 module( "plugins.link" );
+test("覆盖UM.plugins['link']",function(){
+    if(!ua.browser.ie)return;
+    var editor = te.obj[0];
+    var body = editor.body;
+    var range = te.obj[1];
+    editor.setContent("<p id='name'>http://www.baidu.com</p>");
+    var text = body.firstChild.firstChild;
+    range.setStart(text,20).collapse(1).select();
+    ua.keydown(editor.body,{'keyCode':13});
+    ua.keyup(editor.body,{'keyCode':13});
+    var a =  body.firstChild.innerHTML;
+    a = a.substring(0,20);
+    equal(a,"http://www.baidu.com",'keyCode:13正常');
+    editor.setContent("<p>http://www.baidu.com</p>");
+    var text2 = body.firstChild.firstChild;
+    range.setStart(text2,20).collapse(1).select();
+    ua.keydown(editor.body,{'keyCode':32});
+    ua.keyup(editor.body,{'keyCode':32});
+    var b = body.firstChild.innerText;
+    b= b.substring(0,20);
+    equal(b,'http://www.baidu.com','keyCode:32正常');
+});
 
 test('trace:3941:超链接设置标题',function(){
     var editor = te.obj[0];

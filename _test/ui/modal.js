@@ -63,3 +63,18 @@ test( 'modal--显示 隐藏', function() {
         start();
     });
 } );
+
+test('覆盖ok',function(){
+    var div = document.body.appendChild( document.createElement( 'div' ) );
+    $(div).attr('id','test');
+        var $dialog=$.eduimodal({
+            width: 300,
+            height: 400
+        }).appendTo(div);
+        $dialog.edui().toggle();
+        $dialog.edui().ok();
+        var ishide=($dialog.css('display')=="none");
+        equal(ishide,true,'检查dialog是否隐藏');
+        div.parentNode.removeChild(div);
+
+});
