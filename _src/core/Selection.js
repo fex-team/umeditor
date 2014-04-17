@@ -145,7 +145,7 @@
             }else{
                 rng = _getIERange(this);
             }
-            return this.rangeInBody(rng);
+            return rng && this.rangeInBody(rng);
         },
         /**
          * 获取原生seleciton对象
@@ -179,7 +179,7 @@
             return ieRange;
         },
         rangeInBody : function(rng,txtRange){
-            var node = browser.ie9below || txtRange ? rng.item ? rng.item() : rng.parentElement() : rng.startContainer;
+            var node = browser.ie9below || txtRange ? rng && rng.item ? rng.item() : rng.parentElement() : rng.startContainer;
 
             return node === this.body || domUtils.inDoc(node,this.body);
         },
