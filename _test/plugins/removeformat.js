@@ -36,7 +36,7 @@ test( 'trace 3612 清除超链接的颜色', function () {
     $( div ).css( 'width', '500px' ).css( 'height', '500px' ).css( 'border', '1px solid #ccc' );
     editor.render(div);
     stop();
-    setTimeout(function(){
+    editor.ready(function(){
         var range = new UM.dom.Range( te.obj[2].document,te.obj[2].body );
         editor.setContent('<a href="http://www.baidu.com/">baidu</a>');
         range.selectNode(editor.body.firstChild).select();
@@ -58,7 +58,7 @@ test( 'trace 3612 清除超链接的颜色', function () {
         equal(ua.getChildHTML(editor.body),html,'查看清除样式后超链接的样式');
         div.parentNode.removeChild(div);
         start();
-    },500);
+    });
 } );
 
 test( 'trace 3605 3624 清除样式的区域有多个inline元素嵌套', function () {
