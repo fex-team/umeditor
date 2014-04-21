@@ -3,6 +3,67 @@ module( 'core.domUtils' );
 //test('', function () {
 //    stop()
 //});
+
+test('覆盖getElementsByTagName',function(){
+    var div = te.dom[2];
+    div.innerHTML = "<table id='table'><tbody id='tbody'><tr id='1'><td><p>name</p></td></tr><tr id='2'><td>id</td></tr></tbody></table><p class='lm'>wang</p>";
+    var num = UM.dom.domUtils.getElementsByTagName(div,'p','lm').length;
+    equal(num,1,'筛选成功');
+});
+
+test('覆盖removeStyle',function(){
+    var flag = false;
+    var div = te.dom[2];
+    div.innerHTML = "<div><span id='test' style='color: red; background: blue;'>123</span></div>";
+    var node = div.firstChild.firstChild;
+    UM.dom.domUtils.removeStyle(node,'COLOR');
+    if(div.innerHTML.indexOf('red')<0){
+        flag = true;
+    }
+    ok(flag,'成功删除样式1');
+    div.innerHTML = "<span id='test' style='color: red; background: blue;'>123</span>";
+    var flag2 = false;
+    var node2 = div.firstChild
+    UM.dom.domUtils.removeStyle(node2,'background');
+    if(div.innerHTML.indexOf('blue')<0){
+        flag2 = true;
+    }
+    ok(flag,'成功删除样式2');
+});
+
+test('覆盖getCommonAncestor',function(){
+    var editor2 = new UM.Editor({'UEDITOR_HOME_URL':'../../../', 'autoFloatEnabled':true,webAppKey:'Qr0M9yTEoLIiUSXXQTtq7yFt'});
+    var div2 = document.body.appendChild(document.createElement('div'));
+    $(div2).css('width', '500px').css('height', '500px').css('border', '1px solid #ccc');
+    editor2.render(div2);
+    div2.innerHTML="<p id='a'>123</p>";
+    var node4 = div2.firstChild;
+    var div = te.dom[2];
+    var editor = te.dom[4];
+    div.innerHTML = "<table id='table'><tbody id='tbody'><tr id='1'><td>name</td></tr><tr id='2'><td>id</td></tr></tbody></table><p>wang</p>";
+    var node1 = div.firstChild.firstChild.firstChild;
+    var node2 = div.firstChild.firstChild.lastChild.firstChild;
+    var result = UM.dom.domUtils.getCommonAncestor(node1,node2);
+    equal(result.id,'tbody','两个不同的孩子节点成功找到父亲节点');
+    var node3 = div.firstChild.firstChild.firstChild;
+    var result2 = UM.dom.domUtils.getCommonAncestor(node3,node3);
+    equal(result2.id,1,'两个相同的节点返回该节点本身');
+    stop();
+    var div = te.dom[2];
+    div.innerHTML = "<span>span</span><img  /><b>bbb</b>xxx";
+    var iframe = te.dom[1];
+    setTimeout( function() {
+        var frame_doc = iframe.contentWindow.document || iframe.contentDocument;
+        var frame_div = frame_doc.createElement( 'div' );
+        frame_doc.body.appendChild( frame_div );
+        var domUtils = te.obj[3];
+        /*A和B在不同dom树上*/
+        var result3 = UM.dom.domUtils.getCommonAncestor(div,frame_div);
+        equal(result3,null,'两个不同同一棵树上的节点返回null');
+        start();
+    }, 50 );
+});
+
 test( 'getPosition--A和B是同一个节点', function() {
     var div = te.dom[2];
     div.innerHTML = "<span>span</span><img  /><b>bbb</b>xxx";
