@@ -79,7 +79,7 @@ class Kiss
     {
 
         print '<script type="text/javascript" src="js/jquery.js"></script>' . "\n";
-        print '<script type="text/javascript" src="js/tangram.js"></script>' . "\n";
+//        print '<script type="text/javascript" src="js/tangram.js"></script>' . "\n";
         print '<script type="text/javascript" src="js/testrunner.js"></script>' . "\n";
         print '<script type="text/javascript" src="js/ext_qunit.js"></script>' . "\n";
         print '<script type="text/javascript" src="js/UserAction.js"></script>' . "\n";

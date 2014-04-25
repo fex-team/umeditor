@@ -46,54 +46,65 @@ UM.plugins['font'] = function () {
         'fontsize': [10, 12,  16, 18,24, 32,48]
     });
 
-    me.addOutputRule(function (root) {
-        utils.each(root.getNodesByTagName('font'), function (node) {
-            if (node.tagName == 'font') {
-                var cssStyle = [];
-                for (var p in node.attrs) {
-                    switch (p) {
-                        case 'size':
-                            var val =  node.attrs[p];
-                            $.each({
-                                '10':'1',
-                                '12':'2',
-                                '16':'3',
-                                '18':'4',
-                                '24':'5',
-                                '32':'6',
-                                '48':'7'
-                            },function(k,v){
-                                if(v == val){
-                                    val = k;
-                                    return false;
-                                }
-                            });
-                            cssStyle.push('font-size:' + val + 'px');
-                            break;
-                        case 'color':
-                            cssStyle.push('color:' + node.attrs[p]);
-                            break;
-                        case 'face':
-                            cssStyle.push('font-family:' + node.attrs[p]);
-                            break;
-                        case 'style':
-                            cssStyle.push(node.attrs[p]);
-                    }
+    function font2span(node){
+        if (node.tagName == 'font') {
+            var cssStyle = [];
+            for (var p in node.attrs) {
+                switch (p) {
+                    case 'size':
+                        var val =  node.attrs[p];
+                        $.each({
+                            '10':'1',
+                            '12':'2',
+                            '16':'3',
+                            '18':'4',
+                            '24':'5',
+                            '32':'6',
+                            '48':'7'
+                        },function(k,v){
+                            if(v == val){
+                                val = k;
+                                return false;
+                            }
+                        });
+                        cssStyle.push('font-size:' + val + 'px');
+                        break;
+                    case 'color':
+                        cssStyle.push('color:' + node.attrs[p]);
+                        break;
+                    case 'face':
+                        cssStyle.push('font-family:' + node.attrs[p]);
+                        break;
+                    case 'style':
+                        cssStyle.push(node.attrs[p]);
                 }
-                node.attrs = {
-                    'style': cssStyle.join(';')
-                };
             }
-            node.tagName = 'span';
-            if(node.parentNode.tagName == 'span' && node.parentNode.children.length == 1){
-                $.each(node.attrs,function(k,v){
+            node.attrs = {
+                'style': cssStyle.join(';')
+            };
+        }
+        node.tagName = 'span';
+        if(node.parentNode.tagName == 'span' && node.parentNode.children.length == 1){
+            $.each(node.attrs,function(k,v){
 
-                    node.parentNode.attrs[k] = k == 'style' ? node.parentNode.attrs[k] + v : v;
-                })
-                node.parentNode.removeChild(node,true);
-            }
+                node.parentNode.attrs[k] = k == 'style' ? node.parentNode.attrs[k] + v : v;
+            });
+            node.parentNode.removeChild(node,true);
+        }
+    }
+
+    me.addInputRule(function (root) {
+        utils.each(root.getNodesByTagName('font'), function (node) {
+            font2span(node);
         });
     });
+
+    me.addOutputRule(function (root) {
+        utils.each(root.getNodesByTagName('font'), function (node) {
+            font2span(node);
+        });
+    });
+
     for(var p in fonts){
         (function (cmd) {
             me.commands[cmd] = {
@@ -103,11 +114,12 @@ UM.plugins['font'] = function () {
                     }
                     var rng = this.selection.getRange();
                     if(rng.collapsed){
-                        var span = $('<span></span>').css(cmdNameToStyle[cmdName],value)[0];
+                        var span = $('<span></span>').css(cmdNameToStyle[cmdName],size)[0];
                         rng.insertNode(span).setStart(span,0).setCursor();
                     }else{
                         if(cmdName == 'fontsize'){
-                            value  = {
+                            /* fontsize额外处理 */
+                            var size  = {
                                 '10':'1',
                                 '12':'2',
                                 '16':'3',
@@ -115,9 +127,16 @@ UM.plugins['font'] = function () {
                                 '24':'5',
                                 '32':'6',
                                 '48':'7'
-                            }[(value+"").replace(/px/,'')]
+                            }[(value+"").replace(/px/,'')] || 1;
+
+                            this.document.execCommand(fonts[cmdName],false, size);
+                            $('font[size=' + size + ']', this.body).attr('size', null).css('font-size', value + 'px');
+
+                        } else {
+                            this.document.execCommand(fonts[cmdName],false, value);
                         }
-                        this.document.execCommand(fonts[cmdName],false, value);
+
+
                         if(browser.gecko){
                             $.each(this.$body.find('a'),function(i,a){
                                 var parent = a.parentNode;
@@ -155,6 +174,10 @@ UM.plugins['font'] = function () {
                     var val = $(start).css(cmdNameToStyle[cmdName]);
                     if(val === undefined){
                         val = $(start).attr(cmdNameToAttr[cmdName])
+                    }
+
+                    if(val.indexOf('px') != -1 && start.indexOf('px') != -1 && start.style.fontSize != val) {
+                        val = start.style.fontSize;
                     }
                     return val ? utils.fixColor(cmdName,val).replace(/px/,'') : '';
                 },
