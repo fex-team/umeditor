@@ -206,7 +206,8 @@
                 }
 
                 $('<iframe name="up"  style="display: none"></iframe>').insertBefore(me.dialog).on('load', function(){
-                    var r = this.contentWindow.document.body.innerHTML;
+                    var body = (this.contentDocument || this.contentWindow.document).body,
+                        r = body.innerText || body.textContent || '';
                     if(r == '')return;
                     me.uploadComplete(r);
                     $(this).unbind('load');
