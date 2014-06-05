@@ -370,20 +370,21 @@ test( 'split--offset=data.length', function() {
 } );
 
 /*求相对视窗的位置而不是实际位置*/
-//test( 'getXY', function() {
-//    var div = te.dom[2];
-//    var domUtils = te.obj[3];
-//    equal( domUtils.getXY( div )['x'], ua.findPosition( div )[0] - document.documentElement.scrollLeft, 'check X' );
-//    equal( domUtils.getXY( div )['y'], ua.findPosition( div )[1] - document.documentElement.scrollTop, 'check Y' );
-//
-//} );
+test( 'getXY', function() {
+    var div = te.dom[2];
+    var domUtils = te.obj[3];
+    equal( domUtils.getXY( div )['x'], ua.findPosition( div )[0] - document.documentElement.scrollLeft, 'check X' );
+    equal( domUtils.getXY( div )['y'], ua.findPosition( div )[1] - document.documentElement.scrollTop, 'check Y' );
 
-//
+} );
+
+
 //test( 'on--跨iframe加载', function() {
 //    expect( 1 );
 //    var domUtils = te.obj[3];
 //    var op = {
 //        onafterstart : function( f ) {
+//            debugger
 //            domUtils.on( f, 'load', function() {
 //                ok( true, 'on load of iframe success' );
 //            } );
@@ -392,9 +393,10 @@ test( 'split--offset=data.length', function() {
 //            this.finish();
 //        }
 //    };
+//
 //    ua.frameExt( op );
 //} );
-//
+
 
 //test( 'on- 给不同的dom元素绑定相同的事件', function() {
 //    var domUtils = te.obj[3];
@@ -403,6 +405,7 @@ test( 'split--offset=data.length', function() {
 //    div2.id = 'test2';
 //    te.dom.push( div2 );
 //    var handle = function( e ) {
+//        debugger
 //        ok( true, e.type + ' event triggered' );
 //    };
 //    domUtils.on( te.dom[2], 'mouseover', handle);
@@ -452,7 +455,7 @@ test( 'split--offset=data.length', function() {
 //    div.appendChild( document.createElement( 'div' ) );
 //    div.appendChild( document.createElement( 'div' ) );
 //} );
-//
+
 //test( "un--取消注册unload事件", function() {
 //    expect( 1 );
 //    var domUtils = te.obj[3];
