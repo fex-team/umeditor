@@ -141,9 +141,8 @@
         uploadTpl: '<div class="edui-image-upload%%">' +
             '<span class="edui-image-icon"></span>' +
             '<form class="edui-image-form" method="post" enctype="multipart/form-data" target="up">' +
-            '<input style=\"filter: alpha(opacity=0);\" class="edui-image-file" type="file" hidefocus name="upfile" accept="image/gif,image/jpeg,image/png,image/jpg,image/bmp"/>' +
+            '<input style=\"filter: alpha(opacity=0);\" class="edui-image-file" type="file" hidefocus name="%fieldName%" accept="image/gif,image/jpeg,image/png,image/jpg,image/bmp"/>' +
             '</form>' +
-
             '</div>',
         init: function (editor, $w) {
             var me = this;
@@ -169,7 +168,7 @@
         render: function (sel, t) {
             var me = this;
 
-            $(sel, me.dialog).append($(me.uploadTpl.replace(/%%/g, t)));
+            $(sel, me.dialog).append($(me.uploadTpl.replace(/%fieldName%/, me.editor.getOpt('imageFieldName')).replace(/%%/g, t)));
 
             return me;
         },
