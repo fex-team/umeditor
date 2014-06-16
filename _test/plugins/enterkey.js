@@ -9,15 +9,15 @@ test( 'chrome删除div', function () {
         editor.body.innerHTML = '<h1>一级标题</h1><div><br/></div>';
         range.setStart( body.firstChild.firstChild, 4 ).collapse( 1 ).select();
         ua.keydown(editor.body,{'keyCode':13});
+        ua.keyup(editor.body,{'keyCode':13});
         range.selectNode(body.lastChild).select();
         var index = editor.undoManger.index;
         var br = ua.browser.ie ? '' : '<br>';
-        ua.keyup(editor.body,{'keyCode':13});
-        equal(editor.undoManger.list.length,2,'保存现场');
+        equal(editor.undoManger.list.length,1,'保存现场');
         setTimeout( function () {
             equal( body.childNodes.length, 2, '2个子节点' );
-            equal(body.lastChild.tagName.toLowerCase(),'p','div转成p');
-            equal(ua.getChildHTML(body),'<h1>一级标题</h1><p><br></p>','检查内容');
+            equal(body.lastChild.tagName.toLowerCase(),'div','div转成p');
+            equal(ua.getChildHTML(body),'<h1>一级标题</h1><div><br></div>','检查内容');
             start();
         }, 60 );
         stop();

@@ -34,7 +34,7 @@ test('设定range，切源码再切回来',function(){//trace 3647
         editor.execCommand('source');
         setTimeout(function () {
             editor.execCommand('source');
-            if (ua.browser.gecko) {//todo range 判断
+            if (ua.browser.gecko||ua.browser.chrome) {//todo range 判断
                 ua.checkResult(editor.selection.getRange(), editor.body, editor.body, 0, 1, false, '选区不变');
             } else {
                 ua.checkResult(editor.selection.getRange(), editor.body.firstChild.firstChild, editor.body.firstChild.firstChild, 0, 12, false, '选区不变');
