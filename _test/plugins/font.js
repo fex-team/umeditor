@@ -357,21 +357,21 @@ test('预先设置字体颜色，再输入文本，查看文本颜色', function
         });
     }
 });
-test('font不转span', function () {
+test('font转span', function () {
     var editor = te.obj[0];
     editor.focus();
     editor.setContent('<font size="12" color="red" lang="en" face="arial"><b><i>hello</i>hello</b>');
     var html = '<span style="font-size:12px;color:red;font-family:arial"><strong><em>hello</em>hello</strong></span>';
-    var html = '<font size="12" color="red" lang="en" face="arial"><b><i>hello</i>hello</b>';
-    ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, '不转换font标签');
+    var html = '<span style="font-size:12px;color:red;font-family:arial"><b><i>hello</i>hello</b></span>';
+    ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, 'font转span');
     editor.setContent('<b><font size="10" color="#ff0000" lang="en" face="楷体">hello');
     //html = '<strong><span style="font-size:10px;color:#ff0000;font-family:楷体">hello</span></strong>';
-    html = '<b><font size="10" color="#ff0000" lang="en" face="楷体">hello';
-    ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, '不转换font标签');
+    html = '<b><span style="font-size:10px;color:#ff0000;font-family:楷体">hello</span></b>';
+    ua.checkHTMLSameStyle(html, editor.document, editor.body.firstChild, 'font转span');
 
 });
 
-test('font标签不发生转换', function () {
+test('font标签转换为span', function () {
     var editor = te.obj[0];
     editor.setContent('<font size="16" color="red"><b><i>x</i></b></font>');
 //    if(ua.browser.chrome){
@@ -385,9 +385,9 @@ test('font标签不发生转换', function () {
     var html1 = '<p><span style="font-size:16px;color:red" ><strong><em>x</em></strong></span></p>';
     ua.checkSameHtml(editor.getContent(editor.body),html1,'确认一下确实是正确的');
     editor.setContent('<font style="color:red"><u>x</u></font>');
-    html = '<font style="color:red"><u>x</u></font>';
+    html = '<span style="color:red"><u>x</u></span>';
     //equal(editor.body.firstChild.innerHTML.toLowerCase(),html,'font不转换标签');//ff和chrome下都是正确的，ie下报错，但是错误的提示中，可以看到期待的和实际得到的也是一样的  不知道为何报错
-    ua.checkSameHtml(editor.body.firstChild.innerHTML.toLowerCase(),html,'font不转换标签');
+    ua.checkSameHtml(editor.body.firstChild.innerHTML.toLowerCase(),html,'font标签转换为span');
 });
 
 
