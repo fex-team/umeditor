@@ -7,7 +7,7 @@ window.UM = {
 
     I18N : {},
 
-    version : "1.2.2"
+    version : "1.2.3"
 };
 
 var dom = UM.dom = {};
