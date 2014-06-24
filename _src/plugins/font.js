@@ -130,7 +130,18 @@ UM.plugins['font'] = function () {
                             }[(value+"").replace(/px/,'')] || 1;
 
                             this.document.execCommand(fonts[cmdName],false, size);
-                            $('font[size=' + size + ']', this.body).attr('size', null).css('font-size', value + 'px');
+                            var $fonts = $('font[size=' + size + ']', this.body).attr('size', null).css('font-size', value + 'px');
+
+                            // 处理ff原生fontsize命令不判断style上的fontsize的bug
+                            if (browser.gecko) {
+                                $fonts.find('*').each(function(i, ele){
+                                    var $ele = $(ele),
+                                        fontSize = parseInt($ele.css('font-size'));
+                                    if (fontSize && fontSize != value) {
+                                        $ele.css('font-size', '');
+                                    }
+                                });
+                            }
 
                         } else {
                             this.document.execCommand(fonts[cmdName],false, value);
