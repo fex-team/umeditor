@@ -85,12 +85,10 @@ UM.plugins['autoupload'] = function () {
                     var json = eval('('+r+')'),
                         $img = $('#' + id),
                         link;
-                    if (json.url) {
+                    if (json.state == 'SUCCESS' && json.url) {
                         link = me.getOpt('imagePath') + json.url;
                         $img.attr('src', link);
                         $img.attr('_src', link);
-                    } else{
-                        $img.remove();
                     }
                 });
             }
@@ -103,12 +101,7 @@ UM.plugins['autoupload'] = function () {
                 me.fireEvent('transferBase64Image');
             });
         }
-        //if (browser.ie11above) {
-            me.$body.on('paste', transferHandler);
-        //}
-        if (browser.gecko) {
-            me.$body.on('drop', transferHandler);
-        }
+        me.$body.on('paste drop', transferHandler);
     });
 
     function getBase64ImageData(img){
