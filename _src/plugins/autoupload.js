@@ -73,4 +73,49 @@ UM.plugins['autoupload'] = function () {
         }
     });
 
+    // 转存 base64 图片
+    me.addListener('transferBase64Image', function () {
+        utils.each(me.document.getElementsByTagName('img'), function (img, i){
+            var options = {}, base64, id;
+            if (base64 = getBase64ImageData(img)) {
+                id = img.id = 'base64img_' + (+new Date());
+                options['base64'] = true;
+                options[me.getOpt('imageFieldName')] = base64;
+                $.post(me.getOpt('imageUrl'), options, function(r){
+                    var json = eval('('+r+')'),
+                        $img = $('#' + id),
+                        link;
+                    if (json.url) {
+                        link = me.getOpt('imagePath') + json.url;
+                        $img.attr('src', link);
+                        $img.attr('_src', link);
+                    } else{
+                        $img.remove();
+                    }
+                });
+            }
+        });
+    });
+
+    me.addListener('ready', function () {
+        function transferHandler(){
+            setTimeout(function (){
+                me.fireEvent('transferBase64Image');
+            });
+        }
+        //if (browser.ie11above) {
+            me.$body.on('paste', transferHandler);
+        //}
+        if (browser.gecko) {
+            me.$body.on('drop', transferHandler);
+        }
+    });
+
+    function getBase64ImageData(img){
+        var src = img.src, arr;
+        if (src.length > 60 && (arr = src.match(/^(data:[^;]*;base64,)/))) {
+            return src.substring(arr[1].length);
+        }
+    }
+
 };
