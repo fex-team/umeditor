@@ -10,7 +10,30 @@ module("plugins.list");
  * <li>去除链接
  *
  * */
+test('列表内没有列表标号的项后退', function () {//ie8下无法运行
+    if (ua.browser.safari)return;
+    var div = document.body.appendChild(document.createElement('div'));
+    div.id = 'ue';
+    var editor = UM.getEditor('ue');
+    editor.ready(function () {
+        var range = new UM.dom.Range(editor.document,editor.body);
+        var lis;
+        var br = ua.browser.ie ? '<br>' : '<br>';
+        editor.setContent('<ol><li><p>hello</p><p><a href="http://www.baidu.com">www.baidu.com</a></p></li></ol>');
+        range.setStart(editor.body.firstChild.firstChild.lastChild.lastChild, 0).collapse(true).select();
+        ua.manualDeleteFillData(editor.body);
+        ua.keydown(editor.body, {keyCode:8});
 
+        setTimeout(function () {
+            lis = editor.body.getElementsByTagName('li');
+            equal(lis.length, '1', '列表长度不变');
+            ua.checkSameHtml(ua.getChildHTML(editor.body), '<ol><li><p>hello</p><p><a href="http://www.baidu.com" _href="http://www.baidu.com">www.baidu.com</a></p></li></ol>', 'p在列表内');
+            te.dom.push(editor.container);
+            start()
+        }, 200);
+    },200);
+    stop();
+});
 test('trace:3873:无序列表转换',function(){
     if(ua.browser.ie)return;
     var editor = te.obj[0];
@@ -18,6 +41,8 @@ test('trace:3873:无序列表转换',function(){
     var range = te.obj[1];
     editor.setContent('<ol><li>hello1</li><li>hello2</li><li id="3">hello3</li></ol>');
     var text = body.firstChild.firstChild.nextSibling.firstChild;
+    stop();
+    setTimeout(function(){
     range.setStart(text,1).collapse(true).select();
     editor.execCommand('insertunorderedlist');
     var text2 = body.children;
@@ -31,7 +56,10 @@ test('trace:3873:无序列表转换',function(){
         var ff = body.lastChild;
         equal(ff.tagName,'OL','检测二：有序列表的某一行转无序，未影响其它行');
     }
+        start();
+    },20);
 });
+
 
 test('列表复制粘贴', function () {
     var div = document.body.appendChild(document.createElement('div'));
@@ -104,31 +132,6 @@ test('修改列表再删除列表', function () {
         equal(editor.getContent(editor.body),'hello1'+ br,'没有列表格式');
 
 });
-
-//test('列表内没有列表标号的项后退', function () {//ie8下无法运行
-//    if (ua.browser.safari)return;
-//    var div = document.body.appendChild(document.createElement('div'));
-//    div.id = 'ue';
-//    var editor = UM.getEditor('ue');
-//    editor.ready(function () {
-//        var range = new UM.dom.Range(editor.document);
-//        var lis;
-//        var br = ua.browser.ie ? '<br>' : '<br>';
-//        editor.setContent('<ol><li><p>hello</p><p><a href="http://www.baidu.com">www.baidu.com</a></p></li></ol>');
-//        range.setStart(editor.body.firstChild.firstChild.lastChild.lastChild, 0).collapse(true).select();
-//        ua.manualDeleteFillData(editor.body);
-//        ua.keydown(editor.body, {keyCode:8});
-//
-//        setTimeout(function () {
-//            lis = editor.body.getElementsByTagName('li');
-//            equal(lis.length, '1', '列表长度不变');
-//            ua.checkSameHtml(ua.getChildHTML(editor.body), '<ol class=" list-paddingleft-2"><li><p>hello</p></li></ol><p><a href="http://www.baidu.com" _href="http://www.baidu.com">www.baidu.com</a></p>', 'p在列表外');
-//            te.dom.push(editor.container);
-//            start()
-//        }, 200);
-//    });
-//    stop();
-//});
 
 test('多个p，选中其中几个变为列表', function () {
     var editor = te.obj[0];

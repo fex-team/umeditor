@@ -1,19 +1,28 @@
 module( "plugins.basestyle" );
 
-//test( 'bold-在已加粗文本中间去除加粗', function () {//原生问题不修了
-//    var editor = te.obj[0];
-//    var body = editor.body;
-//    var range = te.obj[1];
-//    editor.setContent( '<b>hello</b>ssss' );
-//    range.setStart( body.firstChild.firstChild, 0 ).collapse( true ).select();
-//    editor.execCommand( 'bold' );
-//
-//    //range = editor.selection.getRange();
-//    equal( editor.queryCommandState( 'bold' ), 0, "<strong> 被去掉" );
-////    range.insertNode( range.document.createTextNode( 'aa' ) );       /*在当前的range选区插入文本节点*/
-////    ua.manualDeleteFillData( editor.body );
-////    equal( ua.getChildHTML( body.firstChild ), "aa<strong>hello</strong>ssss", "新文本节点没有加粗" );
-//} );
+test( 'bold-在已加粗文本中间去除加粗', function () {//原生问题不修了
+    if(ua.browser.ie==11)return;
+    var editor = te.obj[0];
+    var body = editor.body;
+    var range = te.obj[1];
+    editor.setContent( '<b>hello</b>ssss' );
+    range.setStart( body.firstChild.firstChild, 0 ).collapse( true ).select();
+    editor.execCommand( 'bold' );
+
+    range = editor.selection.getRange();
+    equal( editor.queryCommandState( 'bold' ), 0, "<strong> 被去掉" );
+    range.insertNode( range.document.createTextNode( 'aa' ) );       /*在当前的range选区插入文本节点*/
+    ua.manualDeleteFillData( editor.body );
+    var str = 'aa<strong>hello</strong>ssss';
+    if(ua.browser.ie)
+    {str = "<strong></strong><span>aa</span><strong>hello</strong>ssss";}
+    else if(ua.browser.webkit)
+    {str = '<b></b>aa<b>hello</b>ssss';}
+    else{
+        str = 'aa<span></span><b>hello</b>ssss';
+    }
+    equal( ua.getChildHTML( body.firstChild ), str, "新文本节点没有加粗" );
+} );
 
 test( 'trace:3940:bold-加粗图标状态',function(){
     var editor = te.obj[0];
