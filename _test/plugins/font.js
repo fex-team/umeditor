@@ -170,51 +170,42 @@ test('闭合时改变前景色和删除线，再输入文本', function () {
     }
 });
 
-//test('trace 805：切换删除线和下划线，前景色没了', function () {
-//    var editor = te.obj[2];
-//    var div = document.body.appendChild(document.createElement('div'));
-//    $(div).css('width', '500px').css('height', '500px').css('border', '1px solid #ccc');
-//    editor.render(div);
-//    stop();
-//    editor.ready(function () {
-//        var range = new UM.dom.Range(editor.document);
-//        editor.setContent('<p><strong>你好早安</strong></p>');
-//        var text = editor.body.firstChild.firstChild.firstChild;
-//        range.selectNode(text).select();
-//        editor.execCommand('forecolor', 'rgb(255,0,0)');
-//        range.setStart(text, 0).setEnd(text, 2).select();
-//        editor.execCommand('underline');
-//        range.setStart(text, 0).setEnd(text, 2).select();
-//        editor.execCommand('strikethrough');
-//        var p1 = editor.document.createElement('p');
-//        p1.innerHTML = '<span style="color: rgb(255, 0, 0); text-decoration: line-through;"><strong>你好</strong></span><span style="color: rgb(255, 0, 0);"><strong>早安</strong></span>';
+test('trace 805：切换删除线和下划线，前景色没了', function () {
+    var editor = te.obj[2];
+    var div = document.body.appendChild(document.createElement('div'));
+    $(div).css('width', '500px').css('height', '500px').css('border', '1px solid #ccc');
+    editor.render(div);
+    stop();
+    editor.ready(function () {
+        var range = new UM.dom.Range(editor.document,editor.body);
+        editor.setContent('<p><strong>你好早安</strong></p>');
+        var text = editor.body.firstChild.firstChild.firstChild;
+        range.selectNode(text).select();
+        editor.execCommand('forecolor', 'rgb(255,0,0)');
+        range.setStart(text, 0).setEnd(text, 2).select();
+        editor.execCommand('underline');
+        range.setStart(text, 0).setEnd(text, 2).select();
+        editor.execCommand('strikethrough');
+        var p1 = editor.document.createElement('p');
+        p1.innerHTML = '<span style="color: rgb(255, 0, 0);"><strong>你好</strong></span><span style="color: rgb(255, 0, 0);"><strong>早安</strong></span>';
+        var sv = '#ff0000';
+        if(ua.browser.ie||ua.browser.gecko)
+        {
+            sv = 'rgb(255,0,0)';
+        }
+        if(ua.browser.gecko){
+            equal(editor.body.firstChild.firstChild.getAttribute('color'),sv,'查看前景色是不是还在');
+        }else{
+        equal(editor.body.firstChild.firstChild.firstChild.getAttribute('color'),sv,'查看前景色是不是还在');
+        }
 //        ok(ua.haveSameAllChildAttribs(editor.body.firstChild, p1), '查看前景色是不是还在');
-//        setTimeout(function () {
-//            div.parentNode.removeChild(div);
-//            start();
-//        }, 50);
-//    });
-//});
+        setTimeout(function () {
+            div.parentNode.removeChild(div);
+            start();
+        }, 50);
+    });
+});
 
-
-//test(':对字体设置前景色，然后进行下划线和删除线操作，前景色不消失',function(){//ie8不执行
-//    var editor = te.obj[0];
-//    var range = te.obj[1];
-//    editor.setContent('<p><strong>你好北京</strong></p>');
-//    var text = editor.body.firstChild.firstChild.firstChild;
-//    //range.selectNode(text).select();
-//    range.setStart(text,0).setEnd(text,4).select();
-//    editor.execCommand('forecolor','rgb(255,0,0)');
-//    range.setStart(text,0).setEnd(text,2).select();//选中的是‘你好’
-//    editor.execCommand('underline');
-//    range.setStart(text,0).setEnd(text,2).select();//选中的是‘北京’
-//    editor.execCommand('strikethrough');
-//    var p1 = editor.document.createElement('p');
-//    p1.innerHTML = '<strong><font color="#ff0000"><u>你好</u><strike>北京</strike></font></strong>';
-//    var html = '<p><strong><span style="color:#ff0000"><span style="text-decoration:underline;">你好</span><span style="text-decoration:line-through;">北京</span></span></strong></p>';
-//    equal(ua.getChildHTML(editor.body).toLowerCase(),p1.outerHTML,'前景色不消失');
-//    equal(editor.getContent(editor.body),html,'try');
-//});
 
 test('为设置了字体的文本添加删除线', function () {
     var editor = te.obj[2];
@@ -275,63 +266,48 @@ test('设置超链接背景色后切换到源码再切回来', function () {
 });
 
 
-//test('trace 740：设置左右字为红色，修改部分字颜色为蓝色，再修改所有字体', function () {//在ff下 有东西没删干净
-//    var editor = te.obj[2];
-//    var div = document.body.appendChild(document.createElement('div'));
-//    $(div).css('width', '500px').css('height', '500px').css('border', '1px solid #ccc');
-//    editor.render(div);
-//    stop();
-//    editor.ready(function () {
-//        var range = new UM.dom.Range(editor.document);
-//        editor.setContent('<p>你好早安</p>');
-//        range.selectNode(editor.body.firstChild).select();
-//        editor.execCommand('forecolor', 'rgb(255,0,0)');
-//        var text = editor.body.firstChild.firstChild.firstChild;
-//        range.setStart(text, 2).setEnd(text, 4).select();
-//        editor.execCommand('forecolor', 'rgb(0,255,0)');
+test('trace 740：设置左右字为红色，修改部分字颜色为蓝色，再修改所有字体', function () {//在ff下 有东西没删干净
+    if(ua.browser.gecko||ua.browser.ie==11)return;
+    var editor = te.obj[2];
+    var div = document.body.appendChild(document.createElement('div'));
+    $(div).css('width', '500px').css('height', '500px').css('border', '1px solid #ccc');
+    editor.render(div);
+    stop();
+    editor.ready(function () {
+        var range = new UM.dom.Range(editor.document);
+        editor.setContent('<p>你好早安</p>');
+        range.selectNode(editor.body.firstChild).select();
+        editor.execCommand('forecolor', 'rgb(255,0,0)');
+        var text = editor.body.firstChild.firstChild.firstChild;
+        range.setStart(text, 2).setEnd(text, 4).select();
+        editor.execCommand('forecolor', 'rgb(0,255,0)');
 //        range.setStart(editor.body.firstChild, 0).setEnd(editor.body.firstChild, 1).select();
-//        editor.execCommand('fontfamily', ' 楷体, 楷体_GB2312, SimKai');
-//        //editor.execCommand('fontfamily','楷体');
-//        setTimeout(function () {
-//            //todo 1.2.6.1 去掉多余的复制样式
-//            var html = '<span style="color: rgb(255, 0, 0); font-family: 楷体, 楷体_GB2312, SimKai">你好<span style="color: rgb(0, 255, 0);">早安</span></span>';
-//            ua.checkSameHtml(html,editor.body.firstChild.innerHTML, '查看字体和颜色是否正确');
-//            div.parentNode.removeChild(div);
-//            start();
-//        }, 50);
-//    });
-//});
+        range.selectNode(editor.body.firstChild).select();
+        editor.execCommand('fontfamily', ' 楷体, 楷体_GB2312, SimKai');
+        //editor.execCommand('fontfamily','楷体');
+        setTimeout(function () {
+            //todo 1.2.6.1 去掉多余的复制样式
+            var html = '<span style="color: rgb(255, 0, 0); font-family: 楷体, 楷体_GB2312, SimKai">你好<span style="color: rgb(0, 255, 0);">早安</span></span>';
+            var str1 = '楷体, 楷体_GB2312, SimKai';
+            var str2 = '#ff0000';
+            var str3 = '#00ff00';
+            if(ua.browser.ie){
+                var str1 = ' 楷体, 楷体_GB2312, SimKai';
+                str2 = 'rgb(255,0,0)';
+                str3 = "rgb(0,255,0)";
 
-//test('trace 740：设置左右字为红色，修改部分字颜色为蓝色，再修改所有字体----', function () {//ie8不能执行
-//    var editor = te.obj[0];
-//    var range = te.obj[1];
-//    editor.setContent('<p>你好早安</p>');
-//    range.selectNode(editor.body.firstChild).select();
-//    editor.execCommand('forecolor', 'rgb(255,0,0)');
-//    var text = editor.body.firstChild.firstChild.firstChild;
-//    range.setStart(text, 2).setEnd(text, 4).select();
-//    editor.execCommand('forecolor', 'rgb(0,255,0)');
-//    range.setStart(editor.body.firstChild, 0).setEnd(editor.body.firstChild, 1).select();
-//    editor.execCommand('fontfamily', ' 楷体, 楷体_GB2312, SimKai ');
-//    stop();
-//    setTimeout(function () {
-//        //todo 1.2.6.1 去掉多余的复制样式
-//        //var html = '<span style="...">你好<span style="...">早安</span></span>';
-//        if(ua.browser.chrome)
-//        {
-//
-//            var html = '<font color="#ff0000" face="楷体, 楷体_GB2312, SimKai">你好</font><font color="#00ff00">早安</font>';
+            }
+
+            equal(editor.body.firstChild.firstChild.getAttribute('face'),str1, '查看字体和颜色是否正确');
+            equal(editor.body.firstChild.firstChild.firstChild.getAttribute('color'),str2, '查看字体和颜色是否正确');
+            equal(editor.body.firstChild.firstChild.lastChild.getAttribute('color'),str3, '查看字体和颜色是否正确');
 //            ua.checkSameHtml(html,editor.body.firstChild.innerHTML, '查看字体和颜色是否正确');
-//        }
-//        else
-//        {
-//            //var html1 = '<p><span style="color:#ff0000;font-family:楷体, 楷体_GB2312, SimKai">你好</span><span style="color:#00ff00">早安</span></p>';
-//            var html1 = '<p><span style=\"color:rgb(255,0,0);font-family: 楷体, 楷体_GB2312, SimKai \">你好</span><span style=\"color:rgb(0,255,0)\">早安</span></p>';
-//            equal(editor.getContent(editor.body),html1,'查看字体和颜色是否正确');
-//        }
-//        start();
-//    }, 50);
-//});
+            div.parentNode.removeChild(div);
+            start();
+        }, 50);
+    });
+});
+
 
 test('预先设置字体颜色，再输入文本，查看文本颜色', function () {
     if (!ua.browser.opera) {

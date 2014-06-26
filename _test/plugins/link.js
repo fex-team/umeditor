@@ -61,19 +61,19 @@ test( '光标闭合且没有超链接', function () {
 } );
 
 
-//test( '给图片添加超链接', function () {//ie8下无法选中 单个图像节点
-//    var editor = te.obj[0];
-//    var range = te.obj[1];
-//    editor.setContent( '<p><img  style="width: 200px;height: 200px" src="http://umeditor.baidu.com/img/logo.png">hello</p>' );
-//    range.selectNode( editor.body.firstChild.firstChild ).select();
-//    editor.execCommand( 'link', {href:'http://www.baidu.com/'} );
-//    //var html = '<a  href="http://www.baidu.com/" ><img  src="http://umeditor.baidu.com/img/logo.png" _src=\"http://umeditor.baidu.com/img/logo.png" style="width: 200px;height: 200px" ></a>hello';
-//    var html1 = '<a href=\"http://www.baidu.com/\"><img style=\"width: 200px;height: 200px\" src=\"http://umeditor.baidu.com/img/logo.png\"></a>hello';
-//    if(ua.browser.ie)
-//        ua.checkHTMLSameStyle( html1, editor.document, editor.body.firstChild, '给图片添加超链接' );
-//    else
-//        equal(editor.body.firstChild.innerHTML.toLowerCase(),html1,'给图片添加超链接');
-//} );
+test( '给图片添加超链接', function () {//ie8下无法选中 单个图像节点
+    var editor = te.obj[0];
+    var range = te.obj[1];
+    editor.setContent( '<p><img  style="width: 200px;height: 200px" src="http://umeditor.baidu.com/img/logo.png">hello</p>' );
+    range.selectNode( editor.body.firstChild.firstChild ).select();
+    editor.execCommand( 'link', {href:'http://www.baidu.com/'} );
+    //var html = '<a  href="http://www.baidu.com/" ><img  src="http://umeditor.baidu.com/img/logo.png" _src=\"http://umeditor.baidu.com/img/logo.png" style="width: 200px;height: 200px" ></a>hello';
+    var html1 = '<a href=\"http://www.baidu.com/\"><img style=\"width: 200px;height: 200px\" src=\"http://umeditor.baidu.com/img/logo.png\"></a>hello';
+    if(ua.browser.ie)
+        ua.checkHTMLSameStyle( html1, editor.document, editor.body.firstChild, '给图片添加超链接' );
+    else
+        equal(editor.body.firstChild.innerHTML.toLowerCase(),html1,'给图片添加超链接');
+} );
 
 test( '去除链接--选中区域包含超链接和非超链接', function () {
     var editor = te.obj[0];
