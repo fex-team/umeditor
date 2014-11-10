@@ -1,4 +1,4 @@
-UM.registerUI('link image video map',function(name){
+UM.registerUI('link',function(name){
 
     var me = this, currentRange, $dialog,
         opt = {
