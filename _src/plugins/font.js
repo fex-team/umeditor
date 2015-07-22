@@ -80,7 +80,7 @@ UM.plugins['font'] = function () {
                 }
             }
             node.attrs = {
-                'style': cssStyle.join(';') +  ';'
+                'style': cssStyle.join(';') + ';'
             };
         }
         node.tagName = 'span';
