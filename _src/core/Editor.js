@@ -354,6 +354,7 @@
 
                 $(me.body).on( 'blur focus', function (e) {
                     var nSel = me.selection.getNative();
+                    nSel.removeAllRanges();
                     //chrome下会出现alt+tab切换时，导致选区位置不对
                     if (e.type == 'blur') {
                         if(nSel.rangeCount > 0 ){
