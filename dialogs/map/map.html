@@ -19,7 +19,7 @@
 
 <body onload="initMap();">
 <!--百度地图容器-->
-<div style="width:697px;height:550px;border:#ccc solid 1px;" id="dituContent"></div>
+<div style="width:697px;height:550px;border:#ccc solid 1px;" id="mapContent"></div>
 </body>
 <script type="text/javascript">
     function getParam(name) {
@@ -42,9 +42,9 @@
         if (!window.BMap) {
             return;
         }
-        var dituContent = document.getElementById('dituContent');
-        dituContent.style.width = widthParam + 'px';
-        dituContent.style.height = heightParam + 'px';
+        var mapContent = document.getElementById('mapContent');
+        mapContent.style.width = widthParam + 'px';
+        mapContent.style.height = heightParam + 'px';
 
         createMap();//创建地图
         setMapEvent();//设置地图事件
@@ -66,7 +66,7 @@
 
     //创建地图函数：
     function createMap() {
-        map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
+        map = new BMap.Map("mapContent");//在百度地图容器中创建一个地图
         var centerArr = centerParam.split(',');
         var point = new BMap.Point(parseFloat(centerArr[0]), parseFloat(centerArr[1]));//定义一个中心点坐标
         map.centerAndZoom(point, parseInt(zoomParam));//设定地图的中心点和坐标并将地图显示在地图容器中
