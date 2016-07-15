@@ -357,11 +357,11 @@
                     //chrome下会出现alt+tab切换时，导致选区位置不对
                     if (e.type == 'blur') {
                         if(nSel.rangeCount > 0 ){
-                            nSel.removeAllRanges();
                             me._bakRange = nSel.getRangeAt(0);
                         }
                     } else {
                         try {
+                            nSel.removeAllRanges();
                             me._bakRange && nSel.addRange(me._bakRange);
                         } catch (e) {
                         }
