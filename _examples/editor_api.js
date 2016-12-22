@@ -39,6 +39,7 @@
             'plugins/autosave.js',
             'plugins/autoupload.js',
             'plugins/formula.js',
+            'plugins/xssFilter.js',
             'ui/widget.js',
             'ui/button.js',
             'ui/toolbar.js',
