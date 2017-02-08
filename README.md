@@ -30,7 +30,7 @@ UMeditor，简称UM，是 [ueditor](http://ueditor.baidu.com) 的简版。是为
     这里写你的初始化内容
 </script>
 ```
-* 在```<head></head>```标签最后，插入需要引用的文件和实例化编辑器的代码(注意修改引用文件的路径)：
+* 在```<head></head>```标签最后，插入需要引用的文件和实例化编辑器的代码(注意修改引用文件的路径),
 其中：UM 依赖 jquery 和 [etpl](https://github.com/ecomfe/etpl) , 注意引入文件的顺序
 ```html
 <!-- 样式文件 -->
