@@ -17,7 +17,7 @@ UM.ui.define('scale', {
     init: function (options) {
         if(options.$doc) this.defaultOpt.$doc = options.$doc;
         if(options.$wrap) this.defaultOpt.$wrap = options.$wrap;
-        this.root($($.parseTmpl(this.tpl, options)));
+        this.root($(UM.utils.render(this.tpl, options)));
         this.initStyle();
         this.startPos = this.prePos = {x: 0, y: 0};
         this.dragId = -1;

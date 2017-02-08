@@ -31,11 +31,14 @@ UMeditor，简称UM，是 [ueditor](http://ueditor.baidu.com) 的简版。是为
 </script>
 ```
 * 在```<head></head>```标签最后，插入需要引用的文件和实例化编辑器的代码(注意修改引用文件的路径)：
+其中：UM 依赖 jquery 和 [etpl](https://github.com/ecomfe/etpl) , 注意引入文件的顺序
 ```html
 <!-- 样式文件 -->
 <link rel="stylesheet" href="./umeditor/themes/default/css/umeditor.css">
 <!-- 引用jquery -->
 <script src="./umeditor/third-party/jquery.min.js"></script>
+<!-- 引入 etpl -->
+<script type="text/javascript" src="../third-party/template.min.js"></script>
 <!-- 配置文件 -->
 <script type="text/javascript" src="./umeditor/umeditor.config.js"></script>
 <!-- 编辑器源码文件 -->

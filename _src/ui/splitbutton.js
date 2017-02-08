@@ -1,7 +1,7 @@
 //splitbutton 类
 ///import button
 UM.ui.define('splitbutton',{
-    tpl :'<div class="edui-splitbutton <%if (name){%>edui-splitbutton-<%= name %><%}%>"  unselectable="on" <%if(title){%>data-original-title="<%=title%>"<%}%>><div class="edui-btn"  unselectable="on" ><%if(icon){%><div  unselectable="on" class="edui-icon-<%=icon%> edui-icon"></div><%}%><%if(text){%><%=text%><%}%></div>'+
+    tpl :'<div class="edui-splitbutton <%if: ${name}%>edui-splitbutton-${name}<%/if%>"  unselectable="on" <%if: ${title}%>data-original-title="${title}"<%/if%>><div class="edui-btn"  unselectable="on" ><%if: ${icon}%><div  unselectable="on" class="edui-icon-${icon} edui-icon"></div><%/if%><%if: ${text}%>${text}<%/if%></div>'+
             '<div  unselectable="on" class="edui-btn edui-dropdown-toggle" >'+
                 '<div  unselectable="on" class="edui-caret"><\/div>'+
             '</div>'+
@@ -13,7 +13,7 @@ UM.ui.define('splitbutton',{
     },
     init : function(options){
         var me = this;
-        me.root( $($.parseTmpl(me.tpl,options)));
+        me.root( $(UM.utils.render(me.tpl, options)));
         me.root().find('.edui-btn:first').click(function(evt){
             if(!me.disabled()){
                 $.proxy(options.click,me)();

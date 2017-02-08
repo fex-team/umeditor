@@ -630,7 +630,9 @@ var domUtils = dom.domUtils = {
                     break;
                 case 'style':
                     node.style.cssText = '';
-                    !browser.ie && node.removeAttributeNode(node.getAttributeNode('style'))
+                    if (node.getAttributeNode('style')) {
+                        !browser.ie && node.removeAttributeNode(node.getAttributeNode('style'))
+                    }
             }
             node.removeAttribute(ci);
         }
@@ -808,10 +810,7 @@ var domUtils = dom.domUtils = {
     isBr: function (node) {
         return node.nodeType == 1 && node.tagName == 'BR';
     },
-    isFillChar: function (node, isInStart) {
-        return node.nodeType == 3 && !node.nodeValue.replace(new RegExp((isInStart ? '^' : '' ) + domUtils.fillChar), '').length
-    },
-
+    
     isEmptyBlock: function (node, reg) {
         if (node.nodeType != 1)
             return 0;

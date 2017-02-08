@@ -3,18 +3,18 @@ UM.ui.define('modal', {
     tpl: '<div class="edui-modal" tabindex="-1" >' +
         '<div class="edui-modal-header">' +
         '<div class="edui-close" data-hide="modal"></div>' +
-        '<h3 class="edui-title"><%=title%></h3>' +
+        '<h3 class="edui-title">${title}</h3>' +
         '</div>' +
-        '<div class="edui-modal-body"  style="<%if(width){%>width:<%=width%>px;<%}%>' +
-        '<%if(height){%>height:<%=height%>px;<%}%>">' +
+        '<div class="edui-modal-body"  style="<%if: ${width}%>width:${width}px;<%/if%>' +
+        '<%if: ${height}%>height:${height}px;<%/if%>">' +
         ' </div>' +
-        '<% if(cancellabel || oklabel) {%>' +
+        '<% if: ${cancellabel} || ${oklabel} %>' +
         '<div class="edui-modal-footer">' +
         '<div class="edui-modal-tip"></div>' +
-        '<%if(oklabel){%><div class="edui-btn edui-btn-primary" data-ok="modal"><%=oklabel%></div><%}%>' +
-        '<%if(cancellabel){%><div class="edui-btn" data-hide="modal"><%=cancellabel%></div><%}%>' +
+        '<%if: ${oklabel}%><div class="edui-btn edui-btn-primary" data-ok="modal">${oklabel}</div><%/if%>' +
+        '<%if: ${cancellabel}%><div class="edui-btn" data-hide="modal">${cancellabel}</div><%/if%>' +
         '</div>' +
-        '<%}%></div>',
+        '<%/if%></div>',
     defaultOpt: {
         title: "",
         cancellabel: "",
@@ -27,7 +27,7 @@ UM.ui.define('modal', {
     init: function (options) {
         var me = this;
 
-        me.root($($.parseTmpl(me.tpl, options || {})));
+        me.root($(UM.utils.render(me.tpl, options || {})));
 
         me.data("options", options);
         if (options.okFn) {

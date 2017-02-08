@@ -1,8 +1,8 @@
 //popup 类
 UM.ui.define('popup', {
     tpl: '<div class="edui-dropdown-menu edui-popup"'+
-        '<%if(!<%=stopprop%>){%>onmousedown="return false"<%}%>'+
-        '><div class="edui-popup-body" unselectable="on" onmousedown="return false"><%=subtpl%></div>' +
+        '<%if:!${stopprop}%>onmousedown="return false"<%/if%>'+
+        '><div class="edui-popup-body" unselectable="on" onmousedown="return false">${subtpl}</div>' +
         '<div class="edui-popup-caret"></div>' +
         '</div>',
     defaultOpt: {
@@ -12,11 +12,11 @@ UM.ui.define('popup', {
         height: ''
     },
     init: function (options) {
-        this.root($($.parseTmpl(this.tpl, options)));
+        this.root($(UM.utils.render(this.tpl, options)));
         return this;
     },
     mergeTpl: function (data) {
-        return $.parseTmpl(this.tpl, {subtpl: data});
+        return UM.utils.render(this.tpl, {subtpl: data});
     },
     show: function ($obj, posObj) {
         if (!posObj) posObj = {};

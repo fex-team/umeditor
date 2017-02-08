@@ -1,12 +1,12 @@
 //dropmenu 类
 UM.ui.define('dropmenu', {
     tmpl: '<ul class="edui-dropdown-menu" aria-labelledby="dropdownMenu" >' +
-        '<%for(var i=0,ci;ci=data[i++];){%>' +
-        '<%if(ci.divider){%><li class="edui-divider"></li><%}else{%>' +
-        '<li <%if(ci.active||ci.disabled){%>class="<%= ci.active|| \'\' %> <%=ci.disabled||\'\' %>" <%}%> data-value="<%= ci.value%>">' +
-        '<a href="#" tabindex="-1"><em class="edui-dropmenu-checkbox"><i class="edui-icon-ok"></i></em><%= ci.label%></a>' +
-        '</li><%}%>' +
-        '<%}%>' +
+        '<%for: ${data} as ${ci}%>' +
+        '<%if: ${ci.divider}%><li class="edui-divider"></li><%else%>' +
+        '<li class="${ci.active} || ${ci.disabled}" data-value="${ci.value}">' +
+        '<a href="#" tabindex="-1"><em class="edui-dropmenu-checkbox"><i class="edui-icon-ok"></i></em>${ci.label}</a>' +
+        '</li><%/if%>' +
+        '<%/for%>' +
         '</ul>',
     defaultOpt: {
         data: [],
@@ -22,7 +22,7 @@ UM.ui.define('dropmenu', {
             mouseout: 1
         };
 
-        this.root($($.parseTmpl(this.tmpl, options))).on('click', 'li[class!="edui-disabled edui-divider edui-dropdown-submenu"]',function (evt) {
+        this.root($(UM.utils.render(this.tmpl, options))).on('click', 'li[class!="edui-disabled edui-divider edui-dropdown-submenu"]',function (evt) {
             $.proxy(options.click, me, evt, $(this).data('value'), $(this))()
         }).find('li').each(function (i, el) {
                 var $this = $(this);

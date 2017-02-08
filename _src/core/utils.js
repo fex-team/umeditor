@@ -472,6 +472,15 @@ var utils = UM.utils = {
         } else {
             head.removeChild(node)
         }
+    },
+    /**
+     * etpl 渲染函数
+     * @name render
+     * @grammar UM.utils.render(tpl, data) => string
+     */
+    render: function (tpl, data) {
+        var _render = etpl.compile(tpl);
+        return _render(data);
     }
 
 };

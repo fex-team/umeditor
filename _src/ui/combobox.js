@@ -17,25 +17,26 @@
     UM.ui.define( widgetName, ( function(){
 
         return {
-            tpl: "<ul class=\"dropdown-menu edui-combobox-menu<%if (comboboxName!=='') {%> edui-combobox-<%=comboboxName%><%}%>\" unselectable=\"on\" onmousedown=\"return false\" role=\"menu\" aria-labelledby=\"dropdownMenu\">" +
-                "<%if(autoRecord) {%>" +
-                "<%for( var i=0, len = recordStack.length; i<len; i++ ) {%>" +
-                "<%var index = recordStack[i];%>" +
-                "<li class=\"<%=itemClassName%><%if( selected == index ) {%> edui-combobox-checked<%}%>\" data-item-index=\"<%=index%>\" unselectable=\"on\" onmousedown=\"return false\">" +
+            tpl: "<ul class=\"dropdown-menu edui-combobox-menu<%if: ${comboboxName} !==''%> edui-combobox-${comboboxName}<%/if%>\" unselectable=\"on\" onmousedown=\"return false\" role=\"menu\" aria-labelledby=\"dropdownMenu\">" +
+                "<%if: ${autoRecord} %>" +
+                "<%for : ${recordStack} as ${recordItem}, ${index}%>" + 
+                "<%var : style = ${itemStyles}[${recordItem}]%><%var : record = ${items}[${recordItem}]%>" +
+                "<li class=\"${itemClassName}<%if: ${selected} == ${index}%> edui-combobox-checked<%/if%>\" data-item-index=\"${recordItem}\" unselectable=\"on\" onmousedown=\"return false\">" +
                 "<span class=\"edui-combobox-icon\" unselectable=\"on\" onmousedown=\"return false\"></span>" +
-                "<label class=\"<%=labelClassName%>\" style=\"<%=itemStyles[ index ]%>\" unselectable=\"on\" onmousedown=\"return false\"><%=items[index]%></label>" +
+                "<label class=\"${labelClassName}\" style=\"${style}\" unselectable=\"on\" onmousedown=\"return false\">${record}</label>" +
                 "</li>" +
-                "<%}%>" +
-                "<%if( i ) {%>" +
+                "<%/for%>" +
+                "<%if: ${index} %>" +
                 "<li class=\"edui-combobox-item-separator\"></li>" +
-                "<%}%>" +
-                "<%}%>" +
-                "<%for( var i=0, label; label = items[i]; i++ ) {%>" +
-                "<li class=\"<%=itemClassName%><%if( selected == i ) {%> edui-combobox-checked<%}%> edui-combobox-item-<%=i%>\" data-item-index=\"<%=i%>\" unselectable=\"on\" onmousedown=\"return false\">" +
+                "<%/if%>" +
+                "<%/if%>" +
+                "<%for: ${items} as ${item}, ${itemIndex}%>" +
+                "<%var : labelStyle = ${itemStyles}[${itemIndex}]%>" + 
+                "<li class=\"${itemClassName}<%if: ${selected} == ${itemIndex} %> edui-combobox-checked<%/if%> edui-combobox-item-${itemIndex}\" data-item-index=\"${itemIndex}\" unselectable=\"on\" onmousedown=\"return false\">" +
                 "<span class=\"edui-combobox-icon\" unselectable=\"on\" onmousedown=\"return false\"></span>" +
-                "<label class=\"<%=labelClassName%>\" style=\"<%=itemStyles[ i ]%>\" unselectable=\"on\" onmousedown=\"return false\"><%=label%></label>" +
+                "<label class=\"${labelClassName}\" style=\"${labelStyle}\" unselectable=\"on\" onmousedown=\"return false\">${item}</label>" +
                 "</li>" +
-                "<%}%>" +
+                "<%/for%>" +
                 "</ul>",
             defaultOpt: {
                 //记录栈初始列表
@@ -62,8 +63,8 @@
                 } );
 
                 this._transStack( options );
-
-                me.root( $( $.parseTmpl( me.tpl, options ) ) );
+                
+                me.root( $( UM.utils.render(me.tpl, options) ) );
 
                 this.data( 'options', options ).initEvent();
 
@@ -272,8 +273,7 @@
 
                 options.recordStack = newStack;
                 options.selected = index;
-
-                newChilds = $( $.parseTmpl( this.tpl, options ) );
+                newChilds = $( UM.utils.render(this.tpl, options ) );
 
                 //重新渲染
                 this.root().html( newChilds.html() );

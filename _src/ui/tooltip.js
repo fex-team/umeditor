@@ -6,7 +6,7 @@ UM.ui.define('tooltip', {
         '</div>',
     init: function (options) {
         var me = this;
-        me.root($($.parseTmpl(me.tpl, options || {})));
+        me.root($(UM.utils.render(me.tpl, options || {})));
     },
     content: function (e) {
         var me = this,
