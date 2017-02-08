@@ -21,7 +21,7 @@
                 "<%if: ${autoRecord} %>" +
                 "<%for : ${recordStack} as ${recordItem}, ${index}%>" + 
                 "<%var : style = ${itemStyles}[${recordItem}]%><%var : record = ${items}[${recordItem}]%>" +
-                "<li class=\"${itemClassName}<%if: ${selected} == ${index}%> edui-combobox-checked<%/if%>\" data-item-index=\"${recordItem}\" unselectable=\"on\" onmousedown=\"return false\">" +
+                "<li class=\"${itemClassName}<%if: ${selected} == ${recordItem}%> edui-combobox-checked<%/if%>\" data-item-index=\"${recordItem}\" unselectable=\"on\" onmousedown=\"return false\">" +
                 "<span class=\"edui-combobox-icon\" unselectable=\"on\" onmousedown=\"return false\"></span>" +
                 "<label class=\"${labelClassName}\" style=\"${style}\" unselectable=\"on\" onmousedown=\"return false\">${record}</label>" +
                 "</li>" +
@@ -32,7 +32,7 @@
                 "<%/if%>" +
                 "<%for: ${items} as ${item}, ${itemIndex}%>" +
                 "<%var : labelStyle = ${itemStyles}[${itemIndex}]%>" + 
-                "<li class=\"${itemClassName}<%if: ${selected} == ${itemIndex} %> edui-combobox-checked<%/if%> edui-combobox-item-${itemIndex}\" data-item-index=\"${itemIndex}\" unselectable=\"on\" onmousedown=\"return false\">" +
+                "<li class=\"${itemClassName}<%if: ${selected} == ${item} %> edui-combobox-checked<%/if%> edui-combobox-item-${itemIndex}\" data-item-index=\"${itemIndex}\" unselectable=\"on\" onmousedown=\"return false\">" +
                 "<span class=\"edui-combobox-icon\" unselectable=\"on\" onmousedown=\"return false\"></span>" +
                 "<label class=\"${labelClassName}\" style=\"${labelStyle}\" unselectable=\"on\" onmousedown=\"return false\">${item}</label>" +
                 "</li>" +
@@ -259,20 +259,20 @@
                 $.each( options.recordStack, function( i, item ){
 
                     if( item != index ) {
-                        newStack.push( item );
+                        newStack.push( +item );
                     }
 
                 } );
 
                 //压入最新的记录
-                newStack.unshift( index );
+                newStack.unshift( +index );
 
                 if( newStack.length > options.recordCount ) {
                     newStack.length = options.recordCount;
                 }
 
                 options.recordStack = newStack;
-                options.selected = index;
+                options.selected = +index;
                 newChilds = $( UM.utils.render(this.tpl, options ) );
 
                 //重新渲染
