@@ -21,7 +21,7 @@ UM.plugins.xssFilter = function() {
 
 		UM.utils.each(attrs, function (val, key) {
 
-			if (whiteList[tagName].indexOf(key) === -1) {
+			if (UM.utils.indexOf(whiteList[tagName], key) === -1) {
 				node.setAttr(key);
 			}
 		});
