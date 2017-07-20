@@ -43,7 +43,7 @@ UM.plugins['font'] = function () {
             { name: 'timesNewRoman', val: 'times new roman'},
             { name: 'sans-serif',val:'sans-serif'}
         ],
-        'fontsize': [10, 12,  16, 18,24, 32,48]
+        'fontsize': [10, 12,  14, 16, 18,24, 32,48]
     });
 
     function font2span(node){
@@ -56,11 +56,12 @@ UM.plugins['font'] = function () {
                         $.each({
                             '10':'1',
                             '12':'2',
-                            '16':'3',
-                            '18':'4',
-                            '24':'5',
-                            '32':'6',
-                            '48':'7'
+                            '14':'3',
+                            '16':'4',
+                            '18':'5',
+                            '24':'6',
+                            '32':'7',
+                            '48':'8'
                         },function(k,v){
                             if(v == val){
                                 val = k;
@@ -122,11 +123,12 @@ UM.plugins['font'] = function () {
                             var size  = {
                                 '10':'1',
                                 '12':'2',
-                                '16':'3',
-                                '18':'4',
-                                '24':'5',
-                                '32':'6',
-                                '48':'7'
+                                '14':'3',
+                                '16':'4',
+                                '18':'5',
+                                '24':'6',
+                                '32':'7',
+                                '48':'8'
                             }[(value+"").replace(/px/,'')] || 1;
 
                             this.document.execCommand(fonts[cmdName],false, size);
