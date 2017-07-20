@@ -163,10 +163,7 @@
 
             var me = this;
             me.fireEvent('destroy');
-            var container = me.container.parentNode;
-            if(container === document.body){
-                container = me.container;
-            }
+            var container = me.container;
             var textarea = me.textarea;
             if (!textarea) {
                 textarea = document.createElement('textarea');
@@ -364,6 +361,7 @@
                         }
                     } else {
                         try {
+                            nSel.removeAllRanges();
                             me._bakRange && nSel.addRange(me._bakRange);
                         } catch (e) {
                         }
