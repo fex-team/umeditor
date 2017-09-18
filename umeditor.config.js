@@ -295,7 +295,7 @@ etpl.config({
 			header: ['style', 'class', 'id'],
 			hr:     ['style', 'class', 'id'],
 			i:      ['style', 'class', 'id'],
-            iframe: ['style', 'class', 'id', 'src', 'frameborder', 'data-latex'],
+//             iframe: ['style', 'class', 'id', 'src', 'frameborder', 'data-latex'],
 			img:    ['src', 'alt', 'title', 'width', 'height', 'style', 'class', 'id', '_url'],
 			ins:    ['datetime', 'style', 'class', 'id'],
 			li:     ['style', 'class', 'id'],
